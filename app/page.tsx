@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
+import { BuyerProof } from "@/components/BuyerProof";
 import { RouteMap } from "@/components/RouteMap";
 import { categoryPhotos, gallery } from "@/data/photos";
-import { sectors } from "@/data/sectors";
 import {
   COLORADO_PROUD,
-  customerComments,
   RAMIREZ_STUDY,
   WESTWORD_2000,
   WESTWORD_FOUNDING,
@@ -22,8 +21,6 @@ const board = [
 
 export default function HomePage() {
   const baker = gallery.find((photo) => photo.src.endsWith("baker.webp"))!;
-  const cricket = customerComments[0];
-  const quality = customerComments.slice(1);
 
   return (
     <>
@@ -48,6 +45,7 @@ export default function HomePage() {
           </figcaption>
         </div>
         <div className="hero-copy">
+          <p className="hero-kicker">Denver-made wholesale bakery · Est. 1987</p>
           <h1>Scratch-baked for Colorado&apos;s kitchens since 1987.</h1>
           <p className="lede">
             Wholesale buns, breads, rolls, and pastries from Denver bakers who deliver six days a week.
@@ -55,12 +53,13 @@ export default function HomePage() {
           <p>Real ingredients, personal service, and an assortment built for food-service businesses. Delivery schedules vary by route.</p>
           <div className="hero-actions">
             <Link href="/wholesale" className="btn btn-primary">
-              Request pricing
+              Build a wholesale request
             </Link>
             <Link href="/breads" className="btn btn-ghost">
               Explore products
             </Link>
           </div>
+          <p className="hero-reassurance">24-hour bread notice · 48-hour pastry notice. Confirm requirements with our sales team.</p>
         </div>
       </section>
 
@@ -77,14 +76,17 @@ export default function HomePage() {
           <h2>More than great bread. A bakery you can count on.</h2>
           <ul className="value-points">
             <li>
+              <span className="value-icon" aria-hidden="true">✳</span>
               <h3>Made from scratch</h3>
               <p>All of our breads, pastries, and treats are made from scratch daily.</p>
             </li>
             <li>
+              <span className="value-icon" aria-hidden="true">↗</span>
               <h3>Delivered six days a week</h3>
               <p>We bake and deliver 6 days a week. Delivery days depend on the route.</p>
             </li>
             <li>
+              <span className="value-icon" aria-hidden="true">♡</span>
               <h3>Real people, real service</h3>
               <p>Knowledgeable sales professionals. A sales professional will help you open an account.</p>
             </li>
@@ -116,47 +118,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block">
+      <section className="block buyer-proof-block">
         <div className="shell">
-          <h2>Who we bake for</h2>
-          <p className="audience">Restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses.</p>
-          <ul className="sector-grid">
-            {sectors.map((sector) => (
-              <li key={sector.slug}>
-                <Link href={`/sectors/${sector.slug}`}>
-                  <span>{sector.title}</span>
-                  <small>{sector.description}</small>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="block">
-        <div className="shell service-layout">
-          <div>
-            <h2>Personal service</h2>
-            <p>
-              Customers have praised both the products and the people behind every order.
-            </p>
-          </div>
-          <blockquote className="pull">
-            <p>&ldquo;{cricket.quote}&rdquo;</p>
-            <footer>
-              {cricket.name}, {cricket.place}
-            </footer>
-          </blockquote>
-          <div className="quote-columns">
-            {quality.map((comment) => (
-              <blockquote key={comment.name}>
-                <p>&ldquo;{comment.quote}&rdquo;</p>
-                <footer>
-                  {comment.name}, {comment.place}
-                </footer>
-              </blockquote>
-            ))}
-          </div>
+          <BuyerProof />
         </div>
       </section>
 
