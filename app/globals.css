@@ -12,6 +12,12 @@
   --color-site: #3c4ba6;
 }
 
+/* Offline-safe font variables: DM Sans ships with this repository's npm deps. */
+:root {
+  --font-franklin: "DM Sans";
+  --font-serif: Georgia;
+}
+
 html {
   color-scheme: light;
   scroll-behavior: smooth;
