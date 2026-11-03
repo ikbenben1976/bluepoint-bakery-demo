@@ -43,7 +43,7 @@ export default function HomePage() {
             ))}
           </figure>
           <figcaption className="hero-caption">
-            Bluepoint’s own photographs: marble rye, Parisien loaves, sandwich rolls, a sesame bun, and croissants.
+            Photographs from Bluepoint’s published product collection. Individual products and sizes are confirmed in the catalog.
           </figcaption>
         </div>
         <div className="hero-copy">
@@ -165,8 +165,8 @@ export default function HomePage() {
               <a href={WESTWORD_2000}>Best Bakery</a>.
             </p>
             <p>
-              Willie Ramirez spent 28 years working in and managing the bakery before acquiring full ownership.{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital’s case study</a> tells that story. The page does not show a publication date, and it is not a statement of today’s ownership.
+              After 28 years working in and managing the bakery, Willie Ramirez acquired the business—a remarkable journey from baker to owner, documented by{" "}
+              <a href={RAMIREZ_STUDY}>44 Business Capital</a>.
             </p>
             <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
             <Link href="/about" className="btn btn-primary">
