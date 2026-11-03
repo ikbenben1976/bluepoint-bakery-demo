@@ -42,6 +42,7 @@ export type Draft = {
   lines: DraftLine[];
   firstDelivery: string;
   weeklyQuantity: string;
+  askAboutSamples: boolean;
 };
 
 export function emptyDraft(): Draft {
@@ -58,6 +59,7 @@ export function emptyDraft(): Draft {
     lines: [],
     firstDelivery: "",
     weeklyQuantity: "",
+    askAboutSamples: false,
   };
 }
 
