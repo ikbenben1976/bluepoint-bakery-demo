@@ -23,12 +23,12 @@ export function Footer() {
         <div>
           <figure className="original-mark">
             <Image
-              src="/logo.jpg"
-              alt="The original Bluepoint Bakery mark: a rolling pin, the word Bluepoint, and an orange triangle"
-              width={220}
-              height={108}
+              src="/images/brand/bluepoint-logo-refresh.svg"
+              alt="Bluepoint Bakery rolling-pin mark with blue wordmark and orange triangle"
+              width={1120}
+              height={480}
             />
-            <figcaption className="sr-only">Bluepoint Bakery original rolling-pin and triangle logo</figcaption>
+            <figcaption className="sr-only">Bluepoint Bakery rolling-pin and orange triangle logo</figcaption>
           </figure>
         </div>
         <div>
