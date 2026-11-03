@@ -17,44 +17,6 @@ export function QuickActions() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  useEffect(() => {
-    const root = document.querySelector("[data-testid='quick-actions']") as HTMLElement | null;
-    if (!root) return;
-    const place = () => {
-      root.style.visibility = "visible";
-      root.style.transform = "translateY(0)";
-      const blocks = document.querySelectorAll(
-        ".catalog-tools, .hero-board, .hero-caption, .hero-copy, .review-card, .site-footer, .cloth-edge, .ticket-hero",
-      );
-      let shift = 0;
-      for (let step = 0; step < 14; step += 1) {
-        root.style.transform = `translateY(-${shift}px)`;
-        const box = root.getBoundingClientRect();
-        if (box.top < 80) {
-          root.style.visibility = "hidden";
-          return;
-        }
-        let blockerTop = Number.POSITIVE_INFINITY;
-        for (const el of blocks) {
-          const rect = el.getBoundingClientRect();
-          if (rect.width < 2 || rect.height < 2) continue;
-          const clear =
-            box.right < rect.left || rect.right < box.left || box.bottom < rect.top || rect.bottom < box.top;
-          if (!clear) blockerTop = Math.min(blockerTop, rect.top);
-        }
-        if (blockerTop === Number.POSITIVE_INFINITY) return;
-        shift += box.bottom - blockerTop + 12;
-      }
-      root.style.visibility = "hidden";
-    };
-    place();
-    window.addEventListener("scroll", place, { passive: true });
-    window.addEventListener("resize", place);
-    return () => {
-      window.removeEventListener("scroll", place);
-      window.removeEventListener("resize", place);
-    };
-  }, [open]);
 
   return (
     <div className={`quick-actions no-print ${open ? "is-open" : ""}`} data-testid="quick-actions">
