@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { CAFE_REVIEW, customerComments } from "@/data/site";
 
 const audiences = [
@@ -51,13 +52,24 @@ export function BuyerProof() {
           <Link className="btn btn-primary" href={audience.href}>{audience.cta}</Link>
         </div>
         {selected === "restaurants" ? (
-          <div className="proof-quotes">
+          <div>
+            <div className="verified-client-strip" aria-label="Customers quoted on Bluepoint Bakery's original website">
+              <div className="verified-client-wordmark"><span>The Cherry Cricket</span><small>Published customer since 1994</small></div>
+              <div className="verified-client-mark">
+                <Image src="/images/scenes/mountain-sun.webp" alt="Mountain Sun Pub and Brewery" width={170} height={100} />
+              </div>
+              <div className="verified-client-mark">
+                <Image src="/images/scenes/oskar-blues.webp" alt="Oskar Blues Brewery" width={98} height={98} />
+              </div>
+            </div>
+            <div className="proof-quotes">
             {customerComments.map((comment) => (
               <blockquote key={comment.name} className="proof-quote">
                 <p>“{comment.quote}”</p>
                 <footer><strong>{comment.place}</strong> · {comment.name}</footer>
               </blockquote>
             ))}
+            </div>
           </div>
         ) : selected === "cafes" ? (
           <div className="proof-quotes proof-quotes-single">
@@ -74,7 +86,7 @@ export function BuyerProof() {
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Named testimonials are drawn from Bluepoint&apos;s published customer comments; no additional customer logos or endorsements have been invented.</p>
+      <p className="buyer-proof-note">Named testimonials and displayed customer marks are taken from Bluepoint&apos;s existing public customer-comments section. They are historical endorsements, not a representation of current account status.</p>
     </section>
   );
 }
