@@ -55,7 +55,7 @@ export function MakingCards() {
           );
         })}
       </ul>
-      <p className="making-footnote">Catalog groupings help you browse; product suitability and substitutions can be discussed with Bluepoint's sales team.</p>
+      <p className="making-footnote">Catalog groupings help you browse; product suitability and substitutions can be discussed with Bluepoint&apos;s sales team.</p>
     </section>
   );
 }
