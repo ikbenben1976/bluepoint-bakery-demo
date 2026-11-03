@@ -28,6 +28,7 @@ type Summary = {
   quantity: string;
   startDate: string;
   notes: string;
+  askAboutSamples: boolean;
 };
 
 export function InquiryForm() {
@@ -111,6 +112,7 @@ export function InquiryForm() {
       quantity: value("weeklyQuantity"),
       startDate: value("startDate"),
       notes: value("notes"),
+      askAboutSamples: draft.askAboutSamples,
     });
   }
 
@@ -199,6 +201,7 @@ export function InquiryForm() {
               </div>
             ) : null}
           </dl>
+          {summary.askAboutSamples ? <p><strong>Samples:</strong> Please advise whether samples are available, and any cost or conditions. No samples are promised by this demo.</p> : null}
           {summary.products.length > 0 ? (
             <div>
               <h3>Products</h3>
@@ -337,6 +340,14 @@ export function InquiryForm() {
           Special requirements
           <textarea id="inquiry-notes" name="notes" rows={3} defaultValue={draft.notes} />
         </label>
+        <fieldset className="sample-interest">
+          <legend>Interested in trying products first?</legend>
+          <label className="sample-interest-choice">
+            <input type="checkbox" checked={draft.askAboutSamples} onChange={(event) => setDraft((current) => ({ ...current, askAboutSamples: event.target.checked }))} />
+            Ask the bakery whether samples are available
+          </label>
+          <p>Sample availability, eligibility, cost and fulfillment are not confirmed. This is a question to include in the request preview—not a sample order.</p>
+        </fieldset>
         <div className="inquiry-form-actions">
           <button className="btn btn-primary" type="submit">Preview request</button>
           <button className="btn btn-ghost" type="button" onClick={clearRequest}>Clear saved request</button>
