@@ -64,6 +64,7 @@ export function loadDraft(): Draft {
       notes: stringField(parsed.notes),
       productsText: stringField(parsed.productsText),
       weeklyQuantity: stringField(parsed.weeklyQuantity),
+      askAboutSamples: parsed.askAboutSamples === true,
       lines,
       firstDelivery: /^\d{4}-\d{2}-\d{2}$/.test(parsed.firstDelivery ?? "")
         ? (parsed.firstDelivery as string)
