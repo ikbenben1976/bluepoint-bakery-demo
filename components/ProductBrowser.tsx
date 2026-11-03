@@ -126,6 +126,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                 ))}
               </ul>
             ) : null}
+            <p className="catalog-photo-note">Category photography is illustrative; the image above does not identify every individual product or variation.</p>
             <ul className="product-grid">
               {items.map((product) => (
                 <li key={product.id} id={product.id} className="product-card">
@@ -160,6 +161,18 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                       <div>
                         <dt>Pack size</dt>
                         <dd>{product.units.length > 0 ? product.units.join(" or ") : "Confirm with bakery"}</dd>
+                      </div>
+                      <div>
+                        <dt>Ingredients / allergens</dt>
+                        <dd>Request current product information from the bakery</dd>
+                      </div>
+                      <div>
+                        <dt>Shelf life / storage</dt>
+                        <dd>Confirm with bakery</dd>
+                      </div>
+                      <div>
+                        <dt>Wholesale pricing</dt>
+                        <dd>Ask sales for a quote</dd>
                       </div>
                     </dl>
                   </details>
