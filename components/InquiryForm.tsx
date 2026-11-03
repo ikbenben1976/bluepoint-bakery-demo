@@ -111,6 +111,12 @@ export function InquiryForm() {
     });
   }
 
+  // Wait for the saved draft before mounting uncontrolled form fields. Otherwise
+  // defaultValue binds to the initial empty state and silently ignores saved data.
+  if (!hydrated) {
+    return <div className="shell inquiry" role="status">Loading your saved request…</div>;
+  }
+
   if (summary) {
     return (
       <section className="shell inquiry" id="inquiry-confirmation" data-testid="inquiry-confirmation">
@@ -122,8 +128,8 @@ export function InquiryForm() {
             </div>
             <p className="demo-badge">Demo: not sent</p>
           </header>
-          <p>Demo: not sent. In the live site this goes to the sales inbox.</p>
-          <p>It would be addressed to {EMAIL}.</p>
+          <p>This is a preview only. No message has been sent to Bluepoint Bakery.</p>
+          <p>For a real inquiry, contact the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. This prototype does not transmit your information.</p>
           <dl className="inquiry-summary">
             <div>
               <dt>Business</dt>

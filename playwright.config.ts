@@ -8,10 +8,10 @@ export default defineConfig({
   use: {
     ...devices["Desktop Chrome"],
     baseURL: "http://127.0.0.1:43121",
-    launchOptions: { executablePath: "/opt/google/chrome/chrome" },
+    launchOptions: process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : undefined,
   },
   webServer: {
-    command: "npx --yes serve out -l 43121",
+    command: "python3 -m http.server 43121 --directory out",
     url: "http://127.0.0.1:43121",
     reuseExistingServer: true,
     timeout: 30_000,
