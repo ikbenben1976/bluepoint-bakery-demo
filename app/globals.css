@@ -1924,3 +1924,19 @@ legend {
   outline: 3px solid #f66631;
   outline-offset: 3px;
 }
+
+
+/* Keep the original rolling-pin mark intact at all header widths. */
+.site-header .original-header-logo {
+  display: block;
+  width: auto;
+  height: 62px;
+  max-width: min(210px, 43vw);
+  object-fit: contain;
+  transition: height 180ms ease;
+}
+.site-header.is-condensed .original-header-logo { height: 48px; }
+@media (max-width: 767px) {
+  .site-header .original-header-logo { height: 48px; max-width: 44vw; }
+  .site-header.is-condensed .original-header-logo { height: 42px; }
+}
