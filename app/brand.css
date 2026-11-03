@@ -1977,3 +1977,15 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .approved-hero .hero-actions .btn { transition: none; }
 }
+
+
+.sector-related { padding: 1.5rem 0; margin: 2rem 0; border-block: 1px solid #e4d8c4; }
+.sector-related h2 { font-size: 1.25rem; margin-bottom: .9rem; }
+.sector-related ul { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+.sector-related li a {
+  display: inline-flex; align-items: center; gap: .7rem;
+  padding: .7rem 1rem; border-radius: 999px; border: 1px solid #2035e8;
+  color: #2035e8; background: #fff; font-weight: 700;
+  font-family: var(--font-franklin), sans-serif; text-decoration: none;
+}
+.sector-related li a:hover, .sector-related li a:focus-visible { background: #2035e8; color: #fff; }
