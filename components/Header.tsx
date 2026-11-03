@@ -37,7 +37,7 @@ export function Header() {
     <header className={`site-header no-print ${condensed ? "is-condensed" : ""}`}>
       <div className="site-header-row">
         <Link href="/" className="brand">
-          <Image src="/logo.jpg" alt="Bluepoint Bakery — original rolling-pin logo" width={220} height={108} className="original-header-logo" priority />
+          <Image src="/images/brand/bluepoint-logo-refresh.svg" alt="Bluepoint Bakery — refreshed rolling-pin logo" width={1120} height={480} className="original-header-logo" priority />
         </Link>
         <nav aria-label="Primary" className="desk-nav">
           {NAV.map((item) => {
