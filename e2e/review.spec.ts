@@ -97,27 +97,21 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
 
 test("keyboard can complete the wholesale form", async ({ page }) => {
   await page.goto("/wholesale/");
-  await page.locator("#inquiry-business").focus();
-  await page.keyboard.type("Keyboard Cafe");
-  await page.keyboard.press("Tab");
+  const fillWithKeyboard = async (selector: string, value: string) => {
+    await page.locator(selector).focus();
+    await page.keyboard.type(value);
+  };
+  await fillWithKeyboard("#inquiry-business", "Keyboard Cafe");
+  await page.locator("#inquiry-type").focus();
   await page.keyboard.press("ArrowDown");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Denver");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Ada Baker");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("ada@example.com");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("3035550199");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("10 dozen");
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Kaiser rolls");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Please call mornings.");
-  await page.keyboard.press("Tab"); // sample checkbox
-  await page.keyboard.press("Tab"); // preview action
+  await fillWithKeyboard("#inquiry-delivery", "Denver");
+  await fillWithKeyboard("#inquiry-contact", "Ada Baker");
+  await fillWithKeyboard("#inquiry-email", "ada@example.com");
+  await fillWithKeyboard("#inquiry-phone", "3035550199");
+  await fillWithKeyboard("#inquiry-quantity", "10 dozen");
+  await fillWithKeyboard("#inquiry-products", "Kaiser rolls");
+  await fillWithKeyboard("#inquiry-notes", "Please call mornings.");
+  await page.getByRole("button", { name: "Preview request" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
