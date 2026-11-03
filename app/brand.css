@@ -1784,3 +1784,9 @@ body {
 .existing-order-link { margin: .9rem 0 0; font-size: .93rem; }
 .consult-disclaimer { margin-top: .7rem; font-size: .8rem; color: #5d5660; }
 @media (max-width: 750px) { .ordering-steps { grid-template-columns: 1fr; } }
+
+.proof-line { padding: 1rem max(1.2rem, calc((100vw - 1160px) / 2)); background: #fff; border-bottom: 1px solid #e4d8c4; margin: 0; }
+.proof-identity { display: flex; align-items: center; justify-content: space-between; gap: .6rem 1.2rem; flex-wrap: wrap; flex: 1; }
+.identity-tags { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.identity-tags > span { font-family: var(--font-franklin), sans-serif; color: #0d0d25; border: 1px solid #e1d8c8; border-radius: 999px; padding: .3rem .75rem; font-size: .77rem; font-weight: 700; }
+.proof-identity > a { font-size: .83rem; font-family: var(--font-franklin), sans-serif; font-weight: 600; }
