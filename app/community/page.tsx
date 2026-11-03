@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 export default function CommunityPage() {
   const line = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"));
+  const nonprofitMarks = communityMarks.filter((mark) => !/mountain-sun|oskar-blues/i.test(mark.src));
   return (
     <>
       <PageHero
@@ -26,7 +27,7 @@ export default function CommunityPage() {
       />
       <div className="shell py-10">
         <ul className="partner-marks">
-          {communityMarks.map((mark) => (
+          {nonprofitMarks.map((mark) => (
             <li key={mark.src}>
               <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} loading="eager" />
             </li>
