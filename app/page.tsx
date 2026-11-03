@@ -127,11 +127,13 @@ export default function HomePage() {
 
       <section className="block">
         <div className="shell split">
-          <div className="split-photo">
-            <Image src={baker.src} alt={baker.alt} width={baker.width} height={baker.height} loading="eager" />
-          </div>
+          <figure className="split-photo">
+            <Image src={baker.src} alt={baker.alt} width={baker.width} height={baker.height} loading="lazy" />
+            <figcaption>Bluepoint bakery production photograph; not presented as a portrait of Willie Ramirez.</figcaption>
+          </figure>
           <div>
-            <h2>Willie Ramirez</h2>
+            <p className="eyebrow">Our story</p>
+            <h2>From baker to owner: Willie Ramirez</h2>
             <p className="pull-text">
               Founded in 1987 by chefs Fred Bramhall and Mary Clark, Bluepoint grew from its retail bakery roots into a wholesale supplier serving Colorado&apos;s food-service community.
             </p>
