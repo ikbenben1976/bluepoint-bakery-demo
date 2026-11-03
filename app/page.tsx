@@ -48,11 +48,11 @@ export default function HomePage() {
           </figcaption>
         </div>
         <div className="hero-copy">
-          <h1>Colorado&apos;s bread, since 1987.</h1>
+          <h1>Scratch-baked for Colorado&apos;s kitchens since 1987.</h1>
           <p className="lede">
-            Scratch-baked in Denver, and delivered six days a week from Cheyenne to Fountain.
+            Wholesale buns, breads, rolls, and pastries from Denver bakers who deliver six days a week.
           </p>
-          <p>We bake and deliver wholesale bread and pastries.</p>
+          <p>Real ingredients, personal service, and an assortment built for food-service businesses. Delivery schedules vary by route.</p>
           <div className="hero-actions">
             <Link href="/wholesale" className="btn btn-primary">
               Request pricing
@@ -103,7 +103,7 @@ export default function HomePage() {
           <h2>Let&apos;s find the right bread for your business.</h2>
           <p>Tell us what you&apos;re making, where you&apos;re located, and approximately what you need.</p>
           <p>
-            Looking for something specific? Ask about customization. The bakery’s About page says orders can be customized to meet a client’s personality, characteristics, or vision.
+            Looking for something specific? Ask about customization. Bluepoint describes custom orders on its About page; ask what is available for your business.
           </p>
           <div className="hero-actions">
             <Link href="/breads" className="btn btn-primary">
@@ -119,7 +119,7 @@ export default function HomePage() {
       <section className="block">
         <div className="shell">
           <h2>Who we bake for</h2>
-          <p className="audience">Restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. From the About page.</p>
+          <p className="audience">Restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses.</p>
           <ul className="sector-grid">
             {sectors.map((sector) => (
               <li key={sector.slug}>
@@ -138,7 +138,7 @@ export default function HomePage() {
           <div>
             <h2>Personal service</h2>
             <p>
-              The bakery’s community page publishes this about day-to-day work with its staff. The quote is theirs, not a claim we added.
+              Customers have praised both the products and the people behind every order.
             </p>
           </div>
           <blockquote className="pull">

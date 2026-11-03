@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
-import { LogoLockup } from "@/components/Mark";
 
 function normalize(path: string): string {
   if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1);
@@ -37,7 +37,7 @@ export function Header() {
     <header className={`site-header no-print ${condensed ? "is-condensed" : ""}`}>
       <div className="site-header-row">
         <Link href="/" className="brand">
-          <LogoLockup condensed={condensed} />
+          <Image src="/logo.jpg" alt="Bluepoint Bakery — original rolling-pin logo" width={220} height={108} className="original-header-logo" priority />
         </Link>
         <nav aria-label="Primary" className="desk-nav">
           {NAV.map((item) => {

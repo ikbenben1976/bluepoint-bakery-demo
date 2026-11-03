@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Libre_Franklin, Source_Serif_4 } from "next/font/google";
+// Bundle typography from the installed package instead of downloading
+// Google Fonts during the Vercel production build.
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/600.css";
+import "@fontsource/dm-sans/700.css";
 import "./globals.css";
 import "./brand.css";
 import { Header } from "@/components/Header";
@@ -8,20 +12,6 @@ import { Notice } from "@/components/Notice";
 import { QuickActions } from "@/components/QuickActions";
 import { JsonLd } from "@/components/JsonLd";
 import { DISCLAIMER } from "@/data/site";
-
-const franklin = Libre_Franklin({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-franklin",
-  display: "swap",
-});
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-serif",
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -50,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${franklin.variable} ${sourceSerif.variable}`}>
+    <html lang="en">
       <head>
         <meta name="robots" content="noindex,nofollow" />
       </head>

@@ -2,20 +2,34 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 
 const KEY = "bluepoint-demo-notice";
 
 export function Notice() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (window.localStorage.getItem(KEY) === "1") return;
-    const seen = Number(window.sessionStorage.getItem("bp-views") || "0") + 1;
-    window.sessionStorage.setItem("bp-views", String(seen));
-    const timer = window.setTimeout(() => setOpen(true), seen >= 2 ? 400 : 3500);
-    return () => window.clearTimeout(timer);
-  }, []);
+    // The original homepage callout should not interrupt every interior page.
+    if (pathname !== "/") {
+      return;
+    }
+    try {
+      if (window.localStorage.getItem(KEY) === "1") return;
+      if (window.sessionStorage.getItem("bp-notice-shown") === "1") return;
+      const timer = window.setTimeout(() => {
+        window.sessionStorage.setItem("bp-notice-shown", "1");
+        setOpen(true);
+      }, 5000);
+      return () => window.clearTimeout(timer);
+    } catch {
+      // Storage can be unavailable in privacy-restricted browsers.
+      const timer = window.setTimeout(() => setOpen(true), 5000);
+      return () => window.clearTimeout(timer);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -27,11 +41,15 @@ export function Notice() {
   }, [open]);
 
   function dismiss() {
-    window.localStorage.setItem(KEY, "1");
+    try {
+      window.localStorage.setItem(KEY, "1");
+    } catch {
+      // Dismissal remains functional even when browser storage is disabled.
+    }
     setOpen(false);
   }
 
-  if (!open) return null;
+  if (!open || pathname !== "/") return null;
 
   return (
     <aside className="call-notice" role="region" aria-label="Call Bluepoint" data-testid="call-notice">

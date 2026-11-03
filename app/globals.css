@@ -12,6 +12,12 @@
   --color-site: #3c4ba6;
 }
 
+/* Offline-safe font variables: DM Sans ships with this repository's npm deps. */
+:root {
+  --font-franklin: "DM Sans";
+  --font-serif: Georgia;
+}
+
 html {
   color-scheme: light;
   scroll-behavior: smooth;
@@ -1355,23 +1361,24 @@ legend {
   z-index: 70;
 }
 
-@media (min-width: 1180px) {
+/* Keep the eight-item navigation readable; use the menu when it cannot fit. */
+@media (min-width: 1380px) {
   .site-header .desk-nav {
     display: flex;
-    gap: 0.15rem;
-    margin-left: 0.75rem;
+    gap: 0.35rem;
+    margin-left: 0.85rem;
   }
   .site-header .util {
-    margin-left: 1.25rem;
-    padding-left: 1rem;
+    margin-left: 1rem;
+    padding-left: 0.85rem;
     border-left: 1px solid #e4d8c4;
   }
   .site-header .menu-toggle {
     display: none;
   }
   .nav-link {
-    font-size: 0.78rem;
-    padding: 0.35rem 0.55rem;
+    font-size: 0.79rem;
+    padding: 0.4rem 0.6rem;
     white-space: nowrap;
   }
 }
@@ -1903,4 +1910,39 @@ legend {
   body {
     background: #fff;
   }
+}
+
+
+/* Consistent link feedback for keyboard and pointer navigation. */
+.site-header .nav-link:hover,
+.site-header .nav-link:focus-visible,
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: #2035e8;
+  text-decoration: underline;
+  text-underline-offset: 0.24em;
+}
+.btn:focus-visible,
+.nav-link:focus-visible,
+.quick-toggle:focus-visible,
+.quick-panel a:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 3px solid #f66631;
+  outline-offset: 3px;
+}
+
+
+/* Keep the original rolling-pin mark intact at all header widths. */
+.site-header .original-header-logo {
+  display: block;
+  width: auto;
+  height: 62px;
+  max-width: min(210px, 43vw);
+  object-fit: contain;
+  transition: height 180ms ease;
+}
+.site-header.is-condensed .original-header-logo { height: 48px; }
+@media (max-width: 767px) {
+  .site-header .original-header-logo { height: 48px; max-width: 44vw; }
+  .site-header.is-condensed .original-header-logo { height: 42px; }
 }
