@@ -43,7 +43,7 @@ export default function ContactPage() {
           </p>
           <p>
             <span className="fact-label">Email</span>
-            <span className="fact-value">{EMAIL}</span>
+            <a className="fact-value" href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </p>
           <p>
             <span className="fact-label">Office hours</span>
