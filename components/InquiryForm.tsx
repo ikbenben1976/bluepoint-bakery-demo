@@ -340,7 +340,7 @@ export function InquiryForm() {
           Special requirements
           <textarea id="inquiry-notes" name="notes" rows={3} defaultValue={draft.notes} />
         </label>
-        <fieldset className="sample-interest">
+        <fieldset className="sample-interest" id="sample-request">
           <legend>Interested in trying products first?</legend>
           <label className="sample-interest-choice">
             <input type="checkbox" checked={draft.askAboutSamples} onChange={(event) => setDraft((current) => ({ ...current, askAboutSamples: event.target.checked }))} />
