@@ -67,9 +67,9 @@ export default function HomePage() {
 
       <p className="proof-line">
         <Image src="/images/colorado-proud.jpg" alt="Colorado Proud" width={48} height={48} />
-        <span>
-          A proud, minority-owned and family-owned business headquartered in Denver, Colorado.{" "}
-          <a href={COLORADO_PROUD}>Listed in the Colorado Proud product finder.</a>
+        <span className="proof-identity">
+          <span className="identity-tags"><span>Minority-owned</span><span>Family-owned</span><span>Denver, Colorado</span></span>
+          <a href={COLORADO_PROUD}>See the Colorado Proud product finder</a>
         </span>
       </p>
 
