@@ -22,7 +22,7 @@ export function BuyerProof() {
         <div>
           <p className="eyebrow">The people we serve</p>
           <h2 id="buyer-proof-heading">Built for food-service businesses.</h2>
-          <p>See what Bluepoint's published customer comments say, or browse by the kind of business you run.</p>
+          <p>See what Bluepoint&apos;s published customer comments say, or browse by the kind of business you run.</p>
         </div>
       </div>
       <div className="buyer-proof-tabs" role="tablist" aria-label="Customer type">
@@ -74,7 +74,7 @@ export function BuyerProof() {
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Named testimonials are drawn from Bluepoint's published customer comments; no additional customer logos or endorsements have been invented.</p>
+      <p className="buyer-proof-note">Named testimonials are drawn from Bluepoint&apos;s published customer comments; no additional customer logos or endorsements have been invented.</p>
     </section>
   );
 }
