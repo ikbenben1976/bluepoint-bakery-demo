@@ -54,12 +54,7 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p>
-            <a href="https://www.thryv.com/client-privacy-policy/">Privacy</a>
-          </p>
-          <p>
-            <a href="https://www.thryv.com/client-terms-of-use/">Terms</a>
-          </p>
+          <p className="footer-hours">This concept website does not submit wholesale requests. Policies for any future official site require Bluepoint approval.</p>
         </div>
         <div>
           <p className="kicker">Accounts</p>
