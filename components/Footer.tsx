@@ -14,7 +14,6 @@ import {
   PHONE_DISPLAY,
   PHONE_TEL,
 } from "@/data/site";
-import { LogoLockup } from "@/components/Mark";
 
 export function Footer() {
   return (
@@ -22,7 +21,6 @@ export function Footer() {
       <div className="cloth-edge" aria-hidden="true" />
       <div className="shell footer-grid">
         <div>
-          <LogoLockup inverse />
           <figure className="original-mark">
             <Image
               src="/logo.jpg"
@@ -30,7 +28,7 @@ export function Footer() {
               width={220}
               height={108}
             />
-            <figcaption>The original mark, including the orange triangle.</figcaption>
+            <figcaption className="sr-only">Bluepoint Bakery original rolling-pin and triangle logo</figcaption>
           </figure>
         </div>
         <div>
