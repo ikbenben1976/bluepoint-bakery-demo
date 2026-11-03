@@ -1769,3 +1769,18 @@ body {
   .verified-client-strip { grid-template-columns: 1fr 1fr; }
   .verified-client-wordmark { grid-column: 1 / -1; }
 }
+
+/* Wholesale buying-process guide: separate prospective and existing accounts. */
+.ordering-guide { background: #0d0d25; color: #fff; padding: clamp(2.5rem, 6vw, 5rem) 0; }
+.ordering-guide h2, .ordering-guide h3 { color: #fff; }
+.ordering-guide .eyebrow { color: #f4ae82; }
+.ordering-guide .section-intro p { color: #e5e2ee; }
+.ordering-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.1rem; list-style: none; padding: 0; margin: 1.4rem 0 1.3rem; }
+.ordering-steps li { border: 1px solid rgba(255,255,255,.3); padding: 1.3rem 1.35rem; display:flex;flex-direction:column;align-items:flex-start; }
+.ordering-steps li > span { font-family: var(--font-franklin),sans-serif; font-size: 2rem; font-weight:700; color: #f66631; }
+.ordering-steps h3 { margin: .55rem 0; }
+.ordering-steps p { color: #edeaf4; font-size: .95rem; flex: 1; }
+.ordering-steps a, .existing-order-link a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: .22em; }
+.existing-order-link { margin: .9rem 0 0; font-size: .93rem; }
+.consult-disclaimer { margin-top: .7rem; font-size: .8rem; color: #5d5660; }
+@media (max-width: 750px) { .ordering-steps { grid-template-columns: 1fr; } }
