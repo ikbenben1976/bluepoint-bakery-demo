@@ -10,6 +10,7 @@ import {
   RAMIREZ_STUDY,
   WESTWORD_2000,
   WESTWORD_FOUNDING,
+  ORDER_URL,
 } from "@/data/site";
 
 const board = [
@@ -115,7 +116,29 @@ export default function HomePage() {
             <Link href="/wholesale" className="btn btn-ghost">
               Request pricing
             </Link>
+            <Link href="/wholesale/#sample-request" className="btn btn-ghost">
+              Ask about samples
+            </Link>
           </div>
+          <p className="consult-disclaimer">The bakery must confirm whether samples are offered, along with any costs and conditions.</p>
+        </div>
+      </section>
+
+      <section className="ordering-guide" aria-labelledby="ordering-guide-heading">
+        <div className="shell">
+          <div className="section-intro">
+            <div>
+              <p className="eyebrow">How wholesale inquiries work</p>
+              <h2 id="ordering-guide-heading">From your menu to the right order.</h2>
+              <p>New to Bluepoint? Prepare the details a sales professional will need, without guessing prices or case quantities.</p>
+            </div>
+          </div>
+          <ol className="ordering-steps">
+            <li><span>01</span><h3>Explore the assortment</h3><p>Browse by menu application, bread category or pastry category.</p><Link href="/breads">Explore breads</Link></li>
+            <li><span>02</span><h3>Build your request</h3><p>Select products, approximate quantities, location and desired start date.</p><Link href="/wholesale">Prepare a request</Link></li>
+            <li><span>03</span><h3>Confirm with sales</h3><p>Review your draft and contact Bluepoint for availability, pricing, delivery details and account setup.</p><Link href="/contact">Contact the bakery</Link></li>
+          </ol>
+          <p className="existing-order-link">Already a customer? <a href={ORDER_URL} target="_blank" rel="noopener noreferrer">Go to the existing ordering portal</a>.</p>
         </div>
       </section>
 
