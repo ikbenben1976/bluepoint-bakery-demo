@@ -20,7 +20,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://demo.invalid"),
+  metadataBase: new URL("https://bluepoint-bakery-demo.vercel.app"),
+  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }], shortcut: "/icon.svg" },
   title: {
     default: "Bluepoint Bakery",
     template: "%s | Bluepoint Bakery",
