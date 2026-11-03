@@ -229,7 +229,7 @@ test("buyer-first homepage has photographed application links and sourced segmen
   const cards = page.locator(".making-visual-link");
   await expect(cards).toHaveCount(4);
   for (const path of ["burgers", "sandwiches", "breakfast", "dinner"]) {
-    await expect(page.locator(`.making-visual-link[href="/making/${path}"] img`)).toBeVisible();
+    await expect(page.locator(`.making-visual-link[href^="/making/${path}"] img`)).toBeVisible();
   }
 
   await expect(page.getByRole("tab", { name: "Restaurants & pubs" })).toHaveAttribute("aria-selected", "true");
