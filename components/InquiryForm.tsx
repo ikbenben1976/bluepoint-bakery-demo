@@ -33,6 +33,7 @@ type Summary = {
 export function InquiryForm() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [hydrated, setHydrated] = useState(false);
+  const [formVersion, setFormVersion] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
 
@@ -138,6 +139,7 @@ export function InquiryForm() {
   function clearRequest() {
     clearDraft();
     setDraft(emptyDraft());
+    setFormVersion((value) => value + 1);
     setErrors([]);
     setSummary(null);
   }
@@ -223,7 +225,7 @@ export function InquiryForm() {
 
   return (
     <div className="shell inquiry">
-      <form data-testid="inquiry-form" onSubmit={submit} onChange={(event) => {
+      <form key={formVersion} data-testid="inquiry-form" onSubmit={submit} onChange={(event) => {
         const target = event.target;
         if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement) {
           saveField(target.name, target.value);
