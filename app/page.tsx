@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
 import { BuyerProof } from "@/components/BuyerProof";
+import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { categoryPhotos, gallery } from "@/data/photos";
@@ -13,55 +14,53 @@ import {
   ORDER_URL,
 } from "@/data/site";
 
-const board = [
-  { src: "/images/studio/marble-rye.webp", alt: "Marble rye from Bluepoint Bakery’s catalog photographs", className: "piece-rye" },
-  { src: "/images/studio/parisien.webp", alt: "", className: "piece-baguette" },
-  { src: "/images/studio/sandwich-rolls.webp", alt: "", className: "piece-rolls" },
-  { src: "/images/studio/sesame-bun.webp", alt: "", className: "piece-bun" },
-  { src: "/images/studio/croissant.webp", alt: "", className: "piece-croissant" },
-];
-
 export default function HomePage() {
   const baker = gallery.find((photo) => photo.src.endsWith("baker.webp"))!;
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-media">
-          <figure className="hero-board">
-            {board.map((piece) => (
-              <span key={piece.className} className={piece.className}>
-                <Image
-                  src={piece.src}
-                  alt={piece.alt}
-                  fill
-                  sizes="40vw"
-                  priority={piece.className === "piece-bun"}
-                  className="object-contain"
-                />
-              </span>
-            ))}
-          </figure>
-          <figcaption className="hero-caption">
-            Photographs from Bluepoint’s published product collection. Individual products and sizes are confirmed in the catalog.
-          </figcaption>
-        </div>
+      <section className="hero approved-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
-          <p className="hero-kicker">Denver-made wholesale bakery · Est. 1987</p>
-          <h1>Scratch-baked for Colorado&apos;s kitchens since 1987.</h1>
+          <Image
+            src="/images/brand/bluepoint-logo-refresh.svg"
+            alt="Bluepoint Bakery — rolling pin, orange triangle and Est. 1987"
+            width={1120}
+            height={480}
+            className="approved-hero-logo"
+            priority
+          />
+          <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
+          <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
           <p className="lede">
-            Wholesale buns, breads, rolls, and pastries from Denver bakers who deliver six days a week.
+            For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
           </p>
-          <p>Real ingredients, personal service, and an assortment built for food-service businesses. Delivery schedules vary by route.</p>
+          <HeroBenefits />
           <div className="hero-actions">
-            <Link href="/wholesale" className="btn btn-primary">
-              Build a wholesale request
-            </Link>
-            <Link href="/breads" className="btn btn-ghost">
-              Explore products
-            </Link>
+            <Link href="/breads" className="btn btn-primary approved-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
+            <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
-          <p className="hero-reassurance">24-hour bread notice · 48-hour pastry notice. Confirm requirements with our sales team.</p>
+          <p className="hero-reassurance">Bread: 24-hour notice · Pastries: 48-hour notice · Delivery day confirmed by Bluepoint.</p>
+        </div>
+        <div className="hero-media approved-hero-media">
+          <figure className="approved-photo-composition">
+            <Image
+              src="/images/scenes/baguette-rack.webp"
+              alt="Fresh baguettes at Bluepoint Bakery"
+              fill
+              className="approved-bakery-backdrop"
+              sizes="(max-width: 799px) 100vw, 55vw"
+              priority
+            />
+            <span className="approved-product approved-product-rye">
+              <Image src="/images/studio/marble-rye.webp" alt="" fill sizes="(max-width: 799px) 50vw, 28vw" />
+            </span>
+            <span className="approved-product approved-product-bun">
+              <Image src="/images/studio/sesame-bun.webp" alt="" fill sizes="(max-width: 799px) 50vw, 24vw" />
+            </span>
+            <span className="approved-product approved-product-croissant">
+              <Image src="/images/studio/croissant.webp" alt="" fill sizes="(max-width: 799px) 40vw, 18vw" />
+            </span>
+          </figure>
         </div>
       </section>
 
