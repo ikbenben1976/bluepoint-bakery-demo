@@ -86,7 +86,7 @@ export function InquiryForm() {
       })
       .filter(Boolean);
     const typed = value("productsText");
-    const products = productLines.length ? productLines : typed ? [typed] : [];
+    const products = [...productLines, ...(typed ? [typed] : [])];
 
     setDraft((current) => ({
       ...current,
@@ -329,12 +329,17 @@ export function InquiryForm() {
                 );
               })}
             </ul>
-          ) : (
-            <label>
-              Products of interest
-              <textarea id="inquiry-products" name="productsText" rows={4} defaultValue={draft.productsText} />
-            </label>
-          )}
+          ) : null}
+          <label>
+            Other products or custom requirements
+            <textarea
+              id="inquiry-products"
+              name="productsText"
+              rows={3}
+              defaultValue={draft.productsText}
+              placeholder="Optional: additional products, sizes, slicing or packaging questions"
+            />
+          </label>
         </fieldset>
         <label>
           Special requirements
