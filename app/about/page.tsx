@@ -23,17 +23,14 @@ export default function AboutPage() {
             <a href={WESTWORD_2000}>Best Bakery</a>.
           </p>
           <p>
-            Willie Ramirez spent 28 years working in and managing the bakery before acquiring full ownership, according to{" "}
-            <a href={RAMIREZ_STUDY}>44 Business Capital</a>. That page does not show a date, and it is not a description of today’s ownership.
+            One of Bluepoint’s most compelling stories is Willie Ramirez’s journey from long-serving baker and manager to owner. After 28 years with the bakery, he acquired the business, as described in{" "}
+            <a href={RAMIREZ_STUDY}>44 Business Capital’s acquisition story</a>.
           </p>
           <p>
             All of our breads, pastries, and treats are made from scratch daily at our spacious facility. We are trusted by companies and industries that include restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. Orders can be customized to meet clients&apos; personality, characteristics, or vision.
           </p>
           <p>
-            Customers served: food service business, local independent restaurants, corporate dining rooms, hospitals, schools.
-          </p>
-          <p>
-            Notable restaurants, espresso bars, sandwich shops, hotels, hospitals, universities, sports venues and catered events along the Front Range.
+            The bakery’s wholesale assortment serves food-service teams across the Front Range, from independent restaurants and cafés to corporate dining, institutions, hotels and catering operations.
           </p>
           <p>
             {ADDRESS}

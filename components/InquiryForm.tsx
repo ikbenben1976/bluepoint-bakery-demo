@@ -6,7 +6,7 @@ import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL } from "@/data/site";
 import { leadWords } from "@/lib/spec";
 import { addProductLine, emptyDraft, type Draft } from "@/lib/draft";
-import { loadDraft, saveDraft } from "@/lib/storage";
+import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 
 const CUSTOMER_TYPES = [
   "restaurant",
@@ -28,11 +28,13 @@ type Summary = {
   quantity: string;
   startDate: string;
   notes: string;
+  askAboutSamples: boolean;
 };
 
 export function InquiryForm() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [hydrated, setHydrated] = useState(false);
+  const [formVersion, setFormVersion] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
 
@@ -64,6 +66,7 @@ export function InquiryForm() {
     if (!value("customerType")) next.push("Choose a customer type.");
     if (!value("delivery")) next.push("Enter a city or ZIP.");
     if (!value("contactName")) next.push("Enter a contact name.");
+    if (!draft.lines.length && !value("productsText")) next.push("Select or describe at least one product.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value("email"))) next.push("Enter a valid email address.");
     if (value("phone").replace(/\D/g, "").length < 7) next.push("Enter a phone number.");
     for (const line of draft.lines) {
@@ -96,6 +99,7 @@ export function InquiryForm() {
       productsText: typed,
       notes: value("notes"),
       firstDelivery: value("startDate"),
+      weeklyQuantity: value("weeklyQuantity"),
     }));
     setSummary({
       businessName: value("businessName"),
@@ -108,6 +112,7 @@ export function InquiryForm() {
       quantity: value("weeklyQuantity"),
       startDate: value("startDate"),
       notes: value("notes"),
+      askAboutSamples: draft.askAboutSamples,
     });
   }
 
@@ -117,19 +122,43 @@ export function InquiryForm() {
     return <div className="shell inquiry" role="status">Loading your saved request…</div>;
   }
 
+  function saveField(name: string, value: string) {
+    const key = ({
+      businessName: "businessName",
+      customerType: "businessType",
+      delivery: "deliveryCity",
+      contactName: "contactName",
+      email: "contactEmail",
+      phone: "contactPhone",
+      weeklyQuantity: "weeklyQuantity",
+      startDate: "firstDelivery",
+      productsText: "productsText",
+      notes: "notes",
+    } as const)[name as "businessName"];
+    if (key) setDraft((current) => ({ ...current, [key]: value }));
+  }
+
+  function clearRequest() {
+    clearDraft();
+    setDraft(emptyDraft());
+    setFormVersion((value) => value + 1);
+    setErrors([]);
+    setSummary(null);
+  }
+
   if (summary) {
     return (
       <section className="shell inquiry" id="inquiry-confirmation" data-testid="inquiry-confirmation">
         <article className="review-card">
           <header className="review-head">
             <div>
-              <p className="kicker">Ready to share with sales</p>
+              <p className="kicker">Review your details</p>
               <h2>Your request</h2>
             </div>
             <p className="demo-badge">Demo: not sent</p>
           </header>
           <p>This is a preview only. No message has been sent to Bluepoint Bakery.</p>
-          <p>For a real inquiry, contact the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. This prototype does not transmit your information.</p>
+          <p>You can discuss this draft with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. This prototype does not transmit your information or promise samples, pricing, or delivery.</p>
           <dl className="inquiry-summary">
             <div>
               <dt>Business</dt>
@@ -172,6 +201,7 @@ export function InquiryForm() {
               </div>
             ) : null}
           </dl>
+          {summary.askAboutSamples ? <p><strong>Samples:</strong> Please advise whether samples are available, and any cost or conditions. No samples are promised by this demo.</p> : null}
           {summary.products.length > 0 ? (
             <div>
               <h3>Products</h3>
@@ -189,6 +219,7 @@ export function InquiryForm() {
             <button type="button" className="btn btn-ghost" onClick={() => setSummary(null)}>
               Edit request
             </button>
+            <button type="button" className="btn btn-ghost" onClick={clearRequest}>Clear request</button>
           </div>
         </article>
       </section>
@@ -197,7 +228,12 @@ export function InquiryForm() {
 
   return (
     <div className="shell inquiry">
-      <form data-testid="inquiry-form" onSubmit={submit} noValidate>
+      <form key={formVersion} data-testid="inquiry-form" onSubmit={submit} onChange={(event) => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement) {
+          saveField(target.name, target.value);
+        }
+      }} noValidate>
         <h2>Request pricing</h2>
         <p>This demo does not send the form. It stays in this browser.</p>
         {errors.length > 0 ? (
@@ -241,11 +277,11 @@ export function InquiryForm() {
           </label>
           <label>
             Approximate weekly needs
-            <input id="inquiry-quantity" name="weeklyQuantity" />
+            <input id="inquiry-quantity" name="weeklyQuantity" defaultValue={draft.weeklyQuantity} placeholder="e.g., 20 dozen buns each week" />
           </label>
           <label>
             Desired start date
-            <input id="inquiry-start" name="startDate" defaultValue={draft.firstDelivery} autoComplete="off" placeholder="YYYY-MM-DD" />
+            <input id="inquiry-start" name="startDate" type="date" defaultValue={draft.firstDelivery} autoComplete="off" />
           </label>
         </div>
         <fieldset className="inquiry-products">
@@ -304,9 +340,18 @@ export function InquiryForm() {
           Special requirements
           <textarea id="inquiry-notes" name="notes" rows={3} defaultValue={draft.notes} />
         </label>
-        <button className="btn btn-primary" type="submit">
-          Preview request
-        </button>
+        <fieldset className="sample-interest" id="sample-request">
+          <legend>Interested in trying products first?</legend>
+          <label className="sample-interest-choice">
+            <input type="checkbox" checked={draft.askAboutSamples} onChange={(event) => setDraft((current) => ({ ...current, askAboutSamples: event.target.checked }))} />
+            Ask the bakery whether samples are available
+          </label>
+          <p>Sample availability, eligibility, cost and fulfillment are not confirmed. This is a question to include in the request preview—not a sample order.</p>
+        </fieldset>
+        <div className="inquiry-form-actions">
+          <button className="btn btn-primary" type="submit">Preview request</button>
+          <button className="btn btn-ghost" type="button" onClick={clearRequest}>Clear saved request</button>
+        </div>
       </form>
       <section className="inquiry-catalog">
         <h2>Add from the catalog</h2>

@@ -63,6 +63,8 @@ export function loadDraft(): Draft {
       contactPhone: stringField(parsed.contactPhone),
       notes: stringField(parsed.notes),
       productsText: stringField(parsed.productsText),
+      weeklyQuantity: stringField(parsed.weeklyQuantity),
+      askAboutSamples: parsed.askAboutSamples === true,
       lines,
       firstDelivery: /^\d{4}-\d{2}-\d{2}$/.test(parsed.firstDelivery ?? "")
         ? (parsed.firstDelivery as string)
@@ -79,10 +81,18 @@ function stringField(value: unknown): string {
 
 export function saveDraft(draft: Draft): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(KEY, JSON.stringify(draft));
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify(draft));
+  } catch {
+    // Browser privacy settings or storage quota may block persistence.
+  }
 }
 
 export function clearDraft(): void {
   if (typeof window === "undefined") return;
-  window.localStorage.removeItem(KEY);
+  try {
+    window.localStorage.removeItem(KEY);
+  } catch {
+    // Clearing is best-effort if storage is inaccessible.
+  }
 }

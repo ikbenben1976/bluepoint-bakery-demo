@@ -97,26 +97,21 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
 
 test("keyboard can complete the wholesale form", async ({ page }) => {
   await page.goto("/wholesale/");
-  await page.locator("#inquiry-business").focus();
-  await page.keyboard.type("Keyboard Cafe");
-  await page.keyboard.press("Tab");
+  const fillWithKeyboard = async (selector: string, value: string) => {
+    await page.locator(selector).focus();
+    await page.keyboard.type(value);
+  };
+  await fillWithKeyboard("#inquiry-business", "Keyboard Cafe");
+  await page.locator("#inquiry-type").focus();
   await page.keyboard.press("ArrowDown");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Denver");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Ada Baker");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("ada@example.com");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("3035550199");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("10 dozen");
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Kaiser rolls");
-  await page.keyboard.press("Tab");
-  await page.keyboard.type("Please call mornings.");
-  await page.keyboard.press("Tab");
+  await fillWithKeyboard("#inquiry-delivery", "Denver");
+  await fillWithKeyboard("#inquiry-contact", "Ada Baker");
+  await fillWithKeyboard("#inquiry-email", "ada@example.com");
+  await fillWithKeyboard("#inquiry-phone", "3035550199");
+  await fillWithKeyboard("#inquiry-quantity", "10 dozen");
+  await fillWithKeyboard("#inquiry-products", "Kaiser rolls");
+  await fillWithKeyboard("#inquiry-notes", "Please call mornings.");
+  await page.getByRole("button", { name: "Preview request" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
@@ -245,4 +240,49 @@ test("home delivery lookup qualifies city and does not promise a specific route"
   await page.locator("#home-delivery-city").fill("Denver");
   await expect(page.getByRole("status").filter({ hasText: "Denver" }).first()).toBeVisible();
   await expect(page.locator(".home-delivery-check")).toContainText("confirm the exact address");
+});
+
+
+test("wholesale details, weekly needs and sample question survive navigation and can be cleared", async ({ page }) => {
+  await page.goto("/wholesale/");
+  await page.locator("#inquiry-business").fill("A Test Kitchen");
+  await page.locator("#inquiry-type").selectOption("restaurant");
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.locator("#inquiry-contact").fill("Jo Baker");
+  await page.locator("#inquiry-email").fill("jo@example.com");
+  await page.locator("#inquiry-phone").fill("3035550199");
+  await page.locator("#inquiry-quantity").fill("40 dozen per week");
+  await page.locator("#inquiry-products").fill("Hamburger buns");
+  await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();
+  await page.goto("/breads/");
+  await page.goto("/wholesale/");
+  await expect(page.locator("#inquiry-business")).toHaveValue("A Test Kitchen");
+  await expect(page.locator("#inquiry-quantity")).toHaveValue("40 dozen per week");
+  await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).toBeChecked();
+  await page.getByRole("button", { name: "Preview request" }).click();
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Please advise whether samples are available");
+  await page.getByRole("button", { name: "Clear request" }).click();
+  await expect(page.locator("#inquiry-business")).toHaveValue("");
+  await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).not.toBeChecked();
+});
+
+test("homepage offers truthful commercial steps, sample question and published customer marks", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "From your menu to the right order." })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(2);
+  await expect(page.locator(".verified-client-wordmark")).toContainText("The Cherry Cricket");
+});
+
+
+test("capture homepage and buyer-request visual review at desktop and mobile widths", async ({ page }) => {
+  for (const [name, width] of [["desktop", 1440], ["mobile", 390]] as const) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto("/");
+    await page.screenshot({ path: `test-results/home-${name}.png`, fullPage: true, animations: "disabled" });
+    await page.goto("/wholesale/");
+    await page.getByTestId("inquiry-form").waitFor();
+    await page.screenshot({ path: `test-results/wholesale-${name}.png`, fullPage: true, animations: "disabled" });
+  }
 });

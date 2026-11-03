@@ -1699,3 +1699,94 @@ body {
 .home-delivery-check p { font-size: .9rem; margin-bottom: 0; }
 .home-delivery-check > .text-link { font-family: var(--font-franklin), sans-serif; font-size: .88rem; font-weight: 700; }
 @media (max-width: 850px) { .home-delivery-check { grid-template-columns: 1fr; } }
+
+
+/* Put the menu proposition first, followed by the bakery's product collage,
+   matching the approved hero direction without flattening buttons into an image. */
+.hero-copy { order: 1; }
+.hero-media { order: 2; }
+@media (min-width: 800px) {
+  .hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .hero-copy { padding-inline: clamp(1.5rem, 4vw, 4.75rem) clamp(1.25rem, 2vw, 2.5rem); }
+}
+@media (max-width: 799px) {
+  .hero { min-height: auto; }
+  .hero-media { min-height: auto; }
+  .hero-board { min-height: clamp(260px, 72vw, 420px); }
+  .hero-copy { padding-bottom: 1rem; }
+}
+.verified-client-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  align-items: center;
+  gap: 1rem;
+  margin: .5rem 0 1.5rem;
+}
+.verified-client-wordmark, .verified-client-mark {
+  min-height: 116px;
+  padding: .9rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.verified-client-wordmark span {
+  font-family: Georgia, serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+}
+.verified-client-wordmark small {
+  color: #575360;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: .72rem;
+}
+.verified-client-mark img { max-width: 100%; max-height: 95px; object-fit: contain; }
+.sample-interest {
+  border: 1px solid #e4d8c4;
+  padding: 1.15rem 1.25rem;
+  margin: 1.1rem 0;
+  background: #fffaf3;
+}
+.sample-interest legend {
+  font-family: var(--font-franklin),sans-serif;
+  font-weight: 700;
+  padding: 0 .4rem;
+}
+.sample-interest .sample-interest-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sample-interest-choice input { width: 1.1rem; height: 1.1rem; flex: none; margin-top: .3rem; }
+.sample-interest p { font-size: .85rem; margin: .6rem 0 0; color: #55505b; }
+.inquiry-form-actions { display: flex; gap: .65rem; flex-wrap: wrap; margin: 1rem 0; }
+@media (max-width: 700px) {
+  .verified-client-strip { grid-template-columns: 1fr 1fr; }
+  .verified-client-wordmark { grid-column: 1 / -1; }
+}
+
+/* Wholesale buying-process guide: separate prospective and existing accounts. */
+.ordering-guide { background: #0d0d25; color: #fff; padding: clamp(2.5rem, 6vw, 5rem) 0; }
+.ordering-guide h2, .ordering-guide h3 { color: #fff; }
+.ordering-guide .eyebrow { color: #f4ae82; }
+.ordering-guide .section-intro p { color: #e5e2ee; }
+.ordering-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.1rem; list-style: none; padding: 0; margin: 1.4rem 0 1.3rem; }
+.ordering-steps li { border: 1px solid rgba(255,255,255,.3); padding: 1.3rem 1.35rem; display:flex;flex-direction:column;align-items:flex-start; }
+.ordering-steps li > span { font-family: var(--font-franklin),sans-serif; font-size: 2rem; font-weight:700; color: #f66631; }
+.ordering-steps h3 { margin: .55rem 0; }
+.ordering-steps p { color: #edeaf4; font-size: .95rem; flex: 1; }
+.ordering-steps a, .existing-order-link a { color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: .22em; }
+.existing-order-link { margin: .9rem 0 0; font-size: .93rem; }
+.consult-disclaimer { margin-top: .7rem; font-size: .8rem; color: #5d5660; }
+@media (max-width: 750px) { .ordering-steps { grid-template-columns: 1fr; } }
+
+.proof-line { padding: 1rem max(1.2rem, calc((100vw - 1160px) / 2)); background: #fff; border-bottom: 1px solid #e4d8c4; margin: 0; }
+.proof-identity { display: flex; align-items: center; justify-content: space-between; gap: .6rem 1.2rem; flex-wrap: wrap; flex: 1; }
+.identity-tags { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.identity-tags > span { font-family: var(--font-franklin), sans-serif; color: #0d0d25; border: 1px solid #e1d8c8; border-radius: 999px; padding: .3rem .75rem; font-size: .77rem; font-weight: 700; }
+.proof-identity > a { font-size: .83rem; font-family: var(--font-franklin), sans-serif; font-weight: 600; }
