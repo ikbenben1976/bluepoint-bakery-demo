@@ -232,7 +232,7 @@ test("buyer-first homepage has photographed application links and sourced segmen
   await page.getByRole("tab", { name: "Cafés & coffee shops" }).click();
   await expect(page.getByRole("tabpanel")).toContainText("Restaurantji");
   await page.getByRole("tab", { name: "Hotels & catering" }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("Named endorsements for this category have not been provided");
+  await expect(page.getByRole("tabpanel")).toContainText("breakfast buffets");
 });
 
 test("home delivery lookup qualifies city and does not promise a specific route", async ({ page }) => {
@@ -285,4 +285,43 @@ test("capture homepage and buyer-request visual review at desktop and mobile wid
     await page.getByTestId("inquiry-form").waitFor();
     await page.screenshot({ path: `test-results/wholesale-${name}.png`, fullPage: true, animations: "disabled" });
   }
+});
+
+test("approved refreshed hero shows recognizable brand, value propositions and functioning actions", async ({ page }) => {
+  for (const width of [390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.locator(".approved-hero-logo")).toHaveAttribute("src", /bluepoint-logo-refresh\.svg/);
+    await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
+    await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
+    await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
+    await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+  await page.goto("/");
+  const icon = await page.locator('link[rel="icon"][href*="icon.png"]').count();
+  expect(icon).toBeGreaterThan(0);
+});
+
+test("wholesale preview keeps catalog selection AND additional requirements", async ({ page }) => {
+  await page.goto("/breads/");
+  await page.locator(".product-card", { hasText: 'Brioche Bun 4"' }).getByRole("button", { name: "Add to request" }).click();
+  await page.goto("/wholesale/");
+  await page.locator("#inquiry-business").fill("Menu Test");
+  await page.locator("#inquiry-type").selectOption("restaurant");
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.locator("#inquiry-contact").fill("Alex Baker");
+  await page.locator("#inquiry-email").fill("alex@example.com");
+  await page.locator("#inquiry-phone").fill("3035550123");
+  await page.locator("#inquiry-products").fill("Also interested in a custom sandwich roll.");
+  await page.getByRole("button", { name: "Preview request" }).click();
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
+});
+
+test("sector pages show useful related catalog links; contact email is clickable", async ({ page }) => {
+  await page.goto("/sectors/cafes/");
+  await expect(page.getByRole("navigation", { name: /Explore more for Cafés and coffee shops/ })).toContainText("Coffee and breakfast");
+  await page.goto("/contact/");
+  await expect(page.locator('.contact-facts a[href="mailto:sales@bluepointbakery.com"]')).toBeVisible();
 });
