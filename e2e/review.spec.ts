@@ -76,7 +76,7 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await page.locator("#inquiry-quantity").fill("about 20 dozen");
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
-    "Demo: not sent. In the live site this goes to the sales inbox.",
+    "This is a preview only. No message has been sent to Bluepoint Bakery.",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");
@@ -146,7 +146,7 @@ test("what are you making filters the catalog and the spec card uses published f
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
   await card.locator("summary").click();
   await expect(card.getByText("24 hour notice for orders on all breads").first()).toBeVisible();
-  await expect(card.getByText("Confirm with bakery")).toBeVisible();
+  await expect(card.getByText("Confirm with bakery").first()).toBeVisible();
   await expect(card.getByText("Individually wrapped")).toHaveCount(0);
 
   await page.goto("/pastries/");
@@ -175,7 +175,7 @@ test("links and buttons go somewhere, including tel and mailto", async ({ page }
 });
 
 test("the call notice dismisses and stays dismissed", async ({ page }) => {
-  await page.goto("/faq/");
+  await page.goto("/");
   await expect(page.getByTestId("call-notice")).toBeVisible({ timeout: 8000 });
   await page.keyboard.press("Escape");
   await expect(page.getByTestId("call-notice")).toHaveCount(0);
@@ -221,4 +221,28 @@ test("every page has a unique title, a description, noindex, and no serious axe 
     const serious = results.violations.filter((item) => item.impact === "serious" || item.impact === "critical");
     expect(serious, `${path} ${JSON.stringify(serious.map((item) => item.id))}`).toEqual([]);
   }
+});
+
+
+test("buyer-first homepage has photographed application links and sourced segment proof", async ({ page }) => {
+  await page.goto("/");
+  const cards = page.locator(".making-visual-link");
+  await expect(cards).toHaveCount(4);
+  for (const path of ["burgers", "sandwiches", "breakfast", "dinner"]) {
+    await expect(page.locator(`.making-visual-link[href="/making/${path}"] img`)).toBeVisible();
+  }
+
+  await expect(page.getByRole("tab", { name: "Restaurants & pubs" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tabpanel")).toContainText("Cherry Cricket");
+  await page.getByRole("tab", { name: "Cafés & coffee shops" }).click();
+  await expect(page.getByRole("tabpanel")).toContainText("Restaurantji");
+  await page.getByRole("tab", { name: "Hotels & catering" }).click();
+  await expect(page.getByRole("tabpanel")).toContainText("Named endorsements for this category have not been provided");
+});
+
+test("home delivery lookup qualifies city and does not promise a specific route", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#home-delivery-city").fill("Denver");
+  await expect(page.getByRole("status").filter({ hasText: "Denver" }).first()).toBeVisible();
+  await expect(page.locator(".home-delivery-check")).toContainText("confirm the exact address");
 });
