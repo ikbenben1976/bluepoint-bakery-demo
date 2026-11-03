@@ -280,3 +280,15 @@ test("homepage offers truthful commercial steps, sample question and published c
   await expect(page.locator(".verified-client-strip img")).toHaveCount(2);
   await expect(page.locator(".verified-client-wordmark")).toContainText("The Cherry Cricket");
 });
+
+
+test("capture homepage and buyer-request visual review at desktop and mobile widths", async ({ page }) => {
+  for (const [name, width] of [["desktop", 1440], ["mobile", 390]] as const) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto("/");
+    await page.screenshot({ path: `test-results/home-${name}.png`, fullPage: true, animations: "disabled" });
+    await page.goto("/wholesale/");
+    await page.getByTestId("inquiry-form").waitFor();
+    await page.screenshot({ path: `test-results/wholesale-${name}.png`, fullPage: true, animations: "disabled" });
+  }
+});
