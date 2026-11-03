@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
 import { BuyerProof } from "@/components/BuyerProof";
 import { RouteMap } from "@/components/RouteMap";
+import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { categoryPhotos, gallery } from "@/data/photos";
 import {
   COLORADO_PROUD,
@@ -157,9 +158,14 @@ export default function HomePage() {
             <p>From Cheyenne to Fountain to Breckenridge. Call us for the days on your route.</p>
           </div>
           <RouteMap preview />
-          <p className="more-link">
-            <Link href="/delivery">Check a city</Link>
-          </p>
+          <div className="home-delivery-check">
+            <div>
+              <h3>Wondering about your location?</h3>
+              <p>Look up a published delivery area, then confirm the exact address, route days and order requirements with Bluepoint.</p>
+            </div>
+            <DeliveryChecker idPrefix="home-delivery" context="page" />
+            <Link className="text-link" href="/delivery">Full delivery map and details →</Link>
+          </div>
         </div>
       </section>
 
