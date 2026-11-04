@@ -13,3 +13,17 @@ Unconfirmed facts for the wholesale request demo. Each line is an issue, the que
 - #40 | Does Bluepoint offer samples, and to whom? | The request has an optional question, “Ask the bakery whether samples are available.” It does not describe a sample program.
 - #40 | What do samples cost, and how are they fulfilled? | The request says cost and fulfillment are not published and does not quote a fee.
 - #40 | Which products can be sampled? | If the buyer asks the question, an optional note records products to ask about. It is not a sample menu.
+- #29 | What are the ingredients and allergens for each catalog item? Croissants are labeled pure butter on the pastry page, and no other ingredient list is published. | Specs show “Pure butter” only on croissants, then “Confirm with bakery” for anything else. Every other item reads “Confirm with bakery”.
+- #29 | What is the shelf life and how should each item be stored? | Specs read “Confirm with bakery”.
+- #29 | What is the wholesale price or case price? | Specs read “Confirm with bakery”.
+- #29 | What is the pack or case quantity when the product line does not print one? | A printed pack is shown (dozen, case of 120, 30 count, 2-pack, 4-pack, loaf, sheet, full ring). Anything else reads “Confirm with bakery”.
+- #29 | What are the dimensions when they are not already in the product name or a published weight? | Specs show that printed size, and otherwise read “Confirm with bakery”.
+- #45 | Checked 4 Nov 2026 against https://www.bluepointbakery.com/map. Is any city drawn on the demo map missing from that page? | No. Every pin matches a named city. The label “Black Hawk” is the published “Blackhawk”. No unmatched city.
+- #46 | Which six days does Bluepoint bake and deliver? | The site says “We bake and deliver 6 days a week” and does not name the days. The demo does not name them.
+- #46 | What weekday schedule, if any, belongs to the purple, green, yellow, orange, and blue areas on the distribution map? | The map shows the published color and the cities listed with that color. It does not name weekdays.
+- #46 | What is the daily order cutoff, and is there a minimum order? | Neither a cutoff time nor a minimum is published. The demo shows the 24-hour, 48-hour, and 3-day notices and does not state a cutoff or a minimum.
+- #25 | What is the name of the coffee shop in the December 2023 Restaurantji review? | The café page quotes the review with the source and date and does not name a shop.
+- #25 | Which hotels, country clubs, or catering companies does Bluepoint currently serve? | The hotel page lists the published assortment and does not name a property.
+- #25 | Which hospitals, schools, universities, or airports does Bluepoint currently serve? | The institution page names those types from the published site and does not name one.
+- #48 | Should any social account be linked besides the Instagram URL in the Bluepoint site footer (https://instagram.com/bluepointbakery/) and the Facebook URL on the contact page (https://www.facebook.com/BluepointBakery/)? | The demo links only those two. Checked 4 Nov 2026.
+

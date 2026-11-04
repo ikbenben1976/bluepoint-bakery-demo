@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   title: "Breads",
   description:
     "Wholesale breads from Bluepoint Bakery. 24 hour notice for orders on all breads. Sourdough Boule: 3 day notice required.",
+  alternates: { canonical: "/breads/" },
+  robots: { index: false, follow: false },
 };
 
 export default function BreadsPage() {
@@ -25,7 +27,7 @@ export default function BreadsPage() {
           </>
         }
       />
-      <div className="shell py-12">
+      <div className="shell py-12 content-page">
         <ProductBrowser groups={breadGroups} />
         <div className="featured-spec-in-catalog"><FeaturedProductSpec /></div>
       </div>

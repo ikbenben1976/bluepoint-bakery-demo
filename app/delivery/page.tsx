@@ -8,29 +8,31 @@ export const metadata: Metadata = {
   title: "Delivery Area",
   description:
     "Bluepoint Bakery delivers across the Denver Metro Area, Boulder, Fort Collins/Greeley, Colorado Springs, Central City/Blackhawk, the I-70 Corridor to Breckenridge, Cheyenne, Wyoming, Loveland, and Summit County.",
+  alternates: { canonical: "/delivery/" },
+  robots: { index: false, follow: false },
 };
 
 const ROUTE_ORDER: DayKey[] = ["mon-sat", "mwfs", "tts", "ts", "mttf"];
 
 export default function DeliveryPage() {
   return (
-    <div className="shell delivery-page">
-      <p className="kicker">The route</p>
+    <div className="shell delivery-page content-page">
+      <p className="kicker">Delivery area</p>
       <h1>Where we deliver</h1>
       <p className="delivery-lede">
-        We bake and deliver six days a week, from Cheyenne to Fountain to Breckenridge. {CAVEAT}
+        We bake and deliver 6 days a week. Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming. {CAVEAT}
       </p>
       <div className="delivery-layout">
       <RouteMap />
       <div className="delivery-lower">
         <div className="delivery-routes">
-          <h2>Routes named on the current map</h2>
-          <p>Call us for the days on your route. The weekday schedule is not printed on the current map page.</p>
+          <h2>Colors on the published map</h2>
+          <p>The bakery’s map names cities by color. It does not list which days each color is served.</p>
           <table className="route-table">
             <caption className="sr-only">Delivery routes and towns</caption>
             <thead>
               <tr>
-                <th scope="col">Route</th>
+                <th scope="col">Color</th>
                 <th scope="col">Towns</th>
               </tr>
             </thead>
@@ -65,7 +67,7 @@ export default function DeliveryPage() {
         </div>
         <aside className="delivery-check">
           <h2>Check a city</h2>
-          <p>Same towns as the map. We will tell you the days when you call.</p>
+          <p>Same towns as the map. Call for the days. Breads need 24 hour notice, pastries need 48 hour notice, and Sourdough Boule needs 3 day notice.</p>
           <DeliveryChecker idPrefix="delivery-page" context="page" />
         </aside>
       </div>

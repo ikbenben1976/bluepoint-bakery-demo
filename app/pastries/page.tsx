@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Pastries",
   description:
     "Wholesale pastries from Bluepoint Bakery. 48 hour notice for orders on all pastries. Many are available individually wrapped.",
+  alternates: { canonical: "/pastries/" },
+  robots: { index: false, follow: false },
 };
 
 export default function PastriesPage() {
@@ -24,7 +26,7 @@ export default function PastriesPage() {
           </>
         }
       />
-      <div className="shell py-12">
+      <div className="shell py-12 content-page">
         <ProductBrowser groups={pastryGroups} />
       </div>
     </>

@@ -6,8 +6,11 @@ export const PHONE_TEL = "+13032981100";
 export const EMAIL = "sales@bluepointbakery.com";
 export const ADDRESS = "5105 Cook St., Denver, CO 80216";
 export const HOURS = "Monday–Friday 7:00 AM–3:00 PM";
+/** Footer link on bluepointbakery.com, checked 4 Nov 2026. */
 export const INSTAGRAM = "https://instagram.com/bluepointbakery/";
+/** Linked from https://www.bluepointbakery.com/contact-us, checked 4 Nov 2026. */
 export const FACEBOOK = "https://www.facebook.com/BluepointBakery/";
+export const DEMO_ORIGIN = "https://bluepoint-bakery-demo.vercel.app";
 export const COLORADO_PROUD = "https://coloradoproud.com/product-finder/";
 export const DISCLAIMER = "Demo prepared for review — not the official site";
 
@@ -112,29 +115,34 @@ export const communityPartners = [
   },
 ] as const;
 
-export const customerComments = [
+export type ProofTheme = "quality" | "service" | "longevity";
+
+export const customerComments: readonly {
+  quote: string;
+  name: string;
+  place: string;
+  themes: readonly ProofTheme[];
+}[] = [
   {
     quote:
       "Since 1994 The Cherry Cricket has been pleased to serve Bluepoint Bakery products for all of our burgers and sandwiches. Their product is top notch and the customer service is outstanding.",
     name: "Todd A.",
     place: "Cherry Cricket",
+    themes: ["quality", "service", "longevity"],
   },
   {
     quote: "Best burger bun in town!",
     name: "Paul N.",
     place: "Mountain Sun Pub, Southern Sun Pub and Vine Street Pub",
+    themes: ["quality"],
   },
-  {
-    quote: "Bluepoint Bakery kicks ass.",
-    name: "Jason R.",
-    place: "Oskar Blues, Chuburger and Cyclhops",
-  },
-] as const;
+];
 
 export const CAFE_REVIEW = {
   quote: "Ordering for our coffee shop for over 10 years… always fresh and delicious.",
   when: "December 2023",
   source: "Restaurantji",
+  themes: ["quality", "longevity"] as const satisfies readonly ProofTheme[],
 } as const;
 
 export const RAMIREZ_STUDY =

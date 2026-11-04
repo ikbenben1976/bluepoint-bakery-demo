@@ -1654,8 +1654,6 @@ legend {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 16 12;
-  animation: march 1.8s linear infinite;
 }
 
 .hwy-25 {
@@ -1671,12 +1669,6 @@ legend {
 .hwy-76 {
   stroke: #2035e8;
   stroke-width: 2.6;
-}
-
-.city-link {
-  fill: none;
-  stroke-width: 2.4;
-  stroke-dasharray: 5 7;
 }
 
 .city-label {
@@ -1780,12 +1772,6 @@ legend {
   width: min(260px, calc(100% - 1.1rem));
   margin: 0;
   z-index: 2;
-}
-
-@keyframes march {
-  to {
-    stroke-dashoffset: -56;
-  }
 }
 
 @media (min-width: 800px) {

@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Bluepoint Bakery, 5105 Cook St., Denver, CO 80216. (303) 298-1100. sales@bluepointbakery.com. Office hours Monday–Friday 7:00 AM–3:00 PM.",
+  alternates: { canonical: "/contact/" },
+  robots: { index: false, follow: false },
 };
 
 export default function ContactPage() {
@@ -29,7 +31,7 @@ export default function ContactPage() {
         title="Contact"
         lede={<p>Our baking facility and office are at {ADDRESS}.</p>}
       />
-      <div className="shell grid gap-10 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+      <div className="shell contact-page content-page grid gap-10 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
         <div className="contact-facts">
           <p>
             <span className="fact-label">Address</span>
@@ -51,17 +53,17 @@ export default function ContactPage() {
           </p>
           <p>We bake and deliver 6 days a week.</p>
           <p>
-            <a className="underline" href={ORDER_URL}>
+            <a className="underline" href={ORDER_URL} target="_blank" rel="noopener noreferrer">
               Order online (existing customers)
             </a>
           </p>
           <p>
-            <a className="underline" href={PAY_URL}>
+            <a className="underline" href={PAY_URL} target="_blank" rel="noopener noreferrer">
               Pay an invoice
             </a>
           </p>
           <p>
-            <a className="underline" href={MAPS_SEARCH_URL}>
+            <a className="underline" href={MAPS_SEARCH_URL} target="_blank" rel="noopener noreferrer">
               Open 5105 Cook St., Denver, CO 80216 in Google Maps
             </a>
           </p>

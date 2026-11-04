@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { QuickActions } from "@/components/QuickActions";
 import { franklin, sourceSerif } from "@/app/fonts";
-import { DISCLAIMER } from "@/data/site";
+import { DISCLAIMER, DEMO_ORIGIN } from "@/data/site";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bluepoint-bakery-demo.vercel.app"),
+  metadataBase: new URL(DEMO_ORIGIN),
   icons: { icon: [{ url: "/icon.png", type: "image/png", sizes: "48x48" }], shortcut: "/icon.png" },
   title: {
     default: "Bluepoint Bakery",

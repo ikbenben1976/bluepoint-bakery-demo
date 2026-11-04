@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { breadGroups } from "@/data/products";
-import { leadWords, publishedSize } from "@/lib/spec";
+import { specRows } from "@/lib/spec";
 
 const brioche = breadGroups.flatMap((group) => group.items).find((item) => item.name === 'Brioche Bun 4"');
 
@@ -28,11 +28,12 @@ export function FeaturedProductSpec() {
           <Link href="/breads/#buns">Explore buns and rolls <span aria-hidden="true">→</span></Link>
         </div>
         <dl className="featured-spec-facts">
-          <div><dt>Published size</dt><dd>{publishedSize(brioche.name) ?? "Confirm with bakery"}</dd></div>
-          <div><dt>Order lead time</dt><dd>{leadWords(brioche)}</dd></div>
-          <div><dt>Case quantity</dt><dd>Confirm with bakery</dd></div>
-          <div><dt>Ingredients / allergens</dt><dd>Details available on request</dd></div>
-          <div><dt>Pricing</dt><dd>Contact sales</dd></div>
+          {specRows(brioche).map((row) => (
+            <div key={row.label}>
+              <dt>{row.label}</dt>
+              <dd>{row.value}</dd>
+            </div>
+          ))}
         </dl>
       </div>
     </section>
