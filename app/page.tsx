@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
+import { AssortmentCards } from "@/components/AssortmentCards";
 import { BuyerProof } from "@/components/BuyerProof";
 import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
@@ -19,16 +20,8 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="hero approved-hero" aria-labelledby="approved-hero-title">
+      <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
-          <Image
-            src="/images/brand/bluepoint-logo-refresh.svg"
-            alt="Bluepoint Bakery — rolling pin, orange triangle and Est. 1987"
-            width={1120}
-            height={480}
-            className="approved-hero-logo"
-            priority
-          />
           <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
           <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
           <p className="lede">
@@ -39,28 +32,16 @@ export default function HomePage() {
             <Link href="/breads" className="btn btn-primary approved-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
             <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
-          <p className="hero-reassurance">Bread: 24-hour notice · Pastries: 48-hour notice · Delivery day confirmed by Bluepoint.</p>
         </div>
-        <div className="hero-media approved-hero-media">
-          <figure className="approved-photo-composition">
-            <Image
-              src="/images/scenes/baguette-rack.webp"
-              alt="Fresh baguettes at Bluepoint Bakery"
-              fill
-              className="approved-bakery-backdrop"
-              sizes="(max-width: 799px) 100vw, 55vw"
-              priority
-            />
-            <span className="approved-product approved-product-rye">
-              <Image src="/images/studio/marble-rye.webp" alt="" fill sizes="(max-width: 799px) 50vw, 28vw" />
-            </span>
-            <span className="approved-product approved-product-bun">
-              <Image src="/images/studio/sesame-bun.webp" alt="" fill sizes="(max-width: 799px) 50vw, 24vw" />
-            </span>
-            <span className="approved-product approved-product-croissant">
-              <Image src="/images/studio/croissant.webp" alt="" fill sizes="(max-width: 799px) 40vw, 18vw" />
-            </span>
-          </figure>
+        <div className="hero-media seamless-hero-media">
+          <Image
+            src="/images/brand/hero-assortment.webp"
+            alt="Fresh baguettes, a spiral loaf, buns and pastries arranged on a bakery countertop"
+            fill
+            priority
+            className="seamless-hero-photo"
+            sizes="(max-width: 799px) 100vw, 67vw"
+          />
         </div>
       </section>
 
@@ -98,6 +79,12 @@ export default function HomePage() {
       <section className="block">
         <div className="shell">
           <MakingCards />
+        </div>
+      </section>
+
+      <section className="block assortment-section" aria-labelledby="assortment-heading">
+        <div className="shell">
+          <AssortmentCards />
         </div>
       </section>
 
