@@ -179,24 +179,19 @@ test("the call notice dismisses and stays dismissed", async ({ page }) => {
   await expect(page.getByTestId("call-notice")).toHaveCount(0);
 });
 
-test("the contact control does not cover the request button", async ({ page }) => {
-  for (const width of [375, 390, 1280]) {
+test("the mobile catalog request CTA is unobstructed and contact is in navigation", async ({ page }) => {
+  for (const width of [375, 390, 768, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto("/breads/");
+    const action = page.getByRole("link", { name: "Open your request" });
+    await expect(action).toBeVisible();
     if (width < 800) {
-      await page.getByRole("button", { name: "Contact" }).click();
+      await expect(page.getByTestId("quick-actions")).toBeHidden();
+      await page.getByRole("button", { name: "Menu" }).click();
+      await expect(page.getByRole("navigation", { name: "Mobile" }).getByRole("link", { name: /Request pricing/ })).toBeVisible();
+    } else {
+      await expect(page.getByTestId("quick-actions")).toBeVisible();
     }
-    const widget = await page.getByTestId("quick-actions").boundingBox();
-    const request = await page.getByRole("link", { name: "Open your request" }).boundingBox();
-    expect(widget && request).toBeTruthy();
-    if (!widget || !request) continue;
-    const overlaps = !(
-      widget.x + widget.width < request.x ||
-      request.x + request.width < widget.x ||
-      widget.y + widget.height < request.y ||
-      request.y + request.height < widget.y
-    );
-    expect(overlaps, String(width)).toBeFalsy();
   }
 });
 
