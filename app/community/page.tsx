@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { communityPartners, customerComments } from "@/data/site";
+import { communityPartners } from "@/data/site";
+import { PublishedProof } from "@/components/PublishedProof";
 import { communityMarks, gallery } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
 
@@ -8,6 +9,8 @@ export const metadata: Metadata = {
   title: "Community",
   description:
     "Bluepoint Bakery community partners, including Project Angel Heart, CASA of Adams & Broomfield Counties, The GrowHaus, and Soup for the Soul.",
+  alternates: { canonical: "/community/" },
+  robots: { index: false, follow: false },
 };
 
 export default function CommunityPage() {
@@ -24,7 +27,7 @@ export default function CommunityPage() {
           </p>
         }
       />
-      <div className="shell py-10">
+      <div className="shell py-10 content-page">
         <ul className="partner-marks">
           {nonprofitMarks.map((mark) => (
             <li key={mark.src}>
@@ -50,15 +53,8 @@ export default function CommunityPage() {
           ))}
         </ul>
         <h2 className="section-title mt-20">From customers, on Bluepoint&apos;s site</h2>
-        <div className="mt-8 grid gap-10 md:grid-cols-2">
-          {customerComments.map((comment) => (
-            <blockquote key={comment.name} className="quiet-quote">
-              <p>&ldquo;{comment.quote}&rdquo;</p>
-              <footer>
-                {comment.name}, {comment.place}
-              </footer>
-            </blockquote>
-          ))}
+        <div className="mt-8">
+          <PublishedProof />
         </div>
       </div>
     </>

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CAFE_REVIEW, customerComments } from "@/data/site";
+import { CAFE_REVIEW } from "@/data/site";
+import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
   { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads" },
@@ -53,40 +54,43 @@ export function BuyerProof() {
         </div>
         {selected === "restaurants" ? (
           <div>
-            <div className="verified-client-strip" aria-label="Customers quoted on Bluepoint Bakery's original website">
+            <div className="verified-client-strip" aria-label="Customers quoted on Bluepoint Bakery's community page">
               <div className="verified-client-wordmark"><span>The Cherry Cricket</span><small>Published customer since 1994</small></div>
               <div className="verified-client-mark">
                 <Image src="/images/scenes/mountain-sun.webp" alt="Mountain Sun Pub and Brewery" width={170} height={100} />
               </div>
-              <div className="verified-client-mark">
-                <Image src="/images/scenes/oskar-blues.webp" alt="Oskar Blues Brewery" width={98} height={98} />
-              </div>
             </div>
-            <div className="proof-quotes">
-            {customerComments.map((comment) => (
-              <blockquote key={comment.name} className="proof-quote">
-                <p>“{comment.quote}”</p>
-                <footer><strong>{comment.place}</strong> · {comment.name}</footer>
-              </blockquote>
-            ))}
-            </div>
+            <PublishedProof />
           </div>
         ) : selected === "cafes" ? (
-          <div className="proof-quotes proof-quotes-single">
-            <blockquote className="proof-quote">
-              <p>“{CAFE_REVIEW.quote}”</p>
-              <footer>Published customer review · {CAFE_REVIEW.source}, {CAFE_REVIEW.when}</footer>
-            </blockquote>
-            <p className="proof-context">Explore croissants, muffins, scones and breakfast pastries for coffee-shop and café menus.</p>
+          <div>
+            <PublishedProof source="cafe" />
+            <p className="proof-context">
+              Croissants, muffins, scones, and danishes are on the pastry list.{" "}
+              <Link href="/making/breakfast">Coffee and breakfast</Link>
+            </p>
+          </div>
+        ) : selected === "hotels" ? (
+          <div className="proof-empty">
+            <p>Hotels and catered events are named on Bluepoint’s site. The catalog includes dinner rolls, croissants, specialty breads, and pies.</p>
+            <p>
+              <Link href="/making/dinner">Dinner and catering</Link>
+              {" · "}
+              <Link href="/making/breakfast">Breakfast pastries</Link>
+            </p>
           </div>
         ) : (
           <div className="proof-empty">
-            <p>{selected === "hotels" ? "From breakfast buffets to catered occasions, explore dinner rolls, croissants, specialty breads and desserts." : "Explore sandwich loaves, hearty rolls and breakfast pastries for busy food-service teams."}</p>
-            <p>Bluepoint&apos;s team can discuss suitable assortments, packaging requirements and delivery options for your operation.</p>
+            <p>Corporate dining rooms, hospitals, schools, universities, and airports are named on Bluepoint’s site. Sandwich loaves, club rolls, and breakfast pastries are in the catalog.</p>
+            <p>
+              <Link href="/making/sandwiches">Sandwich breads</Link>
+              {" · "}
+              <Link href="/pastries">Pastries</Link>
+            </p>
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Customer quotations are reproduced from Bluepoint&apos;s published website. Current account relationships should be confirmed with the bakery.</p>
+      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }

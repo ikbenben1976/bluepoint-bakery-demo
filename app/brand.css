@@ -3019,8 +3019,6 @@ legend {
   overflow-wrap: normal;
   word-break: normal;
 }
-.contact-facts .contact-email { white-space: nowrap; }
-
 .ticket-hero.has-photo { align-items: center; }
 .ticket-photo-half {
   aspect-ratio: 4 / 3;
@@ -3967,6 +3965,239 @@ body.menu-open .site-header .heritage-lockup {
   .account-paths,
   .request-notice {
     display: none !important;
+  }
+}
+
+/* Group C: full column, readable field labels, no mid-word breaks, room under the Contact pill. */
+.content-page {
+  padding-bottom: 6.5rem;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.content-page :is(h1, h2, h3, p, li, a, button, label, dt, dd, th, td, small) {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+label,
+legend,
+.fact-label,
+.spec dt,
+.compare-card dt,
+.featured-spec-facts dt {
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+}
+.contact-facts .fact-value {
+  display: block;
+  max-width: 100%;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.contact-facts .hours-value {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.35em;
+}
+.contact-facts .hours-days,
+.contact-facts .hours-time {
+  white-space: nowrap;
+}
+.contact-facts a.contact-email {
+  color: #0b2b51;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+  text-decoration-thickness: 2px;
+}
+@media (min-width: 1024px) {
+  .contact-hero.ticket-hero {
+    width: min(1200px, calc(100% - 2.5rem));
+  }
+}
+.menu-guide {
+  margin: 0.5rem 0 1.75rem;
+}
+.menu-guide ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu-guide a {
+  display: grid;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 0.9rem 1rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  color: inherit;
+  text-decoration: none;
+}
+.menu-guide a span {
+  font-family: var(--font-franklin), sans-serif;
+  font-weight: 700;
+}
+.menu-guide a small {
+  color: #3c3c4a;
+  font-size: 0.95rem;
+}
+.catalog-tools {
+  align-items: end;
+}
+.search-field {
+  width: 100%;
+  min-width: 0;
+}
+.search-control {
+  position: relative;
+  width: 100%;
+}
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  width: 1.15rem;
+  height: 1.15rem;
+  transform: translateY(-50%);
+  color: #0b2b51;
+  pointer-events: none;
+}
+.catalog-tools input[type="search"] {
+  display: block;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1.5px solid #0d0d25;
+  border-radius: 4px;
+  min-height: 48px;
+  padding: 0.55rem 0.9rem 0.55rem 2.7rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 1rem;
+}
+.catalog-tools input[type="search"]::placeholder {
+  color: #5c564e;
+  opacity: 1;
+}
+.catalog-tools input[type="search"]::-webkit-search-decoration,
+.catalog-tools input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+@media (max-width: 700px) {
+  .catalog-tools {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
+  }
+  .catalog-tools > .search-field,
+  .catalog-tools .search-control,
+  .catalog-tools input[type="search"],
+  .catalog-tools .btn {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+  .catalog-tools label {
+    display: block;
+  }
+}
+.catalog-empty {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+}
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.compare-panel {
+  margin: 0.5rem 0 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+}
+.compare-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+.compare-card {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  padding: 0.85rem;
+  border: 1px solid #e4d8c4;
+  background: #f6f1e8;
+}
+.compare-card dl,
+.featured-spec-facts {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+.compare-card dl div,
+.spec div {
+  display: grid;
+  gap: 0.15rem;
+}
+@media (min-width: 720px) {
+  .spec div {
+    grid-template-columns: 11rem 1fr;
+    gap: 0.5rem;
+  }
+}
+.proof-groups {
+  display: grid;
+  gap: 1.25rem;
+}
+.proof-group-lead {
+  margin: 0 0 0.6rem;
+}
+.proof-groups .proof-quotes {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 800px) {
+  .proof-groups .proof-quotes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 800px) {
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 0.4rem;
+  }
+}
+@media (max-width: 520px) {
+  .menu-guide ul {
+    grid-template-columns: 1fr;
+  }
+  .content-page .menu-guide a {
+    max-width: calc(100% - 8.75rem);
+  }
+}
+@media (max-width: 800px) {
+  .content-page :is(.sector-products a, .hero-actions .btn) {
+    max-width: calc(100% - 8.75rem);
+  }
+  .sector-related ul {
+    max-width: calc(100% - 8.75rem);
   }
 }
 

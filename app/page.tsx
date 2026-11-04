@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
@@ -14,6 +15,11 @@ import {
   WESTWORD_FOUNDING,
   ORDER_URL,
 } from "@/data/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  robots: { index: false, follow: false },
+};
 
 export default function HomePage() {
   const production = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"))!;
@@ -180,7 +186,7 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-head">
             <h2>Where we deliver</h2>
-            <p>From Cheyenne to Fountain to Breckenridge. Call us for the days on your route.</p>
+            <p>We bake and deliver 6 days a week. Published areas include Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Blackhawk, and Cheyenne, Wyoming.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">

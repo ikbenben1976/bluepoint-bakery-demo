@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+import { DEMO_ORIGIN } from "@/data/site";
+
 export const dynamic = "force-static";
 
 const paths = [
@@ -22,11 +24,10 @@ const paths = [
   "/sectors/institutions",
 ];
 
-/** Non-routable host. This demo is not published. */
-const BASE = "https://demo.invalid/bluepoint";
+const BASE = DEMO_ORIGIN;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.map((path) => ({
-    url: `${BASE}${path}/`,
+    url: path === "" ? `${BASE}/` : `${BASE}${path}/`,
   }));
 }

@@ -245,7 +245,7 @@ test("buyer-first homepage has photographed application links and sourced segmen
   await page.getByRole("tab", { name: "Cafés & coffee shops" }).click();
   await expect(page.getByRole("tabpanel")).toContainText("Restaurantji");
   await page.getByRole("tab", { name: "Hotels & catering" }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("breakfast buffets");
+  await expect(page.getByRole("tabpanel")).toContainText("dinner rolls");
 });
 
 test("home delivery lookup qualifies city and does not promise a specific route", async ({ page }) => {
@@ -293,7 +293,7 @@ test("homepage offers truthful commercial steps, sample question and published c
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "From your menu to the right order." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
-  await expect(page.locator(".verified-client-strip img")).toHaveCount(2);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(1);
   await expect(page.locator(".verified-client-wordmark")).toContainText("The Cherry Cricket");
 });
 
@@ -670,6 +670,7 @@ test("homepage sections use the shared container width on phone, tablet, and des
     [".trust-credential-list", "trust strip"],
     [".assortment", "assortment"],
     [".application-section", "making"],
+    [".buyer-proof", "buyer proof"],
     ["footer .footer-grid", "footer"],
   ] as const;
 
@@ -870,3 +871,224 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
   await page.keyboard.press("Escape");
   await expect(page.locator("#mobile-menu")).toBeHidden();
 });
+
+const CONTENT_PAGES = [
+  ["/", "home"],
+  ["/breads/", "breads"],
+  ["/pastries/", "pastries"],
+  ["/delivery/", "delivery"],
+  ["/contact/", "contact"],
+  ["/community/", "community"],
+  ["/making/burgers/", "burgers"],
+  ["/making/sandwiches/", "sandwiches"],
+  ["/making/breakfast/", "breakfast"],
+  ["/making/dinner/", "dinner"],
+  ["/sectors/restaurants/", "restaurants"],
+  ["/sectors/cafes/", "cafes"],
+  ["/sectors/hotels/", "hotels"],
+  ["/sectors/institutions/", "institutions"],
+] as const;
+
+test("changed pages use the column, keep labels readable, and leave the contact pill clear", async ({ page }) => {
+  for (const [path] of CONTENT_PAGES) {
+    for (const width of [390, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      const fit = await page.evaluate(() => {
+        const column =
+          document.querySelector("main .content-page") ||
+          document.querySelector("main .shell") ||
+          document.querySelector("main");
+        if (!column) return null;
+        const rect = column.getBoundingClientRect();
+        const style = getComputedStyle(column);
+        const content = rect.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        const available = window.innerWidth - rect.left * 2;
+        const labels = [...document.querySelectorAll("main label, main legend, main .fact-label, main .spec dt, main .compare-card dt")]
+          .filter((el) => {
+            const box = el.getBoundingClientRect();
+            return box.width > 1 && box.height > 1 && getComputedStyle(el).display !== "none";
+          })
+          .map((el) => ({
+            text: (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40),
+            size: parseFloat(getComputedStyle(el).fontSize),
+          }));
+        const broken = [...document.querySelectorAll("main h1, main h2, main h3, main p, main li, main td, main th, main a, main button, main dd")]
+          .filter((el) => {
+            const text = (el.textContent || "").trim();
+            if (!text) return false;
+            const css = getComputedStyle(el);
+            return css.wordBreak === "break-all" || css.overflowWrap === "anywhere" || el.scrollWidth > el.clientWidth + 2;
+          })
+          .map((el) => (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60));
+        const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+        const hits: string[] = [];
+        for (const el of document.querySelectorAll("main a, main button, main input, main summary")) {
+          const box = el.getBoundingClientRect();
+          if (box.width < 2 || box.height < 2 || box.bottom < 0 || box.top > window.innerHeight) continue;
+          const overlapX = Math.min(box.right, pill.right) - Math.max(box.left, pill.left);
+          const overlapY = Math.min(box.bottom, pill.bottom) - Math.max(box.top, pill.top);
+          if (overlapX > 1 && overlapY > 1) hits.push((el.textContent || el.tagName).replace(/\s+/g, " ").trim().slice(0, 40));
+        }
+        const search = document.querySelector<HTMLInputElement>("#product-search");
+        const request = document.querySelector<HTMLElement>(".catalog-tools .catalog-request");
+        const searchBox = search?.getBoundingClientRect();
+        const requestBox = request?.getBoundingClientRect();
+        return {
+          content,
+          available,
+          labels,
+          broken: broken.slice(0, 8),
+          hits,
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          searchWidth: searchBox && searchBox.width > 1 ? searchBox.width : null,
+          requestWidth: requestBox && requestBox.height > 1 && requestBox.top < window.innerHeight ? requestBox.width : null,
+          searchBorder: search ? parseFloat(getComputedStyle(search).borderTopWidth) : 0,
+          placeholder: search?.getAttribute("placeholder") ?? "",
+        };
+      });
+      expect(fit, path).toBeTruthy();
+      expect(fit!.content, `${path} width at ${width}px`).toBeGreaterThanOrEqual(fit!.available * 0.9);
+      expect(fit!.broken, `${path} mid-word break at ${width}px`).toEqual([]);
+      for (const label of fit!.labels) {
+        expect(label.size, `${path} label “${label.text}” at ${width}px`).toBeGreaterThanOrEqual(14);
+      }
+      expect(fit!.hits, `${path} contact pill covers a control at ${width}px`).toEqual([]);
+      expect(fit!.overflow, `${path} overflow at ${width}px`).toBeLessThanOrEqual(1);
+      if (fit!.searchWidth != null) {
+        expect(fit!.searchWidth, `${path} search width at ${width}px`).toBeGreaterThanOrEqual(fit!.content * 0.9);
+        expect(fit!.searchBorder, `${path} search box at ${width}px`).toBeGreaterThanOrEqual(1);
+        expect(fit!.placeholder, `${path} search placeholder`).toMatch(/^Search /);
+      }
+      if (width <= 700 && fit!.requestWidth != null) {
+        expect(fit!.requestWidth, `${path} request button width at ${width}px`).toBeGreaterThanOrEqual(fit!.content * 0.9);
+      }
+    }
+  }
+});
+
+test("contact intro lines up with the details and the four values share one size", async ({ page }) => {
+  for (const width of [1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/contact/");
+    const align = await page.evaluate(() => {
+      const hero = document.querySelector(".contact-hero")!.getBoundingClientRect().left;
+      const facts = document.querySelector(".contact-facts")!.getBoundingClientRect().left;
+      const values = [...document.querySelectorAll(".contact-facts .fact-value")].map((el) =>
+        Math.round(parseFloat(getComputedStyle(el).fontSize) * 10) / 10,
+      );
+      const email = document.querySelector(".contact-email")!;
+      const time = document.querySelector(".hours-time")!;
+      return {
+        hero,
+        facts,
+        values,
+        emailDecoration: getComputedStyle(email).textDecorationLine,
+        timeWrap: getComputedStyle(time).whiteSpace,
+      };
+    });
+    expect(Math.abs(align.hero - align.facts), `left edges at ${width}px`).toBeLessThanOrEqual(1);
+    expect(new Set(align.values).size, `value sizes at ${width}px`).toBe(1);
+    expect(align.values[0], `value size at ${width}px`).toBeGreaterThanOrEqual(20);
+    expect(align.values[0], `value size at ${width}px`).toBeLessThanOrEqual(22);
+    expect(align.emailDecoration).toContain("underline");
+    expect(align.timeWrap).toBe("nowrap");
+  }
+});
+
+test("catalog search combines with a category filter and can be reset", async ({ page }) => {
+  await page.goto("/pastries/");
+  await page.getByRole("button", { name: "Scones", exact: true }).click();
+  await page.locator("#product-search").fill("blue");
+  await expect(page.locator("#scones").getByRole("heading", { name: "Blueberry", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Apple Cinnamon Crunch" })).toHaveCount(0);
+  await page.locator("#product-search").fill("zzzznotaproduct");
+  await expect(page.getByText("No products match that search.")).toBeVisible();
+  await page.getByRole("button", { name: "Reset search and filters" }).first().click();
+  await expect(page.getByRole("heading", { name: "Croissants" })).toBeVisible();
+  await page.locator("#product-search").focus();
+  await page.keyboard.type("bear");
+  await expect(page.getByRole("heading", { name: "Bear Claw" })).toBeVisible();
+});
+
+test("two products compare published fields and offer an inquiry", async ({ page }) => {
+  await page.goto("/breads/");
+  const brioche = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
+  const picnic = page.locator(".product-card", { hasText: 'Picnic Bun 3.5"' });
+  await brioche.getByRole("button", { name: "Compare" }).click();
+  await picnic.getByRole("button", { name: "Compare" }).click();
+  const panel = page.getByTestId("compare-panel");
+  await expect(panel).toBeVisible();
+  await expect(panel).toContainText('4"');
+  await expect(panel).toContainText('3.5"');
+  await expect(panel).toContainText("Confirm with bakery");
+  await expect(panel.getByRole("link", { name: "Request pricing for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
+  await brioche.locator("summary").click();
+  await expect(brioche.getByText("Confirm with bakery").first()).toBeVisible();
+  await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
+});
+
+test("delivery map does not draw a route line and does not name weekdays", async ({ page }) => {
+  await page.goto("/delivery/");
+  await expect(page.locator(".city-link")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Colors on the published map" })).toBeVisible();
+  await expect(page.locator(".route-table")).toContainText("Yellow");
+  await expect(page.locator(".route-table")).toContainText("Purple");
+  await expect(page.locator(".delivery-page").getByText(/Mon–Sat|North Front Range|Denver metro/)).toHaveCount(0);
+    await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver 6 days a week.");
+});
+
+test("removed testimonial is gone and contact uses published links only", async ({ page }) => {
+  for (const path of ["/", "/community/", "/sectors/restaurants/"]) {
+    await page.goto(path);
+    await expect(page.getByText("kicks ass")).toHaveCount(0);
+    await expect(page.getByText("Jason R.")).toHaveCount(0);
+  }
+  await page.goto("/contact/");
+  await expect(page.locator('.contact-facts a[href="mailto:sales@bluepointbakery.com"]')).toBeVisible();
+  await expect(page.locator('.contact-facts a[href="tel:+13032981100"]')).toBeVisible();
+  await expect(page.locator('.contact-facts a[href*="google.com/maps"]')).toBeVisible();
+  await expect(page.locator('.contact-facts a[href*="bakery.software"]')).toBeVisible();
+  await expect(page.locator('.contact-facts a[href*="paywholesail.com"]')).toBeVisible();
+  const social = await page.locator(".social-row a").evaluateAll((links) => links.map((link) => link.getAttribute("href") || ""));
+  expect(social.length).toBeGreaterThan(0);
+  for (const href of social) {
+    expect(href === "https://instagram.com/bluepointbakery/" || href === "https://www.facebook.com/BluepointBakery/").toBeTruthy();
+  }
+  await expect(page.locator('a[href*="linkedin"], a[href*="twitter"], a[href*="x.com"]')).toHaveCount(0);
+});
+
+test("pages keep noindex and a demo canonical", async ({ page }) => {
+  for (const path of ["/", "/breads/", "/contact/", "/delivery/", "/sectors/cafes/"]) {
+    await page.goto(path);
+    const robots = await page.locator('meta[name="robots"]').first().getAttribute("content");
+    expect(robots).toContain("noindex");
+    const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
+    expect(canonical, path).toBe(`https://bluepoint-bakery-demo.vercel.app${path}`);
+    expect(canonical).not.toContain("demo.invalid");
+  }
+});
+
+test("making pathways and sector links reach catalog choices", async ({ page }) => {
+  await page.goto("/");
+  for (const [name, path] of [
+    ["Burgers & Sliders", "/making/burgers/"],
+    ["Sandwiches & Subs", "/making/sandwiches/"],
+    ["Coffee & Breakfast", "/making/breakfast/"],
+    ["Dinner & Catering", "/making/dinner/"],
+  ] as const) {
+    await page.goto("/");
+    await page.getByRole("link", { name: new RegExp(name) }).click();
+    await expect(page).toHaveURL(new RegExp(path));
+    await expect(page.locator(".menu-guide a").first()).toBeVisible();
+  }
+  await page.goto("/making/burgers/");
+  await expect(page.locator(".menu-guide").getByRole("link", { name: /Brioche Bun 4/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
+  await page.goto("/sectors/hotels/");
+  await expect(page.getByRole("link", { name: "Dinner and catering" })).toHaveAttribute("href", /\/making\/dinner\/?$/);
+  await expect(page.getByText("not named publicly")).toHaveCount(0);
+  await expect(page.getByText("does not name")).toHaveCount(0);
+});
+

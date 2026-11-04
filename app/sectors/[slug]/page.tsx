@@ -6,7 +6,8 @@ import { PageHero } from "@/components/PageHero";
 import { products } from "@/data/products";
 import { categoryPhotos } from "@/data/photos";
 import { sectors } from "@/data/sectors";
-import { CAFE_REVIEW, customerComments } from "@/data/site";
+import { CAFE_REVIEW } from "@/data/site";
+import { PublishedProof } from "@/components/PublishedProof";
 
 type Params = { slug: string };
 
@@ -57,6 +58,8 @@ export function generateMetadata({ params }: { params: Promise<Params> }): Promi
     return {
       title: sector ? sector.title : "Who we bake for",
       description: sector?.description ?? "Who Bluepoint Bakery says it serves.",
+      alternates: { canonical: `/sectors/${slug}/` },
+      robots: { index: false, follow: false },
     };
   });
 }
@@ -70,19 +73,14 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
     .map((item) => products.find((product) => product.category === item.category && product.name === item.name))
     .filter((product) => product != null);
   const quotes =
-    slug === "restaurants"
-      ? customerComments.map((comment) => ({
-          quote: comment.quote,
-          by: `${comment.name}, ${comment.place}`,
-        }))
-      : slug === "cafes"
-        ? [{ quote: CAFE_REVIEW.quote, by: `${CAFE_REVIEW.source}, ${CAFE_REVIEW.when}` }]
-        : [];
+    slug === "cafes"
+      ? [{ quote: CAFE_REVIEW.quote, by: `${CAFE_REVIEW.source}, ${CAFE_REVIEW.when}` }]
+      : [];
 
   return (
     <>
       <PageHero kicker="Who we bake for" title={sector.title} image={photo} lede={<p>{sector.body[0]}</p>} />
-      <div className="shell sector-page">
+      <div className="shell sector-page content-page">
         {sector.body.slice(1).map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
@@ -103,6 +101,7 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
             );
           })}
         </ul>
+        {slug === "restaurants" ? <PublishedProof /> : null}
         {quotes.length > 0 ? (
           <div className="quote-columns">
             {quotes.map((quote) => (
