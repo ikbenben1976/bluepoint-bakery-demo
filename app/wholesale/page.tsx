@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { InquiryForm } from "@/components/InquiryForm";
+import { WholesaleRequest } from "@/components/WholesaleRequest";
 import { categoryPhotos } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
 
@@ -18,7 +18,7 @@ export default function WholesalePage() {
         image={categoryPhotos.croissants}
         lede={<p>Tell us what you are making and where you are. A sales professional will assist you.</p>}
       />
-      <InquiryForm />
+      <WholesaleRequest />
     </>
   );
 }

@@ -75,7 +75,7 @@ export function Header() {
             <summary>Customer login</summary>
             <div className="customer-login-panel">
               <a href={ORDER_URL} target="_blank" rel="noopener noreferrer">
-                Order online
+                Order online (existing customers)
               </a>
               <a href={PAY_URL} target="_blank" rel="noopener noreferrer">
                 Pay an invoice

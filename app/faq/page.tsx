@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { faqs, ORDER_URL } from "@/data/site";
 import { PageHero } from "@/components/PageHero";
 
@@ -18,12 +19,20 @@ export default function FaqPage() {
             <summary>{item.q}</summary>
             {item.id === "order" ? (
               <p className="mt-3 max-w-2xl">
-                Existing customers can order by calling us at 303-298-1100, emailing sales@bluepointbakery.com, or by ordering through{" "}
+                Existing customers can order by calling us at 303-298-1100, emailing sales@bluepointbakery.com, or by ordering through the{" "}
                 <a className="text-royal underline" href={ORDER_URL}>
-                  this website
+                  existing customer login
                 </a>
                 .
               </p>
+            ) : item.id === "become" ? (
+              <>
+                <p className="mt-3 max-w-2xl">{item.a}</p>
+                <p className="mt-3 max-w-2xl">
+                  On this demo, a prospective customer can{" "}
+                  <Link href="/wholesale">prepare a wholesale request</Link>. This concept site does not submit wholesale requests.
+                </p>
+              </>
             ) : (
               <p className="mt-3 max-w-2xl">{item.a}</p>
             )}

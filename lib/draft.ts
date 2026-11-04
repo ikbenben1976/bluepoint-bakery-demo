@@ -1,16 +1,19 @@
 import type { Product } from "@/data/products";
 
-export const BUSINESS_TYPES = [
-  "restaurant",
-  "caf\u00e9/espresso bar",
-  "hotel",
-  "hospital",
-  "school",
-  "caterer",
-  "grocery",
-  "other",
+/** Values match the labels in formatInquiry. "Other" covers published types not listed here. */
+export const CUSTOMER_TYPES = [
+  ["restaurant", "Restaurant"],
+  ["cafe", "Caf\u00e9"],
+  ["hotel", "Hotel"],
+  ["grocery/retail", "Grocery / retail"],
+  ["institution", "Institution"],
+  ["other", "Other"],
 ] as const;
 
+/**
+ * Buyer preferences only. bluepointbakery.com says the bakery delivers 6 days
+ * a week and does not name the days, so Sunday stays in the list.
+ */
 export const DELIVERY_DAYS = [
   "Monday",
   "Tuesday",
@@ -18,6 +21,14 @@ export const DELIVERY_DAYS = [
   "Thursday",
   "Friday",
   "Saturday",
+  "Sunday",
+] as const;
+
+/** Catalog sections a buyer can name. Not a promise that a change is available. */
+export const CUSTOM_FAMILIES = [
+  ["breads", "Breads"],
+  ["pastries", "Pastries"],
+  ["other", "Something else to discuss"],
 ] as const;
 
 export type DraftLine = {
@@ -43,6 +54,14 @@ export type Draft = {
   firstDelivery: string;
   weeklyQuantity: string;
   askAboutSamples: boolean;
+  /** Free text naming products to mention if the buyer asks about samples. */
+  sampleInterest: string;
+  /** breads | pastries | other | "" */
+  customFamily: string;
+  customSize: string;
+  customPackaging: string;
+  /** Buyer acknowledged that this demo does not submit the request. */
+  consent: boolean;
 };
 
 export function emptyDraft(): Draft {
@@ -60,6 +79,11 @@ export function emptyDraft(): Draft {
     firstDelivery: "",
     weeklyQuantity: "",
     askAboutSamples: false,
+    sampleInterest: "",
+    customFamily: "",
+    customSize: "",
+    customPackaging: "",
+    consent: false,
   };
 }
 
@@ -67,7 +91,7 @@ export function lineFromProduct(product: Product, qty = 1): DraftLine {
   return {
     productId: product.id,
     qty,
-    unit: product.units[0] ?? "",
+    unit: product.units.length === 1 ? product.units[0] : "",
     slice: product.sliceOptions?.length === 1 ? product.sliceOptions[0] : "",
     wrapped: false,
     dipped: "",
