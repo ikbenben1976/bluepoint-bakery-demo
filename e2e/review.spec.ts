@@ -335,6 +335,9 @@ test("homepage separates illustrative menu applications from actual bakery produ
   const assortment = page.locator(".assortment");
   await expect(applications.getByRole("heading", { name: "What are you making?" })).toBeVisible();
   await expect(assortment.getByRole("heading", { name: "Our Product Assortment" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toBeVisible();
+  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
+  await expect(page.locator(".featured-spec")).toContainText("Representative bun photo");
   await expect(applications.locator(".making-visual-link")).toHaveCount(4);
   await expect(assortment.locator(".assortment-card")).toHaveCount(5);
   await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
