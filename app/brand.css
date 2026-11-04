@@ -2547,3 +2547,155 @@ body {
   .inquiry-picker-controls { grid-template-columns: 1fr; }
   .inquiry-picker-controls button { width: 100%; }
 }
+
+/* Visual QA: badges integrated as a unified editorial rail, rather than a
+   standalone sentence and a dangling directory link. */
+.brand-trust {
+  background: #f6f0e6;
+  border-block: 0;
+}
+.brand-trust .brand-trust-inner {
+  display: block;
+  padding-block: clamp(.85rem, 1.8vw, 1.25rem);
+}
+.trust-credential-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid #e0d4bf;
+  border-radius: 18px;
+  background: #fffaf4;
+  box-shadow: 0 8px 28px rgba(47, 32, 15, .055);
+  overflow: hidden;
+}
+.trust-credential {
+  display: flex;
+  align-items: center;
+  gap: clamp(.6rem, 1.5vw, 1.1rem);
+  min-height: 95px;
+  padding: clamp(.75rem, 1.65vw, 1.25rem);
+}
+.trust-credential + .trust-credential { border-left: 1px solid #e8ddcb; }
+.trust-credential > img {
+  flex: none;
+  display: block;
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+.trust-line-icon {
+  width: 54px;
+  height: 54px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: #b88323;
+  border-radius: 15px;
+  background: #f5e9d1;
+}
+.trust-line-icon svg { width: 34px; height: 34px; }
+.trust-credential-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .27rem;
+  min-width: 0;
+}
+.trust-credential-copy strong {
+  color: #102f55;
+  font-size: clamp(.9rem, 1.28vw, 1.04rem);
+  font-family: var(--font-franklin), sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.trust-credential-copy > span,
+.trust-credential-copy > a {
+  font-size: .76rem;
+  color: #5c554d;
+  line-height: 1.4;
+}
+.trust-credential-copy > a {
+  color: #20436a;
+  text-decoration: underline;
+  text-underline-offset: .17em;
+}
+@media (max-width: 850px) {
+  .trust-credential-list { grid-template-columns: 1fr 1fr; }
+  .trust-credential:first-child {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid #e8ddcb;
+    min-height: 79px;
+  }
+  .trust-credential:nth-child(2) { border-left: 0; }
+  .trust-credential { min-height: 88px; }
+}
+@media (max-width: 480px) {
+  .trust-credential-list { border-radius: 13px; }
+  .trust-credential { padding: .78rem; gap: .55rem; align-items: flex-start; }
+  .trust-credential > img { width: 45px; height: 45px; }
+  .trust-line-icon { width: 34px; height: 34px; border-radius: 10px; }
+  .trust-line-icon svg { width: 24px; height: 24px; }
+  .trust-credential-copy strong { font-size: .84rem; }
+  .trust-credential-copy > span, .trust-credential-copy > a { font-size: .69rem; }
+  .trust-credential:first-child { align-items: center; }
+}
+/* Editorial photo tiles: identical size and crop across the homepage. The real
+   bakery photographs replace studio cutouts with jagged transparent edges. */
+.assortment-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(.65rem, 1.2vw, 1rem);
+  align-items: stretch;
+}
+.assortment-card {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #fffdf9;
+  border: 1px solid #e4dac9;
+  border-radius: 16px;
+  text-align: left;
+}
+.assortment-card strong {
+  display: block;
+  align-self: flex-start;
+  padding: 1.05rem .85rem .3rem;
+  color: #102f55;
+  font-size: .96rem;
+  line-height: 1.35;
+}
+.assortment-card .assortment-arrow {
+  padding: 0 .85rem 1rem;
+  margin-top: auto;
+  align-self: flex-start;
+}
+.assortment-photo {
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  border-radius: 0;
+  background: #eaddc7;
+  overflow: hidden;
+}
+.assortment-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 220ms ease;
+}
+.assortment-card:hover .assortment-photo img {
+  transform: scale(1.035);
+}
+@media (max-width: 1100px) { .assortment-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .assortment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .assortment-card strong { font-size: .86rem; padding: .7rem .65rem .3rem; }
+  .assortment-card .assortment-arrow { padding: 0 .65rem .8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .assortment-photo img { transition: none; } }
