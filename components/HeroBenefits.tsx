@@ -1,25 +1,42 @@
 type Kind = "grain" | "truck" | "handshake";
 
 function Icon({ kind }: { kind: Kind }) {
-  const common = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const common = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
   return (
     <svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true" {...common}>
       {kind === "grain" ? (
         <>
-          <path d="M23 43V7M23 15l-8-7M23 23l-11-8M23 31l-12-8M23 17l8-9M23 25l11-10M23 33l12-9" />
-          <path d="M15 8c-4 4-4 9 0 12M11 16c-5 4-5 10 1 14M31 8c4 4 4 9 0 12M35 16c5 4 5 10-1 14M23 6c-4 3-4 7 0 11 4-4 4-8 0-11Z" />
+          <path d="M24 44V16" />
+          <path d="M24 40c-8-1.5-11-8-8-13 4 1.2 8 6 8 13zM24 40c8-1.5 11-8 8-13-4 1.2-8 6-8 13z" />
+          <path d="M24 16c-1.2-3.2-1-6.4.2-8.6" />
+          <ellipse cx="24" cy="7.5" rx="2.3" ry="3.4" />
+          <ellipse cx="19.2" cy="10.6" rx="2.2" ry="3.2" transform="rotate(-32 19.2 10.6)" />
+          <ellipse cx="28.8" cy="10.6" rx="2.2" ry="3.2" transform="rotate(32 28.8 10.6)" />
+          <ellipse cx="17.6" cy="15.2" rx="2.2" ry="3.1" transform="rotate(-28 17.6 15.2)" />
+          <ellipse cx="30.4" cy="15.2" rx="2.2" ry="3.1" transform="rotate(28 30.4 15.2)" />
         </>
       ) : kind === "truck" ? (
         <>
-          <rect x="3" y="13" width="24" height="19" rx="2" />
-          <path d="M27 19h9l8 9v4H27M3 32h5m14 0h12m10 0h-4M29 19v9h15" />
-          <circle cx="15" cy="34" r="5" fill="#f6f1e8" />
-          <circle cx="37" cy="34" r="5" fill="#f6f1e8" />
+          <path d="M4 16h26v16H4z" />
+          <path d="M30 22h8l6 7v3H30V22z" />
+          <path d="M30 29h14" />
+          <circle cx="13" cy="35.5" r="3.4" />
+          <circle cx="36" cy="35.5" r="3.4" />
+          <path d="M8 22h18" />
         </>
       ) : (
         <>
-          <path d="m5 22 9-9 8 5 7-4 14 12-9 11-8-6M5 22l9 13 5-4 10 8a4 4 0 0 0 5-1M15 18l6 5c2 2 4 2 6 1l4-2M22 31l5 5M17 35l5 5" />
-          <path d="m3 19 8-9 5 4-9 12ZM35 13l5-4 6 11-7 7Z" />
+          <path d="M6 24c1.5-7 7-9 9-5l4 3 5-2c2-1 4.5 0 6 2l7 5" />
+          <path d="M8 26l7 11c1.6 2.2 4.6 2.4 6.4.3l2.2-2.6" />
+          <path d="M19 22l6 5c1.4 1.2 3.4 1.2 4.6-.1l3-3" />
+          <path d="M31 20l8-6 5 4-7 8" />
+          <path d="M24 30l4 4M18 33l4 4" />
         </>
       )}
     </svg>
@@ -27,9 +44,9 @@ function Icon({ kind }: { kind: Kind }) {
 }
 
 const benefits: { kind: Kind; label: string }[] = [
-  { kind: "grain", label: "Made from scratch" },
-  { kind: "truck", label: "Six-day delivery" },
-  { kind: "handshake", label: "Personal service" },
+  { kind: "grain", label: "Made from Scratch" },
+  { kind: "truck", label: "Six-Day Delivery" },
+  { kind: "handshake", label: "Personal Service" },
 ];
 
 export function HeroBenefits() {

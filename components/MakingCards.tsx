@@ -61,7 +61,7 @@ export function MakingCards() {
           );
         })}
       </ul>
-      <p className="making-footnote">Illustrative application photos, not photographs of Bluepoint products. Browse the actual Bluepoint assortment below.</p>
+      <p className="making-footnote">Illustrative application photos, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product Assortment, above.</p>
     </section>
   );
 }

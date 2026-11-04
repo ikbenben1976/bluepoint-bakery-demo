@@ -1,6 +1,14 @@
 import localFont from "next/font/local";
 
-/** Libre Franklin for headlines and UI. Files ship with the repo's npm deps. */
+/**
+ * Licensed pair (SIL Open Font License, shipped via Fontsource).
+ * The later approved hero is a large navy serif, and that display choice
+ * outranks the older BRAND.md note that put Libre Franklin on every headline.
+ * Source Serif 4 is the display serif and the body text. Libre Franklin stays
+ * on navigation, buttons, and labels.
+ */
+
+/** Libre Franklin for navigation, buttons, and labels. */
 export const franklin = localFont({
   src: [
     {
@@ -23,7 +31,7 @@ export const franklin = localFont({
   display: "swap",
 });
 
-/** Source Serif 4 for body copy. */
+/** Source Serif 4 for the hero display and for body copy. */
 export const sourceSerif = localFont({
   src: [
     {
