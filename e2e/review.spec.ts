@@ -291,9 +291,12 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
   for (const width of [390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
-    await expect(page.locator(".approved-hero-logo")).toHaveAttribute("src", /bluepoint-logo-refresh\.svg/);
+    await expect(page.locator(".approved-hero-logo")).toHaveCount(0); // one brand logo in header only
+    await expect(page.locator(".site-header .original-header-logo")).toHaveAttribute("src", /bluepoint-logo-refresh\.svg/);
     await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
     await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
+    await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(5);
+    await expect(page.locator(".seamless-hero-media .approved-product")).toHaveCount(0);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
@@ -324,4 +327,22 @@ test("sector pages show useful related catalog links; contact email is clickable
   await expect(page.getByRole("navigation", { name: /Explore more for Cafés and coffee shops/ })).toContainText("Coffee and breakfast");
   await page.goto("/contact/");
   await expect(page.locator('.contact-facts a[href="mailto:sales@bluepointbakery.com"]')).toBeVisible();
+});
+
+test("homepage separates illustrative menu applications from actual bakery product assortment", async ({ page }) => {
+  await page.goto("/");
+  const applications = page.locator(".application-section");
+  const assortment = page.locator(".assortment");
+  await expect(applications.getByRole("heading", { name: "What are you making?" })).toBeVisible();
+  await expect(assortment.getByRole("heading", { name: "Our Product Assortment" })).toBeVisible();
+  await expect(applications.locator(".making-visual-link")).toHaveCount(4);
+  await expect(assortment.locator(".assortment-card")).toHaveCount(5);
+  await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
+  await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /studio\/sesame-bun\.webp/);
+  await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
+  await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
+  await page.goto("/breads/");
+  await expect(page.locator(".application-section")).toHaveCount(0);
+  await page.goto("/pastries/");
+  await expect(page.locator(".application-section")).toHaveCount(0);
 });
