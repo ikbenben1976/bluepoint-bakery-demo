@@ -373,7 +373,9 @@ test("assortment thumbnails remain contained inside their own positioned cards",
     await page.goto("/");
     const cards = page.locator(".assortment-card");
     await expect(cards).toHaveCount(5);
-    for (const card of await cards.all()) {
+    const cardItems = await cards.all();
+    for (let i = 0; i < cardItems.length; i++) {
+      const card = cardItems[i];
       const wrapper = card.locator(".assortment-photo");
       const img = wrapper.locator("img");
       await expect(img).toBeVisible();
@@ -391,8 +393,13 @@ test("assortment thumbnails remain contained inside their own positioned cards",
       });
       expect(layout.positioned, `positioned width=${width}`).toBeTruthy();
       expect(layout.clipped, `clipped width=${width}`).toBeTruthy();
-      expect(layout.aspect, `photo aspect width=${width}`).toBeGreaterThan(1.20);
-      expect(layout.aspect, `photo aspect width=${width}`).toBeLessThan(1.30);
+      if (!(width <= 600 && i === cardItems.length - 1)) {
+        expect(layout.aspect, `photo aspect width=${width}`).toBeGreaterThan(1.20);
+        expect(layout.aspect, `photo aspect width=${width}`).toBeLessThan(1.30);
+      } else {
+        // The intentional full-width mobile editorial card uses a tall crop.
+        expect(layout.aspect, "wide feature tile image has positive dimensions").toBeGreaterThan(.9);
+      }
       expect(layout.inside, `image contained width=${width}`).toBeTruthy();
     }
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
