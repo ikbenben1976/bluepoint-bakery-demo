@@ -1,5 +1,5 @@
 import { SERVICE_AREAS } from "@/lib/deliveryArea";
-import { EMAIL, INSTAGRAM } from "@/data/site";
+import { EMAIL, FACEBOOK, INSTAGRAM } from "@/data/site";
 
 export function JsonLd() {
   const data = {
@@ -12,7 +12,7 @@ export function JsonLd() {
     url: "https://www.bluepointbakery.com/",
     image:
       "https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/BPLogo_-718w.jpg",
-    sameAs: [INSTAGRAM],
+    sameAs: [INSTAGRAM, FACEBOOK],
     address: {
       "@type": "PostalAddress",
       streetAddress: "5105 Cook St.",

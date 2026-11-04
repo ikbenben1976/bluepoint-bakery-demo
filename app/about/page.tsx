@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Bluepoint Bakery is a proud, minority-owned and family-owned bakery headquartered in Denver since 1987. 5105 Cook St., Denver, CO 80216.",
+  alternates: { canonical: "/about/" },
+  robots: { index: false, follow: false },
 };
 
 export default function AboutPage() {

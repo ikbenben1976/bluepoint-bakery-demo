@@ -57,7 +57,6 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
 
   const clipId = useId().replace(/:/g, "");
   const bakery = project(BAKERY.lon, BAKERY.lat);
-  const activePt = project(active.lon, active.lat);
   const zones = ZONES.map((zone) => zoneEllipse(zone)).filter((zone) => zone != null);
 
   function choose(city: RouteCity) {
@@ -93,7 +92,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={BASEMAP.src}
-            alt="Shaded-relief map of the Front Range, Cheyenne to Fountain, with highways and Bluepoint delivery zones."
+            alt="Shaded-relief map of cities named on Bluepoint’s delivery map. Highways are geography only. No driving route is drawn."
             width={BASEMAP.width}
             height={BASEMAP.height}
             loading="eager"
@@ -125,14 +124,8 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
                 key={`${road.ref}-${index}`}
                 className={`hwy hwy-${road.ref.slice(2)}`}
                 d={road.d}
-                style={{ animationDelay: `${index * 0.12}s` }}
               />
             ))}
-            <path
-              className="city-link"
-              d={`M${bakery.x.toFixed(1)} ${bakery.y.toFixed(1)} L${activePt.x.toFixed(1)} ${activePt.y.toFixed(1)}`}
-              stroke={DAY_SWATCH[active.days]}
-            />
             {ROUTE_CITIES.map((city) => {
               const pt = project(city.lon, city.lat);
               const offset = cityLabelOffset(city, preview);
@@ -191,7 +184,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
         {preview ? (
           <p className="atlas-more">
             <a className="btn btn-ghost" href="/delivery/">
-              Open the full route
+              Open the delivery map
             </a>
           </p>
         ) : null}

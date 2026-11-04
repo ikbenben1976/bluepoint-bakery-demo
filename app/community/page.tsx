@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   title: "Community",
   description:
     "Bluepoint Bakery community partners, including Project Angel Heart, CASA of Adams & Broomfield Counties, The GrowHaus, and Soup for the Soul.",
+  alternates: { canonical: "/community/" },
+  robots: { index: false, follow: false },
 };
 
 export default function CommunityPage() {
@@ -22,7 +24,7 @@ export default function CommunityPage() {
         contained
       />
       {/* Intro and partner facts: https://www.bluepointbakery.com/community */}
-      <div className="shell community-page">
+      <div className="shell community-page content-page">
         <p className="community-intro">
           We&apos;re proud to have ongoing relationships with several local charity organizations, including the following.
         </p>

@@ -8,6 +8,7 @@ export function PageHero({
   lede,
   image,
   contained = false,
+  className,
 }: {
   kicker: string;
   title: string;
@@ -15,12 +16,16 @@ export function PageHero({
   image?: Photo;
   /** Use the same column width as `.shell` so the title lines up with the page body. */
   contained?: boolean;
+  className?: string;
 }) {
   // Small files were floating as 110–200px thumbnails. Only a photo that can
   // fill half the header near its native size is shown.
   const showImage = Boolean(image && image.width >= 640);
+  const classes = ["ticket-hero", contained ? "shell" : "", showImage ? "has-photo" : "", className ?? ""]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <header className={`ticket-hero${contained ? " shell" : ""}${showImage ? " has-photo" : ""}`}>
+    <header className={classes}>
       <div>
         <p className="kicker">{kicker}</p>
         <h1>{title}</h1>

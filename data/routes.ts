@@ -1,8 +1,7 @@
 /**
- * Delivery days read off Bluepoint's own distribution map.
- * Yellow Mon–Sat, green Mon/Wed/Fri/Sat, blue Tue/Thu/Sat,
- * maroon Tue/Sat, purple Mon/Tue/Thu/Fri.
- * A labeled town with no colored oval is "confirm", not a guessed zone.
+ * Cities and colors named on https://www.bluepointbakery.com/map (checked 4 Nov 2026).
+ * The page lists purple, green, yellow, orange, and blue areas. It does not
+ * publish which weekdays each color is served. Keys below are color ids only.
  * Positions are real city coordinates, projected onto the basemap.
  */
 
@@ -22,7 +21,7 @@ export type RouteCity = {
   aliases?: readonly string[];
 };
 
-/** Weekday lists are not published on the current map page. Do not invent them. */
+/** The map names colors, not weekdays. Do not invent a schedule. */
 export const DAY_TEXT: Record<DayKey, string> = {
   "mon-sat": "Call us for the days on this route",
   mwfs: "Call us for the days on this route",
@@ -32,14 +31,41 @@ export const DAY_TEXT: Record<DayKey, string> = {
   confirm: "Call to confirm",
 };
 
+/** Color names printed on the bakery's map page. */
 export const ROUTE_NAME: Record<DayKey, string> = {
-  "mon-sat": "Denver metro",
-  mwfs: "North Front Range",
-  tts: "Colorado Springs",
-  ts: "Mountain",
-  mttf: "Cheyenne",
+  "mon-sat": "Yellow",
+  mwfs: "Green",
+  tts: "Blue",
+  ts: "Orange",
+  mttf: "Purple",
   confirm: "Call to confirm",
 };
+
+/** Every city named under a color on https://www.bluepointbakery.com/map. */
+export const PUBLISHED_MAP_CITIES = [
+  "Cheyenne",
+  "Fort Collins",
+  "Greeley",
+  "Loveland",
+  "Windsor",
+  "Aurora",
+  "Boulder",
+  "Broomfield",
+  "Castle Rock",
+  "Denver",
+  "Denver International Airport",
+  "Englewood",
+  "Evergreen",
+  "Golden",
+  "Lakewood",
+  "Littleton",
+  "Longmont",
+  "Blackhawk",
+  "Breckenridge",
+  "Central City",
+  "Colorado Springs",
+  "Fountain",
+] as const;
 
 export const DAY_SWATCH: Record<DayKey, string> = {
   "mon-sat": "#E6C84A",
@@ -95,7 +121,8 @@ export const ROUTE_CITIES: readonly RouteCity[] = [
   { name: "Fountain", lat: 38.6822, lon: -104.7008, lx: 12, ly: 8, days: "tts", zone: "springs" },
 ];
 
-export const CAVEAT = "This is an overview. Please call us to see if we service your city!";
+export const CAVEAT =
+  "The map lists these cities by color. It does not list delivery days. Call the bakery to confirm a street address.";
 
 function norm(value: string): string {
   return value.trim().toLowerCase().replace(/\./g, "").replace(/,/g, "").replace(/\s+/g, " ");

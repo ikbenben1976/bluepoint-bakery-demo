@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "FAQ",
   description:
     "Questions Bluepoint Bakery is asked, including how to become a customer, where they deliver, and how existing customers order.",
+  alternates: { canonical: "/faq/" },
+  robots: { index: false, follow: false },
 };
 
 export default function FaqPage() {

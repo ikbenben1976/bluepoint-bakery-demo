@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CatalogGroup, Product } from "@/data/products";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
-import { cardFacts, categoryNotice, leadWords, publishedSize } from "@/lib/spec";
+import { cardFacts, categoryNotice, leadWords, specRows } from "@/lib/spec";
 import { loadDraft, saveDraft } from "@/lib/storage";
 
 type Props = {
@@ -20,11 +20,22 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const [category, setCategory] = useState("all");
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
+  const [compareIds, setCompareIds] = useState<string[]>([]);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const mounted = useRef(false);
 
   useEffect(() => {
     if (onAdd) return;
     setStoredIds(loadDraft().lines.map((line) => line.productId));
   }, [onAdd]);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    resultsRef.current?.scrollIntoView({ block: "nearest" });
+  }, [category]);
 
   const selected = new Set([...(selectedIds ?? []), ...storedIds]);
   const needle = query.trim().toLowerCase();
@@ -41,6 +52,39 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     setNote(`${product.name} added to your request.`);
   }
 
+  function toggleCompare(product: Product) {
+    if (compareIds.includes(product.id)) {
+      setCompareIds(compareIds.filter((id) => id !== product.id));
+      setNote(`${product.name} removed from the comparison.`);
+      return;
+    }
+    if (compareIds.length >= 3) {
+      setNote("Compare up to 3 products.");
+      return;
+    }
+    setCompareIds([...compareIds, product.id]);
+    setNote(`${product.name} added to the comparison.`);
+  }
+
+  function resetFilters() {
+    setQuery("");
+    setCategory("all");
+    setNote("Search and filters cleared.");
+  }
+
+  const families = new Set(groups.map((group) => group.family));
+  const searchPlaceholder =
+    families.size === 1 && families.has("pastries")
+      ? "Search pastries"
+      : families.size === 1 && families.has("breads")
+        ? "Search breads"
+        : "Search products";
+  const catalog = groups.flatMap((group) => group.items);
+  const compared = compareIds
+    .map((id) => catalog.find((product) => product.id === id))
+    .filter((product): product is Product => product != null);
+  const filtersActive = needle.length > 0 || category !== "all";
+
   const visible = groups
     .filter((group) => category === "all" || group.id === category)
     .map((group) => ({
@@ -54,18 +98,30 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   return (
     <div>
       <div className="catalog-tools">
-        <div className="min-w-[16rem] flex-1">
+        <div className="search-field">
           <label htmlFor="product-search">Search products</label>
-          <input
-            id="product-search"
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <div className="search-control">
+            <svg className="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M16 16.5 20.5 21" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <input
+              id="product-search"
+              type="search"
+              placeholder={searchPlaceholder}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
         </div>
-        <Link href="/wholesale" className="btn btn-ghost">
+        <Link href="/wholesale" className="btn btn-ghost catalog-request">
           Open your request
         </Link>
+        {filtersActive ? (
+          <button type="button" className="btn btn-ghost" onClick={resetFilters}>
+            Reset search and filters
+          </button>
+        ) : null}
       </div>
       <div className="chips" role="group" aria-label="Filter by category">
         <button
@@ -91,7 +147,53 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       <p role="status" className="mt-4 min-h-6 text-sm font-semibold text-site">
         {note}
       </p>
-      {visible.length === 0 ? <p>No products match that search.</p> : null}
+      {compared.length > 0 ? (
+        <section className="compare-panel" aria-label="Compare products" data-testid="compare-panel">
+          <h2>Compare</h2>
+          <p>Published catalog fields only. Anything bluepointbakery.com does not print reads Confirm with bakery.</p>
+          <div className="compare-grid">
+            {compared.map((product) => (
+              <article key={product.id} className="compare-card">
+                <h3>{product.name}</h3>
+                <dl>
+                  {specRows(product).map((row) => (
+                    <div key={row.label}>
+                      <dt>{row.label}</dt>
+                      <dd>{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="card-actions">
+                  <button type="button" className="btn btn-ghost" onClick={() => toggleCompare(product)}>
+                    Remove from comparison
+                  </button>
+                  {selected.has(product.id) ? (
+                    <p className="font-semibold">In your request</p>
+                  ) : (
+                    <button type="button" className="btn btn-primary" onClick={() => add(product)}>
+                      Add to request
+                    </button>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+          <p>
+            <Link className="btn btn-primary" href="/wholesale">
+              Request pricing for these
+            </Link>
+          </p>
+        </section>
+      ) : null}
+      <div ref={resultsRef}>
+      {visible.length === 0 ? (
+        <div className="catalog-empty">
+          <p>No products match that search.</p>
+          <button type="button" className="btn btn-ghost" onClick={resetFilters}>
+            Reset search and filters
+          </button>
+        </div>
+      ) : null}
       {visible.map(({ group, items }) => {
         const photo = categoryPhotos[group.id];
         return (
@@ -142,55 +244,38 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                   <details className="spec" data-testid="spec">
                     <summary>Specifications</summary>
                     <dl>
-                      <div>
-                        <dt>Published size</dt>
-                        <dd>{publishedSize(product.name) ?? "Confirm with bakery"}</dd>
-                      </div>
-                      <div>
-                        <dt>Category</dt>
-                        <dd>{product.categoryLabel}</dd>
-                      </div>
-                      {product.sliceOptions ? (
-                        <div>
-                          <dt>Slicing</dt>
-                          <dd>{product.sliceOptions.join(", ")}</dd>
+                      {specRows(product).map((row) => (
+                        <div key={row.label}>
+                          <dt>{row.label}</dt>
+                          <dd>{row.value}</dd>
                         </div>
-                      ) : null}
-                      <div>
-                        <dt>Order lead time</dt>
-                        <dd>{leadWords(product)}</dd>
-                      </div>
-                      <div>
-                        <dt>Pack size</dt>
-                        <dd>{product.units.length > 0 ? product.units.join(" or ") : "Confirm with bakery"}</dd>
-                      </div>
-                      <div>
-                        <dt>Ingredients / allergens</dt>
-                        <dd>Request current product information from the bakery</dd>
-                      </div>
-                      <div>
-                        <dt>Shelf life / storage</dt>
-                        <dd>Confirm with bakery</dd>
-                      </div>
-                      <div>
-                        <dt>Wholesale pricing</dt>
-                        <dd>Ask sales for a quote</dd>
-                      </div>
+                      ))}
                     </dl>
                   </details>
-                  {selected.has(product.id) ? (
-                    <p className="font-semibold">In your request</p>
-                  ) : (
-                    <button type="button" className="btn btn-ghost" onClick={() => add(product)}>
-                      Add to request
+                  <div className="card-actions">
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      aria-pressed={compareIds.includes(product.id)}
+                      onClick={() => toggleCompare(product)}
+                    >
+                      {compareIds.includes(product.id) ? "In comparison" : "Compare"}
                     </button>
-                  )}
+                    {selected.has(product.id) ? (
+                      <p className="font-semibold">In your request</p>
+                    ) : (
+                      <button type="button" className="btn btn-ghost" onClick={() => add(product)}>
+                        Add to request
+                      </button>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
           </section>
         );
       })}
+      </div>
     </div>
   );
 }
