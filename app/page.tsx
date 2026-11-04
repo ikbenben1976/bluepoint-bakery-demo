@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
 import { AssortmentCards } from "@/components/AssortmentCards";
+import { FeaturedProductSpec } from "@/components/FeaturedProductSpec";
 import { BuyerProof } from "@/components/BuyerProof";
 import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
@@ -60,6 +61,10 @@ export default function HomePage() {
         <div className="shell">
           <AssortmentCards />
         </div>
+      </section>
+
+      <section className="block featured-spec-section">
+        <div className="shell"><FeaturedProductSpec /></div>
       </section>
 
       <section className="block consult">
