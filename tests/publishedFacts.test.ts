@@ -48,10 +48,11 @@ test("community marks are the four nonprofits and customer marks are the publish
   );
   const partnerText = communityPartners.map((partner) => partner.points.join(" ")).join(" ");
   assert.doesNotMatch(partnerText, /Mountain Sun|Oskar Blues|Cherry Cricket|Outstanding/);
-  assert.equal(customerComments.length, 3);
+  assert.equal(customerComments.length, 2);
   assert.match(customerComments[0].place, /Cherry Cricket/);
   assert.match(customerComments[1].place, /Mountain Sun/);
-  assert.match(customerComments[2].place, /Oskar Blues/);
+  const quoted = customerComments.map((comment) => comment.quote).join(" ");
+  assert.doesNotMatch(quoted, /kicks ass/i);
 });
 
 test("homepage trust strip does not invent a certification or an extra award", () => {

@@ -1655,7 +1655,7 @@ body {
 }
 .buyer-proof-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
 .buyer-proof-heading h3 { max-width: 32rem; font-size: clamp(1.28rem, 2.1vw, 1.8rem); margin: 0; }
-.proof-quotes { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.proof-quotes { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 .proof-quote {
   margin: 0;
   padding: 1.35rem 1.2rem;
@@ -1663,8 +1663,10 @@ body {
   background: #f8f5ee;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: flex-start;
+  align-self: start;
+  height: auto;
+  gap: 0.75rem;
 }
 .proof-quote p { font-size: 1.03rem; font-style: italic; line-height: 1.5; margin: 0; }
 .proof-quote footer { color: #34344d; font-family: var(--font-franklin), sans-serif; font-size: .77rem; line-height: 1.55; }
@@ -1723,7 +1725,7 @@ body {
 .verified-client-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
-  align-items: center;
+  align-items: start;
   gap: 1rem;
   margin: .5rem 0 1.5rem;
 }
@@ -1749,6 +1751,13 @@ body {
   font-size: .72rem;
 }
 .verified-client-mark img { max-width: 100%; max-height: 95px; object-fit: contain; }
+.verified-client-mark small {
+  margin-top: 0.45rem;
+  color: #575360;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: .72rem;
+  line-height: 1.35;
+}
 .sample-interest {
   border: 1px solid #e4d8c4;
   padding: 1.15rem 1.25rem;
@@ -4020,12 +4029,18 @@ body.menu-open .site-header .heritage-lockup {
   line-height: 1.55;
 }
 .about-quote {
-  margin: 0.25rem 0 0;
-  padding: 0;
+  margin: 0.15rem 0 0.9rem;
+  padding: 0.15rem 0 0.15rem 1rem;
+  border-left: 3px solid #2035e8;
+}
+.about-quote p {
+  margin: 0;
+  font-style: italic;
 }
 .about-quote footer {
   margin-top: 0.45rem;
   font-size: 0.92rem;
+  font-style: normal;
 }
 .about-figure {
   margin: 0;

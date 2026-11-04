@@ -62,7 +62,7 @@ Pattern: the voice went from chef-led and upscale, to "premier wholesale", to a 
 
 - "Since 1994 The Cherry Cricket has been pleased to serve Bluepoint Bakery products for all of our burgers and sandwiches. Their product is top notch and the customer service is outstanding…" – Todd Armstrong (current site: "Todd A."), Cherry Cricket. Confirmed. https://www.bluepointbakery.com/community ; 2017 Wayback community.html
 - "Best burger bun in town!" – Paul N., Mountain Sun Pub, Southern Sun Pub, Vine Street Pub. Confirmed. Current community page.
-- "Bluepoint Bakery kicks ass." – Jason R., Oskar Blues, Chuburger, Cyclhops. Confirmed. Current community page.
+- Jason R. named Oskar Blues, Chuburger, and Cyclhops on the community page. Owner decision #75: do not repeat that comment in the demo. The Oskar Blues name stays, without the comment.
 - "Not only is product one of best in city, Bluepoint Bakery customer service is far superior to any other purveyor I do business with." – Colter Wilkie, Exec Chef, Chef Jimmy's Bistro & Spirits. Confirmed (2017 site version). https://web.archive.org/web/2017/http://www.bluepointbakery.com/community.html
 - Denver Post (Bill St. John, CityGrille review, Mar 30, 2001): "The triangular-shaped bun from Bluepoint Bakery, crusty, chewy, real bread". Confirmed. http://extras.denverpost.com/scene/reviews/dining033001.htm
 - Note: the triangle bun links to the orange triangle in the logo. Whether the logo triangle refers to the bun is Unknown; ask.

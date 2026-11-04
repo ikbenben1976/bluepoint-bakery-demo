@@ -62,6 +62,9 @@ export function BuyerProof() {
               {customerMarks.map((mark) => (
                 <div key={mark.src} className="verified-client-mark">
                   <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} />
+                  {mark.src.includes("oskar-blues") ? (
+                    <small>Customer listed on Bluepoint&apos;s community page</small>
+                  ) : null}
                 </div>
               ))}
             </div>

@@ -127,11 +127,6 @@ export const customerComments = [
     name: "Paul N.",
     place: "Mountain Sun Pub, Southern Sun Pub and Vine Street Pub",
   },
-  {
-    quote: "Bluepoint Bakery kicks ass.",
-    name: "Jason R.",
-    place: "Oskar Blues, Chuburger and Cyclhops",
-  },
 ] as const;
 
 export const CAFE_REVIEW = {

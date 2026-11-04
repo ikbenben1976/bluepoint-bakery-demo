@@ -730,6 +730,16 @@ test("homepage sections use the shared container width on phone, tablet, and des
   }
 });
 
+test("the removed Oskar Blues comment is not rendered on any page", async ({ page }) => {
+  for (const [path] of PAGES) {
+    await page.goto(path);
+    await expect(page.locator("body"), path).not.toContainText(/kicks ass/i);
+  }
+  await page.goto("/");
+  await expect(page.locator(".verified-client-mark").filter({ hasText: "Customer listed on Bluepoint's community page" })).toBeVisible();
+  await expect(page.locator(".proof-quotes blockquote")).toHaveCount(2);
+});
+
 test("about story, community partners, and homepage proof use published facts only", async ({ page }) => {
   await page.goto("/about/");
   const about = page.locator(".about-copy");
@@ -768,7 +778,9 @@ test("about story, community partners, and homepage proof use published facts on
   const proof = page.locator("#customers");
   await expect(proof).toContainText("The Cherry Cricket");
   await expect(proof).toContainText("Mountain Sun");
-  await expect(proof).toContainText("Oskar Blues");
+  await expect(proof.locator(".verified-client-strip img[alt*='Oskar Blues']")).toBeVisible();
+  await expect(proof).toContainText("Customer listed on Bluepoint's community page");
+  await expect(proof).not.toContainText(/kicks ass/i);
   await expect(proof.locator(".verified-client-strip img")).toHaveCount(2);
   await expect(proof.locator(".verified-client-wordmark")).not.toContainText("logo");
 });

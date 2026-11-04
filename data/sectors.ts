@@ -11,10 +11,10 @@ export const sectors: readonly Sector[] = [
     slug: "restaurants",
     title: "Restaurants and pubs",
     description:
-      "Bluepoint bakes for restaurants, delis, and bar and grills, and publishes comments from Cherry Cricket, Mountain Sun, and Oskar Blues.",
+      "Bluepoint bakes for restaurants, delis, and bar and grills, and publishes comments from Cherry Cricket and Mountain Sun. Oskar Blues is named on the community page.",
     body: [
       "Fresh baked goods for fine restaurants, delis, bar and grills, specialty groceries, and espresso bars — for over 30 years.",
-      "Customers who have commented include Cherry Cricket (since 1994, burgers and sandwiches), Mountain Sun Pub, Southern Sun Pub and Vine Street Pub, and Oskar Blues, Chuburger and Cyclhops.",
+      "Customers who have commented include Cherry Cricket (since 1994, burgers and sandwiches) and Mountain Sun Pub, Southern Sun Pub and Vine Street Pub. Oskar Blues is listed on Bluepoint’s community page.",
     ],
     links: [
       { href: "/making/burgers", label: "Burgers and sliders" },
