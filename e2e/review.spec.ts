@@ -334,7 +334,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(applications.locator(".making-visual-link")).toHaveCount(4);
   await expect(assortment.locator(".assortment-card")).toHaveCount(5);
   await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
-  await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /studio\/sesame-bun\.webp/);
+  await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
@@ -391,8 +391,8 @@ test("assortment thumbnails remain contained inside their own positioned cards",
       });
       expect(layout.positioned, `positioned width=${width}`).toBeTruthy();
       expect(layout.clipped, `clipped width=${width}`).toBeTruthy();
-      expect(layout.aspect, `square width=${width}`).toBeGreaterThan(.95);
-      expect(layout.aspect, `square width=${width}`).toBeLessThan(1.05);
+      expect(layout.aspect, `photo aspect width=${width}`).toBeGreaterThan(1.20);
+      expect(layout.aspect, `photo aspect width=${width}`).toBeLessThan(1.30);
       expect(layout.inside, `image contained width=${width}`).toBeTruthy();
     }
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
@@ -428,4 +428,39 @@ test("homepage section order and trust strip match commercial hierarchy", async 
   expect(positions.trust).toBeLessThan(positions.assortment);
   expect(positions.assortment).toBeLessThan(positions.applications);
   await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
+});
+
+
+test("branded trust rail and real bakery scene photos visually fit at desktop and mobile", async ({ page }) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const badges = page.locator(".trust-credential");
+    await expect(badges).toHaveCount(3);
+    await expect(badges.nth(0)).toContainText("Colorado Proud");
+    await expect(badges.nth(1)).toContainText("Family-owned");
+    await expect(badges.nth(2)).toContainText("Minority-owned");
+    const photos = page.locator(".assortment-card .assortment-photo img");
+    await expect(photos).toHaveCount(5);
+    await expect.poll(() => photos.evaluateAll((imgs) => imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
+    expect(await photos.evaluateAll((imgs) => imgs.every((img) => img.getAttribute("src")?.includes("/scenes/")))).toBeTruthy();
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+});
+
+test("bread and pastry catalog images stay within a consistent editorial photo frame", async ({ page }) => {
+  for (const [name, path] of [["breads", "/breads/"], ["pastries", "/pastries/"]] as const) {
+    for (const [screen, width] of [["mobile", 390], ["desktop", 1440]] as const) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await page.goto(path);
+      const photos = page.locator(".section-anchor .group-photo");
+      await expect(photos.first()).toBeVisible();
+      const firstImage = photos.first().locator("img");
+      await expect.poll(() => firstImage.evaluate((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
+      const heights = await photos.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().height)));
+      expect(heights.every((height) => height >= 200 && height <= 350), `${name} ${screen}: ${heights.join(",")}`).toBeTruthy();
+      await page.screenshot({ path: `test-results/${name}-${screen}.png`, fullPage: true, animations: "disabled" });
+      expect(await overflow(page), `${name} ${screen}`).toBeLessThanOrEqual(1);
+    }
+  }
 });
