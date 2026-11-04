@@ -2187,8 +2187,25 @@ body {
   transition: box-shadow 160ms ease, transform 160ms ease;
 }
 .assortment-card:hover,.assortment-card:focus-visible { box-shadow: 0 9px 22px rgba(26,36,55,.14); transform: translateY(-2px); }
-.assortment-photo { display: block; width: 100%; aspect-ratio: 1/1; position: relative; }
-.assortment-photo img { object-fit: contain; }
+.assortment-photo {
+  display: block;
+  position: relative; /* containing block for Next.js Image fill */
+  flex: none;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #faf5ed;
+}
+.assortment-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: .35rem;
+}
 .assortment-arrow { color: #a57919; font-size: 1.2rem; margin-top: auto; }
 .assortment-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .7rem; margin-top: 1.3rem; }
 @media (max-width: 1100px) { .assortment-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
