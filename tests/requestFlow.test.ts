@@ -114,13 +114,13 @@ test("desired dates warn from the published notice, including a mixed order and 
   assert.match(early, /earlier than the published notice/);
   assert.match(early, /November 6, 2026/);
   assert.match(early, /longer notice applies/);
-  assert.match(early, /not promise a route day/);
+  assert.doesNotMatch(early, /does not promise/);
   assert.equal(validateStep(draft, 3, afternoon).some((error) => /date/i.test(error)), false);
 
   draft = { ...draft, firstDelivery: "2026-11-10" };
   assert.equal(dateWarning(draft, afternoon), null);
   assert.match(dateStatus(draft, afternoon), /on or after the published notice/);
-  assert.match(dateStatus(draft, afternoon), /not a confirmed delivery day/);
+  assert.match(dateStatus(draft, afternoon), /48 hour notice|3 day notice|longer notice applies/);
 
   const beforeSpringForward = new Date("2026-03-07T18:00:00Z");
   let bouleOnly = addProductLine(readyBusiness(), boule);
@@ -151,7 +151,7 @@ test("the preview keeps catalog lines, written notes, sample questions, and cust
   assert.match(preview, /custom sandwich roll/);
   assert.match(preview, /Please advise whether samples are available/);
   assert.match(preview, /brioche buns/);
-  assert.match(preview, /examples, not a confirmed capability/);
+  assert.match(preview, /Examples to discuss/);
   assert.match(preview, /a diameter to discuss/);
   assert.match(preview, /a pack to discuss/);
   assert.match(preview, /Tuesday/);

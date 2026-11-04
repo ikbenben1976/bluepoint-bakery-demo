@@ -92,7 +92,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(review).toContainText("Also a seeded roll to discuss");
   await expect(review).toContainText("a diameter to discuss");
   await expect(review).toContainText("a pack to discuss");
-  await expect(review).toContainText("Examples only. Not a confirmed capability.");
+  await expect(review).toContainText("Examples to discuss.");
   await expect(review).toContainText("Please advise whether samples are available");
   await expect(review).toContainText("Tuesday (preferences, not a confirmed route)");
   await expect(review).toContainText("earlier than the published notice");
@@ -141,7 +141,7 @@ test("ask about samples opens from the wholesale hash", async ({ page }) => {
   await page.goto("/wholesale/#sample-request");
   await expect(page.locator("#sample-request")).toBeVisible();
   await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).toBeVisible();
-  await expect(page.getByText(/not a sample order/i)).toBeVisible();
+  await expect(page.getByText(/not published on bluepointbakery.com/i)).toBeVisible();
 });
 
 test("new accounts and existing customers stay on different paths", async ({ page }) => {
@@ -152,7 +152,7 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(paths.getByRole("link", { name: "Pay an invoice" })).toHaveAttribute("href", PAY_URL);
   await expect(paths.getByRole("link", { name: "(303) 298-1100" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(paths.getByRole("link", { name: "sales@bluepointbakery.com" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
-  await expect(paths).toContainText("This concept site does not submit wholesale requests.");
+  await expect(page.locator(".request-notice")).toHaveText("This concept site does not submit wholesale requests.");
   await expect(paths).toContainText("New accounts");
 
   await page.goto("/");
@@ -234,6 +234,22 @@ test("request steps use the column width and leave the contact pill clear", asyn
       expect(fit.hits, `${step} contact pill covers a control at ${width}px`).toEqual([]);
       expect(fit.broken, `${step} mid-word break at ${width}px`).toEqual([]);
       expect(fit.overflow, `${step} overflow at ${width}px`).toBeLessThanOrEqual(1);
+      const typeSize = await page.evaluate(() => {
+        const body = parseFloat(getComputedStyle(document.body).fontSize);
+        const label = document.querySelector(".request-flow label, .request-flow legend");
+        const help = document.querySelector(".request-flow .request-help");
+        return {
+          body,
+          label: label ? parseFloat(getComputedStyle(label).fontSize) : null,
+          help: help ? parseFloat(getComputedStyle(help).fontSize) : null,
+        };
+      });
+      if (typeSize.label != null) expect(typeSize.label, `${step} label size at ${width}px`).toBeGreaterThanOrEqual(14);
+      if (typeSize.help != null) {
+        expect(typeSize.help, `${step} hint size at ${width}px`).toBeGreaterThanOrEqual(14);
+        expect(typeSize.help, `${step} hint smaller than body at ${width}px`).toBeLessThan(typeSize.body);
+      }
+      await expect(page.locator(".request-progress-title")).toContainText(/Step [1-4] of 4/);
       await page.evaluate((slug) => {
         const root = document.documentElement;
         const previous = root.style.scrollBehavior;
@@ -253,6 +269,9 @@ test("request steps use the column width and leave the contact pill clear", asyn
 
     await checkFit("business");
     await fillBusiness(page);
+    await page.locator("#inquiry-picker-product").selectOption({ label: 'Brioche Bun 4"' });
+    await page.getByRole("button", { name: "Add selected product" }).click();
+    await expect(page.locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
     await checkFit("products");
     await page.locator("#inquiry-products").fill("Kaiser rolls");
     await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();

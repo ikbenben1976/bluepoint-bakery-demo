@@ -31,6 +31,33 @@ const STEPS = [
   { id: 4, slug: "review", label: "Review" },
 ] as const;
 
+function RequestProgress({ step, onGo }: { step: number; onGo: (next: number) => void }) {
+  const current = STEPS[step - 1];
+  return (
+    <nav className="request-progress" aria-label="Request steps">
+      <p className="request-progress-title">
+        Step {step} of 4 · {current.label}
+      </p>
+      <ol>
+        {STEPS.map((item) => {
+          const place = item.id < step ? "complete" : item.id === step ? "current" : "upcoming";
+          return (
+            <li key={item.slug} data-index={item.id} className={`step-${place}`}>
+              <button
+                type="button"
+                aria-current={item.id === step ? "step" : undefined}
+                onClick={() => onGo(item.id)}
+              >
+                <span className="step-name">{item.label}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
 function readStep(): number {
   const raw = window.sessionStorage.getItem(STEP_KEY);
   const step = Number(raw);
@@ -160,20 +187,12 @@ export function WholesaleRequest() {
 
   return (
     <div className="shell request-flow" data-testid="request-flow">
-      {step < 4 ? <AccountPaths /> : null}
-      <ol className="stepper" aria-label="Request steps">
-        {STEPS.map((item) => (
-          <li key={item.slug}>
-            <button
-              type="button"
-              aria-current={step === item.id ? "step" : undefined}
-              onClick={() => goTo(item.id)}
-            >
-              {item.label}
-            </button>
-          </li>
-        ))}
-      </ol>
+      {step < 4 ? (
+        <>
+          <AccountPaths />
+          <p className="request-notice">This concept site does not submit wholesale requests.</p>
+        </>
+      ) : null}
       {step < 4 ? (
         <form
           data-testid="inquiry-form"
@@ -192,10 +211,9 @@ export function WholesaleRequest() {
           ) : null}
           {step === 1 ? (
             <section data-testid="wholesale-step" data-step="business">
+              <RequestProgress step={1} onGo={goTo} />
               <h2>Business</h2>
-              <p className="request-help">
-                This concept site does not submit wholesale requests. What you type stays in this browser until you clear it.
-              </p>
+              <p className="request-help">What you type stays in this browser until you clear it.</p>
               <div className="request-grid">
                 <label>
                   Business name
@@ -259,7 +277,7 @@ export function WholesaleRequest() {
                   />
                 </label>
               </div>
-              <p className="request-help">Weekly needs are a rough note for the conversation. This demo does not state a minimum order.</p>
+              <p className="request-help">A rough note for the conversation.</p>
               <label>
                 Notes for the bakery
                 <textarea
@@ -282,75 +300,45 @@ export function WholesaleRequest() {
 
           {step === 2 ? (
             <section data-testid="wholesale-step" data-step="products">
+              <RequestProgress step={2} onGo={goTo} />
               <h2>Products and options</h2>
-              <p className="request-help">
-                Add catalog items, describe something else, or both. Options appear only when that product publishes them. Nothing here is a price.
-              </p>
-              <fieldset className="sample-interest" id="sample-request">
-                <legend>Ask about samples</legend>
-                <label className="choice-label">
-                  <input
-                    type="checkbox"
-                    checked={draft.askAboutSamples}
-                    onChange={(event) => setDraft({ ...draft, askAboutSamples: event.target.checked })}
-                  />
-                  {SAMPLE_QUESTION}
-                </label>
+              <p className="request-help">Options appear only when that product publishes them.</p>
+              <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
+                <h3 id="inquiry-picker-title">Add a product to your request</h3>
                 <p>
-                  This is a question for the bakery, not a sample order. Availability, cost, and fulfillment are not published on bluepointbakery.com, and this demo does not promise them.
+                  Or <Link href="/breads">browse breads</Link> and <Link href="/pastries">pastries</Link>.
                 </p>
-                {draft.askAboutSamples ? (
-                  <label>
-                    Products you want to ask about
-                    <textarea
-                      id="inquiry-sample-products"
-                      rows={2}
-                      value={draft.sampleInterest}
-                      onChange={(event) => setDraft({ ...draft, sampleInterest: event.target.value })}
-                    />
-                  </label>
-                ) : null}
-              </fieldset>
-              <fieldset className="custom-interest">
-                <legend>Customization to discuss</legend>
-                <p>
-                  Bluepoint&apos;s About page says: &ldquo;{PUBLISHED_CUSTOM_LINE}&rdquo; The notes below are examples to discuss. They are not a size, pack, or change the bakery has agreed to make.
-                </p>
-                <div className="request-grid">
-                  <label>
-                    Product family to discuss
-                    <select
-                      id="inquiry-custom-family"
-                      value={draft.customFamily}
-                      onChange={(event) => setDraft({ ...draft, customFamily: event.target.value })}
-                    >
-                      <option value="">Not specified</option>
-                      {CUSTOM_FAMILIES.map(([value, label]) => (
-                        <option key={value} value={value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Size or dimensions to discuss
-                    <input
-                      id="inquiry-custom-size"
-                      value={draft.customSize}
-                      onChange={(event) => setDraft({ ...draft, customSize: event.target.value })}
-                    />
-                  </label>
+                <div className="inquiry-picker-controls">
+                  <label htmlFor="inquiry-picker-product">Product</label>
+                  <select
+                    id="inquiry-picker-product"
+                    value={pickerId}
+                    onChange={(event) => setPickerId(event.target.value)}
+                  >
+                    <option value="">Choose a product…</option>
+                    {catalog.map((group) => (
+                      <optgroup key={group.id} label={group.label}>
+                        {group.items.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    disabled={!pickerId}
+                    onClick={() => {
+                      const product = getProduct(pickerId);
+                      if (product) addProduct(product);
+                    }}
+                  >
+                    Add selected product
+                  </button>
                 </div>
-                <label>
-                  Packaging or other requirements to discuss
-                  <textarea
-                    id="inquiry-custom-packaging"
-                    rows={2}
-                    value={draft.customPackaging}
-                    onChange={(event) => setDraft({ ...draft, customPackaging: event.target.value })}
-                  />
-                </label>
-              </fieldset>
+              </section>
               {draft.lines.length > 0 ? (
                 <ul className="request-lines">
                   {draft.lines.map((line) => {
@@ -444,9 +432,7 @@ export function WholesaleRequest() {
                           </label>
                         ) : null}
                         {showWrappedChoice(product) ? (
-                          <p className="request-help">
-                            The catalog says this item is available individually wrapped. Leave this unchecked if you are not asking about wrapping. Pack size still has to be confirmed when it is not published.
-                          </p>
+                          <p className="request-help">The catalog lists this as available individually wrapped.</p>
                         ) : null}
                         <button
                           type="button"
@@ -474,43 +460,70 @@ export function WholesaleRequest() {
                   onChange={(event) => setDraft({ ...draft, productsText: event.target.value })}
                 />
               </label>
-              <p className="request-help">Use this for anything that is not already in the list above. It is kept together with the catalog lines.</p>
-              <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
-                <h3 id="inquiry-picker-title">Add a product to your request</h3>
+              <p className="request-help">Kept together with the catalog lines above.</p>
+              <fieldset className="custom-interest">
+                <legend>Customization to discuss</legend>
                 <p>
-                  Or <Link href="/breads">browse breads</Link> and <Link href="/pastries">pastries</Link>. Selections stay in this browser.
+                  Bluepoint&apos;s About page says: &ldquo;{PUBLISHED_CUSTOM_LINE}&rdquo; Examples to discuss.
                 </p>
-                <div className="inquiry-picker-controls">
-                  <label htmlFor="inquiry-picker-product">Product</label>
-                  <select
-                    id="inquiry-picker-product"
-                    value={pickerId}
-                    onChange={(event) => setPickerId(event.target.value)}
-                  >
-                    <option value="">Choose a product…</option>
-                    {catalog.map((group) => (
-                      <optgroup key={group.id} label={group.label}>
-                        {group.items.map((item) => (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    disabled={!pickerId}
-                    onClick={() => {
-                      const product = getProduct(pickerId);
-                      if (product) addProduct(product);
-                    }}
-                  >
-                    Add selected product
-                  </button>
+                <div className="request-grid">
+                  <label>
+                    Product family to discuss
+                    <select
+                      id="inquiry-custom-family"
+                      value={draft.customFamily}
+                      onChange={(event) => setDraft({ ...draft, customFamily: event.target.value })}
+                    >
+                      <option value="">Not specified</option>
+                      {CUSTOM_FAMILIES.map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Size or dimensions to discuss
+                    <input
+                      id="inquiry-custom-size"
+                      value={draft.customSize}
+                      onChange={(event) => setDraft({ ...draft, customSize: event.target.value })}
+                    />
+                  </label>
                 </div>
-              </section>
+                <label>
+                  Packaging or other requirements to discuss
+                  <textarea
+                    id="inquiry-custom-packaging"
+                    rows={2}
+                    value={draft.customPackaging}
+                    onChange={(event) => setDraft({ ...draft, customPackaging: event.target.value })}
+                  />
+                </label>
+              </fieldset>
+              <fieldset className="sample-interest" id="sample-request">
+                <legend>Ask about samples</legend>
+                <label className="choice-label">
+                  <input
+                    type="checkbox"
+                    checked={draft.askAboutSamples}
+                    onChange={(event) => setDraft({ ...draft, askAboutSamples: event.target.checked })}
+                  />
+                  {SAMPLE_QUESTION}
+                </label>
+                <p>Availability, cost, and fulfillment are not published on bluepointbakery.com.</p>
+                {draft.askAboutSamples ? (
+                  <label>
+                    Products you want to ask about
+                    <textarea
+                      id="inquiry-sample-products"
+                      rows={2}
+                      value={draft.sampleInterest}
+                      onChange={(event) => setDraft({ ...draft, sampleInterest: event.target.value })}
+                    />
+                  </label>
+                ) : null}
+              </fieldset>
               <div className="request-actions">
                 <button className="btn btn-ghost" type="button" onClick={() => goTo(1)}>
                   Back
@@ -524,6 +537,7 @@ export function WholesaleRequest() {
 
           {step === 3 ? (
             <section data-testid="wholesale-step" data-step="delivery">
+              <RequestProgress step={3} onGo={goTo} />
               <h2>Delivery and timing</h2>
               <p className="request-help">
                 Office hours are {HOURS}. Bluepoint bakes and delivers 6 days a week. A preferred day or date is a question for the bakery, not a reserved route.
@@ -535,7 +549,6 @@ export function WholesaleRequest() {
                 autoComplete="off"
                 onChange={(event) => setDraft({ ...draft, deliveryCity: event.target.value })}
               />
-              <p className="request-help">Type a city. A ZIP code alone does not confirm delivery on this demo.</p>
               {suggestions.length > 0 ? (
                 <ul className="area-suggestions" aria-label="Matching areas">
                   {suggestions.map((suggestion) => (
@@ -610,6 +623,7 @@ export function WholesaleRequest() {
         </form>
       ) : (
         <section data-testid="inquiry-confirmation" data-step="review" id="inquiry-confirmation">
+          <RequestProgress step={4} onGo={goTo} />
           <article className="review-card">
             <header className="review-head">
               <div>
@@ -618,10 +632,11 @@ export function WholesaleRequest() {
               </div>
               <p className="demo-badge">Demo: not sent</p>
             </header>
-            <p>This is a preview only. No message has been sent to Bluepoint Bakery.</p>
+            <p id="send-notice">
+              This is a preview only. No message has been sent to Bluepoint Bakery. This concept site does not submit wholesale requests.
+            </p>
             <p>
-              This concept site does not submit wholesale requests. You can discuss this draft with the bakery at{" "}
-              <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}. This page does not transmit it.
+              You can discuss this draft with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
             </p>
             <dl className="inquiry-summary">
               <div>
@@ -682,7 +697,7 @@ export function WholesaleRequest() {
                 <div>
                   <dt>Customization to discuss</dt>
                   <dd>
-                    Examples only. Not a confirmed capability. {PUBLISHED_CUSTOM_LINE}
+                    Examples to discuss. {PUBLISHED_CUSTOM_LINE}
                     {draft.customFamily ? (
                       <>
                         <br />
@@ -707,7 +722,7 @@ export function WholesaleRequest() {
             </dl>
             {draft.askAboutSamples ? (
               <p>
-                <strong>Samples:</strong> Please advise whether samples are available, and any cost or conditions. No samples are promised by this demo.
+                <strong>Samples:</strong> Please advise whether samples are available, and any cost or conditions.
                 {draft.sampleInterest.trim() ? ` Products to ask about: ${draft.sampleInterest.trim()}.` : ""}
               </p>
             ) : null}
@@ -745,7 +760,6 @@ export function WholesaleRequest() {
                 Send to Bluepoint (demo: not connected)
               </button>
             </div>
-            <p id="send-notice">The send button is off. This concept site does not submit wholesale requests.</p>
             <div className="request-actions">
               <button type="button" className="btn btn-ghost" onClick={() => goTo(1)}>
                 Edit business
@@ -782,7 +796,7 @@ function AccountPaths() {
           <a href={PAY_URL} target="_blank" rel="noopener noreferrer">Pay an invoice</a> is a separate login.
         </p>
         <p className="account-path">
-          <strong>New accounts</strong> use the request on this page. A sales professional will assist you. This concept site does not submit wholesale requests.
+          <strong>New accounts</strong> use the request on this page. A sales professional will assist you.
         </p>
       </div>
     </section>

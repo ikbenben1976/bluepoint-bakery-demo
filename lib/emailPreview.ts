@@ -28,8 +28,8 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     const earliest = earliestDeliveryIso(now, kinds);
     const when = formatLongDate(draft.firstDelivery);
     timing = isOnOrAfter(draft.firstDelivery, earliest)
-      ? `First delivery date: ${when} (on or after the published notice; not a confirmed route day)`
-      : `First delivery date: ${when} (before the required notice — earliest is ${formatLongDate(earliest)}; not a confirmed route day)`;
+      ? `First delivery date: ${when}`
+      : `First delivery date: ${when} (before the required notice — earliest is ${formatLongDate(earliest)})`;
   } else if (draft.firstDelivery) {
     timing = `First delivery date: ${formatStartDate(draft.firstDelivery)} (not checked against a catalog lead time)`;
   }
@@ -69,7 +69,7 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
 
   const sample = draft.askAboutSamples
     ? [
-        `Samples: ${SAMPLE_QUESTION}. Please advise whether samples are available, and any cost or conditions. No samples are promised by this demo.`,
+        `Samples: ${SAMPLE_QUESTION}. Please advise whether samples are available, and any cost or conditions.`,
         draft.sampleInterest.trim() ? `Products to ask about: ${draft.sampleInterest.trim()}` : "",
       ].filter(Boolean)
     : [];
@@ -94,8 +94,9 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     "",
     customBits.length
       ? [
-          "Customization to discuss (examples, not a confirmed capability):",
+          "Customization to discuss:",
           `Bluepoint's About page says: "${PUBLISHED_CUSTOM_LINE}"`,
+          "Examples to discuss.",
           ...customBits,
           "",
         ].join("\n")

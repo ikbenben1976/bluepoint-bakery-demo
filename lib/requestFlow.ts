@@ -68,11 +68,11 @@ export function dateWarning(draft: Draft, now: Date): string | null {
   if (!draft.firstDelivery) return null;
   const kinds = kindsInDraft(draft);
   if (kinds.length === 0) {
-    return "This date is not compared with a lead time until a catalog product is added. A written description is confirmed by the bakery. Choosing a date does not reserve a route day.";
+    return "This date is not compared with a lead time until a catalog product is added. A written description is confirmed by the bakery.";
   }
   const earliest = earliestDeliveryIso(now, kinds);
   if (!isOnOrAfter(draft.firstDelivery, earliest)) {
-    return `This date is earlier than the published notice. The earliest date from now is ${formatLongDate(earliest)}. ${leadTimeExplanation(kinds)}. This warning does not promise a route day.`;
+    return `This date is earlier than the published notice. The earliest date from now is ${formatLongDate(earliest)}. ${leadTimeExplanation(kinds)}.`;
   }
   return null;
 }
@@ -83,10 +83,10 @@ export function dateStatus(draft: Draft, now: Date): string {
   const kinds = kindsInDraft(draft);
   if (!draft.firstDelivery) {
     return kinds.length > 0
-      ? `No date chosen. ${leadTimeExplanation(kinds)}. A date is not required, and choosing one does not reserve a route day.`
+      ? `No date chosen. ${leadTimeExplanation(kinds)}.`
       : "No date chosen. Published notice is 24 hours for breads, 48 hours for pastries, and 3 days for Sourdough Boule.";
   }
-  return `This date is on or after the published notice. ${leadTimeExplanation(kinds)}. It is not a confirmed delivery day.`;
+  return `This date is on or after the published notice. ${leadTimeExplanation(kinds)}.`;
 }
 
 function validEmail(value: string): boolean {
