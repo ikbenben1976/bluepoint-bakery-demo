@@ -464,3 +464,19 @@ test("bread and pastry catalog images stay within a consistent editorial photo f
     }
   }
 });
+
+
+test("fifth assortment photo tile spans both mobile columns without cropping outside", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const tiles = page.locator(".assortment-grid > li");
+  await expect(tiles).toHaveCount(5);
+  const gridBox = await page.locator(".assortment-grid").boundingBox();
+  const lastBox = await tiles.last().boundingBox();
+  const photo = await tiles.last().locator(".assortment-photo").boundingBox();
+  expect(gridBox && lastBox && photo).toBeTruthy();
+  expect(lastBox!.width).toBeGreaterThan(gridBox!.width * 0.95);
+  expect(photo!.width).toBeGreaterThan(100);
+  expect(photo!.height).toBeGreaterThan(120);
+  expect(await overflow(page)).toBeLessThanOrEqual(1);
+});
