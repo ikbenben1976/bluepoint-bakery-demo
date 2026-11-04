@@ -1989,3 +1989,210 @@ body {
   font-family: var(--font-franklin), sans-serif; text-decoration: none;
 }
 .sector-related li a:hover, .sector-related li a:focus-visible { background: #2035e8; color: #fff; }
+
+
+/*
+ * Bluepoint 2026: IMPORTANT distinction
+ * 1. A single cohesive bakery assortments hero, with ONLY header logo.
+ * 2. Finished dishes for "What are you making?".
+ * 3. The bakery's actual SKU families for "Our Product Assortment".
+ */
+.seamless-hero.approved-hero.hero {
+  display: block;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(650px, 46vw, 765px);
+  background: #f8f1e8;
+}
+.seamless-hero .hero-copy {
+  position: relative;
+  z-index: 3;
+  width: min(53%, 730px);
+  min-width: 0;
+  padding: clamp(2.75rem, 4.3vw, 5rem) clamp(1.3rem, 4.4vw, 5.2rem) 11rem;
+  background: transparent;
+  order: unset;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.seamless-hero .hero-kicker {
+  margin: 0 0 1.2rem;
+  color: #a37516;
+  letter-spacing: .115em;
+}
+.seamless-hero h1 {
+  color: #0a2b51;
+  max-width: 17ch;
+  font-size: clamp(2.8rem, 4vw, 4.1rem);
+  line-height: 1.075;
+  letter-spacing: -.035em;
+}
+.seamless-hero .lede { max-width: 36rem; }
+.seamless-hero .approved-hero-benefits { margin-block: 1.35rem; }
+.seamless-hero .hero-actions { max-width: 41rem; }
+.seamless-hero .seamless-hero-media {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(ellipse at 76% 33%, rgba(201,165,125,.28), transparent 34%), linear-gradient(180deg,#f9f1e8,#eadccb);
+  order: unset;
+  overflow: hidden;
+  z-index: 1;
+}
+.seamless-hero-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(90deg, #f8f1e8 0%, rgba(248,241,232,.98) 31%, rgba(248,241,232,.28) 64%, transparent 88%);
+  pointer-events: none;
+}
+.seamless-hero-media::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 27%;
+  background: repeating-linear-gradient(90deg,transparent 0 125px,rgba(87,46,14,.08) 125px 127px),linear-gradient(180deg,#d7b28b 0%,#a77750 34%,#7b4d32 100%);
+  box-shadow: inset 0 7px 15px rgba(78,45,21,.12);
+}
+.seamless-hero .hero-bread {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  filter: drop-shadow(0 10px 12px rgba(56,30,10,.17));
+}
+.seamless-hero .hero-bread img { object-fit: contain; padding: 0; }
+.seamless-hero .hero-bread-baguettes { top: 11%; left: 51%; width: 48%; height: 60%; }
+.seamless-hero .hero-bread-rye { top: 21%; left: 50%; width: 30%; height: 50%; }
+.seamless-hero .hero-bread-rolls { top: 69%; left: 4%; width: 38%; height: 31%; }
+.seamless-hero .hero-bread-bun { top: 64%; left: 42%; width: 30%; height: 36%; }
+.seamless-hero .hero-bread-pastries { top: 65%; left: 69%; width: 30%; height: 35%; }
+.seamless-hero .hero-actions .btn { min-width: 0; }
+@media (max-width: 1050px) and (min-width: 800px) {
+  .seamless-hero .hero-copy { width: 58%; padding: 3rem 1.65rem 10rem; }
+  .seamless-hero h1 { font-size: clamp(2.6rem, 4.2vw, 3.3rem); }
+  .seamless-hero .hero-bread-rolls { left: 1%; }
+}
+@media (max-width: 799px) {
+  .seamless-hero.approved-hero.hero { display: flex; flex-direction: column; min-height: 0; }
+  .seamless-hero .hero-copy { width: 100%; padding: 2rem 1.3rem 1.5rem; }
+  .seamless-hero h1 { font-size: clamp(2.6rem, 7.3vw, 3.8rem); }
+  .seamless-hero .seamless-hero-media { position: relative; inset: auto; order: 2; width: 100%; height: clamp(290px, 62vw, 470px); min-height: 0; flex: none; }
+  .seamless-hero-media::before { background: linear-gradient(180deg,#f8f1e8 0%,rgba(248,241,232,.24) 54%,transparent 75%); }
+  .seamless-hero .hero-bread-baguettes { top: 3%; left: 37%; width: 66%; height: 67%; }
+  .seamless-hero .hero-bread-rye { top: 7%; left: 25%; width: 41%; height: 62%; }
+  .seamless-hero .hero-bread-rolls { top: 56%; left: -7%; width: 43%; height: 43%; }
+  .seamless-hero .hero-bread-bun { top: 58%; left: 32%; width: 41%; height: 43%; }
+  .seamless-hero .hero-bread-pastries { top: 60%; left: 65%; width: 43%; height: 40%; }
+}
+@media (max-width: 420px) {
+  .seamless-hero .hero-copy { padding: 1.5rem 1.05rem; }
+  .seamless-hero h1 { font-size: 2.48rem; }
+  .seamless-hero .approved-hero-benefits { flex-wrap: wrap; }
+}
+/* Application photography shows finished meals; this is NOT the catalog. */
+.application-section.making ul.making-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 1.4rem 1.2rem;
+}
+.application-section.making .making-visual-link {
+  display: block;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.application-section.making .making-visual-link:hover,
+.application-section.making .making-visual-link:focus-visible {
+  border: 0;
+  transform: none;
+  box-shadow: none;
+}
+.application-section.making .making-photo {
+  display: block;
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 5/3;
+  background: #f5ece1;
+  box-shadow: 0 2px 10px rgba(30,25,20,.08);
+}
+.application-section.making .making-photo img {
+  object-fit: cover;
+  padding: 0;
+  transition: transform 200ms ease;
+}
+.application-section.making .making-visual-link:hover .making-photo img { transform: scale(1.025); }
+.application-section.making .making-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .4rem;
+  padding: .9rem .1rem .35rem;
+  background: transparent;
+}
+.application-section.making .making-title {
+  font-size: 1.23rem;
+  color: #132b48;
+}
+.application-section.making .making-summary { color: #605e60; line-height: 1.55; font-size: .95rem; }
+.application-section.making .making-explore { margin-top: .35rem; color: #17396a; }
+.application-section.making .making-footnote { font-size: .75rem; color: #6a6665; }
+@media (max-width: 650px) {
+  .application-section.making ul.making-visual-grid { grid-template-columns: 1fr; }
+}
+/* This is the actual Bluepoint wholesale assortment, not prepared meals. */
+.assortment-section { background: #f5f0e7; }
+.assortment-grid {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: .8rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.3rem 0;
+}
+.assortment-grid li { min-width: 0; }
+.assortment-card {
+  display: flex;
+  position: relative;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  padding: 1rem .6rem 1rem;
+  color: #0a2b51;
+  text-decoration: none;
+  border: 1px solid #e4daca;
+  border-radius: 14px;
+  background: #fffaf2;
+  text-align: center;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: .91rem;
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+.assortment-card:hover,.assortment-card:focus-visible { box-shadow: 0 9px 22px rgba(26,36,55,.14); transform: translateY(-2px); }
+.assortment-photo { display: block; width: 100%; aspect-ratio: 1/1; position: relative; }
+.assortment-photo img { object-fit: contain; }
+.assortment-arrow { color: #a57919; font-size: 1.2rem; margin-top: auto; }
+.assortment-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .7rem; margin-top: 1.3rem; }
+@media (max-width: 1100px) { .assortment-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media (max-width: 560px) { .assortment-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (prefers-reduced-motion: reduce) {
+  .application-section.making .making-photo img, .assortment-card { transition: none; }
+}
