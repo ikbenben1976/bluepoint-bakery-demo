@@ -2211,3 +2211,67 @@ body {
     max-width: min(18rem, calc(100vw - 1.5rem));
   }
 }
+
+
+/* Product-spec sample: factual published attributes, visibly incomplete fields. */
+.featured-spec-section { background: #fff; }
+.featured-spec-card {
+  display: grid;
+  grid-template-columns: minmax(190px,.75fr) minmax(180px,1fr) minmax(300px,1.5fr);
+  align-items: center;
+  gap: clamp(1rem,2vw,2rem);
+  padding: clamp(1.2rem,2.5vw,2rem);
+  border: 1px solid #e0d7c8;
+  border-radius: 18px;
+  background: #faf8f3;
+}
+.featured-spec-image { margin: 0; min-width: 0; }
+.featured-spec-image::before { content: ""; display: block; width: 100%; padding-top: 80%; }
+.featured-spec-image { position: relative; }
+.featured-spec-image img { object-fit: contain; object-position: center top; height: 80% !important; }
+.featured-spec-image figcaption {
+  margin-top: .4rem;
+  font-size: .69rem;
+  color: #6a6360;
+  line-height: 1.4;
+}
+.featured-spec-info h3 {
+  margin: 0 0 .4rem;
+  color: #102e51;
+  font-family: Georgia,serif;
+  font-size: clamp(1.4rem,2.5vw,2.2rem);
+}
+.featured-spec-info p { font-size: .9rem; color: #605c60; margin: .2rem 0; }
+.featured-spec-info .featured-spec-label {
+  display: inline-block;
+  color: #122e57;
+  background: #e8edf8;
+  border-radius: 999px;
+  padding: .2rem .8rem;
+  font-size: .8rem;
+  font-weight: 700;
+  margin: .7rem 0 .95rem;
+}
+.featured-spec-info a { display: block; color: #17396a; font-weight: 700; }
+.featured-spec-facts { margin: 0; }
+.featured-spec-facts div {
+  display: grid;
+  grid-template-columns: minmax(110px,.9fr) minmax(120px,1.1fr);
+  gap: .5rem;
+  padding: .52rem 0;
+  border-bottom: 1px solid #e0d6c6;
+  font-size: .83rem;
+  line-height: 1.45;
+}
+.featured-spec-facts div:last-child { border-bottom: 0; }
+.featured-spec-facts dt { font-weight: 700; color: #1c2c4c; }
+.featured-spec-facts dd { margin: 0; color: #4b4d55; }
+@media (max-width: 880px) {
+  .featured-spec-card { grid-template-columns: minmax(155px,.7fr) minmax(180px,1fr); }
+  .featured-spec-facts { grid-column: 1/-1; }
+}
+@media (max-width: 520px) {
+  .featured-spec-card { grid-template-columns: 1fr; }
+  .featured-spec-image { max-width: 260px; }
+  .featured-spec-facts { grid-column: auto; }
+}
