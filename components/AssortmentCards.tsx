@@ -8,7 +8,7 @@ const assortment = [
   { href: "/breads/#deli-loaves", name: "Breads & Loaves", src: "/images/scenes/rack-loaves.webp", alt: "Freshly baked Bluepoint bread loaves on a rack" },
   { href: "/pastries/#croissants", name: "Pastries", src: "/images/scenes/pastry-trays.webp", alt: "Freshly baked pastries arranged on Bluepoint bakery trays" },
   { href: "/breads/#specialty-breads", name: "Specialty Breads", src: "/images/scenes/baguette-tray.webp", alt: "Bluepoint specialty French breads on a baking tray" },
-  { href: "/pastries/#muffins", name: "Sweet Bakery Favorites", src: "/images/scenes/chocolate-pastries.webp", alt: "Assortment of freshly baked Bluepoint chocolate pastries" },
+  { href: "/pastries/", name: "Sweet Bakery Favorites", src: "/images/scenes/chocolate-pastries.webp", alt: "Assortment of freshly baked Bluepoint chocolate pastries" },
 ] as const;
 
 export function AssortmentCards() {
