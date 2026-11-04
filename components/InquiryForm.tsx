@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { ProductBrowser } from "@/components/ProductBrowser";
+import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL } from "@/data/site";
 import { leadWords } from "@/lib/spec";
@@ -35,6 +35,7 @@ export function InquiryForm() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [hydrated, setHydrated] = useState(false);
   const [formVersion, setFormVersion] = useState(0);
+  const [pickerId, setPickerId] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
 
@@ -358,10 +359,27 @@ export function InquiryForm() {
           <button className="btn btn-ghost" type="button" onClick={clearRequest}>Clear saved request</button>
         </div>
       </form>
-      <section className="inquiry-catalog">
-        <h2>Add from the catalog</h2>
-        <p>Items you add here are saved in this browser and listed above.</p>
-        <ProductBrowser groups={catalog} onAdd={add} selectedIds={draft.lines.map((line) => line.productId)} />
+      <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
+        <h2 id="inquiry-picker-title">Add a product to your request</h2>
+        <p>Select an item below or <Link href="/breads">browse breads</Link> and <Link href="/pastries">pastries</Link> with photos and specifications. Your selections are saved locally.</p>
+        <div className="inquiry-picker-controls">
+          <label htmlFor="inquiry-picker-product">Product</label>
+          <select id="inquiry-picker-product" value={pickerId} onChange={(event) => setPickerId(event.target.value)}>
+            <option value="">Choose a product…</option>
+            {catalog.map((group) => (
+              <optgroup key={group.id} label={group.label}>
+                {group.items.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          <button type="button" className="btn btn-primary" disabled={!pickerId} onClick={() => {
+            const product = getProduct(pickerId);
+            if (product) {
+              add(product);
+              setPickerId("");
+            }
+          }}>Add selected product</button>
+        </div>
       </section>
     </div>
   );
