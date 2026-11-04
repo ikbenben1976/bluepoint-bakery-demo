@@ -6,9 +6,9 @@ import Link from "next/link";
 const assortment = [
   { href: "/breads/#buns", name: "Buns & Rolls", src: "/images/scenes/sesame-buns-rack.webp", alt: "Bluepoint sesame-topped buns on a bakery rack" },
   { href: "/breads/#deli-loaves", name: "Breads & Loaves", src: "/images/scenes/rack-loaves.webp", alt: "Freshly baked Bluepoint bread loaves on a rack" },
-  { href: "/pastries/#croissants", name: "Pastries", src: "/images/scenes/pastry-trays.webp", alt: "Freshly baked pastries arranged on Bluepoint bakery trays" },
+  { href: "/pastries/#croissants", name: "Pastries", src: "/images/scenes/chocolate-pastries.webp", alt: "Finished chocolate pastries on Bluepoint bakery racks" },
   { href: "/breads/#specialty-breads", name: "Specialty Breads", src: "/images/scenes/baguette-tray.webp", alt: "Bluepoint specialty French breads on a baking tray" },
-  { href: "/pastries/", name: "Sweet Bakery Favorites", src: "/images/scenes/chocolate-pastries.webp", alt: "Assortment of freshly baked Bluepoint chocolate pastries" },
+  { href: "/pastries/", name: "Sweet Bakery Favorites", src: "/images/scenes/cherry-pies.webp", alt: "Fresh cherry pies being prepared at Bluepoint Bakery" },
 ] as const;
 
 export function AssortmentCards() {
