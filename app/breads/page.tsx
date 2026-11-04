@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { breadGroups } from "@/data/products";
 import { categoryPhotos } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
-import { MakingCards } from "@/components/MakingCards";
 import { ProductBrowser } from "@/components/ProductBrowser";
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ export default function BreadsPage() {
         }
       />
       <div className="shell py-12">
-        <MakingCards />
         <ProductBrowser groups={breadGroups} />
       </div>
     </>
