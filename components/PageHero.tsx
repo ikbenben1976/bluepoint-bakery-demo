@@ -7,17 +7,19 @@ export function PageHero({
   title,
   lede,
   image,
+  className,
 }: {
   kicker: string;
   title: string;
   lede?: ReactNode;
   image?: Photo;
+  className?: string;
 }) {
   // Small files were floating as 110–200px thumbnails. Only a photo that can
   // fill half the header near its native size is shown.
   const showImage = Boolean(image && image.width >= 640);
   return (
-    <header className={`ticket-hero${showImage ? " has-photo" : ""}`}>
+    <header className={`ticket-hero${showImage ? " has-photo" : ""}${className ? ` ${className}` : ""}`}>
       <div>
         <p className="kicker">{kicker}</p>
         <h1>{title}</h1>

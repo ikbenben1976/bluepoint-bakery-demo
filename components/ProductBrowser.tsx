@@ -72,6 +72,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     setNote("Search and filters cleared.");
   }
 
+  const families = new Set(groups.map((group) => group.family));
+  const searchPlaceholder =
+    families.size === 1 && families.has("pastries")
+      ? "Search pastries"
+      : families.size === 1 && families.has("breads")
+        ? "Search breads"
+        : "Search products";
   const catalog = groups.flatMap((group) => group.items);
   const compared = compareIds
     .map((id) => catalog.find((product) => product.id === id))
@@ -91,16 +98,23 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   return (
     <div>
       <div className="catalog-tools">
-        <div className="min-w-[16rem] flex-1">
+        <div className="search-field">
           <label htmlFor="product-search">Search products</label>
-          <input
-            id="product-search"
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <div className="search-control">
+            <svg className="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M16 16.5 20.5 21" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <input
+              id="product-search"
+              type="search"
+              placeholder={searchPlaceholder}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
         </div>
-        <Link href="/wholesale" className="btn btn-ghost">
+        <Link href="/wholesale" className="btn btn-ghost catalog-request">
           Open your request
         </Link>
         {filtersActive ? (

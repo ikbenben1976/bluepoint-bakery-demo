@@ -27,6 +27,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
+        className="contact-hero"
         kicker="Contact"
         title="Contact"
         lede={<p>Our baking facility and office are at {ADDRESS}.</p>}
@@ -49,7 +50,10 @@ export default function ContactPage() {
           </p>
           <p>
             <span className="fact-label">Office hours</span>
-            <span className="fact-value">{HOURS}</span>
+            <span className="fact-value hours-value">
+              <span className="hours-days">{HOURS.slice(0, HOURS.indexOf(" "))}</span>
+              <span className="hours-time">{HOURS.slice(HOURS.indexOf(" ") + 1)}</span>
+            </span>
           </p>
           <p>We bake and deliver 6 days a week.</p>
           <p>

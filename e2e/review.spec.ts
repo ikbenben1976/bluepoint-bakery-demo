@@ -931,7 +931,22 @@ test("changed pages use the column, keep labels readable, and leave the contact 
           const overlapY = Math.min(box.bottom, pill.bottom) - Math.max(box.top, pill.top);
           if (overlapX > 1 && overlapY > 1) hits.push((el.textContent || el.tagName).replace(/\s+/g, " ").trim().slice(0, 40));
         }
-        return { content, available, labels, broken: broken.slice(0, 8), hits, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+        const search = document.querySelector<HTMLInputElement>("#product-search");
+        const request = document.querySelector<HTMLElement>(".catalog-tools .catalog-request");
+        const searchBox = search?.getBoundingClientRect();
+        const requestBox = request?.getBoundingClientRect();
+        return {
+          content,
+          available,
+          labels,
+          broken: broken.slice(0, 8),
+          hits,
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          searchWidth: searchBox && searchBox.width > 1 ? searchBox.width : null,
+          requestWidth: requestBox && requestBox.height > 1 && requestBox.top < window.innerHeight ? requestBox.width : null,
+          searchBorder: search ? parseFloat(getComputedStyle(search).borderTopWidth) : 0,
+          placeholder: search?.getAttribute("placeholder") ?? "",
+        };
       });
       expect(fit, path).toBeTruthy();
       expect(fit!.content, `${path} width at ${width}px`).toBeGreaterThanOrEqual(fit!.available * 0.9);
@@ -941,7 +956,44 @@ test("changed pages use the column, keep labels readable, and leave the contact 
       }
       expect(fit!.hits, `${path} contact pill covers a control at ${width}px`).toEqual([]);
       expect(fit!.overflow, `${path} overflow at ${width}px`).toBeLessThanOrEqual(1);
+      if (fit!.searchWidth != null) {
+        expect(fit!.searchWidth, `${path} search width at ${width}px`).toBeGreaterThanOrEqual(fit!.content * 0.9);
+        expect(fit!.searchBorder, `${path} search box at ${width}px`).toBeGreaterThanOrEqual(1);
+        expect(fit!.placeholder, `${path} search placeholder`).toMatch(/^Search /);
+      }
+      if (width <= 700 && fit!.requestWidth != null) {
+        expect(fit!.requestWidth, `${path} request button width at ${width}px`).toBeGreaterThanOrEqual(fit!.content * 0.9);
+      }
     }
+  }
+});
+
+test("contact intro lines up with the details and the four values share one size", async ({ page }) => {
+  for (const width of [1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/contact/");
+    const align = await page.evaluate(() => {
+      const hero = document.querySelector(".contact-hero")!.getBoundingClientRect().left;
+      const facts = document.querySelector(".contact-facts")!.getBoundingClientRect().left;
+      const values = [...document.querySelectorAll(".contact-facts .fact-value")].map((el) =>
+        Math.round(parseFloat(getComputedStyle(el).fontSize) * 10) / 10,
+      );
+      const email = document.querySelector(".contact-email")!;
+      const time = document.querySelector(".hours-time")!;
+      return {
+        hero,
+        facts,
+        values,
+        emailDecoration: getComputedStyle(email).textDecorationLine,
+        timeWrap: getComputedStyle(time).whiteSpace,
+      };
+    });
+    expect(Math.abs(align.hero - align.facts), `left edges at ${width}px`).toBeLessThanOrEqual(1);
+    expect(new Set(align.values).size, `value sizes at ${width}px`).toBe(1);
+    expect(align.values[0], `value size at ${width}px`).toBeGreaterThanOrEqual(20);
+    expect(align.values[0], `value size at ${width}px`).toBeLessThanOrEqual(22);
+    expect(align.emailDecoration).toContain("underline");
+    expect(align.timeWrap).toBe("nowrap");
   }
 });
 
