@@ -2275,3 +2275,46 @@ body {
   .featured-spec-image { max-width: 260px; }
   .featured-spec-facts { grid-column: auto; }
 }
+
+
+/* Actual approved reference composition, cleaned of its baked-in text and
+   interactive-looking buttons. The website provides HTML equivalents. */
+.seamless-hero.approved-hero.hero {
+  min-height: clamp(650px, 50vw, 780px);
+  background: #f9f3eb;
+}
+.seamless-hero .seamless-hero-media {
+  background: #f9f3eb;
+}
+.seamless-hero .seamless-hero-media::before,
+.seamless-hero .seamless-hero-media::after {
+  content: none;
+  display: none;
+}
+.seamless-hero .seamless-hero-photo {
+  object-fit: cover;
+  object-position: center center;
+}
+.seamless-hero .hero-copy {
+  width: min(54%, 750px);
+  padding-top: clamp(3rem,5vw,5rem);
+  padding-bottom: 11.5rem;
+}
+.seamless-hero h1 {
+  font-size: clamp(2.7rem,3.6vw,3.6rem);
+  max-width: 17ch;
+}
+.seamless-hero .hero-kicker {
+  color: #b17b14;
+}
+@media (max-width: 799px) {
+  .seamless-hero.approved-hero.hero { min-height: auto; }
+  .seamless-hero .hero-copy { width: 100%; padding: 2rem 1.25rem 1.5rem; }
+  .seamless-hero h1 { font-size: clamp(2.55rem,7.4vw,3.8rem); }
+  .seamless-hero .seamless-hero-media { height: clamp(265px,68vw,460px); }
+  .seamless-hero .seamless-hero-photo { object-position: 72% center; }
+}
+@media (max-width: 420px) {
+  .seamless-hero .hero-copy { padding: 1.6rem 1.05rem 1.4rem; }
+  .seamless-hero h1 { font-size: 2.47rem; }
+}
