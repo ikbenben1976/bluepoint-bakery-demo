@@ -2504,3 +2504,46 @@ body {
   .brand-trust-copy p { font-size: .77rem; }
   .brand-trust-inner > a { grid-column: 2; font-size: .75rem; }
 }
+
+
+/* Wholesale inquiry is a compact, purposeful request—not a 45,000px catalog. */
+.compact-inquiry-picker {
+  margin: clamp(1.3rem, 3vw, 2.5rem) auto 2rem;
+  padding: clamp(1rem, 2.6vw, 2rem);
+  border: 1px solid #e1d6c5;
+  border-radius: 18px;
+  background: #faf5ea;
+  max-width: 1080px;
+}
+.compact-inquiry-picker h2 { margin: 0 0 .45rem; color: #102c51; }
+.compact-inquiry-picker > p { margin: 0 0 1rem; max-width: 58ch; line-height: 1.55; }
+.compact-inquiry-picker a { color: #133f6a; font-weight: 700; text-decoration: underline; text-underline-offset: .15em; }
+.inquiry-picker-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: .4rem .85rem;
+}
+.inquiry-picker-controls > label {
+  grid-column: 1 / -1;
+  color: #172e50;
+  font-family: var(--font-franklin),sans-serif;
+  font-size: .86rem;
+  font-weight: 700;
+}
+.inquiry-picker-controls select {
+  min-width: 0;
+  width: 100%;
+  padding: .83rem;
+  min-height: 48px;
+  border: 1px solid #bab3a5;
+  border-radius: 9px;
+  color: #102c51;
+  background: #fff;
+  font-size: 1rem;
+}
+.inquiry-picker-controls button { min-height: 48px; border-radius: 9px; }
+@media (max-width: 650px) {
+  .inquiry-picker-controls { grid-template-columns: 1fr; }
+  .inquiry-picker-controls button { width: 100%; }
+}
