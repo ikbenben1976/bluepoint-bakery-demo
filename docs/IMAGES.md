@@ -1,17 +1,17 @@
 # Image slots
 
-Illustrative or generated photographs are labeled “Illustrative photo” in the page and use alt text that says they are illustrative. Original Bluepoint photography stays unlabeled as illustration.
+Illustrative or generated photographs are labeled “Illustrative image” in the page and use alt text that says they are illustrative. Original Bluepoint photography stays unlabeled as illustration.
 
-## Hero drop-in files
+## Hero files
 
-The home hero uses a `<picture>` element so sharper files can replace these paths without a code change.
+The home hero uses a `<picture>` element. Desktop (1024px and wider) loads the wide file. Narrower viewports load the 4:3 file. Both are generated illustrations, not Bluepoint photographs. See `docs/IMAGE-CREDITS.md`.
 
-| File | Used when | Current file | Intended replacement |
-| --- | --- | --- | --- |
-| `/images/brand/hero-desktop.avif` and `.jpg` | viewports 1024px and wider, full-bleed behind the text | The existing `hero-assortment` photograph, unchanged (1120×574). Do not crop this desktop source. | A sharper 2:1 file, 2880×1440, with the products kept on the right so the left side stays a calm ground for the headline. |
-| `/images/brand/hero-mobile.avif` and `.jpg` | viewports under 1024px, in a 4:3 frame after the buttons | A 1600×1200 crop of the product side of `hero-assortment`, so the erased left area is not the whole frame. It is upscaled from a small source and will look soft until it is replaced. | A real 4:3 photograph, 1600×1200. |
+| File | Used when | Size |
+| --- | --- | --- |
+| `/images/illustrative/hero-desktop.avif` and `.webp` | viewports 1024px and wider | 1280×720, products kept to the right |
+| `/images/illustrative/hero-mobile.avif` and `.webp` | viewports under 1024px | 1200×900 |
 
-`public/images/brand/hero-assortment.avif` remains in the repo as the current desktop master.
+`public/images/brand/hero-assortment.avif` and the older `hero-desktop` / `hero-mobile` brand files remain in the repo and are no longer shown.
 
 ## Photos that need a higher-resolution original
 

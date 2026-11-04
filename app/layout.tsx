@@ -4,6 +4,7 @@ import "./brand.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { Notice } from "@/components/Notice";
 import { QuickActions } from "@/components/QuickActions";
 import { franklin, sourceSerif } from "@/app/fonts";
 import { DISCLAIMER, DEMO_ORIGIN } from "@/data/site";
@@ -51,6 +52,7 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <QuickActions />
+        <Notice />
         <JsonLd />
       </body>
     </html>

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { FramedImage } from "@/components/FramedImage";
+import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
@@ -228,11 +230,26 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                 ))}
               </ul>
             ) : null}
-            <p className="catalog-photo-note">Category photography is illustrative; the image above does not identify every individual product or variation.</p>
+            <p className="catalog-photo-note">
+              The category photograph above is Bluepoint&apos;s own. Each product photo below is an illustrative image, not a verified photograph of that item.
+            </p>
             <p className="category-notice">{categoryNotice(group.lead)}</p>
             <ul className="product-grid">
-              {items.map((product) => (
+              {items.map((product) => {
+                const visual = visualForProduct(product.id);
+                return (
                 <li key={product.id} id={product.id} className="product-card">
+                  <div className="product-photo">
+                    <FramedImage
+                      webp={visual.webp}
+                      avif={visual.avif}
+                      alt={visual.alt}
+                      width={visual.width}
+                      height={visual.height}
+                      sizes="(max-width: 699px) 92vw, (max-width: 1023px) 46vw, 300px"
+                      label="Illustrative image"
+                    />
+                  </div>
                   <h3>{product.name}</h3>
                   <p className="card-fact">{cardFacts(product)}</p>
                   {product.lead !== group.lead ? <p className="meta">{leadWords(product)}</p> : null}
@@ -270,7 +287,8 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                     )}
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </section>
         );

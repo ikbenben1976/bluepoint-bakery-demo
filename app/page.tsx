@@ -7,6 +7,7 @@ import { BuyerProof } from "@/components/BuyerProof";
 import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
+import { heroDesktop, heroMobile } from "@/data/illustrative";
 import { categoryPhotos, gallery } from "@/data/photos";
 import {
   COLORADO_PROUD,
@@ -43,18 +44,21 @@ export default function HomePage() {
         </div>
         <figure className="hero-figure seamless-hero-media">
           <picture>
-            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.avif" type="image/avif" />
-            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.jpg" type="image/jpeg" />
-            <source srcSet="/images/brand/hero-mobile.avif" type="image/avif" />
-            <img
-              src="/images/brand/hero-mobile.jpg"
-              alt="Illustrative assortment of wholesale breads, rolls and pastries on a bakery counter."
-              width={1600}
-              height={1200}
+            <source media="(min-width: 1024px)" srcSet={heroDesktop.avif} type="image/avif" />
+            <source media="(min-width: 1024px)" srcSet={heroDesktop.webp} type="image/webp" />
+            <source srcSet={heroMobile.avif} type="image/avif" />
+            <Image
+              src={heroMobile.webp}
+              alt={heroMobile.alt}
+              width={heroMobile.width}
+              height={heroMobile.height}
+              priority
+              sizes="(max-width: 1023px) 100vw, 58vw"
               className="hero-photo seamless-hero-photo"
+              style={{ objectFit: "cover" }}
             />
           </picture>
-          <figcaption className="illustrative-note">Illustrative photo</figcaption>
+          <figcaption className="illustrative-note">Illustrative image</figcaption>
         </figure>
       </section>
 

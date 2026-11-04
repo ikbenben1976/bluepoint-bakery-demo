@@ -182,9 +182,10 @@ test("links and buttons go somewhere, including tel and mailto", async ({ page }
   expect(await page.locator('a[href="mailto:sales@bluepointbakery.com"]').count()).toBeGreaterThan(0);
 });
 
-test("no timed pop-up interrupts the homepage", async ({ page }) => {
+test("the call popup does not block the first paint", async ({ page }) => {
   await page.goto("/");
-  await page.waitForTimeout(5400);
+  await expect(page.getByTestId("call-notice")).toHaveCount(0);
+  await page.waitForTimeout(400);
   await expect(page.getByTestId("call-notice")).toHaveCount(0);
 });
 
@@ -374,7 +375,8 @@ test("homepage separates illustrative menu applications from actual bakery produ
   expect(assortmentBounds!.y).toBeLessThan(applicationsBounds!.y);
   await expect(applications.locator(".making-visual-link")).toHaveCount(4);
   await expect(assortment.locator(".assortment-card")).toHaveCount(5);
-  await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
+  await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /\/images\/illustrative\/app-/);
+  await expect(applications.locator(".illustrative-label").first()).toHaveText("Illustrative image");
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
@@ -668,11 +670,13 @@ test("route dots stay beside the first word of the route name", async ({ page })
 
 test("homepage sections use the shared container width on phone, tablet, and desktop", async ({ page }) => {
   const sections = [
+    [".hero-figure", "hero"],
     [".approved-hero-benefits", "services"],
     [".trust-credential-list", "trust strip"],
     [".buyer-proof", "customer proof"],
     [".assortment", "assortment"],
     [".application-section", "making"],
+    [".making-visual-grid", "application photos"],
     [".buyer-proof", "buyer proof"],
     ["footer .footer-grid", "footer"],
   ] as const;
@@ -712,6 +716,35 @@ test("homepage sections use the shared container width on phone, tablet, and des
       });
       expect(trust.columns, "trust strip stacks at 390px").toBe(1);
       expect(trust.clipped, "trust labels clipped at 390px").toEqual([]);
+    }
+
+    for (const path of ["/breads/", "/pastries/"]) {
+      await page.goto(path);
+      const catalog = await page.evaluate(() => {
+        const grid = document.querySelector(".product-grid")!;
+        const tools = document.querySelector(".catalog-tools")!;
+        const shell = grid.closest(".shell")!;
+        const available = window.innerWidth - shell.getBoundingClientRect().left * 2;
+        const img = grid.querySelector("img") as HTMLImageElement;
+        const label = grid.querySelector(".illustrative-label") as HTMLElement;
+        const title = grid.querySelector("h3") as HTMLElement;
+        return {
+          grid: grid.getBoundingClientRect().width,
+          available,
+          toolsLeft: Math.round(tools.getBoundingClientRect().left),
+          gridLeft: Math.round(grid.getBoundingClientRect().left),
+          objectFit: getComputedStyle(img).objectFit,
+          labelSize: parseFloat(getComputedStyle(label).fontSize),
+          titleClipped: title.scrollWidth > title.clientWidth + 1,
+          labelClipped: label.scrollWidth > label.clientWidth + 1,
+        };
+      });
+      expect(catalog.grid, `${path} product grid at ${width}px`).toBeGreaterThanOrEqual(catalog.available * 0.9);
+      expect(catalog.toolsLeft, `${path} search lines up with the product grid at ${width}px`).toBe(catalog.gridLeft);
+      expect(["cover", "contain"], `${path} product photo fit`).toContain(catalog.objectFit);
+      expect(catalog.labelSize, `${path} illustrative label size`).toBeGreaterThanOrEqual(12);
+      expect(catalog.titleClipped, `${path} product title clipped`).toBeFalsy();
+      expect(catalog.labelClipped, `${path} illustrative label clipped`).toBeFalsy();
     }
   }
 
