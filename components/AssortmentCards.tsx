@@ -4,11 +4,11 @@ import Link from "next/link";
 // Bread and pastry CATEGORY photography belongs here; finished prepared meals
 // are intentionally kept in the separate "What are you making?" journey.
 const assortment = [
-  { href: "/breads/#buns", name: "Buns & Rolls", src: "/images/studio/sesame-bun.webp", alt: "Sesame-topped hamburger bun" },
-  { href: "/breads/#deli-loaves", name: "Breads & Loaves", src: "/images/studio/marble-rye.webp", alt: "Sliced marble rye bread" },
-  { href: "/pastries/#croissants", name: "Pastries", src: "/images/studio/croissant.webp", alt: "Golden butter croissant" },
-  { href: "/breads/#specialty-breads", name: "Specialty Breads", src: "/images/studio/specialty.webp", alt: "Specialty artisan bread" },
-  { href: "/pastries/#muffins", name: "Bakery Essentials", src: "/images/studio/muffins.webp", alt: "Assortment of muffins" },
+  { href: "/breads/#buns", name: "Buns & Rolls", src: "/images/scenes/sesame-buns-rack.webp", alt: "Bluepoint sesame-topped buns on a bakery rack" },
+  { href: "/breads/#deli-loaves", name: "Breads & Loaves", src: "/images/scenes/rack-loaves.webp", alt: "Freshly baked Bluepoint bread loaves on a rack" },
+  { href: "/pastries/#croissants", name: "Pastries", src: "/images/scenes/pastry-trays.webp", alt: "Freshly baked pastries arranged on Bluepoint bakery trays" },
+  { href: "/breads/#specialty-breads", name: "Specialty Breads", src: "/images/scenes/baguette-tray.webp", alt: "Bluepoint specialty French breads on a baking tray" },
+  { href: "/pastries/#muffins", name: "Sweet Bakery Favorites", src: "/images/scenes/chocolate-pastries.webp", alt: "Assortment of freshly baked Bluepoint chocolate pastries" },
 ] as const;
 
 export function AssortmentCards() {
