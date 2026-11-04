@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { communityPartners, customerComments } from "@/data/site";
-import { aboutPhoto, communityMarks, gallery } from "@/data/photos";
+import { communityMarks, gallery } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
@@ -11,14 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function CommunityPage() {
-  const line = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"));
+  const line = gallery.find((photo) => photo.src.endsWith("pie-filling.webp"));
   const nonprofitMarks = communityMarks.filter((mark) => !/mountain-sun|oskar-blues/i.test(mark.src));
   return (
     <>
       <PageHero
         kicker="Community"
         title="Partners"
-        image={aboutPhoto}
         lede={
           <p>
             Outstanding Small Business, National Philanthropy Day in Colorado, 2016. Given by the AFP Colorado Chapter.
@@ -35,7 +34,7 @@ export default function CommunityPage() {
         </ul>
         {line ? (
           <figure className="community-line">
-            <Image src={line.src} alt={line.alt} width={line.width} height={line.height} loading="eager" />
+            <Image src={line.src} alt={line.alt} width={line.width} height={line.height} loading="eager" className="community-scene" />
           </figure>
         ) : null}
         <ul className="grid gap-6 md:grid-cols-2">

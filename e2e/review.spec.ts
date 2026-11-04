@@ -181,7 +181,18 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
     await page.goto("/breads/");
     const action = page.getByRole("link", { name: "Open your request" });
     await expect(action).toBeVisible();
-    await expect(page.getByTestId("quick-actions")).toHaveCount(0);
+    await expect(page.getByTestId("quick-actions")).toBeVisible();
+    const linkBox = await action.boundingBox();
+    const pillBox = await page.getByTestId("quick-actions").boundingBox();
+    const overlaps = Boolean(
+      linkBox &&
+        pillBox &&
+        linkBox.x < pillBox.x + pillBox.width &&
+        pillBox.x < linkBox.x + linkBox.width &&
+        linkBox.y < pillBox.y + pillBox.height &&
+        pillBox.y < linkBox.y + linkBox.height,
+    );
+    expect(overlaps, `contact pill covers the request link at ${width}px`).toBeFalsy();
     if (width < 800) {
       await page.getByRole("button", { name: "Menu" }).click();
       await expect(page.locator(".mobile-menu-actions").getByRole("link", { name: /Request pricing/ })).toBeVisible();
@@ -282,11 +293,12 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await expect(page.locator(".approved-hero-logo")).toHaveCount(0); // one brand logo in header only
-    await expect(page.locator(".site-header .original-header-logo")).toHaveAttribute("src", /bluepoint-logo-refresh\.svg/);
+    await expect(page.locator(".site-header .lockup-name")).toHaveText("Bluepoint");
     await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
     await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
     await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(0);
-    await expect(page.locator(".seamless-hero-photo")).toHaveAttribute("src", /hero-assortment\.avif/);
+    const heroSrc = await page.locator(".seamless-hero-photo").evaluate((img) => (img as HTMLImageElement).currentSrc);
+    expect(heroSrc).toMatch(width >= 1024 ? /hero-desktop/ : /hero-mobile/);
     await expect(page.locator(".seamless-hero-media .approved-product")).toHaveCount(0);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
@@ -350,7 +362,7 @@ test("mobile opening screen visibly includes bakery photography and a clear acti
   for (const width of [375, 390, 430, 768]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/");
-    const photograph = page.locator(".mobile-hero-photograph");
+    const photograph = page.locator(".hero-figure");
     const image = photograph.locator("img");
     await expect(photograph).toBeVisible();
     await expect.poll(() => image.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
@@ -358,13 +370,13 @@ test("mobile opening screen visibly includes bakery photography and a clear acti
     expect(bounds).not.toBeNull();
     expect(bounds!.y, `photograph begins inside first screen at ${width}px`).toBeLessThan(720);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toBeVisible();
-    await expect(page.getByTestId("quick-actions")).toHaveCount(0);
+    await expect(page.getByTestId("quick-actions")).toBeVisible();
     expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
   }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator(".mobile-hero-photograph")).toBeHidden();
   await expect(page.locator(".seamless-hero-media")).toBeVisible();
+  await expect.poll(() => page.locator(".seamless-hero-photo").evaluate((img) => (img as HTMLImageElement).currentSrc)).toMatch(/hero-desktop/);
 });
 
 test("assortment thumbnails remain contained inside their own positioned cards", async ({ page }) => {

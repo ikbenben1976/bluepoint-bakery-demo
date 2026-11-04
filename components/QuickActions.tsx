@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
-import { usePathname } from "next/navigation";
 import { EMAIL, PHONE_TEL } from "@/data/site";
 
 export function QuickActions() {
   const [open, setOpen] = useState(false);
   const panelId = useId();
-  const pathname = usePathname();
-  const isCatalogPage = pathname.startsWith("/breads") || pathname.startsWith("/pastries");
 
   useEffect(() => {
     if (!open) return;
@@ -22,7 +19,7 @@ export function QuickActions() {
 
 
   return (
-    <div className={`quick-actions no-print ${open ? "is-open" : ""} ${isCatalogPage ? "catalog-floating" : ""}`} data-testid="quick-actions">
+    <div className={`quick-actions no-print ${open ? "is-open" : ""}`} data-testid="quick-actions">
       <div className="quick-panel" id={panelId} hidden={!open}>
         <a href={`tel:${PHONE_TEL}`}>
           <PhoneIcon /> Call

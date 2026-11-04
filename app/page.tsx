@@ -16,28 +16,18 @@ import {
 } from "@/data/site";
 
 export default function HomePage() {
-  const baker = gallery.find((photo) => photo.src.endsWith("baker.webp"))!;
+  const production = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"))!;
 
   return (
     <>
       <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
-          <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
-          <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
-          <p className="lede">
-            For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
-          </p>
-          <p className="mobile-hero-intro">Fresh breads, rolls and pastries for Colorado kitchens.</p>
-          <Link href="/breads" className="btn btn-primary mobile-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
-          <div className="mobile-hero-photograph">
-            <Image
-              src="/images/brand/hero-assortment.avif"
-              alt="Fresh bakery assortment with baguettes, rye, buns and croissants arranged on a wooden tabletop"
-              fill
-              sizes="100vw"
-              className="mobile-hero-photo"
-              priority
-            />
+          <div className="hero-intro">
+            <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
+            <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
+            <p className="lede">
+              For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
+            </p>
           </div>
           <HeroBenefits />
           <div className="hero-actions">
@@ -45,16 +35,21 @@ export default function HomePage() {
             <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
         </div>
-        <div className="hero-media seamless-hero-media">
-          <Image
-            src="/images/brand/hero-assortment.avif"
-            alt="Bluepoint-style bread assortment: spiral rye, baguettes, sandwich rolls, a sesame bun and pastries on a wooden bakery countertop"
-            fill
-            className="seamless-hero-photo"
-            sizes="100vw"
-            priority
-          />
-        </div>
+        <figure className="hero-figure seamless-hero-media">
+          <picture>
+            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.avif" type="image/avif" />
+            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.jpg" type="image/jpeg" />
+            <source srcSet="/images/brand/hero-mobile.avif" type="image/avif" />
+            <img
+              src="/images/brand/hero-mobile.jpg"
+              alt="Illustrative assortment of wholesale breads, rolls and pastries on a bakery counter."
+              width={1600}
+              height={1200}
+              className="hero-photo seamless-hero-photo"
+            />
+          </picture>
+          <figcaption className="illustrative-note">Illustrative photo</figcaption>
+        </figure>
       </section>
 
       <section className="brand-trust" aria-label="Bluepoint Bakery credentials">
@@ -156,8 +151,8 @@ export default function HomePage() {
       <section className="block">
         <div className="shell split">
           <figure className="split-photo">
-            <Image src={baker.src} alt={baker.alt} width={baker.width} height={baker.height} loading="lazy" />
-            <figcaption>Bluepoint bakery production photograph; not presented as a portrait of Willie Ramirez.</figcaption>
+            <Image src={production.src} alt={production.alt} width={production.width} height={production.height} loading="lazy" />
+            <figcaption>Bakers on the line at the Denver bakery.</figcaption>
           </figure>
           <div>
             <p className="eyebrow">Our story</p>

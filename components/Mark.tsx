@@ -1,6 +1,6 @@
 export function LogoLockup({ condensed = false, inverse = false }: { condensed?: boolean; inverse?: boolean }) {
   const ground = inverse ? "#F6F1E8" : "#0D0D25";
-  const letter = inverse ? "#F6F1E8" : "#FFFFFF";
+  const letter = inverse ? "#0D0D25" : "#FFFFFF";
   return (
     <span className={`lockup ${condensed ? "is-small" : ""} ${inverse ? "is-inverse" : ""}`}>
       <svg className="lockup-mark" viewBox="0 0 72 72" aria-hidden="true">

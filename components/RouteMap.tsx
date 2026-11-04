@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent } from "react";
+import { useId, useMemo, useState, type MouseEvent } from "react";
 import { BASEMAP } from "@/data/basemap";
 import {
   BAKERY,
@@ -54,6 +54,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
     ).slice(0, 6);
   }, [query]);
 
+  const clipId = useId().replace(/:/g, "");
   const bakery = project(BAKERY.lon, BAKERY.lat);
   const activePt = project(active.lon, active.lat);
   const zones = ZONES.map((zone) => zoneEllipse(zone)).filter((zone) => zone != null);
@@ -84,6 +85,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
   return (
     <div className={`atlas ${preview ? "is-preview" : ""}`}>
       <div className="atlas-frame">
+      <div className="atlas-main">
       <div className="atlas-stage">
         <div className="atlas-fit">
           {/* Plain img: the basemap is already a built JPEG, and next/image would not resize it. */}
@@ -100,6 +102,12 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
             viewBox={`0 0 ${BASEMAP.width} ${BASEMAP.height}`}
             aria-hidden="true"
           >
+            <defs>
+              <clipPath id={clipId}>
+                <rect width={BASEMAP.width} height={BASEMAP.height} />
+              </clipPath>
+            </defs>
+            <g clipPath={`url(#${clipId})`}>
             {zones.map((zone) => (
               <ellipse
                 key={`${zone.cx}-${zone.cy}`}
@@ -157,19 +165,21 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
                 5105 Cook St
               </text>
             </g>
+            </g>
           </svg>
           <div className="map-pointer" onMouseMove={pickFromMap} onClick={pickFromMap} />
         </div>
       </div>
+      <ul className="map-legend map-legend-card">
+        {LEGEND.map((item) => (
+          <li key={item.key}>
+            <i style={{ background: DAY_SWATCH[item.key] }} />
+            {item.label}
+          </li>
+        ))}
+      </ul>
+      </div>
       <div className="atlas-side">
-        <ul className="map-legend">
-          {LEGEND.map((item) => (
-            <li key={item.key}>
-              <i style={{ background: DAY_SWATCH[item.key] }} />
-              {item.label}
-            </li>
-          ))}
-        </ul>
         <article className="atlas-card" aria-live="polite">
         <p className="kicker">On the route</p>
         <h3>{active.name}</h3>

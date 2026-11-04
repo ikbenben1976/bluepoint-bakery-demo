@@ -26,8 +26,8 @@ export default function ContactPage() {
     <>
       <PageHero
         kicker="Contact"
-        title="5105 Cook St."
-        lede={<p>Our baking facility and office are located at 5105 Cook St. Denver, CO 80216</p>}
+        title="Contact"
+        lede={<p>Our baking facility and office are at {ADDRESS}.</p>}
       />
       <div className="shell grid gap-10 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
         <div className="contact-facts">
@@ -43,7 +43,7 @@ export default function ContactPage() {
           </p>
           <p>
             <span className="fact-label">Email</span>
-            <a className="fact-value" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a className="fact-value contact-email" href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </p>
           <p>
             <span className="fact-label">Office hours</span>

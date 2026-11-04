@@ -23,7 +23,7 @@ export default function DeliveryPage() {
       <div className="delivery-layout">
       <RouteMap />
       <div className="delivery-lower">
-        <div>
+        <div className="delivery-routes">
           <h2>Routes named on the current map</h2>
           <p>Call us for the days on your route. The weekday schedule is not printed on the current map page.</p>
           <table className="route-table">
@@ -57,7 +57,7 @@ export default function DeliveryPage() {
             ))}
           </ul>
         </div>
-        <aside>
+        <aside className="delivery-check">
           <h2>Check a city</h2>
           <p>Same towns as the map. We will tell you the days when you call.</p>
           <DeliveryChecker idPrefix="delivery-page" context="page" />

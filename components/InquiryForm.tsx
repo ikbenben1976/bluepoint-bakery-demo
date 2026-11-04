@@ -5,16 +5,17 @@ import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL } from "@/data/site";
 import { leadWords } from "@/lib/spec";
+import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
 import { addProductLine, emptyDraft, type Draft } from "@/lib/draft";
 import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 
 const CUSTOMER_TYPES = [
-  "restaurant",
-  "cafe",
-  "hotel",
-  "grocery/retail",
-  "institution",
-  "other",
+  ["restaurant", "Restaurant"],
+  ["cafe", "Café"],
+  ["hotel", "Hotel"],
+  ["grocery/retail", "Grocery / retail"],
+  ["institution", "Institution"],
+  ["other", "Other"],
 ] as const;
 
 type Summary = {
@@ -167,7 +168,7 @@ export function InquiryForm() {
             </div>
             <div>
               <dt>Customer type</dt>
-              <dd>{summary.customerType}</dd>
+              <dd>{formatCustomerType(summary.customerType)}</dd>
             </div>
             <div>
               <dt>City or ZIP</dt>
@@ -180,7 +181,7 @@ export function InquiryForm() {
                 <br />
                 {summary.email}
                 <br />
-                {summary.phone}
+                {formatPhone(summary.phone)}
               </dd>
             </div>
             {summary.quantity ? (
@@ -192,7 +193,7 @@ export function InquiryForm() {
             {summary.startDate ? (
               <div>
                 <dt>Desired start date</dt>
-                <dd>{summary.startDate}</dd>
+                <dd>{formatStartDate(summary.startDate)}</dd>
               </div>
             ) : null}
             {summary.notes ? (
@@ -236,7 +237,7 @@ export function InquiryForm() {
         }
       }} noValidate>
         <h2>Request pricing</h2>
-        <p>This demo does not send the form. It stays in this browser.</p>
+        <p className="inquiry-intro">This demo does not send the form. It stays in this browser.</p>
         {errors.length > 0 ? (
           <ul role="alert">
             {errors.map((error) => (
@@ -253,9 +254,9 @@ export function InquiryForm() {
             Customer type
             <select id="inquiry-type" name="customerType" defaultValue={draft.businessType} required>
               <option value="">Choose one</option>
-              {CUSTOMER_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {type}
+              {CUSTOMER_TYPES.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
                 </option>
               ))}
             </select>
@@ -354,12 +355,7 @@ export function InquiryForm() {
           </label>
           <p>Sample availability, eligibility, cost and fulfillment are not confirmed. This is a question to include in the request preview—not a sample order.</p>
         </fieldset>
-        <div className="inquiry-form-actions">
-          <button className="btn btn-primary" type="submit">Preview request</button>
-          <button className="btn btn-ghost" type="button" onClick={clearRequest}>Clear saved request</button>
-        </div>
-      </form>
-      <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
+        <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
         <h2 id="inquiry-picker-title">Add a product to your request</h2>
         <p>Select an item below or <Link href="/breads">browse breads</Link> and <Link href="/pastries">pastries</Link> with photos and specifications. Your selections are saved locally.</p>
         <div className="inquiry-picker-controls">
@@ -381,6 +377,11 @@ export function InquiryForm() {
           }}>Add selected product</button>
         </div>
       </section>
+        <div className="inquiry-form-actions">
+          <button className="btn btn-primary" type="submit">Preview request</button>
+          <button className="btn btn-ghost" type="button" onClick={clearRequest}>Clear saved request</button>
+        </div>
+      </form>
     </div>
   );
 }

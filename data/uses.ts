@@ -17,7 +17,7 @@ export const uses: readonly UseCase[] = [
     slug: "burgers",
     title: "Burgers & Sliders",
     summary:
-      "Buns and Kaiser rolls from the catalog, including the hamburger buns, plus the 6x5 slider buns listed under Dinner Rolls.",
+      "Hamburger buns, Kaiser rolls, and the 6×5 slider buns.",
     match: (product) =>
       product.category === "buns" || product.name.startsWith("6x5 Slider"),
   },
@@ -25,14 +25,14 @@ export const uses: readonly UseCase[] = [
     slug: "sandwiches",
     title: "Sandwiches & Subs",
     summary:
-      "Sandwich rolls, deli loaves, pan loaves, and French breads. The bakery’s own FAQ groups baguette and hoagie rolls together.",
+      "Sandwich rolls, deli loaves, pan loaves, and French breads, including baguettes and hoagie rolls.",
     match: inCategories(["sandwich-rolls", "deli-loaves", "pan-loaves", "french-breads"]),
   },
   {
     slug: "breakfast",
     title: "Coffee & Breakfast",
     summary:
-      "Croissants, danishes, scones, muffins, muffin tops, and quick breads from the pastry catalog.",
+      "Croissants, danishes, scones, muffins, muffin tops, and quick breads.",
     match: inCategories([
       "croissants",
       "danishes",
@@ -50,7 +50,7 @@ export const uses: readonly UseCase[] = [
     slug: "dinner",
     title: "Dinner & Catering",
     summary:
-      "Dinner rolls, and the specialty breads, including the rustic rolls. The About page names catering among the businesses it serves.",
+      "Dinner rolls and specialty breads, including rustic rolls, for dinner service and catering.",
     match: inCategories(["dinner-rolls", "specialty-breads"]),
   },
 ];

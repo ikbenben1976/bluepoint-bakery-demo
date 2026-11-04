@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from "next";
-// Bundle typography from the installed package instead of downloading
-// Google Fonts during the Vercel production build.
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/600.css";
-import "@fontsource/dm-sans/700.css";
 import "./globals.css";
 import "./brand.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { QuickActions } from "@/components/QuickActions";
+import { franklin, sourceSerif } from "@/app/fonts";
 import { DISCLAIMER } from "@/data/site";
 
 export const viewport: Viewport = {
@@ -39,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${franklin.variable} ${sourceSerif.variable}`}>
       <head>
         <meta name="robots" content="noindex,nofollow" />
       </head>
@@ -53,6 +50,7 @@ export default function RootLayout({
         </div>
         <main id="main">{children}</main>
         <Footer />
+        <QuickActions />
         <JsonLd />
       </body>
     </html>

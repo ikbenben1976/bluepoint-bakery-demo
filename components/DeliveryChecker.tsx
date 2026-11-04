@@ -37,7 +37,7 @@ export function DeliveryChecker({ idPrefix, context, value, onChange }: Props) {
         value={city}
         autoComplete="off"
         onChange={(event) => setCity(event.target.value)}
-        className="mt-1"
+        className="text-field mt-1"
       />
       {suggestions.length > 0 ? (
         <ul className="mt-2 border-2 border-tan-deep bg-white" aria-label="Matching areas">

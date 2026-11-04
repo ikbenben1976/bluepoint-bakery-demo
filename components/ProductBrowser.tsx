@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import type { CatalogGroup, Product } from "@/data/products";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
-import { leadWords, publishedSize } from "@/lib/spec";
+import { cardFacts, categoryNotice, leadWords, publishedSize } from "@/lib/spec";
 import { loadDraft, saveDraft } from "@/lib/storage";
 
 type Props = {
@@ -97,13 +97,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         return (
           <section key={group.id} id={group.id} className="section-anchor">
             {photo ? (
-              <div className="group-photo">
+              <div className="group-photo" style={{ ["--photo-cap" as string]: `${Math.round(photo.width * 1.2)}px` }}>
                 <Image
                   src={photo.src}
                   alt={photo.alt}
                   fill
-                  sizes="(max-width: 900px) 100vw, 1100px"
-                  className="object-contain"
+                  sizes={`(max-width: 700px) 100vw, ${Math.round(photo.width * 1.2)}px`}
+                  className="object-cover"
                   loading="eager"
                 />
                 <div className="copy">
@@ -127,11 +127,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
               </ul>
             ) : null}
             <p className="catalog-photo-note">Category photography is illustrative; the image above does not identify every individual product or variation.</p>
+            <p className="category-notice">{categoryNotice(group.lead)}</p>
             <ul className="product-grid">
               {items.map((product) => (
                 <li key={product.id} id={product.id} className="product-card">
                   <h3>{product.name}</h3>
-                  <p className="meta">{leadWords(product)}</p>
+                  <p className="card-fact">{cardFacts(product)}</p>
+                  {product.lead !== group.lead ? <p className="meta">{leadWords(product)}</p> : null}
                   <div className="badges">
                     {product.individuallyWrapped ? <span className="badge">Individually wrapped</span> : null}
                     {product.seasonal ? <span className="badge">Seasonal</span> : null}
