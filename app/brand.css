@@ -3143,8 +3143,13 @@ legend {
   width: 100%;
   grid-column: auto;
 }
-.route-table { table-layout: fixed; }
-.route-table td, .route-table th { overflow-wrap: anywhere; }
+.route-table { table-layout: auto; width: 100%; }
+.route-table td,
+.route-table th {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
 
 @media (min-width: 760px) and (max-width: 1379px) {
   .delivery-layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
@@ -3159,10 +3164,18 @@ legend {
   .delivery-check { min-width: 0; }
 }
 
-/* #79: the Contact pill is fixed at the bottom-right. Inset this page so the
-   routes table, map, and the rest of the copy stay to the left of it. */
+/* #79 / #80: on a phone or tablet the page keeps its normal gutters. Bottom
+   padding and scroll-margin let the last copy clear the Contact pill. The
+   right inset stays only where the shell is wide enough that the pill would
+   sit on the routes table (1280 and 1440). */
 @media (max-width: 799px) {
-  .delivery-page { padding-right: 9rem; }
+  .delivery-page {
+    padding-right: 0;
+    padding-bottom: 5.75rem;
+  }
+  .delivery-page :is(h1, h2, .delivery-lede, .atlas-stage, .atlas-card, .atlas-search, .route-table, .serve-list, .delivery-check) {
+    scroll-margin-bottom: 5.75rem;
+  }
 }
 @media (min-width: 800px) and (max-width: 1379px) {
   .delivery-page { padding-right: 8rem; }

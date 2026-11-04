@@ -500,7 +500,7 @@ test("fifth assortment photo tile spans both mobile columns without cropping out
   expect(await overflow(page)).toBeLessThanOrEqual(1);
 });
 
-test("delivery labels do not overlap or clip, and the contact pill clears the page", async ({ page }) => {
+test("delivery labels do not overlap or clip, and the contact pill clears the desktop routes table", async ({ page }) => {
   const widths = [390, 768, 1280, 1440];
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
@@ -532,33 +532,79 @@ test("delivery labels do not overlap or clip, and the contact pill clears the pa
             label.bottom > stage.bottom + 1,
         )
         .map((label) => label.text);
-      return { overlaps, clipped, count: labels.length };
+      return { overlaps, clipped, count: labels.length, stageWidth: stage.width };
     });
     expect(labelReport.count, `labels at ${width}px`).toBeGreaterThan(20);
     expect(labelReport.overlaps, `label overlap at ${width}px`).toEqual([]);
     expect(labelReport.clipped, `clipped labels at ${width}px`).toEqual([]);
     expect(labelReport.clipped, `Fountain clipped at ${width}px`).not.toContain("Fountain");
 
-    const content =
-      ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-table, .serve-list, .delivery-check, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
-    const maxScroll = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
-    for (let top = 0; top <= maxScroll; top += 220) {
-      await page.evaluate((y) => window.scrollTo(0, y), top);
-      const covered = await page.evaluate((selector) => {
-        const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
-        const hits: string[] = [];
-        for (const el of document.querySelectorAll(selector)) {
-          const rect = el.getBoundingClientRect();
-          if (rect.width < 2 || rect.height < 2) continue;
-          const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
-          const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
-          if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
-        }
-        return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };
-      }, content);
-      expect(covered.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
-      expect(covered.hits, `contact pill covers content at ${width}px scroll ${top}`).toEqual([]);
+    if (width >= 1280) {
+      const content =
+        ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-table, .serve-list, .delivery-check, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
+      const maxScroll = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+      for (let top = 0; top <= maxScroll; top += 220) {
+        await page.evaluate((y) => window.scrollTo(0, y), top);
+        const covered = await page.evaluate((selector) => {
+          const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+          const hits: string[] = [];
+          for (const el of document.querySelectorAll(selector)) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width < 2 || rect.height < 2) continue;
+            const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
+            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+            if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
+          }
+          return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };
+        }, content);
+        expect(covered.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+        expect(covered.hits, `contact pill covers content at ${width}px scroll ${top}`).toEqual([]);
+      }
     }
     expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+});
+
+test("delivery content uses the full phone and tablet width without breaking table words", async ({ page }) => {
+  for (const width of [390, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.evaluate(() => {
+      const shell = document.querySelector(".delivery-page")!.getBoundingClientRect();
+      const column = document.querySelector(".delivery-layout")!.getBoundingClientRect();
+      const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
+      const available = window.innerWidth - shell.left * 2;
+      const cells = [...document.querySelectorAll(".route-table th, .route-table td")].map((cell) => {
+        const style = getComputedStyle(cell);
+        return {
+          text: (cell.textContent || "").replace(/\s+/g, " ").trim(),
+          wordBreak: style.wordBreak,
+          overflowWrap: style.overflowWrap,
+          overflows: cell.scrollWidth > cell.clientWidth + 1,
+        };
+      });
+      const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+      const padBottom = parseFloat(getComputedStyle(document.querySelector(".delivery-page")!).paddingBottom);
+      return {
+        columnWidth: column.width,
+        available,
+        stageWidth: stage.width,
+        cells,
+        padBottom,
+        pillHeight: pill.height,
+        pillVisible: pill.width > 40 && pill.top < window.innerHeight && pill.bottom > 0,
+      };
+    });
+    expect(fit.columnWidth, `content column at ${width}px`).toBeGreaterThanOrEqual(fit.available * 0.9);
+    if (width <= 420) {
+      expect(fit.stageWidth, `map fills the content column at ${width}px`).toBeGreaterThanOrEqual(fit.columnWidth * 0.9);
+    }
+    expect(fit.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+    expect(fit.padBottom, `bottom clearance at ${width}px`).toBeGreaterThanOrEqual(fit.pillHeight);
+    const broken = fit.cells.filter(
+      (cell) => cell.wordBreak === "break-all" || cell.overflowWrap === "anywhere" || cell.overflows,
+    );
+    expect(broken, `table cells break words at ${width}px`).toEqual([]);
   }
 });
