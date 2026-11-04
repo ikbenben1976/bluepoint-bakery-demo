@@ -1,30 +1,15 @@
-import Image from "next/image";
 import Link from "next/link";
+import { FramedImage } from "@/components/FramedImage";
+import { applicationVisuals } from "@/data/illustrative";
 import { uses } from "@/data/uses";
 
 // Menu applications are illustrative finished dishes, not individual Bluepoint SKUs.
 // The actual bakery assortment is displayed separately in AssortmentCards and catalog pages.
-const applications: Record<string, { image: string; alt: string; description: string }> = {
-  burgers: {
-    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1050&q=80",
-    alt: "Finished cheeseburger with fresh lettuce, tomato and a glossy bun",
-    description: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
-  },
-  sandwiches: {
-    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1050&q=80",
-    alt: "Stacked deli sandwich on sliced bread with meat, vegetables and pickle",
-    description: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
-  },
-  breakfast: {
-    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1050&q=80",
-    alt: "Croissants and breakfast pastries ready to serve at a café",
-    description: "Find croissants, muffins, scones, Danish and quick breads.",
-  },
-  dinner: {
-    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=1050&q=80",
-    alt: "Fresh bread ready for dinner or catered service",
-    description: "Explore dinner rolls, rustic breads and bread-service options.",
-  },
+const descriptions: Record<keyof typeof applicationVisuals, string> = {
+  burgers: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
+  sandwiches: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
+  breakfast: "Find croissants, muffins, scones, Danish and quick breads.",
+  dinner: "Explore dinner rolls, rustic breads and bread-service options.",
 };
 
 export function MakingCards() {
@@ -39,21 +24,24 @@ export function MakingCards() {
       </div>
       <ul className="making-visual-grid">
         {uses.map((use) => {
-          const example = applications[use.slug];
+          const example = applicationVisuals[use.slug as keyof typeof applicationVisuals];
           return (
             <li key={use.slug}>
               <Link className="making-visual-link" href={`/making/${use.slug}`}>
                 <span className="making-photo">
-                  <Image
-                    src={example.image}
+                  <FramedImage
+                    webp={example.webp}
+                    avif={example.avif}
                     alt={example.alt}
-                    fill
-                    sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 540px"
+                    width={example.width}
+                    height={example.height}
+                    sizes="(max-width: 650px) 100vw, (max-width: 1100px) 50vw, 540px"
+                    label="Illustrative image"
                   />
                 </span>
                 <span className="making-description">
                   <span className="making-title">{use.title}</span>
-                  <span className="making-summary">{example.description}</span>
+                  <span className="making-summary">{descriptions[use.slug as keyof typeof descriptions]}</span>
                   <span className="making-explore">Find matching products <span aria-hidden="true">→</span></span>
                 </span>
               </Link>
@@ -61,7 +49,10 @@ export function MakingCards() {
           );
         })}
       </ul>
-      <p className="making-footnote">Illustrative application photos, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product Assortment, above.</p>
+      <p className="making-footnote">
+        Illustrative images, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product
+        Assortment, above.
+      </p>
     </section>
   );
 }
