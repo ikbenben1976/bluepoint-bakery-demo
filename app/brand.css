@@ -3121,18 +3121,21 @@ legend {
 .delivery-page .atlas-stage {
   position: relative;
   width: 100%;
-  height: min(520px, 70vw);
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1400 / 2528;
   overflow: hidden;
   background: #c9bfae;
 }
 .delivery-page .atlas-fit {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  top: auto;
+  left: auto;
   width: 100%;
   height: auto;
+  max-height: none;
   aspect-ratio: 1400 / 2528;
-  transform: translateY(-32%);
+  transform: none;
   background: #c9bfae url("/images/front-range.jpg") 0 0 / 100% 100% no-repeat;
 }
 .delivery-page .atlas-side {
@@ -3154,6 +3157,18 @@ legend {
   .delivery-layout { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr) minmax(220px, 0.7fr); }
   .delivery-lower { display: contents; }
   .delivery-check { min-width: 0; }
+}
+
+/* #79: the Contact pill is fixed at the bottom-right. Inset this page so the
+   routes table, map, and the rest of the copy stay to the left of it. */
+@media (max-width: 799px) {
+  .delivery-page { padding-right: 9rem; }
+}
+@media (min-width: 800px) and (max-width: 1379px) {
+  .delivery-page { padding-right: 8rem; }
+}
+@media (min-width: 1380px) {
+  .delivery-page { padding-right: 3rem; }
 }
 
 .inquiry { padding-top: 2.4rem; }

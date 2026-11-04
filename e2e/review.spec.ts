@@ -499,3 +499,66 @@ test("fifth assortment photo tile spans both mobile columns without cropping out
   expect(photo!.height).toBeGreaterThan(120);
   expect(await overflow(page)).toBeLessThanOrEqual(1);
 });
+
+test("delivery labels do not overlap or clip, and the contact pill clears the page", async ({ page }) => {
+  const widths = [390, 768, 1280, 1440];
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+
+    const labelReport = await page.evaluate(() => {
+      const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
+      const labels = [...document.querySelectorAll(".delivery-page .city-label")].map((el) => {
+        const rect = el.getBoundingClientRect();
+        return { text: el.textContent?.trim() ?? "", left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+      });
+      const overlaps: string[] = [];
+      for (let i = 0; i < labels.length; i++) {
+        for (let j = i + 1; j < labels.length; j++) {
+          const a = labels[i];
+          const b = labels[j];
+          const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (overlapX > 1 && overlapY > 1) overlaps.push(`${a.text} / ${b.text}`);
+        }
+      }
+      const clipped = labels
+        .filter(
+          (label) =>
+            label.left < stage.left - 1 ||
+            label.top < stage.top - 1 ||
+            label.right > stage.right + 1 ||
+            label.bottom > stage.bottom + 1,
+        )
+        .map((label) => label.text);
+      return { overlaps, clipped, count: labels.length };
+    });
+    expect(labelReport.count, `labels at ${width}px`).toBeGreaterThan(20);
+    expect(labelReport.overlaps, `label overlap at ${width}px`).toEqual([]);
+    expect(labelReport.clipped, `clipped labels at ${width}px`).toEqual([]);
+    expect(labelReport.clipped, `Fountain clipped at ${width}px`).not.toContain("Fountain");
+
+    const content =
+      ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-table, .serve-list, .delivery-check, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
+    const maxScroll = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    for (let top = 0; top <= maxScroll; top += 220) {
+      await page.evaluate((y) => window.scrollTo(0, y), top);
+      const covered = await page.evaluate((selector) => {
+        const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+        const hits: string[] = [];
+        for (const el of document.querySelectorAll(selector)) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width < 2 || rect.height < 2) continue;
+          const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
+          const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+          if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
+        }
+        return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };
+      }, content);
+      expect(covered.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+      expect(covered.hits, `contact pill covers content at ${width}px scroll ${top}`).toEqual([]);
+    }
+    expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+});

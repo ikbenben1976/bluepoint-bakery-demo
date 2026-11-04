@@ -14,6 +14,7 @@ import {
   type RouteCity,
 } from "@/data/routes";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import { DELIVERY_BAKERY_LABEL_DY, cityLabelAnchor, cityLabelOffset } from "@/lib/deliveryMapLabels";
 import { project } from "@/lib/project";
 
 const LEGEND: { key: DayKey; label: string }[] = (
@@ -134,6 +135,8 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
             />
             {ROUTE_CITIES.map((city) => {
               const pt = project(city.lon, city.lat);
+              const offset = cityLabelOffset(city, preview);
+              const label = cityLabelAnchor(city.lon, city.lat, offset.lx, offset.ly);
               const on = city.name === active.name;
               return (
                 <g key={city.name}>
@@ -145,12 +148,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
                     stroke="#0D0D25"
                     strokeWidth={on ? 2.4 : 1.2}
                   />
-                  <text
-                    className="city-label"
-                    x={pt.x < 320 ? pt.x + 18 : pt.x + city.lx * 3}
-                    y={pt.y + city.ly * 2.4}
-                    textAnchor={pt.x < 320 ? "start" : city.lx < 0 ? "end" : "start"}
-                  >
+                  <text className="city-label" x={label.x} y={label.y} textAnchor={label.anchor}>
                     {labelOf(city)}
                   </text>
                 </g>
@@ -161,7 +159,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
               <text className="bakery-letters" x={bakery.x} y={bakery.y + 4} textAnchor="middle" fill="#FFFFFF">
                 BP
               </text>
-              <text className="city-label" x={bakery.x + 24} y={bakery.y - 28} textAnchor="start">
+              <text className="city-label" x={bakery.x + 24} y={bakery.y + (preview ? -28 : DELIVERY_BAKERY_LABEL_DY)} textAnchor="start">
                 5105 Cook St
               </text>
             </g>
