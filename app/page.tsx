@@ -28,6 +28,18 @@ export default function HomePage() {
           <p className="lede">
             For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
           </p>
+          <p className="mobile-hero-intro">Fresh breads, rolls and pastries for Colorado kitchens.</p>
+          <Link href="/breads" className="btn btn-primary mobile-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
+          <div className="mobile-hero-photograph">
+            <Image
+              src="/images/brand/hero-assortment.avif"
+              alt="Fresh bakery assortment with baguettes, rye, buns and croissants arranged on a wooden tabletop"
+              fill
+              sizes="100vw"
+              className="mobile-hero-photo"
+              priority
+            />
+          </div>
           <HeroBenefits />
           <div className="hero-actions">
             <Link href="/breads" className="btn btn-primary approved-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
