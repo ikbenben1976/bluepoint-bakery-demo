@@ -18,8 +18,8 @@ export function FeaturedProductSpec() {
       </div>
       <div className="featured-spec-card">
         <figure className="featured-spec-image">
-          <Image src="/images/studio/sesame-bun.webp" alt="Representative bun from the published bakery photo collection" fill sizes="(max-width: 650px) 75vw, 270px" />
-          <figcaption>Representative bun photo — not confirmed as this specific brioche item.</figcaption>
+          <Image src="/images/scenes/sesame-buns-rack.webp" alt="Bluepoint buns on a bakery rack; representative category photograph" fill sizes="(max-width: 650px) 75vw, 270px" />
+          <figcaption>Bluepoint bakery photograph — representative of the bun category, not a verified image of this specific SKU.</figcaption>
         </figure>
         <div className="featured-spec-info">
           <h3>{brioche.name}</h3>
