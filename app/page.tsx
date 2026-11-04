@@ -52,29 +52,6 @@ export default function HomePage() {
 
       <section className="block">
         <div className="shell">
-          <h2>More than great bread. A bakery you can count on.</h2>
-          <ul className="value-points">
-            <li>
-              <span className="value-icon" aria-hidden="true">✳</span>
-              <h3>Made from scratch</h3>
-              <p>All of our breads, pastries, and treats are made from scratch daily.</p>
-            </li>
-            <li>
-              <span className="value-icon" aria-hidden="true">↗</span>
-              <h3>Delivered six days a week</h3>
-              <p>We bake and deliver 6 days a week. Delivery days depend on the route.</p>
-            </li>
-            <li>
-              <span className="value-icon" aria-hidden="true">♡</span>
-              <h3>Real people, real service</h3>
-              <p>Knowledgeable sales professionals. A sales professional will help you open an account.</p>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="block">
-        <div className="shell">
           <MakingCards />
         </div>
       </section>
