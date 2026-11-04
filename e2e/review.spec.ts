@@ -169,13 +169,9 @@ test("links and buttons go somewhere, including tel and mailto", async ({ page }
   expect(await page.locator('a[href="mailto:sales@bluepointbakery.com"]').count()).toBeGreaterThan(0);
 });
 
-test("the call notice dismisses and stays dismissed", async ({ page }) => {
+test("no timed pop-up interrupts the homepage", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByTestId("call-notice")).toBeVisible({ timeout: 8000 });
-  await page.keyboard.press("Escape");
-  await expect(page.getByTestId("call-notice")).toHaveCount(0);
-  await page.goto("/about/");
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(5400);
   await expect(page.getByTestId("call-notice")).toHaveCount(0);
 });
 
@@ -188,7 +184,7 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
     if (width < 800) {
       await expect(page.getByTestId("quick-actions")).toBeHidden();
       await page.getByRole("button", { name: "Menu" }).click();
-      await expect(page.getByRole("navigation", { name: "Mobile" }).getByRole("link", { name: /Request pricing/ })).toBeVisible();
+      await expect(page.locator(".mobile-menu-actions").getByRole("link", { name: /Request pricing/ })).toBeVisible();
     } else {
       await expect(page.getByTestId("quick-actions")).toBeVisible();
     }
@@ -332,9 +328,11 @@ test("homepage separates illustrative menu applications from actual bakery produ
   const assortment = page.locator(".assortment");
   await expect(applications.getByRole("heading", { name: "What are you making?" })).toBeVisible();
   await expect(assortment.getByRole("heading", { name: "Our Product Assortment" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toBeVisible();
-  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
-  await expect(page.locator(".featured-spec")).toContainText("Representative bun photo");
+  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
+  const assortmentBounds = await assortment.boundingBox();
+  const applicationsBounds = await applications.boundingBox();
+  expect(assortmentBounds && applicationsBounds).toBeTruthy();
+  expect(assortmentBounds!.y).toBeLessThan(applicationsBounds!.y);
   await expect(applications.locator(".making-visual-link")).toHaveCount(4);
   await expect(assortment.locator(".assortment-card")).toHaveCount(5);
   await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
@@ -342,6 +340,8 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
+  await expect(page.locator(".featured-spec")).toBeVisible();
+  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
   await expect(page.locator(".application-section")).toHaveCount(0);
   await page.goto("/pastries/");
   await expect(page.locator(".application-section")).toHaveCount(0);
