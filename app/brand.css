@@ -2318,3 +2318,14 @@ body {
   .seamless-hero .hero-copy { padding: 1.6rem 1.05rem 1.4rem; }
   .seamless-hero h1 { font-size: 2.47rem; }
 }
+
+
+/* The approved photograph extends beneath the CTA; keep button labels opaque and readable. */
+.seamless-hero .hero-actions .approved-hero-secondary {
+  background: #fff8ef;
+}
+.seamless-hero .hero-actions .approved-hero-secondary:hover,
+.seamless-hero .hero-actions .approved-hero-secondary:focus-visible {
+  background: #0b2b51;
+  color: #fff;
+}
