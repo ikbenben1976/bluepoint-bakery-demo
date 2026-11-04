@@ -637,6 +637,69 @@ test("route dots stay beside the first word of the route name", async ({ page })
   }
 });
 
+test("homepage sections use the shared container width on phone, tablet, and desktop", async ({ page }) => {
+  const sections = [
+    [".approved-hero-benefits", "services"],
+    [".trust-credential-list", "trust strip"],
+    [".assortment", "assortment"],
+    [".application-section", "making"],
+    ["footer .footer-grid", "footer"],
+  ] as const;
+
+  for (const width of [390, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.evaluate((selectors) => {
+      const shell = document.querySelector(".assortment-section .shell")!.getBoundingClientRect();
+      const available = window.innerWidth - shell.left * 2;
+      return selectors.map(([selector, name]) => {
+        const el = document.querySelector(selector)!;
+        const rect = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        const content = rect.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        return { name, content, available, left: rect.left };
+      });
+    }, sections);
+    for (const section of fit) {
+      expect(section.content, `${section.name} width at ${width}px`).toBeGreaterThanOrEqual(section.available * 0.9);
+    }
+    if (width === 390) {
+      const trust = await page.evaluate(() => {
+        const list = document.querySelector(".trust-credential-list")!;
+        const columns = getComputedStyle(list).gridTemplateColumns.split(" ").filter(Boolean).length;
+        const listRight = list.getBoundingClientRect().right;
+        const clipped = [...list.querySelectorAll("strong, .trust-credential-copy span, .trust-credential-copy a")]
+          .filter((el) => {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            const rect = range.getBoundingClientRect();
+            return rect.width > 1 && (rect.right > listRight + 1 || el.scrollWidth > el.clientWidth + 1);
+          })
+          .map((el) => (el.textContent || "").replace(/\s+/g, " ").trim());
+        return { columns, clipped };
+      });
+      expect(trust.columns, "trust strip stacks at 390px").toBe(1);
+      expect(trust.clipped, "trust labels clipped at 390px").toEqual([]);
+    }
+  }
+
+  for (const width of [1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const edges = await page.evaluate(() => {
+      const left = (selector: string) => Math.round(document.querySelector(selector)!.getBoundingClientRect().left);
+      return {
+        trust: left(".trust-credential-list"),
+        assortment: left(".assortment"),
+        making: left(".application-section"),
+      };
+    });
+    expect(edges.making, `making lines up with assortment at ${width}px`).toBe(edges.assortment);
+    expect(edges.making, `making lines up with the trust strip at ${width}px`).toBe(edges.trust);
+  }
+});
+
 test("homepage brand: serif headline, service icons, rolling-pin logo, and contact clearance", async ({ page }) => {
   for (const width of [390, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
