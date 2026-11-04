@@ -668,6 +668,7 @@ test("homepage sections use the shared container width on phone, tablet, and des
   const sections = [
     [".approved-hero-benefits", "services"],
     [".trust-credential-list", "trust strip"],
+    [".buyer-proof", "customer proof"],
     [".assortment", "assortment"],
     [".application-section", "making"],
     ["footer .footer-grid", "footer"],
@@ -724,6 +725,113 @@ test("homepage sections use the shared container width on phone, tablet, and des
     });
     expect(edges.making, `making lines up with assortment at ${width}px`).toBe(edges.assortment);
     expect(edges.making, `making lines up with the trust strip at ${width}px`).toBe(edges.trust);
+    const proofLeft = await page.evaluate(() => Math.round(document.querySelector(".buyer-proof")!.getBoundingClientRect().left));
+    expect(proofLeft, `customer proof lines up with the trust strip at ${width}px`).toBe(edges.trust);
+  }
+});
+
+test("about story, community partners, and homepage proof use published facts only", async ({ page }) => {
+  await page.goto("/about/");
+  const about = page.locator(".about-copy");
+  await expect(about).toContainText("Fred Bramhall");
+  await expect(about).toContainText("Mary Clark");
+  await expect(about).toContainText("Best Bakery");
+  await expect(about).toContainText("Willie Ramirez");
+  await expect(about).toContainText("does not give a date");
+  await expect(about).toContainText("Outstanding Small Business");
+  await expect(about).toContainText("AFP Colorado Chapter");
+  await expect(page.locator(".about-figure figcaption")).toHaveText("Illustrative bakery photo. This is not Willie Ramirez.");
+  await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
+  await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
+
+  await page.goto("/community/");
+  await expect(page.locator(".community-page")).toContainText("Project Angel Heart");
+  await expect(page.locator(".community-page")).toContainText("CASA of Adams");
+  await expect(page.locator(".community-page")).toContainText("GrowHaus");
+  await expect(page.locator(".community-page")).toContainText("Soup for the Soul");
+  await expect(page.locator(".community-page")).not.toContainText("Mountain Sun");
+  await expect(page.locator(".community-page")).not.toContainText("Oskar Blues");
+  await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
+  await expect(page.locator(".community-page")).not.toContainText("Outstanding Small Business");
+  await expect(page.locator(".community-page")).not.toContainText("AFP");
+  await expect(page.locator(".partner-marks img")).toHaveCount(4);
+
+  await page.goto("/");
+  await expect(page.locator(".brand-trust")).toContainText("Colorado Proud");
+  await expect(page.locator(".brand-trust")).toContainText("Listed in the product directory");
+  await expect(page.locator(".brand-trust")).toContainText("Family-owned");
+  await expect(page.locator(".brand-trust")).toContainText("Minority-owned");
+  await expect(page.locator(".brand-trust")).toContainText("not a certification");
+  await expect(page.locator(".brand-trust")).not.toContainText("Outstanding Small Business");
+  await expect(page.locator(".brand-trust")).not.toContainText("AFP");
+  await expect(page.locator("main")).not.toContainText("Outstanding Small Business");
+  const proof = page.locator("#customers");
+  await expect(proof).toContainText("The Cherry Cricket");
+  await expect(proof).toContainText("Mountain Sun");
+  await expect(proof).toContainText("Oskar Blues");
+  await expect(proof.locator(".verified-client-strip img")).toHaveCount(2);
+  await expect(proof.locator(".verified-client-wordmark")).not.toContainText("logo");
+});
+
+test("about, community, trust, and customer proof fill the column without clipped text", async ({ page }) => {
+  const pages = [
+    {
+      path: "/about/",
+      root: ".about-story",
+      heading: ".ticket-hero h1",
+      body: ".about-copy p",
+    },
+    {
+      path: "/community/",
+      root: ".community-page",
+      heading: ".ticket-hero h1",
+      body: ".community-intro",
+    },
+    {
+      path: "/",
+      root: ".trust-credential-list",
+      heading: ".trust-credential-copy strong",
+      body: ".trust-credential-copy span",
+    },
+    {
+      path: "/",
+      root: ".buyer-proof",
+      heading: "#buyer-proof-heading",
+      body: ".buyer-proof .section-intro p",
+    },
+  ] as const;
+
+  for (const width of [390, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const target of pages) {
+      await page.goto(target.path);
+      await page.evaluate(() => document.fonts.ready);
+      const fit = await page.evaluate(({ root, heading, body }) => {
+        const el = document.querySelector(root)!;
+        const shell = el.closest(".shell") ?? el;
+        const shellRect = shell.getBoundingClientRect();
+        const available = window.innerWidth - shellRect.left * 2;
+        const style = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        const content = rect.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        const headingLeft = Math.round(document.querySelector(heading)!.getBoundingClientRect().left);
+        const bodyLeft = Math.round(document.querySelector(body)!.getBoundingClientRect().left);
+        const rootRight = rect.right;
+        const clipped = [...el.querySelectorAll("h1, h2, h3, p, li, strong, span, a, figcaption, small, blockquote, footer")]
+          .filter((node) => {
+            const box = node.getBoundingClientRect();
+            if (box.width < 2 || box.height < 2) return false;
+            const styleOverflow = getComputedStyle(node);
+            if (styleOverflow.display === "inline") return false;
+            return node.scrollWidth > node.clientWidth + 2 || box.right > rootRight + 2;
+          })
+          .map((node) => (node.textContent || "").replace(/\s+/g, " ").trim().slice(0, 80));
+        return { content, available, headingLeft, bodyLeft, clipped };
+      }, target);
+      expect(fit.content, `${target.root} width at ${width}px`).toBeGreaterThanOrEqual(fit.available * 0.9);
+      expect(Math.abs(fit.headingLeft - fit.bodyLeft), `${target.root} heading and body align at ${width}px`).toBeLessThanOrEqual(1);
+      expect(fit.clipped, `${target.root} clipped text at ${width}px`).toEqual([]);
+    }
   }
 });
 

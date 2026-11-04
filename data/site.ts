@@ -81,33 +81,36 @@ export const reviews = [
   },
 ] as const;
 
+/** Facts from https://www.bluepointbakery.com/community — the 2016 award is not repeated here. */
 export const communityPartners = [
   {
     name: "Project Angel Heart",
     points: [
-      "Donates thousands of baked goods a year.",
-      "Monthly birthday cakes for clients.",
-      "Bakes all the pies for the \u201cPie in the Sky\u201d fundraiser, since 2009.",
-      "Outstanding Small Business, National Philanthropy Day in Colorado, 2016. AFP Colorado Chapter. Nominated by CASA and Project Angel Heart.",
+      "Donates thousands of baked goods every year.",
+      "Each month, donates birthday cakes to clients.",
+      "Prepares and donates all the pies for Pie in the Sky, since 2009.",
     ],
   },
   {
     name: "CASA of Adams & Broomfield Counties",
     points: [
-      "Sponsors the annual Cookie Campaign (inaugural Dec 2013 raised over $15,000).",
-      "Supports CASA Classic Golf Tournament, Indulge for CASA, Kaleidoscope of Hope.",
+      "Provides cookies and baked goods through the year.",
+      "Sponsors the annual Cookie Campaign. The inaugural campaign in December 2013 raised over $15,000.",
+      "Has supported the CASA Classic Golf Tournament, Indulge for CASA, and Kaleidoscope of Hope.",
     ],
   },
   {
     name: "The GrowHaus",
     points: [
-      "Elyria-Swansea. Weekly bread for community distribution.",
+      "Nonprofit indoor farm, marketplace, and educational center in Denver\u2019s Elyria-Swansea neighborhood.",
+      "Bluepoint assists with bread weekly for community distribution.",
     ],
   },
   {
     name: "Soup for the Soul",
     points: [
-      "15+ years donating desserts for ~700 attendees (benefits Porter Hospice, St. Anthony Hospice \u2026).",
+      "For over 15 years, Bluepoint has donated desserts for around 700 attendees.",
+      "Proceeds support Porter Hospice, St. Anthony Hospice, and The Butterfly Program.",
     ],
   },
 ] as const;
@@ -115,7 +118,7 @@ export const communityPartners = [
 export const customerComments = [
   {
     quote:
-      "Since 1994 The Cherry Cricket has been pleased to serve Bluepoint Bakery products for all of our burgers and sandwiches. Their product is top notch and the customer service is outstanding.",
+      "Since 1994 The Cherry Cricket has been pleased to serve Bluepoint Bakery products for all of our burgers and sandwiches. Their product is top notch and the customer service is outstanding. It is such a pleasure to work with all of their staff and products on a day-to-day basis.",
     name: "Todd A.",
     place: "Cherry Cricket",
   },

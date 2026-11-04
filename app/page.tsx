@@ -52,6 +52,14 @@ export default function HomePage() {
         </figure>
       </section>
 
+      {/*
+        Trust strip, public facts only.
+        Colorado Proud product directory lists Bluepoint Bakery, 5105 Cook St., Denver, CO 80216, (303) 298-1100.
+        https://coloradoproud.com/product-finder/ (checked 2026-11-04).
+        “We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.”
+        https://www.bluepointbakery.com/about
+        No certification is claimed for minority-owned or family-owned.
+      */}
       <section className="brand-trust" aria-label="Bluepoint Bakery credentials">
         <div className="shell brand-trust-inner">
           <ul className="trust-credential-list">
@@ -59,7 +67,8 @@ export default function HomePage() {
               <Image src="/images/colorado-proud.jpg" alt="Colorado Proud program emblem" width={62} height={62} />
               <div className="trust-credential-copy">
                 <strong>Colorado Proud</strong>
-                <a href={COLORADO_PROUD}>Find Bluepoint in the product directory <span aria-hidden="true">→</span></a>
+                <span>Listed in the product directory</span>
+                <a href={COLORADO_PROUD}>Find Bluepoint <span aria-hidden="true">→</span></a>
               </div>
             </li>
             <li className="trust-credential">
@@ -71,7 +80,7 @@ export default function HomePage() {
               </span>
               <div className="trust-credential-copy">
                 <strong>Family-owned</strong>
-                <span>Independent Denver bakery</span>
+                <span>Headquartered in Denver, Colorado</span>
               </div>
             </li>
             <li className="trust-credential">
@@ -83,7 +92,7 @@ export default function HomePage() {
               </span>
               <div className="trust-credential-copy">
                 <strong>Minority-owned</strong>
-                <span>Bluepoint Bakery in Denver, CO</span>
+                <span>The bakery&apos;s description, not a certification</span>
               </div>
             </li>
           </ul>
@@ -142,7 +151,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block buyer-proof-block">
+      <section className="block buyer-proof-block" id="customers">
         <div className="shell">
           <BuyerProof />
         </div>
@@ -157,16 +166,21 @@ export default function HomePage() {
           <div>
             <p className="eyebrow">Our story</p>
             <h2>From baker to owner: Willie Ramirez</h2>
+            {/*
+              Same Westword wording as the About page.
+              https://www.westword.com/location/bluepoint-bakery-5170644/
+              https://www.westword.com/news/best-of-denver-winners-from-2000-5834471/
+            */}
             <p className="pull-text">
-              Founded in 1987 by chefs Fred Bramhall and Mary Clark, Bluepoint grew from its retail bakery roots into a wholesale supplier serving Colorado&apos;s food-service community.
+              Bluepoint Bakery was founded in 1987 by chefs Fred Bramhall and Mary Clark.
             </p>
             <p>
-              <a href={WESTWORD_FOUNDING}>Westword</a> tells that founding. In its Best of Denver 2000 list, the award is{" "}
+              <a href={WESTWORD_FOUNDING}>Westword</a> describes the retail bakery on Sixth Avenue and the wholesale bakery in north Denver. In its Best of Denver 2000 list, Bluepoint is named{" "}
               <a href={WESTWORD_2000}>Best Bakery</a>.
             </p>
             <p>
-              After 28 years working in and managing the bakery, Willie Ramirez acquired the business—a remarkable journey from baker to owner, documented by{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital</a>.
+              After 28 years of working in and managing the bakery, Willie Ramirez acquired full ownership, as told by{" "}
+              <a href={RAMIREZ_STUDY}>44 Business Capital</a>. The account does not give a date.
             </p>
             <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
             <Link href="/about" className="btn btn-primary">
@@ -198,10 +212,7 @@ export default function HomePage() {
         <div className="shell split">
           <div>
             <h2>Community</h2>
-            <p className="pull-text">Since 2009 we have baked all the pies for Project Angel Heart&apos;s Pie in the Sky.</p>
-            <p>
-              In 2016 the AFP Colorado Chapter named Bluepoint Outstanding Small Business at National Philanthropy Day.
-            </p>
+            <p className="pull-text">Since 2009, Bluepoint has prepared and donated all the pies for Project Angel Heart&apos;s Pie in the Sky.</p>
             <Link href="/community" className="btn btn-primary">
               Community partners
             </Link>

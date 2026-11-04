@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { communityPartners, customerComments } from "@/data/site";
+import Link from "next/link";
+import { communityPartners } from "@/data/site";
 import { communityMarks, gallery } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
 
@@ -12,21 +13,21 @@ export const metadata: Metadata = {
 
 export default function CommunityPage() {
   const line = gallery.find((photo) => photo.src.endsWith("pie-filling.webp"));
-  const nonprofitMarks = communityMarks.filter((mark) => !/mountain-sun|oskar-blues/i.test(mark.src));
   return (
     <>
       <PageHero
         kicker="Community"
         title="Partners"
-        lede={
-          <p>
-            Outstanding Small Business, National Philanthropy Day in Colorado, 2016. Given by the AFP Colorado Chapter.
-          </p>
-        }
+        lede={<p>Bluepoint Bakery is active in the Front Range community.</p>}
+        contained
       />
-      <div className="shell py-10">
-        <ul className="partner-marks">
-          {nonprofitMarks.map((mark) => (
+      {/* Intro and partner facts: https://www.bluepointbakery.com/community */}
+      <div className="shell community-page">
+        <p className="community-intro">
+          We&apos;re proud to have ongoing relationships with several local charity organizations, including the following.
+        </p>
+        <ul className="partner-marks" aria-label="Community partners">
+          {communityMarks.map((mark) => (
             <li key={mark.src}>
               <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} loading="eager" />
             </li>
@@ -35,31 +36,22 @@ export default function CommunityPage() {
         {line ? (
           <figure className="community-line">
             <Image src={line.src} alt={line.alt} width={line.width} height={line.height} loading="eager" className="community-scene" />
+            <figcaption>Pies being filled in the bakery.</figcaption>
           </figure>
         ) : null}
-        <ul className="grid gap-6 md:grid-cols-2">
+        <ul className="partner-list">
           {communityPartners.map((partner) => (
             <li key={partner.name} className="partner-card">
               <h2>{partner.name}</h2>
-              <ul className="mt-4 list-disc space-y-2 pl-5">
-                {partner.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
+              {partner.points.map((point) => (
+                <p key={point}>{point}</p>
+              ))}
             </li>
           ))}
         </ul>
-        <h2 className="section-title mt-20">From customers, on Bluepoint&apos;s site</h2>
-        <div className="mt-8 grid gap-10 md:grid-cols-2">
-          {customerComments.map((comment) => (
-            <blockquote key={comment.name} className="quiet-quote">
-              <p>&ldquo;{comment.quote}&rdquo;</p>
-              <footer>
-                {comment.name}, {comment.place}
-              </footer>
-            </blockquote>
-          ))}
-        </div>
+        <p className="community-note">
+          <Link href="/#customers">Customer comments</Link> published on Bluepoint&apos;s site are shown with the other customer names.
+        </p>
       </div>
     </>
   );

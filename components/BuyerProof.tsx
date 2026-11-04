@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CAFE_REVIEW, customerComments } from "@/data/site";
+import { customerMarks } from "@/data/photos";
 
 const audiences = [
   { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads" },
@@ -53,14 +54,16 @@ export function BuyerProof() {
         </div>
         {selected === "restaurants" ? (
           <div>
-            <div className="verified-client-strip" aria-label="Customers quoted on Bluepoint Bakery's original website">
-              <div className="verified-client-wordmark"><span>The Cherry Cricket</span><small>Published customer since 1994</small></div>
-              <div className="verified-client-mark">
-                <Image src="/images/scenes/mountain-sun.webp" alt="Mountain Sun Pub and Brewery" width={170} height={100} />
+            <div className="verified-client-strip" aria-label="Customers named on Bluepoint Bakery's community page">
+              <div className="verified-client-wordmark">
+                <span>The Cherry Cricket</span>
+                <small>Quoted on Bluepoint&apos;s community page</small>
               </div>
-              <div className="verified-client-mark">
-                <Image src="/images/scenes/oskar-blues.webp" alt="Oskar Blues Brewery" width={98} height={98} />
-              </div>
+              {customerMarks.map((mark) => (
+                <div key={mark.src} className="verified-client-mark">
+                  <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} />
+                </div>
+              ))}
             </div>
             <div className="proof-quotes">
             {customerComments.map((comment) => (

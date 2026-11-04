@@ -11,64 +11,103 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const feature = gallery.find((photo) => photo.src.endsWith("baguette-rack.webp"))!;
-  const rest = [...gallery.filter((photo) => photo.src !== feature.src), aboutPhoto];
+  const storyPhoto = gallery.find((photo) => photo.src.endsWith("baguette-rack.webp"))!;
+  const rest = gallery.filter((photo) => photo.src !== storyPhoto.src);
+  if (!rest.some((photo) => photo.src === aboutPhoto.src)) rest.push(aboutPhoto);
+
   return (
     <>
-      <PageHero kicker="Since 1987" title="About" lede={<p>Denver</p>} />
-      <div className="shell grid gap-10 py-10 md:grid-cols-[1.15fr_0.85fr] md:items-start">
-        <div className="max-w-xl space-y-6 text-lg">
-          <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
-          <p>
-            Founded in 1987 by chefs Fred Bramhall and Mary Clark, Bluepoint grew from its retail bakery roots into a wholesale supplier serving Colorado&apos;s food-service community.{" "}
-            <a href={WESTWORD_FOUNDING}>Westword</a> is the source for that founding. Its 2000 Best of Denver list names Bluepoint{" "}
-            <a href={WESTWORD_2000}>Best Bakery</a>.
-          </p>
-          <p>
-            One of Bluepoint’s most compelling stories is Willie Ramirez’s journey from long-serving baker and manager to owner. After 28 years with the bakery, he acquired the business, as described in{" "}
-            <a href={RAMIREZ_STUDY}>44 Business Capital’s acquisition story</a>.
-          </p>
-          <p>
-            All of our breads, pastries, and treats are made from scratch daily at our spacious facility. We are trusted by companies and industries that include restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. Orders can be customized to meet clients&apos; personality, characteristics, or vision.
-          </p>
-          <p>
-            The bakery’s wholesale assortment serves food-service teams across the Front Range, from independent restaurants and cafés to corporate dining, institutions, hotels and catering operations.
-          </p>
-          <p>
-            {ADDRESS}
-            <br />
-            <a className="text-royal underline" href={`tel:${PHONE_TEL}`}>
-              {PHONE_DISPLAY}
-            </a>
-            <br />
-            Office hours {HOURS}
-          </p>
+      <PageHero kicker="Since 1987" title="About" lede={<p>Denver</p>} contained />
+      <article className="shell about-page">
+        <div className="about-story">
+          <div className="about-copy">
+            {/* https://www.bluepointbakery.com/about */}
+            <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
+            {/*
+              Westword location page, wording only:
+              “Bluepoint Bakery, founded in 1987 by chefs Fred Bramhall and Mary Clark, was once one of the town’s top retail bakeries, with a storefront that exuded good smells up and down Sixth Avenue. Today, Bluepoint continues to bake from its wholesale spot in north Denver…”
+              https://www.westword.com/location/bluepoint-bakery-5170644/
+              Best of Denver 2000: “Best Bakery – Bluepoint Bakery”
+              https://www.westword.com/news/best-of-denver-winners-from-2000-5834471/
+              The location page still prints 1721 E. 58th Ave. That address is not used here.
+            */}
+            <p>
+              Bluepoint Bakery was founded in 1987 by chefs Fred Bramhall and Mary Clark.{" "}
+              <a href={WESTWORD_FOUNDING}>Westword</a> describes it as once one of the town&apos;s top retail bakeries, with a storefront on Sixth Avenue, and today a wholesale bakery in north Denver.
+            </p>
+            <p>
+              In Westword&apos;s Best of Denver 2000, Bluepoint is named <a href={WESTWORD_2000}>Best Bakery</a>.
+            </p>
+            <h2>Willie Ramirez, from baker to owner</h2>
+            {/*
+              44 Business Capital, “From Baker to Manager to Owner. Long-time Employee Acquires Bakery Business with $2,675,000 SBA Loan.”
+              “After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez needed a bank and lender that would enable him to acquire full ownership of the bakery.”
+              The financing “left all of the employees and the entire operation intact.” The page gives no date.
+              The loan amount in the headline is not repeated on this page.
+              https://www.44businesscapital.com/business-loan-story/from-baker-to-manager-to-owner-long-time-employee-acquires-bakery-business-with-2675000-sba-loan/
+            */}
+            <p>
+              After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez acquired full ownership.{" "}
+              <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery. The account does not give a date.
+            </p>
+            <blockquote className="about-quote">
+              <p>
+                &ldquo;Now that I own 100% of the bakery, I can focus on growing the business to meet the needs of my customers, namely providing the best breads to the best restaurants in Colorado.&rdquo;
+              </p>
+              <footer>Willie Ramirez, quoted by 44 Business Capital</footer>
+            </blockquote>
+            {/*
+              The 2016 award appears only in this story.
+              PR Newswire, 11 Oct 2016, Association of Fundraising Professionals, Colorado Chapter:
+              “Outstanding Small Business: Bluepoint Bakery (Denver)” at the National Philanthropy Day in Colorado Luncheon on 10 Nov 2016.
+              https://www.prnewswire.com/news-releases/outstanding-colorado-philanthropists-honored-300342380.html
+              bluepointbakery.com/community says “2016 Colorado Small Business Philanthropist of the Year.” That wording is not used here.
+            */}
+            <p>
+              In 2016, the Association of Fundraising Professionals, Colorado Chapter (AFP Colorado Chapter) named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day in Colorado luncheon on November 10.
+            </p>
+            {/* https://www.bluepointbakery.com/about */}
+            <p>
+              All of our breads, pastries, and treats are made from scratch daily at our spacious facility. We are trusted by companies and industries that include restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. Orders can be customized to meet clients&apos; personality, characteristics, or vision.
+            </p>
+            <p>
+              {ADDRESS}
+              <br />
+              <a className="text-royal underline" href={`tel:${PHONE_TEL}`}>
+                {PHONE_DISPLAY}
+              </a>
+              <br />
+              Office hours {HOURS}
+            </p>
+          </div>
+          <figure className="about-figure">
+            <Image
+              src={storyPhoto.src}
+              alt="Baguettes on a rack. Illustrative bakery photo, not a portrait of Willie Ramirez."
+              width={storyPhoto.width}
+              height={storyPhoto.height}
+              className="about-story-photo"
+              loading="eager"
+            />
+            <figcaption>Illustrative bakery photo. This is not Willie Ramirez.</figcaption>
+          </figure>
         </div>
-        <figure>
-          <Image
-            src={feature.src}
-            alt={feature.alt}
-            width={feature.width}
-            height={feature.height}
-            className="h-auto w-full"
-            loading="eager"
-          />
-          <figcaption className="mt-2 text-sm text-site">Baguettes on a rack at the Denver bakery.</figcaption>
-        </figure>
-      </div>
-      <div className="shell grid gap-4 pb-16 sm:grid-cols-3">
-        {rest.map((photo) => (
-          <Image
-            key={photo.src}
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            className="h-auto w-full"
-            loading="eager"
-          />
-        ))}
-      </div>
+        <div className="about-gallery">
+          <p className="about-gallery-note">Bakery photographs from Bluepoint&apos;s site. None of these is a portrait of Willie Ramirez.</p>
+          <div className="about-gallery-grid">
+            {rest.map((photo) => (
+              <Image
+                key={photo.src}
+                src={photo.src}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                loading="eager"
+              />
+            ))}
+          </div>
+        </div>
+      </article>
     </>
   );
 }

@@ -7,17 +7,20 @@ export function PageHero({
   title,
   lede,
   image,
+  contained = false,
 }: {
   kicker: string;
   title: string;
   lede?: ReactNode;
   image?: Photo;
+  /** Use the same column width as `.shell` so the title lines up with the page body. */
+  contained?: boolean;
 }) {
   // Small files were floating as 110–200px thumbnails. Only a photo that can
   // fill half the header near its native size is shown.
   const showImage = Boolean(image && image.width >= 640);
   return (
-    <header className={`ticket-hero${showImage ? " has-photo" : ""}`}>
+    <header className={`ticket-hero${contained ? " shell" : ""}${showImage ? " has-photo" : ""}`}>
       <div>
         <p className="kicker">{kicker}</p>
         <h1>{title}</h1>
