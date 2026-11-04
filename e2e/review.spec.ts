@@ -400,3 +400,34 @@ test("assortment thumbnails remain contained inside their own positioned cards",
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
   }
 });
+
+
+test("wholesale request uses a compact picker, not the entire catalog grid", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/wholesale/");
+  await expect(page.locator(".inquiry-catalog .product-card")).toHaveCount(0);
+  await expect(page.locator("#inquiry-picker-product")).toBeVisible();
+  await page.locator("#inquiry-picker-product").selectOption({ label: 'Brioche Bun 4"' });
+  await page.getByRole("button", { name: "Add selected product" }).click();
+  await expect(page.locator(".inquiry")).toContainText('Brioche Bun 4"');
+  const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  expect(pageHeight).toBeLessThan(8000);
+});
+
+test("homepage section order and trust strip match commercial hierarchy", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const positions = await page.evaluate(() => {
+    const y = (selector: string) => document.querySelector(selector)?.getBoundingClientRect().top ?? 999999;
+    return {
+      hero: y(".seamless-hero"),
+      trust: y(".brand-trust"),
+      assortment: y(".assortment-section"),
+      applications: y(".application-block"),
+    };
+  });
+  expect(positions.hero).toBeLessThan(positions.trust);
+  expect(positions.trust).toBeLessThan(positions.assortment);
+  expect(positions.assortment).toBeLessThan(positions.applications);
+  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
+});
