@@ -2201,7 +2201,7 @@ body {
 /* Mobile: keep the contact launcher near (but below) the sticky header so it
    cannot mask the catalog's Open your request CTA at the viewport bottom. */
 @media (max-width: 600px) {
-  .quick-actions {
+  .quick-actions.catalog-floating {
     top: 7.6rem;
     right: .65rem;
     bottom: auto;
