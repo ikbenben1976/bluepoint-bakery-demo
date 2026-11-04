@@ -1295,7 +1295,8 @@ button:active {
   z-index: 30;
   display: grid;
   gap: 0.35rem;
-  min-width: 11rem;
+  min-width: 16rem;
+  max-width: min(18rem, calc(100vw - 2rem));
   margin-top: 0.35rem;
   padding: 0.65rem 0.75rem;
   background: #fff;
@@ -3656,6 +3657,316 @@ body.menu-open .site-header .heritage-lockup {
 @media (min-width: 1100px) {
   main .shell:not(.delivery-page) {
     padding-right: 6.75rem;
+  }
+}
+
+/* Wholesale request: full column, no mid-word breaks, room to clear the Contact pill. */
+.request-flow {
+  padding-top: 1.5rem;
+  padding-bottom: 6.75rem;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.request-flow :is(h2, h3, p, li, label, legend, button, a, dd, dt, small) {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.request-flow h2 {
+  margin: 0 0 0.6rem;
+}
+.request-help {
+  margin: 0.35rem 0 0.9rem;
+  max-width: none;
+  color: #3a342c;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.request-notice {
+  margin: 0 0 1rem;
+}
+.request-progress {
+  margin: 0 0 1.15rem;
+}
+.request-progress-title {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.request-progress ol {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.request-progress li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.request-progress li::before {
+  content: attr(data-index);
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: #f3eadc;
+  color: #0d0d25;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex: none;
+}
+.request-progress button {
+  min-height: 44px;
+  padding: 0.2rem 0.15rem;
+  border: 0;
+  background: transparent;
+  color: #3a342c;
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.request-progress li.step-complete button {
+  color: #0b2b51;
+}
+.request-progress li.step-complete::before {
+  background: #0b2b51;
+  color: #fff;
+}
+.request-progress li.step-current::before {
+  background: #0b2b51;
+  color: #fff;
+  box-shadow: 0 0 0 3px #f3eadc, 0 0 0 5px #0b2b51;
+}
+.request-progress button[aria-current="step"] {
+  color: #0d0d25;
+  box-shadow: none;
+}
+.request-flow label,
+.request-flow legend,
+.request-flow .inquiry-picker-controls > label {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #0d0d25;
+  line-height: 1.35;
+}
+.request-flow .sample-interest p,
+.request-flow .custom-interest > p,
+.request-flow .day-fieldset .request-help {
+  font-size: 0.875rem;
+}
+.request-grid,
+.request-line-grid,
+.account-path-grid {
+  display: grid;
+  gap: 0.85rem;
+  width: 100%;
+}
+.account-paths {
+  width: 100%;
+  margin: 0 0 1.1rem;
+}
+.account-paths h2 {
+  margin-bottom: 0.7rem;
+}
+.account-path {
+  margin: 0;
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  border-radius: 12px;
+}
+.request-flow label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.request-flow .choice-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.8rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.request-flow .choice-label input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  flex: none;
+}
+.request-lines {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.request-line {
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  border-radius: 12px;
+}
+.request-line .line-name {
+  display: block;
+  font-weight: 700;
+}
+.request-line small {
+  display: block;
+  margin-top: 0.15rem;
+  color: #3a342c;
+  font-size: 0.92rem;
+}
+.custom-interest,
+.day-fieldset {
+  margin: 0.4rem 0 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e4d8c4;
+  border-radius: 12px;
+  background: #fff;
+  min-width: 0;
+}
+.custom-interest legend,
+.day-fieldset legend {
+  padding: 0 0.35rem;
+}
+.day-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  width: 100%;
+}
+.day-choices .chip {
+  white-space: nowrap;
+}
+.area-suggestions {
+  list-style: none;
+  margin: 0.4rem 0 0.8rem;
+  padding: 0;
+  border: 1px solid #e4d8c4;
+  background: #fff;
+}
+.area-suggestions button {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.8rem;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.area-suggestions button:hover,
+.area-suggestions button:focus-visible {
+  background: #f6f1e8;
+}
+.request-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0 0.4rem;
+}
+.request-flow #request-errors {
+  margin: 0 0 1rem;
+  padding: 0.8rem 1rem 0.8rem 1.4rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  border-left: 4px solid #0b2b51;
+}
+.request-flow .review-card {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 1rem;
+}
+#request-preview {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+#sample-request,
+.request-flow [data-testid="wholesale-step"],
+#inquiry-confirmation {
+  scroll-margin-top: 8.5rem;
+  scroll-margin-bottom: 6.5rem;
+}
+@media (min-width: 800px) {
+  .request-grid,
+  .request-line-grid,
+  .account-path-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+/* Tablet: the Contact pill sits in the bottom-right. Keep fields and actions
+   out of that corner. The column itself stays full width. */
+@media (min-width: 700px) and (max-width: 1099px) {
+  .request-flow input:not([type="checkbox"]),
+  .request-flow select,
+  .request-flow textarea,
+  .request-flow .request-actions,
+  .request-flow .day-choices,
+  .request-flow .inquiry-picker-controls {
+    width: calc(100% - 8.75rem);
+    max-width: calc(100% - 8.75rem);
+  }
+}
+@media (max-width: 699px) {
+  .request-progress ol {
+    gap: 0.85rem;
+  }
+  .request-progress li {
+    position: relative;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .request-progress li::before {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .request-progress button {
+    position: absolute;
+    inset: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-height: 0;
+    padding: 0;
+  }
+  .request-progress .step-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+@media print {
+  .request-actions,
+  .request-progress,
+  .account-paths,
+  .request-notice {
+    display: none !important;
   }
 }
 

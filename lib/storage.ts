@@ -18,9 +18,11 @@ function cleanLine(value: unknown): DraftLine | null {
   const unit =
     product.units.length === 0
       ? ""
-      : product.units.includes(raw.unit ?? "")
-        ? (raw.unit as string)
-        : product.units[0];
+      : product.units.length === 1
+        ? product.units[0]
+        : typeof raw.unit === "string" && product.units.includes(raw.unit)
+          ? raw.unit
+          : "";
   const sliceOptions = product.sliceOptions ?? [];
   let slice = "";
   if (sliceOptions.length === 1) slice = sliceOptions[0];
@@ -65,6 +67,13 @@ export function loadDraft(): Draft {
       productsText: stringField(parsed.productsText),
       weeklyQuantity: stringField(parsed.weeklyQuantity),
       askAboutSamples: parsed.askAboutSamples === true,
+      sampleInterest: stringField(parsed.sampleInterest),
+      customFamily: ["breads", "pastries", "other"].includes(parsed.customFamily ?? "")
+        ? (parsed.customFamily as string)
+        : "",
+      customSize: stringField(parsed.customSize),
+      customPackaging: stringField(parsed.customPackaging),
+      consent: parsed.consent === true,
       lines,
       firstDelivery: /^\d{4}-\d{2}-\d{2}$/.test(parsed.firstDelivery ?? "")
         ? (parsed.firstDelivery as string)

@@ -49,6 +49,7 @@ test("request builder adds, edits, removes, and persists", async ({ page }) => {
   await card.getByRole("button", { name: "Add to request" }).click();
   await expect(card.getByText("In your request")).toBeVisible();
   await page.goto("/wholesale/");
+  await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.getByTestId("inquiry-form").locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
   const qty = page.getByRole("spinbutton", { name: 'Quantity for Brioche Bun 4"' });
   await qty.fill("4");
@@ -62,37 +63,40 @@ test("request builder adds, edits, removes, and persists", async ({ page }) => {
 test("wholesale form validates, then confirms, empty and prefilled", async ({ page }) => {
   await page.goto("/wholesale/");
   await expect(page.getByTestId("inquiry-form")).toBeVisible();
-  await expect(page.locator("#inquiry-products")).toBeVisible();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to products" }).click();
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Enter the business name.");
 
   await page.locator("#inquiry-business").fill("Key Cafe");
   await page.locator("#inquiry-type").selectOption("cafe");
-  await page.locator("#inquiry-delivery").fill("Denver");
   await page.locator("#inquiry-contact").fill("Ada Baker");
   await page.locator("#inquiry-email").fill("ada@example.com");
   await page.locator("#inquiry-phone").fill("3035550100");
-  await page.locator("#inquiry-products").fill("Sesame kaiser rolls");
   await page.locator("#inquiry-quantity").fill("about 20 dozen");
+  await page.getByRole("button", { name: "Continue to products" }).click();
+  await expect(page.locator("#inquiry-products")).toBeVisible();
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+  await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Select or describe at least one product.");
+  await page.locator("#inquiry-products").fill("Sesame kaiser rolls");
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+  await page.getByRole("button", { name: "Preview request" }).click();
+  await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Enter a delivery city.");
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.getByRole("button", { name: "Preview request" }).click();
+  await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("does not submit the request");
+  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
     "This is a preview only. No message has been sent to Bluepoint Bakery.",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("This concept site does not submit wholesale requests.");
 
   await page.goto("/breads/");
   await page.locator(".product-card", { hasText: 'Potato Bun 4"' }).getByRole("button", { name: "Add to request" }).click();
   await page.goto("/wholesale/");
-  await expect(page.getByTestId("inquiry-form").locator(".line-name", { hasText: 'Potato Bun 4"' })).toBeVisible();
-  await page.locator("#inquiry-business").fill("Key Cafe");
-  await page.locator("#inquiry-type").selectOption("restaurant");
-  await page.locator("#inquiry-delivery").fill("Boulder");
-  await page.locator("#inquiry-contact").fill("Ada Baker");
-  await page.locator("#inquiry-email").fill("ada@example.com");
-  await page.locator("#inquiry-phone").fill("3035550100");
-  await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText('Potato Bun 4"');
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
 });
 
 test("keyboard can complete the wholesale form", async ({ page }) => {
@@ -104,17 +108,26 @@ test("keyboard can complete the wholesale form", async ({ page }) => {
   await fillWithKeyboard("#inquiry-business", "Keyboard Cafe");
   await page.locator("#inquiry-type").focus();
   await page.keyboard.press("ArrowDown");
-  await fillWithKeyboard("#inquiry-delivery", "Denver");
   await fillWithKeyboard("#inquiry-contact", "Ada Baker");
   await fillWithKeyboard("#inquiry-email", "ada@example.com");
   await fillWithKeyboard("#inquiry-phone", "3035550199");
   await fillWithKeyboard("#inquiry-quantity", "10 dozen");
-  await fillWithKeyboard("#inquiry-products", "Kaiser rolls");
   await fillWithKeyboard("#inquiry-notes", "Please call mornings.");
+  await page.getByRole("button", { name: "Continue to products" }).focus();
+  await page.keyboard.press("Enter");
+  await fillWithKeyboard("#inquiry-products", "Kaiser rolls");
+  await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).focus();
+  await page.keyboard.press("Space");
+  await page.getByRole("button", { name: "Continue to delivery" }).focus();
+  await page.keyboard.press("Enter");
+  await fillWithKeyboard("#inquiry-delivery", "Denver");
+  await page.locator("#inquiry-consent").focus();
+  await page.keyboard.press("Space");
   await page.getByRole("button", { name: "Preview request" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Please advise whether samples are available");
 });
 
 for (const width of [375, 390]) {
@@ -247,23 +260,32 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await page.goto("/wholesale/");
   await page.locator("#inquiry-business").fill("A Test Kitchen");
   await page.locator("#inquiry-type").selectOption("restaurant");
-  await page.locator("#inquiry-delivery").fill("Denver");
   await page.locator("#inquiry-contact").fill("Jo Baker");
   await page.locator("#inquiry-email").fill("jo@example.com");
   await page.locator("#inquiry-phone").fill("3035550199");
   await page.locator("#inquiry-quantity").fill("40 dozen per week");
+  await page.getByRole("button", { name: "Continue to products" }).click();
   await page.locator("#inquiry-products").fill("Hamburger buns");
   await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();
+  await page.locator("#inquiry-sample-products").fill("hamburger buns");
   await page.goto("/breads/");
   await page.goto("/wholesale/");
+  await page.getByRole("button", { name: "Business", exact: true }).click();
   await expect(page.locator("#inquiry-business")).toHaveValue("A Test Kitchen");
   await expect(page.locator("#inquiry-quantity")).toHaveValue("40 dozen per week");
+  await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).toBeChecked();
+  await expect(page.locator("#inquiry-products")).toHaveValue("Hamburger buns");
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Please advise whether samples are available");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("hamburger buns");
   await page.getByRole("button", { name: "Clear request" }).click();
   await expect(page.locator("#inquiry-business")).toHaveValue("");
+  await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).not.toBeChecked();
 });
 
@@ -316,11 +338,15 @@ test("wholesale preview keeps catalog selection AND additional requirements", as
   await page.goto("/wholesale/");
   await page.locator("#inquiry-business").fill("Menu Test");
   await page.locator("#inquiry-type").selectOption("restaurant");
-  await page.locator("#inquiry-delivery").fill("Denver");
   await page.locator("#inquiry-contact").fill("Alex Baker");
   await page.locator("#inquiry-email").fill("alex@example.com");
   await page.locator("#inquiry-phone").fill("3035550123");
+  await page.getByRole("button", { name: "Continue to products" }).click();
+  await expect(page.getByTestId("inquiry-form").locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
   await page.locator("#inquiry-products").fill("Also interested in a custom sandwich roll.");
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
@@ -423,11 +449,12 @@ test("assortment thumbnails remain contained inside their own positioned cards",
 test("wholesale request uses a compact picker, not the entire catalog grid", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/wholesale/");
+  await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.locator(".inquiry-catalog .product-card")).toHaveCount(0);
   await expect(page.locator("#inquiry-picker-product")).toBeVisible();
   await page.locator("#inquiry-picker-product").selectOption({ label: 'Brioche Bun 4"' });
   await page.getByRole("button", { name: "Add selected product" }).click();
-  await expect(page.locator(".inquiry")).toContainText('Brioche Bun 4"');
+  await expect(page.locator(".request-flow")).toContainText('Brioche Bun 4"');
   const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
   expect(pageHeight).toBeLessThan(8000);
 });
