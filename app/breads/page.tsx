@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { breadGroups } from "@/data/products";
 import { categoryPhotos } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
-import { MakingCards } from "@/components/MakingCards";
 import { ProductBrowser } from "@/components/ProductBrowser";
+import { FeaturedProductSpec } from "@/components/FeaturedProductSpec";
 
 export const metadata: Metadata = {
   title: "Breads",
@@ -26,8 +26,8 @@ export default function BreadsPage() {
         }
       />
       <div className="shell py-12">
-        <MakingCards />
         <ProductBrowser groups={breadGroups} />
+        <div className="featured-spec-in-catalog"><FeaturedProductSpec /></div>
       </div>
     </>
   );

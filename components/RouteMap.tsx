@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent } from "react";
+import { useId, useMemo, useState, type MouseEvent } from "react";
 import { BASEMAP } from "@/data/basemap";
 import {
   BAKERY,
@@ -14,6 +14,7 @@ import {
   type RouteCity,
 } from "@/data/routes";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import { DELIVERY_BAKERY_LABEL_DY, cityLabelAnchor, cityLabelOffset } from "@/lib/deliveryMapLabels";
 import { project } from "@/lib/project";
 
 const LEGEND: { key: DayKey; label: string }[] = (
@@ -54,6 +55,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
     ).slice(0, 6);
   }, [query]);
 
+  const clipId = useId().replace(/:/g, "");
   const bakery = project(BAKERY.lon, BAKERY.lat);
   const activePt = project(active.lon, active.lat);
   const zones = ZONES.map((zone) => zoneEllipse(zone)).filter((zone) => zone != null);
@@ -84,6 +86,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
   return (
     <div className={`atlas ${preview ? "is-preview" : ""}`}>
       <div className="atlas-frame">
+      <div className="atlas-main">
       <div className="atlas-stage">
         <div className="atlas-fit">
           {/* Plain img: the basemap is already a built JPEG, and next/image would not resize it. */}
@@ -100,6 +103,12 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
             viewBox={`0 0 ${BASEMAP.width} ${BASEMAP.height}`}
             aria-hidden="true"
           >
+            <defs>
+              <clipPath id={clipId}>
+                <rect width={BASEMAP.width} height={BASEMAP.height} />
+              </clipPath>
+            </defs>
+            <g clipPath={`url(#${clipId})`}>
             {zones.map((zone) => (
               <ellipse
                 key={`${zone.cx}-${zone.cy}`}
@@ -126,6 +135,8 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
             />
             {ROUTE_CITIES.map((city) => {
               const pt = project(city.lon, city.lat);
+              const offset = cityLabelOffset(city, preview);
+              const label = cityLabelAnchor(city.lon, city.lat, offset.lx, offset.ly);
               const on = city.name === active.name;
               return (
                 <g key={city.name}>
@@ -137,12 +148,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
                     stroke="#0D0D25"
                     strokeWidth={on ? 2.4 : 1.2}
                   />
-                  <text
-                    className="city-label"
-                    x={pt.x < 320 ? pt.x + 18 : pt.x + city.lx * 3}
-                    y={pt.y + city.ly * 2.4}
-                    textAnchor={pt.x < 320 ? "start" : city.lx < 0 ? "end" : "start"}
-                  >
+                  <text className="city-label" x={label.x} y={label.y} textAnchor={label.anchor}>
                     {labelOf(city)}
                   </text>
                 </g>
@@ -153,23 +159,25 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
               <text className="bakery-letters" x={bakery.x} y={bakery.y + 4} textAnchor="middle" fill="#FFFFFF">
                 BP
               </text>
-              <text className="city-label" x={bakery.x + 24} y={bakery.y - 28} textAnchor="start">
+              <text className="city-label" x={bakery.x + 24} y={bakery.y + (preview ? -28 : DELIVERY_BAKERY_LABEL_DY)} textAnchor="start">
                 5105 Cook St
               </text>
+            </g>
             </g>
           </svg>
           <div className="map-pointer" onMouseMove={pickFromMap} onClick={pickFromMap} />
         </div>
       </div>
+      <ul className="map-legend map-legend-card">
+        {LEGEND.map((item) => (
+          <li key={item.key}>
+            <i style={{ background: DAY_SWATCH[item.key] }} />
+            {item.label}
+          </li>
+        ))}
+      </ul>
+      </div>
       <div className="atlas-side">
-        <ul className="map-legend">
-          {LEGEND.map((item) => (
-            <li key={item.key}>
-              <i style={{ background: DAY_SWATCH[item.key] }} />
-              {item.label}
-            </li>
-          ))}
-        </ul>
         <article className="atlas-card" aria-live="polite">
         <p className="kicker">On the route</p>
         <h3>{active.name}</h3>

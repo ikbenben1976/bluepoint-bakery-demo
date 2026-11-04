@@ -1,16 +1,11 @@
 import type { Metadata, Viewport } from "next";
-// Bundle typography from the installed package instead of downloading
-// Google Fonts during the Vercel production build.
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/600.css";
-import "@fontsource/dm-sans/700.css";
 import "./globals.css";
 import "./brand.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Notice } from "@/components/Notice";
-import { QuickActions } from "@/components/QuickActions";
 import { JsonLd } from "@/components/JsonLd";
+import { QuickActions } from "@/components/QuickActions";
+import { franklin, sourceSerif } from "@/app/fonts";
 import { DISCLAIMER } from "@/data/site";
 
 export const viewport: Viewport = {
@@ -20,7 +15,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://demo.invalid"),
+  metadataBase: new URL("https://bluepoint-bakery-demo.vercel.app"),
+  icons: { icon: [{ url: "/icon.png", type: "image/png", sizes: "48x48" }], shortcut: "/icon.png" },
   title: {
     default: "Bluepoint Bakery",
     template: "%s | Bluepoint Bakery",
@@ -40,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${franklin.variable} ${sourceSerif.variable}`}>
       <head>
         <meta name="robots" content="noindex,nofollow" />
       </head>
@@ -54,7 +50,6 @@ export default function RootLayout({
         </div>
         <main id="main">{children}</main>
         <Footer />
-        <Notice />
         <QuickActions />
         <JsonLd />
       </body>

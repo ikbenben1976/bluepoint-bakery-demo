@@ -169,34 +169,34 @@ test("links and buttons go somewhere, including tel and mailto", async ({ page }
   expect(await page.locator('a[href="mailto:sales@bluepointbakery.com"]').count()).toBeGreaterThan(0);
 });
 
-test("the call notice dismisses and stays dismissed", async ({ page }) => {
+test("no timed pop-up interrupts the homepage", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByTestId("call-notice")).toBeVisible({ timeout: 8000 });
-  await page.keyboard.press("Escape");
-  await expect(page.getByTestId("call-notice")).toHaveCount(0);
-  await page.goto("/about/");
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(5400);
   await expect(page.getByTestId("call-notice")).toHaveCount(0);
 });
 
-test("the contact control does not cover the request button", async ({ page }) => {
-  for (const width of [375, 390, 1280]) {
+test("the mobile catalog request CTA is unobstructed and contact is in navigation", async ({ page }) => {
+  for (const width of [375, 390, 768, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto("/breads/");
-    if (width < 800) {
-      await page.getByRole("button", { name: "Contact" }).click();
-    }
-    const widget = await page.getByTestId("quick-actions").boundingBox();
-    const request = await page.getByRole("link", { name: "Open your request" }).boundingBox();
-    expect(widget && request).toBeTruthy();
-    if (!widget || !request) continue;
-    const overlaps = !(
-      widget.x + widget.width < request.x ||
-      request.x + request.width < widget.x ||
-      widget.y + widget.height < request.y ||
-      request.y + request.height < widget.y
+    const action = page.getByRole("link", { name: "Open your request" });
+    await expect(action).toBeVisible();
+    await expect(page.getByTestId("quick-actions")).toBeVisible();
+    const linkBox = await action.boundingBox();
+    const pillBox = await page.getByTestId("quick-actions").boundingBox();
+    const overlaps = Boolean(
+      linkBox &&
+        pillBox &&
+        linkBox.x < pillBox.x + pillBox.width &&
+        pillBox.x < linkBox.x + linkBox.width &&
+        linkBox.y < pillBox.y + pillBox.height &&
+        pillBox.y < linkBox.y + linkBox.height,
     );
-    expect(overlaps, String(width)).toBeFalsy();
+    expect(overlaps, `contact pill covers the request link at ${width}px`).toBeFalsy();
+    if (width < 800) {
+      await page.getByRole("button", { name: "Menu" }).click();
+      await expect(page.locator(".mobile-menu-actions").getByRole("link", { name: /Request pricing/ })).toBeVisible();
+    }
   }
 });
 
@@ -232,7 +232,7 @@ test("buyer-first homepage has photographed application links and sourced segmen
   await page.getByRole("tab", { name: "Cafés & coffee shops" }).click();
   await expect(page.getByRole("tabpanel")).toContainText("Restaurantji");
   await page.getByRole("tab", { name: "Hotels & catering" }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("Named endorsements for this category have not been provided");
+  await expect(page.getByRole("tabpanel")).toContainText("breakfast buffets");
 });
 
 test("home delivery lookup qualifies city and does not promise a specific route", async ({ page }) => {
@@ -280,9 +280,358 @@ test("capture homepage and buyer-request visual review at desktop and mobile wid
   for (const [name, width] of [["desktop", 1440], ["mobile", 390]] as const) {
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
     await page.goto("/");
+    await expect.poll(async () => page.locator(".seamless-hero-photo").evaluate((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
     await page.screenshot({ path: `test-results/home-${name}.png`, fullPage: true, animations: "disabled" });
     await page.goto("/wholesale/");
     await page.getByTestId("inquiry-form").waitFor();
     await page.screenshot({ path: `test-results/wholesale-${name}.png`, fullPage: true, animations: "disabled" });
+  }
+});
+
+test("approved refreshed hero shows recognizable brand, value propositions and functioning actions", async ({ page }) => {
+  for (const width of [390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.locator(".approved-hero-logo")).toHaveCount(0); // one brand logo in header only
+    await expect(page.locator(".site-header .lockup-name")).toHaveText("Bluepoint");
+    await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
+    await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
+    await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(0);
+    const heroSrc = await page.locator(".seamless-hero-photo").evaluate((img) => (img as HTMLImageElement).currentSrc);
+    expect(heroSrc).toMatch(width >= 1024 ? /hero-desktop/ : /hero-mobile/);
+    await expect(page.locator(".seamless-hero-media .approved-product")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
+    await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+  await page.goto("/");
+  const icon = await page.locator('link[rel="icon"][href*="icon.png"]').count();
+  expect(icon).toBeGreaterThan(0);
+});
+
+test("wholesale preview keeps catalog selection AND additional requirements", async ({ page }) => {
+  await page.goto("/breads/");
+  await page.locator(".product-card", { hasText: 'Brioche Bun 4"' }).getByRole("button", { name: "Add to request" }).click();
+  await page.goto("/wholesale/");
+  await page.locator("#inquiry-business").fill("Menu Test");
+  await page.locator("#inquiry-type").selectOption("restaurant");
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.locator("#inquiry-contact").fill("Alex Baker");
+  await page.locator("#inquiry-email").fill("alex@example.com");
+  await page.locator("#inquiry-phone").fill("3035550123");
+  await page.locator("#inquiry-products").fill("Also interested in a custom sandwich roll.");
+  await page.getByRole("button", { name: "Preview request" }).click();
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
+});
+
+test("sector pages show useful related catalog links; contact email is clickable", async ({ page }) => {
+  await page.goto("/sectors/cafes/");
+  await expect(page.getByRole("navigation", { name: /Explore more for Cafés and coffee shops/ })).toContainText("Coffee and breakfast");
+  await page.goto("/contact/");
+  await expect(page.locator('.contact-facts a[href="mailto:sales@bluepointbakery.com"]')).toBeVisible();
+});
+
+test("homepage separates illustrative menu applications from actual bakery product assortment", async ({ page }) => {
+  await page.goto("/");
+  const applications = page.locator(".application-section");
+  const assortment = page.locator(".assortment");
+  await expect(applications.getByRole("heading", { name: "What are you making?" })).toBeVisible();
+  await expect(assortment.getByRole("heading", { name: "Our Product Assortment" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
+  const assortmentBounds = await assortment.boundingBox();
+  const applicationsBounds = await applications.boundingBox();
+  expect(assortmentBounds && applicationsBounds).toBeTruthy();
+  expect(assortmentBounds!.y).toBeLessThan(applicationsBounds!.y);
+  await expect(applications.locator(".making-visual-link")).toHaveCount(4);
+  await expect(assortment.locator(".assortment-card")).toHaveCount(5);
+  await expect(applications.locator(".making-visual-link img").first()).toHaveAttribute("src", /unsplash\.com/);
+  await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
+  await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
+  await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
+  await page.goto("/breads/");
+  await expect(page.locator(".featured-spec")).toBeVisible();
+  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
+  await expect(page.locator(".application-section")).toHaveCount(0);
+  await page.goto("/pastries/");
+  await expect(page.locator(".application-section")).toHaveCount(0);
+});
+
+
+test("mobile opening screen visibly includes bakery photography and a clear action", async ({ page }) => {
+  for (const width of [375, 390, 430, 768]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    const photograph = page.locator(".hero-figure");
+    const image = photograph.locator("img");
+    await expect(photograph).toBeVisible();
+    await expect.poll(() => image.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
+    const bounds = await photograph.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.y, `photograph begins inside first screen at ${width}px`).toBeLessThan(720);
+    await expect(page.getByRole("link", { name: /Explore Our Products/ })).toBeVisible();
+    await expect(page.getByTestId("quick-actions")).toBeVisible();
+    expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await expect(page.locator(".seamless-hero-media")).toBeVisible();
+  await expect.poll(() => page.locator(".seamless-hero-photo").evaluate((img) => (img as HTMLImageElement).currentSrc)).toMatch(/hero-desktop/);
+});
+
+test("assortment thumbnails remain contained inside their own positioned cards", async ({ page }) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const cards = page.locator(".assortment-card");
+    await expect(cards).toHaveCount(5);
+    const cardItems = await cards.all();
+    for (let i = 0; i < cardItems.length; i++) {
+      const card = cardItems[i];
+      const wrapper = card.locator(".assortment-photo");
+      const img = wrapper.locator("img");
+      await expect(img).toBeVisible();
+      const layout = await wrapper.evaluate((element) => {
+        const outer = element.getBoundingClientRect();
+        const image = element.querySelector("img")!.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return {
+          positioned: style.position === "relative",
+          clipped: style.overflow === "hidden",
+          aspect: outer.width / outer.height,
+          inside: image.left >= outer.left - 1 && image.top >= outer.top - 1 &&
+            image.right <= outer.right + 1 && image.bottom <= outer.bottom + 1,
+        };
+      });
+      expect(layout.positioned, `positioned width=${width}`).toBeTruthy();
+      expect(layout.clipped, `clipped width=${width}`).toBeTruthy();
+      if (!(width <= 600 && i === cardItems.length - 1)) {
+        expect(layout.aspect, `photo aspect width=${width}`).toBeGreaterThan(1.20);
+        expect(layout.aspect, `photo aspect width=${width}`).toBeLessThan(1.30);
+      } else {
+        // The intentional full-width mobile editorial card uses a tall crop.
+        expect(layout.aspect, "wide feature tile image has positive dimensions").toBeGreaterThan(.9);
+      }
+      expect(layout.inside, `image contained width=${width}`).toBeTruthy();
+    }
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+});
+
+
+test("wholesale request uses a compact picker, not the entire catalog grid", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/wholesale/");
+  await expect(page.locator(".inquiry-catalog .product-card")).toHaveCount(0);
+  await expect(page.locator("#inquiry-picker-product")).toBeVisible();
+  await page.locator("#inquiry-picker-product").selectOption({ label: 'Brioche Bun 4"' });
+  await page.getByRole("button", { name: "Add selected product" }).click();
+  await expect(page.locator(".inquiry")).toContainText('Brioche Bun 4"');
+  const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  expect(pageHeight).toBeLessThan(8000);
+});
+
+test("homepage section order and trust strip match commercial hierarchy", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const positions = await page.evaluate(() => {
+    const y = (selector: string) => document.querySelector(selector)?.getBoundingClientRect().top ?? 999999;
+    return {
+      hero: y(".seamless-hero"),
+      trust: y(".brand-trust"),
+      assortment: y(".assortment-section"),
+      applications: y(".application-block"),
+    };
+  });
+  expect(positions.hero).toBeLessThan(positions.trust);
+  expect(positions.trust).toBeLessThan(positions.assortment);
+  expect(positions.assortment).toBeLessThan(positions.applications);
+  await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
+});
+
+
+test("branded trust rail and real bakery scene photos visually fit at desktop and mobile", async ({ page }) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const badges = page.locator(".trust-credential");
+    await expect(badges).toHaveCount(3);
+    await expect(badges.nth(0)).toContainText("Colorado Proud");
+    await expect(badges.nth(1)).toContainText("Family-owned");
+    await expect(badges.nth(2)).toContainText("Minority-owned");
+    const photos = page.locator(".assortment-card .assortment-photo img");
+    await expect(photos).toHaveCount(5);
+    await expect.poll(() => photos.evaluateAll((imgs) => imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
+    expect(await photos.evaluateAll((imgs) => imgs.every((img) => img.getAttribute("src")?.includes("/scenes/")))).toBeTruthy();
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+});
+
+test("bread and pastry catalog images stay within a consistent editorial photo frame", async ({ page }) => {
+  for (const [name, path] of [["breads", "/breads/"], ["pastries", "/pastries/"]] as const) {
+    for (const [screen, width] of [["mobile", 390], ["desktop", 1440]] as const) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await page.goto(path);
+      const photos = page.locator(".section-anchor .group-photo");
+      await expect(photos.first()).toBeVisible();
+      const firstImage = photos.first().locator("img");
+      await expect.poll(() => firstImage.evaluate((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
+      const heights = await photos.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().height)));
+      expect(heights.every((height) => height >= 200 && height <= 350), `${name} ${screen}: ${heights.join(",")}`).toBeTruthy();
+      await page.screenshot({ path: `test-results/${name}-${screen}.png`, fullPage: true, animations: "disabled" });
+      expect(await overflow(page), `${name} ${screen}`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
+
+test("fifth assortment photo tile spans both mobile columns without cropping outside", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const tiles = page.locator(".assortment-grid > li");
+  await expect(tiles).toHaveCount(5);
+  const gridBox = await page.locator(".assortment-grid").boundingBox();
+  const lastBox = await tiles.last().boundingBox();
+  const photo = await tiles.last().locator(".assortment-photo").boundingBox();
+  expect(gridBox && lastBox && photo).toBeTruthy();
+  expect(lastBox!.width).toBeGreaterThan(gridBox!.width * 0.95);
+  expect(photo!.width).toBeGreaterThan(100);
+  expect(photo!.height).toBeGreaterThan(120);
+  expect(await overflow(page)).toBeLessThanOrEqual(1);
+});
+
+test("delivery labels do not overlap or clip, and the contact pill clears the desktop routes table", async ({ page }) => {
+  const widths = [390, 768, 1280, 1440];
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+
+    const labelReport = await page.evaluate(() => {
+      const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
+      const labels = [...document.querySelectorAll(".delivery-page .city-label")].map((el) => {
+        const rect = el.getBoundingClientRect();
+        return { text: el.textContent?.trim() ?? "", left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+      });
+      const overlaps: string[] = [];
+      for (let i = 0; i < labels.length; i++) {
+        for (let j = i + 1; j < labels.length; j++) {
+          const a = labels[i];
+          const b = labels[j];
+          const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (overlapX > 1 && overlapY > 1) overlaps.push(`${a.text} / ${b.text}`);
+        }
+      }
+      const clipped = labels
+        .filter(
+          (label) =>
+            label.left < stage.left - 1 ||
+            label.top < stage.top - 1 ||
+            label.right > stage.right + 1 ||
+            label.bottom > stage.bottom + 1,
+        )
+        .map((label) => label.text);
+      return { overlaps, clipped, count: labels.length, stageWidth: stage.width };
+    });
+    expect(labelReport.count, `labels at ${width}px`).toBeGreaterThan(20);
+    expect(labelReport.overlaps, `label overlap at ${width}px`).toEqual([]);
+    expect(labelReport.clipped, `clipped labels at ${width}px`).toEqual([]);
+    expect(labelReport.clipped, `Fountain clipped at ${width}px`).not.toContain("Fountain");
+
+    if (width >= 1280) {
+      const content =
+        ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-table, .serve-list, .delivery-check, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
+      const maxScroll = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+      for (let top = 0; top <= maxScroll; top += 220) {
+        await page.evaluate((y) => window.scrollTo(0, y), top);
+        const covered = await page.evaluate((selector) => {
+          const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+          const hits: string[] = [];
+          for (const el of document.querySelectorAll(selector)) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width < 2 || rect.height < 2) continue;
+            const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
+            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+            if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
+          }
+          return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };
+        }, content);
+        expect(covered.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+        expect(covered.hits, `contact pill covers content at ${width}px scroll ${top}`).toEqual([]);
+      }
+    }
+    expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+});
+
+test("delivery content uses the full phone and tablet width without breaking table words", async ({ page }) => {
+  for (const width of [390, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.evaluate(() => {
+      const shell = document.querySelector(".delivery-page")!.getBoundingClientRect();
+      const column = document.querySelector(".delivery-layout")!.getBoundingClientRect();
+      const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
+      const available = window.innerWidth - shell.left * 2;
+      const cells = [...document.querySelectorAll(".route-table th, .route-table td")].map((cell) => {
+        const style = getComputedStyle(cell);
+        return {
+          text: (cell.textContent || "").replace(/\s+/g, " ").trim(),
+          wordBreak: style.wordBreak,
+          overflowWrap: style.overflowWrap,
+          overflows: cell.scrollWidth > cell.clientWidth + 1,
+        };
+      });
+      const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+      const padBottom = parseFloat(getComputedStyle(document.querySelector(".delivery-page")!).paddingBottom);
+      return {
+        columnWidth: column.width,
+        available,
+        stageWidth: stage.width,
+        cells,
+        padBottom,
+        pillHeight: pill.height,
+        pillVisible: pill.width > 40 && pill.top < window.innerHeight && pill.bottom > 0,
+      };
+    });
+    expect(fit.columnWidth, `content column at ${width}px`).toBeGreaterThanOrEqual(fit.available * 0.9);
+    if (width <= 420) {
+      expect(fit.stageWidth, `map fills the content column at ${width}px`).toBeGreaterThanOrEqual(fit.columnWidth * 0.9);
+    }
+    expect(fit.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+    expect(fit.padBottom, `bottom clearance at ${width}px`).toBeGreaterThanOrEqual(fit.pillHeight);
+    const broken = fit.cells.filter(
+      (cell) => cell.wordBreak === "break-all" || cell.overflowWrap === "anywhere" || cell.overflows,
+    );
+    expect(broken, `table cells break words at ${width}px`).toEqual([]);
+  }
+});
+
+test("route dots stay beside the first word of the route name", async ({ page }) => {
+  for (const width of [390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+    const rows = await page.evaluate(() => {
+      return [...document.querySelectorAll(".route-table tbody th")].map((cell) => {
+        const dot = cell.querySelector("i")!.getBoundingClientRect();
+        const lead = cell.querySelector(".route-name-lead")!;
+        const textNode = [...lead.childNodes].find(
+          (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        );
+        const range = document.createRange();
+        range.selectNodeContents(textNode!);
+        const line = range.getClientRects()[0];
+        return {
+          name: (cell.textContent || "").replace(/\s+/g, " ").trim(),
+          inline: dot.top >= line.top - 1 && dot.top <= line.bottom,
+        };
+      });
+    });
+    expect(rows.length, `route rows at ${width}px`).toBe(5);
+    const missed = rows.filter((row) => !row.inline);
+    expect(missed, `route dot leaves the first line at ${width}px`).toEqual([]);
   }
 });

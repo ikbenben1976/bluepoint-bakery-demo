@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LogoLockup } from "@/components/Mark";
 import {
   ADDRESS,
   DISCLAIMER,
@@ -21,15 +22,7 @@ export function Footer() {
       <div className="cloth-edge" aria-hidden="true" />
       <div className="shell footer-grid">
         <div>
-          <figure className="original-mark">
-            <Image
-              src="/logo.jpg"
-              alt="The original Bluepoint Bakery mark: a rolling pin, the word Bluepoint, and an orange triangle"
-              width={220}
-              height={108}
-            />
-            <figcaption className="sr-only">Bluepoint Bakery original rolling-pin and triangle logo</figcaption>
-          </figure>
+          <LogoLockup inverse />
         </div>
         <div>
           <p className="kicker">Bakery</p>
@@ -52,7 +45,7 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p className="footer-hours">This concept website does not submit wholesale requests. Policies for any future official site require Bluepoint approval.</p>
+          <p className="footer-note">This concept website does not submit wholesale requests. Policies for any future official site require Bluepoint approval.</p>
         </div>
         <div>
           <p className="kicker">Accounts</p>

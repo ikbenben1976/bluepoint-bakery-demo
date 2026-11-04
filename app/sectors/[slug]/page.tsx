@@ -113,6 +113,14 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
             ))}
           </div>
         ) : null}
+        <nav className="sector-related" aria-label={`Explore more for ${sector.title}`}>
+          <h2>Explore products for your business</h2>
+          <ul>
+            {sector.links.map((item) => (
+              <li key={item.href}><Link href={item.href}>{item.label} <span aria-hidden="true">→</span></Link></li>
+            ))}
+          </ul>
+        </nav>
         <p>{SERVED}</p>
         <div className="hero-actions">
           <Link href="/breads" className="btn btn-primary">

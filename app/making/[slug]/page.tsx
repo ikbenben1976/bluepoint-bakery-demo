@@ -32,7 +32,7 @@ export default async function MakingPage({ params }: { params: Promise<Params> }
       <h1>{use.title}</h1>
       <p>{use.summary}</p>
       {sizes.length > 0 ? (
-        <p>Published sizes on the bun list: {sizes.join(", ")}. The catalog lists them as separate items.</p>
+        <p>Published sizes on the bun list: {sizes.join(", ")}. Each size is its own item.</p>
       ) : null}
       <ProductBrowser groups={groups} />
     </div>

@@ -23,7 +23,7 @@ export function BuyerProof() {
         <div>
           <p className="eyebrow">The people we serve</p>
           <h2 id="buyer-proof-heading">Built for food-service businesses.</h2>
-          <p>See what Bluepoint&apos;s published customer comments say, or browse by the kind of business you run.</p>
+          <p>From neighborhood pubs to catering kitchens, find wholesale breads and pastries suited to your menu.</p>
         </div>
       </div>
       <div className="buyer-proof-tabs" role="tablist" aria-label="Customer type">
@@ -77,16 +77,16 @@ export function BuyerProof() {
               <p>“{CAFE_REVIEW.quote}”</p>
               <footer>Published customer review · {CAFE_REVIEW.source}, {CAFE_REVIEW.when}</footer>
             </blockquote>
-            <p className="proof-context">This review does not name the coffee shop. We do not attribute it to an invented customer.</p>
+            <p className="proof-context">Explore croissants, muffins, scones and breakfast pastries for coffee-shop and café menus.</p>
           </div>
         ) : (
           <div className="proof-empty">
-            <p>Bluepoint lists {selected === "hotels" ? "hotels, country clubs and catering businesses" : "hospitals, universities, airports and corporate dining rooms"} among the food-service businesses it serves.</p>
-            <p>Named endorsements for this category have not been provided. Ask Bluepoint about the requirements for your operation.</p>
+            <p>{selected === "hotels" ? "From breakfast buffets to catered occasions, explore dinner rolls, croissants, specialty breads and desserts." : "Explore sandwich loaves, hearty rolls and breakfast pastries for busy food-service teams."}</p>
+            <p>Bluepoint&apos;s team can discuss suitable assortments, packaging requirements and delivery options for your operation.</p>
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Named testimonials and displayed customer marks are taken from Bluepoint&apos;s existing public customer-comments section. They are historical endorsements, not a representation of current account status.</p>
+      <p className="buyer-proof-note">Customer quotations are reproduced from Bluepoint&apos;s published website. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }

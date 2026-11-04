@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { LogoLockup } from "@/components/Mark";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 
 function normalize(path: string): string {
@@ -37,7 +37,7 @@ export function Header() {
     <header className={`site-header no-print ${condensed ? "is-condensed" : ""}`}>
       <div className="site-header-row">
         <Link href="/" className="brand">
-          <Image src="/logo.jpg" alt="Bluepoint Bakery — original rolling-pin logo" width={220} height={108} className="original-header-logo" priority />
+          <LogoLockup inverse={open} />
         </Link>
         <nav aria-label="Primary" className="desk-nav">
           {NAV.map((item) => {
@@ -95,7 +95,7 @@ export function Header() {
           ))}
         </nav>
         <div className="mobile-menu-actions">
-          <Link href="/wholesale">Request pricing</Link>
+          <Link href="/wholesale" className="btn btn-primary mobile-pricing">Request pricing</Link>
           <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
           <a href={ORDER_URL}>Order online (existing customers)</a>
           <a href={PAY_URL}>Pay an invoice</a>

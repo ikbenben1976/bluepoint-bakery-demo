@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
+import { AssortmentCards } from "@/components/AssortmentCards";
 import { BuyerProof } from "@/components/BuyerProof";
+import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { categoryPhotos, gallery } from "@/data/photos";
@@ -13,90 +15,88 @@ import {
   ORDER_URL,
 } from "@/data/site";
 
-const board = [
-  { src: "/images/studio/marble-rye.webp", alt: "Marble rye from Bluepoint Bakery’s catalog photographs", className: "piece-rye" },
-  { src: "/images/studio/parisien.webp", alt: "", className: "piece-baguette" },
-  { src: "/images/studio/sandwich-rolls.webp", alt: "", className: "piece-rolls" },
-  { src: "/images/studio/sesame-bun.webp", alt: "", className: "piece-bun" },
-  { src: "/images/studio/croissant.webp", alt: "", className: "piece-croissant" },
-];
-
 export default function HomePage() {
-  const baker = gallery.find((photo) => photo.src.endsWith("baker.webp"))!;
+  const production = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"))!;
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-media">
-          <figure className="hero-board">
-            {board.map((piece) => (
-              <span key={piece.className} className={piece.className}>
-                <Image
-                  src={piece.src}
-                  alt={piece.alt}
-                  fill
-                  sizes="40vw"
-                  priority={piece.className === "piece-bun"}
-                  className="object-contain"
-                />
-              </span>
-            ))}
-          </figure>
-          <figcaption className="hero-caption">
-            Photographs from Bluepoint’s published product collection. Individual products and sizes are confirmed in the catalog.
-          </figcaption>
-        </div>
+      <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
-          <p className="hero-kicker">Denver-made wholesale bakery · Est. 1987</p>
-          <h1>Scratch-baked for Colorado&apos;s kitchens since 1987.</h1>
-          <p className="lede">
-            Wholesale buns, breads, rolls, and pastries from Denver bakers who deliver six days a week.
-          </p>
-          <p>Real ingredients, personal service, and an assortment built for food-service businesses. Delivery schedules vary by route.</p>
-          <div className="hero-actions">
-            <Link href="/wholesale" className="btn btn-primary">
-              Build a wholesale request
-            </Link>
-            <Link href="/breads" className="btn btn-ghost">
-              Explore products
-            </Link>
+          <div className="hero-intro">
+            <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
+            <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
+            <p className="lede">
+              For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
+            </p>
           </div>
-          <p className="hero-reassurance">24-hour bread notice · 48-hour pastry notice. Confirm requirements with our sales team.</p>
+          <HeroBenefits />
+          <div className="hero-actions">
+            <Link href="/breads" className="btn btn-primary approved-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
+            <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
+          </div>
         </div>
+        <figure className="hero-figure seamless-hero-media">
+          <picture>
+            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.avif" type="image/avif" />
+            <source media="(min-width: 1024px)" srcSet="/images/brand/hero-desktop.jpg" type="image/jpeg" />
+            <source srcSet="/images/brand/hero-mobile.avif" type="image/avif" />
+            <img
+              src="/images/brand/hero-mobile.jpg"
+              alt="Illustrative assortment of wholesale breads, rolls and pastries on a bakery counter."
+              width={1600}
+              height={1200}
+              className="hero-photo seamless-hero-photo"
+            />
+          </picture>
+          <figcaption className="illustrative-note">Illustrative photo</figcaption>
+        </figure>
       </section>
 
-      <p className="proof-line">
-        <Image src="/images/colorado-proud.jpg" alt="Colorado Proud" width={48} height={48} />
-        <span className="proof-identity">
-          <span className="identity-tags"><span>Minority-owned</span><span>Family-owned</span><span>Denver, Colorado</span></span>
-          <a href={COLORADO_PROUD}>See the Colorado Proud product finder</a>
-        </span>
-      </p>
-
-      <section className="block">
-        <div className="shell">
-          <h2>More than great bread. A bakery you can count on.</h2>
-          <ul className="value-points">
-            <li>
-              <span className="value-icon" aria-hidden="true">✳</span>
-              <h3>Made from scratch</h3>
-              <p>All of our breads, pastries, and treats are made from scratch daily.</p>
+      <section className="brand-trust" aria-label="Bluepoint Bakery credentials">
+        <div className="shell brand-trust-inner">
+          <ul className="trust-credential-list">
+            <li className="trust-credential trust-colorado">
+              <Image src="/images/colorado-proud.jpg" alt="Colorado Proud program emblem" width={62} height={62} />
+              <div className="trust-credential-copy">
+                <strong>Colorado Proud</strong>
+                <a href={COLORADO_PROUD}>Find Bluepoint in the product directory <span aria-hidden="true">→</span></a>
+              </div>
             </li>
-            <li>
-              <span className="value-icon" aria-hidden="true">↗</span>
-              <h3>Delivered six days a week</h3>
-              <p>We bake and deliver 6 days a week. Delivery days depend on the route.</p>
+            <li className="trust-credential">
+              <span className="trust-line-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m5 24 19-17 19 17v17H5V24Z" />
+                  <path d="M18 41V27h12v14M13 23h5M30 23h5" />
+                </svg>
+              </span>
+              <div className="trust-credential-copy">
+                <strong>Family-owned</strong>
+                <span>Independent Denver bakery</span>
+              </div>
             </li>
-            <li>
-              <span className="value-icon" aria-hidden="true">♡</span>
-              <h3>Real people, real service</h3>
-              <p>Knowledgeable sales professionals. A sales professional will help you open an account.</p>
+            <li className="trust-credential">
+              <span className="trust-line-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m5 24 10-10 9 8 9-8 10 10-10 11-9-7-9 7L5 24Z"/>
+                  <path d="m15 14 5-4h8l5 4M17 28l7 6 7-6"/>
+                </svg>
+              </span>
+              <div className="trust-credential-copy">
+                <strong>Minority-owned</strong>
+                <span>Bluepoint Bakery in Denver, CO</span>
+              </div>
             </li>
           </ul>
         </div>
       </section>
 
-      <section className="block">
+      <section className="block assortment-section" aria-labelledby="assortment-heading">
+        <div className="shell">
+          <AssortmentCards />
+        </div>
+      </section>
+
+      <section className="block application-block">
         <div className="shell">
           <MakingCards />
         </div>
@@ -151,8 +151,8 @@ export default function HomePage() {
       <section className="block">
         <div className="shell split">
           <figure className="split-photo">
-            <Image src={baker.src} alt={baker.alt} width={baker.width} height={baker.height} loading="lazy" />
-            <figcaption>Bluepoint bakery production photograph; not presented as a portrait of Willie Ramirez.</figcaption>
+            <Image src={production.src} alt={production.alt} width={production.width} height={production.height} loading="lazy" />
+            <figcaption>Bakers on the line at the Denver bakery.</figcaption>
           </figure>
           <div>
             <p className="eyebrow">Our story</p>

@@ -23,7 +23,7 @@ export default function DeliveryPage() {
       <div className="delivery-layout">
       <RouteMap />
       <div className="delivery-lower">
-        <div>
+        <div className="delivery-routes">
           <h2>Routes named on the current map</h2>
           <p>Call us for the days on your route. The weekday schedule is not printed on the current map page.</p>
           <table className="route-table">
@@ -35,19 +35,25 @@ export default function DeliveryPage() {
               </tr>
             </thead>
             <tbody>
-              {ROUTE_ORDER.map((key) => (
-                <tr key={key}>
-                  <th scope="row">
-                    <i style={{ background: DAY_SWATCH[key] }} />
-                    {ROUTE_NAME[key]}
-                  </th>
-                  <td>
-                    {ROUTE_CITIES.filter((city) => city.days === key)
-                      .map((city) => (city.name === "Denver International Airport" ? "DIA" : city.name))
-                      .join(", ")}
-                  </td>
-                </tr>
-              ))}
+              {ROUTE_ORDER.map((key) => {
+                const [first, ...rest] = ROUTE_NAME[key].split(" ");
+                return (
+                  <tr key={key}>
+                    <th scope="row">
+                      <span className="route-name-lead">
+                        <i style={{ background: DAY_SWATCH[key] }} />
+                        {first}
+                      </span>
+                      {rest.length > 0 ? ` ${rest.join(" ")}` : null}
+                    </th>
+                    <td>
+                      {ROUTE_CITIES.filter((city) => city.days === key)
+                        .map((city) => (city.name === "Denver International Airport" ? "DIA" : city.name))
+                        .join(", ")}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <h2>Also named in writing</h2>
@@ -57,7 +63,7 @@ export default function DeliveryPage() {
             ))}
           </ul>
         </div>
-        <aside>
+        <aside className="delivery-check">
           <h2>Check a city</h2>
           <p>Same towns as the map. We will tell you the days when you call.</p>
           <DeliveryChecker idPrefix="delivery-page" context="page" />

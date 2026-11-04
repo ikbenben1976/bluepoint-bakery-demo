@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const feature = gallery.find((photo) => photo.src.endsWith("baguette-rack.webp"))!;
+  const rest = [...gallery.filter((photo) => photo.src !== feature.src), aboutPhoto];
   return (
     <>
       <PageHero kicker="Since 1987" title="About" lede={<p>Denver</p>} />
@@ -44,18 +46,18 @@ export default function AboutPage() {
         </div>
         <figure>
           <Image
-            src={aboutPhoto.src}
-            alt={aboutPhoto.alt}
-            width={aboutPhoto.width}
-            height={aboutPhoto.height}
+            src={feature.src}
+            alt={feature.alt}
+            width={feature.width}
+            height={feature.height}
             className="h-auto w-full"
             loading="eager"
           />
-          <figcaption className="mt-2 text-sm text-site">From the Bluepoint Bakery about page.</figcaption>
+          <figcaption className="mt-2 text-sm text-site">Baguettes on a rack at the Denver bakery.</figcaption>
         </figure>
       </div>
       <div className="shell grid gap-4 pb-16 sm:grid-cols-3">
-        {gallery.map((photo) => (
+        {rest.map((photo) => (
           <Image
             key={photo.src}
             src={photo.src}

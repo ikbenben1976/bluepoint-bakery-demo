@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="480" viewBox="0 0 1120 480" role="img" aria-labelledby="title desc">
+<title id="title">Bluepoint Bakery</title>
+<desc id="desc">Refreshed heritage mark with blue lettering across a wooden rolling pin and an orange inverted triangle, established 1987.</desc>
+<defs>
+<linearGradient id="wood" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffe0a0"/><stop offset=".22" stop-color="#efbc66"/><stop offset=".5" stop-color="#d79840"/><stop offset=".81" stop-color="#f8c977"/><stop offset="1" stop-color="#b8762e"/></linearGradient>
+<linearGradient id="blue" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#0b45cc"/><stop offset=".7" stop-color="#05339d"/><stop offset="1" stop-color="#031d62"/></linearGradient>
+<linearGradient id="orange" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ff8e21"/><stop offset="1" stop-color="#f66631"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="4" flood-color="#0d0d25" flood-opacity=".18"/></filter>
+</defs>
+<path d="M226 50H894L562 435Z" fill="url(#orange)" />
+<g stroke="#905d20" stroke-width="2" fill="url(#wood)" filter="url(#shadow)">
+<path d="M104 173Q62 156 38 181Q13 203 40 226Q69 246 103 220H166V180Z"/>
+<path d="M1016 173Q1058 156 1082 181Q1107 203 1080 226Q1051 246 1017 220H954V180Z"/>
+<rect x="153" y="123" width="814" height="166" rx="46"/>
+</g>
+<g stroke="#f5e0a8" stroke-width="3" fill="none" opacity=".23"><path d="M210 152H922"/><path d="M216 270H921"/><path d="M220 199H900"/></g>
+<text x="560" y="268" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="900" font-size="154" letter-spacing="-6" paint-order="stroke" stroke="#0d0d25" stroke-width="12" fill="url(#blue)" filter="url(#shadow)">BLUEPOINT</text>
+<text x="560" y="372" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="900" font-size="90" letter-spacing="-3" paint-order="stroke" stroke="#0d0d25" stroke-width="8" fill="url(#blue)">BAKERY</text>
+<text x="560" y="423" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="31" letter-spacing="1" fill="#0d0d25">EST. 1987</text>
+</svg>

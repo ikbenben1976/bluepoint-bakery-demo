@@ -11,10 +11,10 @@ export const sectors: readonly Sector[] = [
     slug: "restaurants",
     title: "Restaurants and pubs",
     description:
-      "Bluepoint’s site names restaurants, delis, and bar and grills among the businesses it bakes for, and publishes comments from Cherry Cricket, Mountain Sun, and Oskar Blues.",
+      "Bluepoint bakes for restaurants, delis, and bar and grills, and publishes comments from Cherry Cricket, Mountain Sun, and Oskar Blues.",
     body: [
-      "The FAQ calls Bluepoint a provider of fresh baked goods to fine restaurants, delis, bar and grills, specialty groceries, and espresso bars.",
-      "Named comments on the bakery’s community page: Cherry Cricket (since 1994, burgers and sandwiches), Mountain Sun Pub, Southern Sun Pub and Vine Street Pub, and Oskar Blues, Chuburger and Cyclhops.",
+      "Fresh baked goods for fine restaurants, delis, bar and grills, specialty groceries, and espresso bars — for over 30 years.",
+      "Customers who have commented include Cherry Cricket (since 1994, burgers and sandwiches), Mountain Sun Pub, Southern Sun Pub and Vine Street Pub, and Oskar Blues, Chuburger and Cyclhops.",
     ],
     links: [
       { href: "/making/burgers", label: "Burgers and sliders" },
@@ -26,9 +26,9 @@ export const sectors: readonly Sector[] = [
     slug: "cafes",
     title: "Cafés and coffee shops",
     description:
-      "The bakery’s pages name espresso bars and cafes. A December 2023 Restaurantji review mentions a coffee shop ordering for over 10 years.",
+      "Cafés and espresso bars are among the businesses Bluepoint bakes for. A December 2023 Restaurantji review mentions a coffee shop that has ordered for over 10 years.",
     body: [
-      "The About page lists cafes among the industries it serves. The homepage names espresso bars.",
+      "Bluepoint lists cafés and espresso bars among the kitchens it serves.",
       "A Restaurantji review from December 2023 says: “Ordering for our coffee shop for over 10 years… always fresh and delicious.” The review does not name the shop.",
     ],
     links: [
@@ -40,10 +40,10 @@ export const sectors: readonly Sector[] = [
     slug: "hotels",
     title: "Hotels and catering",
     description:
-      "Bluepoint’s About page says it is trusted by hotels, country clubs, and catering businesses. It does not name those accounts.",
+      "Bluepoint bakes for hotels, country clubs, and catering businesses.",
     body: [
-      "The homepage also lists hotels and catered events along the Front Range.",
-      "No hotel or catering account is named on the bakery’s site, so this page does not add any.",
+      "Hotels and catered events along the Front Range are part of that service.",
+      "Individual hotel and catering accounts are not named publicly. Ask the bakery about service for your property.",
     ],
     links: [
       { href: "/making/dinner", label: "Dinner and catering" },
@@ -54,10 +54,10 @@ export const sectors: readonly Sector[] = [
     slug: "institutions",
     title: "Institutions",
     description:
-      "Bluepoint’s pages name hospitals, schools, universities, and airports. They do not name the accounts.",
+      "Hospitals, schools, universities, and airports are among the institutions Bluepoint bakes for.",
     body: [
-      "The homepage says it provides service to corporate dining rooms, hospitals, and schools.",
-      "The About page adds universities and airports. No institution is named, so none is named here.",
+      "That service includes corporate dining rooms, hospitals, and schools.",
+      "Universities and airports are listed as well. Individual institutions are not named publicly.",
     ],
     links: [
       { href: "/breads", label: "Breads" },
