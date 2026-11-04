@@ -181,12 +181,10 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
     await page.goto("/breads/");
     const action = page.getByRole("link", { name: "Open your request" });
     await expect(action).toBeVisible();
+    await expect(page.getByTestId("quick-actions")).toHaveCount(0);
     if (width < 800) {
-      await expect(page.getByTestId("quick-actions")).toBeHidden();
       await page.getByRole("button", { name: "Menu" }).click();
       await expect(page.locator(".mobile-menu-actions").getByRole("link", { name: /Request pricing/ })).toBeVisible();
-    } else {
-      await expect(page.getByTestId("quick-actions")).toBeVisible();
     }
   }
 });
@@ -360,7 +358,7 @@ test("mobile opening screen visibly includes bakery photography and a clear acti
     expect(bounds).not.toBeNull();
     expect(bounds!.y, `photograph begins inside first screen at ${width}px`).toBeLessThan(720);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toBeVisible();
-    await expect(page.getByTestId("quick-actions")).toBeHidden();
+    await expect(page.getByTestId("quick-actions")).toHaveCount(0);
     expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
   }
   await page.setViewportSize({ width: 1440, height: 900 });
