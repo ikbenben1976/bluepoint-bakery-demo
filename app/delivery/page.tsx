@@ -35,19 +35,25 @@ export default function DeliveryPage() {
               </tr>
             </thead>
             <tbody>
-              {ROUTE_ORDER.map((key) => (
-                <tr key={key}>
-                  <th scope="row">
-                    <i style={{ background: DAY_SWATCH[key] }} />
-                    {ROUTE_NAME[key]}
-                  </th>
-                  <td>
-                    {ROUTE_CITIES.filter((city) => city.days === key)
-                      .map((city) => (city.name === "Denver International Airport" ? "DIA" : city.name))
-                      .join(", ")}
-                  </td>
-                </tr>
-              ))}
+              {ROUTE_ORDER.map((key) => {
+                const [first, ...rest] = ROUTE_NAME[key].split(" ");
+                return (
+                  <tr key={key}>
+                    <th scope="row">
+                      <span className="route-name-lead">
+                        <i style={{ background: DAY_SWATCH[key] }} />
+                        {first}
+                      </span>
+                      {rest.length > 0 ? ` ${rest.join(" ")}` : null}
+                    </th>
+                    <td>
+                      {ROUTE_CITIES.filter((city) => city.days === key)
+                        .map((city) => (city.name === "Denver International Airport" ? "DIA" : city.name))
+                        .join(", ")}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <h2>Also named in writing</h2>

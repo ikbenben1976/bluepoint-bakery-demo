@@ -772,6 +772,10 @@ button:active {
   vertical-align: -1px;
 }
 
+.route-table .route-name-lead {
+  white-space: nowrap;
+}
+
 .partner-card h2,
 .faq-item summary {
   font-family: var(--font-franklin), sans-serif;

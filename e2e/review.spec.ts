@@ -608,3 +608,30 @@ test("delivery content uses the full phone and tablet width without breaking tab
     expect(broken, `table cells break words at ${width}px`).toEqual([]);
   }
 });
+
+test("route dots stay beside the first word of the route name", async ({ page }) => {
+  for (const width of [390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/delivery/");
+    await page.evaluate(() => document.fonts.ready);
+    const rows = await page.evaluate(() => {
+      return [...document.querySelectorAll(".route-table tbody th")].map((cell) => {
+        const dot = cell.querySelector("i")!.getBoundingClientRect();
+        const lead = cell.querySelector(".route-name-lead")!;
+        const textNode = [...lead.childNodes].find(
+          (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+        );
+        const range = document.createRange();
+        range.selectNodeContents(textNode!);
+        const line = range.getClientRects()[0];
+        return {
+          name: (cell.textContent || "").replace(/\s+/g, " ").trim(),
+          inline: dot.top >= line.top - 1 && dot.top <= line.bottom,
+        };
+      });
+    });
+    expect(rows.length, `route rows at ${width}px`).toBe(5);
+    const missed = rows.filter((row) => !row.inline);
+    expect(missed, `route dot leaves the first line at ${width}px`).toEqual([]);
+  }
+});
