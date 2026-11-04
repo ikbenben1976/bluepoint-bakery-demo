@@ -57,14 +57,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="brand-trust" aria-label="Bluepoint Bakery identity">
+      <section className="brand-trust" aria-label="Bluepoint Bakery credentials">
         <div className="shell brand-trust-inner">
-          <Image src="/images/colorado-proud.jpg" alt="Colorado Proud" width={50} height={50} />
-          <div className="brand-trust-copy">
-            <strong>Rooted in Colorado. Built on relationships.</strong>
-            <p>Denver-based · Family-owned · Minority-owned</p>
-          </div>
-          <a href={COLORADO_PROUD}>Colorado Proud product finder <span aria-hidden="true">→</span></a>
+          <ul className="trust-credential-list">
+            <li className="trust-credential trust-colorado">
+              <Image src="/images/colorado-proud.jpg" alt="Colorado Proud program emblem" width={62} height={62} />
+              <div className="trust-credential-copy">
+                <strong>Colorado Proud</strong>
+                <a href={COLORADO_PROUD}>Find Bluepoint in the product directory <span aria-hidden="true">→</span></a>
+              </div>
+            </li>
+            <li className="trust-credential">
+              <span className="trust-line-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m5 24 19-17 19 17v17H5V24Z" />
+                  <path d="M18 41V27h12v14M13 23h5M30 23h5" />
+                </svg>
+              </span>
+              <div className="trust-credential-copy">
+                <strong>Family-owned</strong>
+                <span>Independent Denver bakery</span>
+              </div>
+            </li>
+            <li className="trust-credential">
+              <span className="trust-line-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m5 24 10-10 9 8 9-8 10 10-10 11-9-7-9 7L5 24Z"/>
+                  <path d="m15 14 5-4h8l5 4M17 28l7 6 7-6"/>
+                </svg>
+              </span>
+              <div className="trust-credential-copy">
+                <strong>Minority-owned</strong>
+                <span>Bluepoint Bakery in Denver, CO</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
 
