@@ -2196,3 +2196,18 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .application-section.making .making-photo img, .assortment-card { transition: none; }
 }
+
+
+/* Mobile: keep the contact launcher near (but below) the sticky header so it
+   cannot mask the catalog's Open your request CTA at the viewport bottom. */
+@media (max-width: 600px) {
+  .quick-actions {
+    top: 7.6rem;
+    right: .65rem;
+    bottom: auto;
+    left: auto;
+  }
+  .quick-panel {
+    max-width: min(18rem, calc(100vw - 1.5rem));
+  }
+}
