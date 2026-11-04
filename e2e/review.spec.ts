@@ -280,6 +280,7 @@ test("capture homepage and buyer-request visual review at desktop and mobile wid
   for (const [name, width] of [["desktop", 1440], ["mobile", 390]] as const) {
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
     await page.goto("/");
+    await expect.poll(async () => page.locator(".seamless-hero .hero-bread img").evaluateAll((imgs) => imgs.length === 5 && imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
     await page.screenshot({ path: `test-results/home-${name}.png`, fullPage: true, animations: "disabled" });
     await page.goto("/wholesale/");
     await page.getByTestId("inquiry-form").waitFor();
@@ -348,4 +349,16 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(page.locator(".application-section")).toHaveCount(0);
   await page.goto("/pastries/");
   await expect(page.locator(".application-section")).toHaveCount(0);
+});
+
+
+test("mobile contact launcher stays clear of main hero headline", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const a = await page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" }).boundingBox();
+  const b = await page.getByTestId("quick-actions").boundingBox();
+  expect(a && b).toBeTruthy();
+  if (!a || !b) return;
+  const overlaps = !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
+  expect(overlaps).toBeFalsy();
 });
