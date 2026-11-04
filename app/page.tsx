@@ -33,15 +33,12 @@ export default function HomePage() {
             <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
         </div>
-        <div className="hero-media seamless-hero-media">
-          <Image
-            src="/images/brand/hero-assortment.webp"
-            alt="Fresh baguettes, a spiral loaf, buns and pastries arranged on a bakery countertop"
-            fill
-            priority
-            className="seamless-hero-photo"
-            sizes="(max-width: 799px) 100vw, 67vw"
-          />
+        <div className="hero-media seamless-hero-media" role="img" aria-label="Bluepoint breads and pastries: baguettes, spiral rye, sandwich rolls, sesame bun and croissants">
+          <span className="hero-bread hero-bread-baguettes"><Image src="/images/studio/parisien-hero.webp" alt="" fill sizes="44vw" priority /></span>
+          <span className="hero-bread hero-bread-rye"><Image src="/images/studio/marble-rye.webp" alt="" fill sizes="31vw" priority /></span>
+          <span className="hero-bread hero-bread-rolls"><Image src="/images/studio/sandwich-rolls.webp" alt="" fill sizes="27vw" /></span>
+          <span className="hero-bread hero-bread-bun"><Image src="/images/studio/sesame-bun.webp" alt="" fill sizes="29vw" /></span>
+          <span className="hero-bread hero-bread-pastries"><Image src="/images/studio/croissant.webp" alt="" fill sizes="30vw" /></span>
         </div>
       </section>
 
