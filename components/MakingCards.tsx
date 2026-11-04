@@ -2,60 +2,66 @@ import Image from "next/image";
 import Link from "next/link";
 import { uses } from "@/data/uses";
 
-const useImages: Record<string, { src: string; alt: string; note: string }> = {
+// Menu applications are illustrative finished dishes, not individual Bluepoint SKUs.
+// The actual bakery assortment is displayed separately in AssortmentCards and catalog pages.
+const applications: Record<string, { image: string; alt: string; description: string }> = {
   burgers: {
-    src: "/images/studio/sesame-bun.webp",
-    alt: "Sesame-topped hamburger bun from Bluepoint's product photography",
-    note: "Buns · Kaiser rolls · Sliders",
+    image: "/images/applications/burgers.webp",
+    alt: "Finished cheeseburger with fresh lettuce, tomato and a glossy bun",
+    description: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
   },
   sandwiches: {
-    src: "/images/studio/sandwich-rolls.webp",
-    alt: "Sandwich rolls from Bluepoint's product photography",
-    note: "Hoagies · Deli loaves · Baguettes",
+    image: "/images/applications/sandwiches.webp",
+    alt: "Stacked deli sandwich on sliced bread with meat, vegetables and pickle",
+    description: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
   },
   breakfast: {
-    src: "/images/studio/croissant.webp",
-    alt: "Croissant from Bluepoint's product photography",
-    note: "Croissants · Muffins · Scones",
+    image: "/images/applications/breakfast.webp",
+    alt: "Croissants and breakfast pastries ready to serve at a café",
+    description: "Find croissants, muffins, scones, Danish and quick breads.",
   },
   dinner: {
-    src: "/images/studio/brioche-rolls.webp",
-    alt: "Dinner rolls from Bluepoint's product photography",
-    note: "Dinner rolls · Specialty breads",
+    image: "/images/applications/dinner.webp",
+    alt: "Bread rolls presented in a basket on a restaurant table",
+    description: "Explore dinner rolls, rustic breads and bread-service options.",
   },
 };
 
 export function MakingCards() {
   return (
-    <section className="making" aria-labelledby="making-heading">
+    <section className="making application-section" aria-labelledby="making-heading">
       <div className="section-intro">
         <div>
-          <p className="eyebrow">Find your fit</p>
+          <p className="eyebrow">Start with your menu</p>
           <h2 id="making-heading">What are you making?</h2>
-          <p>Start with your menu. Explore the breads and pastries Bluepoint already lists in its wholesale catalog.</p>
+          <p>Choose the dish or service you have in mind. We&apos;ll help you explore relevant breads and pastries.</p>
         </div>
-        <Link className="text-link" href="/breads">Browse the full bread catalog <span aria-hidden="true">→</span></Link>
       </div>
       <ul className="making-visual-grid">
         {uses.map((use) => {
-          const media = useImages[use.slug];
+          const example = applications[use.slug];
           return (
             <li key={use.slug}>
-              <Link href={`/making/${use.slug}`} className="making-visual-link">
+              <Link className="making-visual-link" href={`/making/${use.slug}`}>
                 <span className="making-photo">
-                  <Image src={media.src} alt={media.alt} fill sizes="(max-width: 740px) 90vw, (max-width: 1200px) 45vw, 270px" />
+                  <Image
+                    src={example.image}
+                    alt={example.alt}
+                    fill
+                    sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 540px"
+                  />
                 </span>
                 <span className="making-description">
                   <span className="making-title">{use.title}</span>
-                  <small>{media.note}</small>
-                  <span className="making-explore">Explore products <span aria-hidden="true">→</span></span>
+                  <span className="making-summary">{example.description}</span>
+                  <span className="making-explore">Find matching products <span aria-hidden="true">→</span></span>
                 </span>
               </Link>
             </li>
           );
         })}
       </ul>
-      <p className="making-footnote">Catalog groupings help you browse; product suitability and substitutions can be discussed with Bluepoint&apos;s sales team.</p>
+      <p className="making-footnote">Illustrative menu photography. Product choices and specifications are confirmed through the Bluepoint catalog and sales team.</p>
     </section>
   );
 }
