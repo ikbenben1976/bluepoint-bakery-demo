@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { MakingCards } from "@/components/MakingCards";
 import { AssortmentCards } from "@/components/AssortmentCards";
-import { FeaturedProductSpec } from "@/components/FeaturedProductSpec";
 import { BuyerProof } from "@/components/BuyerProof";
 import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
@@ -58,17 +57,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <p className="proof-line">
-        <Image src="/images/colorado-proud.jpg" alt="Colorado Proud" width={48} height={48} />
-        <span className="proof-identity">
-          <span className="identity-tags"><span>Minority-owned</span><span>Family-owned</span><span>Denver, Colorado</span></span>
-          <a href={COLORADO_PROUD}>See the Colorado Proud product finder</a>
-        </span>
-      </p>
-
-      <section className="block">
-        <div className="shell">
-          <MakingCards />
+      <section className="brand-trust" aria-label="Bluepoint Bakery identity">
+        <div className="shell brand-trust-inner">
+          <Image src="/images/colorado-proud.jpg" alt="Colorado Proud" width={50} height={50} />
+          <div className="brand-trust-copy">
+            <strong>Rooted in Colorado. Built on relationships.</strong>
+            <p>Denver-based · Family-owned · Minority-owned</p>
+          </div>
+          <a href={COLORADO_PROUD}>Colorado Proud product finder <span aria-hidden="true">→</span></a>
         </div>
       </section>
 
@@ -78,8 +74,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block featured-spec-section">
-        <div className="shell"><FeaturedProductSpec /></div>
+      <section className="block application-block">
+        <div className="shell">
+          <MakingCards />
+        </div>
       </section>
 
       <section className="block consult">
