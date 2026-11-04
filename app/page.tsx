@@ -34,12 +34,15 @@ export default function HomePage() {
             <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
         </div>
-        <div className="hero-media seamless-hero-media" role="img" aria-label="Bluepoint breads and pastries: baguettes, spiral rye, sandwich rolls, sesame bun and croissants">
-          <span className="hero-bread hero-bread-baguettes"><Image src="/images/studio/parisien-hero.webp" alt="" fill sizes="44vw" priority /></span>
-          <span className="hero-bread hero-bread-rye"><Image src="/images/studio/marble-rye.webp" alt="" fill sizes="31vw" priority /></span>
-          <span className="hero-bread hero-bread-rolls"><Image src="/images/studio/sandwich-rolls.webp" alt="" fill sizes="27vw" /></span>
-          <span className="hero-bread hero-bread-bun"><Image src="/images/studio/sesame-bun.webp" alt="" fill sizes="29vw" /></span>
-          <span className="hero-bread hero-bread-pastries"><Image src="/images/studio/croissant.webp" alt="" fill sizes="30vw" /></span>
+        <div className="hero-media seamless-hero-media">
+          <Image
+            src="/images/brand/hero-assortment.avif"
+            alt="Bluepoint-style bread assortment: spiral rye, baguettes, sandwich rolls, a sesame bun and pastries on a wooden bakery countertop"
+            fill
+            className="seamless-hero-photo"
+            sizes="100vw"
+            priority
+          />
         </div>
       </section>
 
