@@ -6,23 +6,23 @@ import { uses } from "@/data/uses";
 // The actual bakery assortment is displayed separately in AssortmentCards and catalog pages.
 const applications: Record<string, { image: string; alt: string; description: string }> = {
   burgers: {
-    image: "/images/applications/burgers.webp",
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1050&q=80",
     alt: "Finished cheeseburger with fresh lettuce, tomato and a glossy bun",
     description: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
   },
   sandwiches: {
-    image: "/images/applications/sandwiches.webp",
+    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1050&q=80",
     alt: "Stacked deli sandwich on sliced bread with meat, vegetables and pickle",
     description: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
   },
   breakfast: {
-    image: "/images/applications/breakfast.webp",
+    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1050&q=80",
     alt: "Croissants and breakfast pastries ready to serve at a café",
     description: "Find croissants, muffins, scones, Danish and quick breads.",
   },
   dinner: {
-    image: "/images/applications/dinner.webp",
-    alt: "Bread rolls presented in a basket on a restaurant table",
+    image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=1050&q=80",
+    alt: "Fresh bread ready for dinner or catered service",
     description: "Explore dinner rolls, rustic breads and bread-service options.",
   },
 };
@@ -61,7 +61,7 @@ export function MakingCards() {
           );
         })}
       </ul>
-      <p className="making-footnote">Illustrative menu photography. Product choices and specifications are confirmed through the Bluepoint catalog and sales team.</p>
+      <p className="making-footnote">Illustrative application photos, not photographs of Bluepoint products. Browse the actual Bluepoint assortment below.</p>
     </section>
   );
 }
