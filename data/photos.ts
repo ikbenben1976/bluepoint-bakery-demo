@@ -98,13 +98,22 @@ export const categoryPhotos: Record<string, Photo> = {
  */
 export const extraPhotos: Record<string, readonly Photo[]> = {};
 
+/** Nonprofit marks published on https://www.bluepointbakery.com/community */
 export const communityMarks: Photo[] = [
   { src: "/images/scenes/angel-heart.png", width: 301, height: 415, alt: "Project Angel Heart" },
   { src: "/images/scenes/casa.png", width: 888, height: 568, alt: "CASA of Adams and Broomfield Counties" },
   { src: "/images/scenes/growhaus.webp", width: 300, height: 261, alt: "The GrowHaus" },
   { src: "/images/scenes/soup-for-the-soul.png", width: 612, height: 1482, alt: "Soup for the Soul" },
-  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun Pub and Brewery" },
-  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues Brewery" },
+];
+
+/**
+ * Customer marks published on https://www.bluepointbakery.com/community
+ * (comm5.jpg Mountain Sun, comm6 Oskar Blues). Cherry Cricket is named in text
+ * on that page and has no logo file there, so it stays a text name.
+ */
+export const customerMarks: Photo[] = [
+  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun mark published on Bluepoint’s community page" },
+  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues mark published on Bluepoint’s community page" },
 ];
 
 export const homeTiles: { href: string; label: string; category: string }[] = [

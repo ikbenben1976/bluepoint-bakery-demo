@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CAFE_REVIEW } from "@/data/site";
+import { CAFE_REVIEW, customerComments } from "@/data/site";
+import { customerMarks } from "@/data/photos";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
@@ -54,13 +55,28 @@ export function BuyerProof() {
         </div>
         {selected === "restaurants" ? (
           <div>
-            <div className="verified-client-strip" aria-label="Customers quoted on Bluepoint Bakery's community page">
-              <div className="verified-client-wordmark"><span>The Cherry Cricket</span><small>Published customer since 1994</small></div>
-              <div className="verified-client-mark">
-                <Image src="/images/scenes/mountain-sun.webp" alt="Mountain Sun Pub and Brewery" width={170} height={100} />
+            <div className="verified-client-strip" aria-label="Customers named on Bluepoint Bakery's community page">
+              <div className="verified-client-wordmark">
+                <span>The Cherry Cricket</span>
+                <small>Quoted on Bluepoint&apos;s community page</small>
               </div>
+              {customerMarks.map((mark) => (
+                <div key={mark.src} className="verified-client-mark">
+                  <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} />
+                  {mark.src.includes("oskar-blues") ? (
+                    <small>Customer listed on Bluepoint&apos;s community page</small>
+                  ) : null}
+                </div>
+              ))}
             </div>
-            <PublishedProof />
+            <div className="proof-quotes">
+              {customerComments.map((comment) => (
+                <blockquote key={comment.name} className="proof-quote">
+                  <p>“{comment.quote}”</p>
+                  <footer><strong>{comment.place}</strong> · {comment.name}</footer>
+                </blockquote>
+              ))}
+            </div>
           </div>
         ) : selected === "cafes" ? (
           <div>
