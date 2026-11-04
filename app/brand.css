@@ -2346,3 +2346,116 @@ body {
   background: #0b2b51;
   color: #fff;
 }
+
+
+/* Mobile hero acceptance: bring the approved bakery photograph into the FIRST
+   viewport, while leaving the desktop hero untouched. On a phone the image
+   belongs between the compact intro/primary CTA and the secondary details. */
+.mobile-hero-intro, .mobile-hero-primary, .mobile-hero-photograph { display: none; }
+@media (max-width: 799px) {
+  .seamless-hero.approved-hero.hero {
+    display: block;
+    min-height: 0;
+    background: #f9f3eb;
+  }
+  .seamless-hero .hero-copy {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.25rem 1.1rem 1.65rem;
+    gap: 0;
+  }
+  .seamless-hero .hero-kicker {
+    font-size: .69rem;
+    letter-spacing: .115em;
+    margin: 0 0 .7rem;
+  }
+  .seamless-hero h1 {
+    font-size: clamp(2.18rem, 7.9vw, 3.4rem);
+    line-height: 1.07;
+    max-width: 16.5ch;
+    margin: 0 0 .6rem;
+  }
+  .seamless-hero .lede { display: none; }
+  .seamless-hero .mobile-hero-intro {
+    display: block;
+    margin: 0 0 1rem;
+    color: #3d434a;
+    font-size: .94rem;
+    line-height: 1.4;
+  }
+  .seamless-hero .mobile-hero-primary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: #0b2b51;
+    border: 2px solid #0b2b51;
+    color: #fff;
+    border-radius: 999px;
+    padding: .72rem 1.1rem;
+    min-height: 46px;
+    align-self: flex-start;
+    font-size: .87rem;
+    font-family: var(--font-franklin), sans-serif;
+    font-weight: 800;
+    margin-bottom: .85rem;
+    text-decoration: none;
+  }
+  .seamless-hero .mobile-hero-photograph {
+    display: block;
+    width: calc(100% + 2.2rem);
+    height: clamp(230px, 66vw, 400px);
+    position: relative;
+    overflow: hidden;
+    margin: 0 -1.1rem 1rem;
+    background: #eee1cd;
+  }
+  .seamless-hero .mobile-hero-photo {
+    object-fit: cover;
+    object-position: 69% 67%;
+  }
+  .seamless-hero .seamless-hero-media { display: none; }
+  .seamless-hero .approved-hero-benefits {
+    margin: .2rem 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: .3rem;
+  }
+  .seamless-hero .approved-hero-benefits li {
+    flex: initial;
+    min-width: 0;
+    border: 0 !important;
+    padding: .2rem .1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: .72rem;
+    gap: .35rem;
+  }
+  .seamless-hero .approved-hero-benefits svg {
+    width: 32px; height: 32px; flex-basis: auto;
+  }
+  .seamless-hero .hero-actions {
+    display: flex;
+    width: 100%;
+    margin: 0;
+  }
+  .seamless-hero .hero-actions .approved-hero-primary { display: none; }
+  .seamless-hero .hero-actions .approved-hero-secondary {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 47px;
+    margin: 0;
+  }
+  /* Fixed contact controls are not compatible with full-width mobile CTAs.
+     Contact remains available from the mobile navigation and footer. */
+  .quick-actions { display: none !important; }
+}
+@media (max-width: 420px) {
+  .seamless-hero h1 { font-size: clamp(2.06rem, 7.75vw, 2.55rem); }
+  .seamless-hero .mobile-hero-photograph {
+    height: clamp(228px, 68vw, 290px);
+  }
+}
