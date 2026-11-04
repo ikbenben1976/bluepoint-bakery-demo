@@ -2699,3 +2699,105 @@ body {
   .assortment-card .assortment-arrow { padding: 0 .65rem .8rem; }
 }
 @media (prefers-reduced-motion: reduce) { .assortment-photo img { transition: none; } }
+
+/* Catalog: photography must never escape its category header or show rough cutouts
+   enlarged to a page-width illustration. All photos here are real bakery scenes. */
+.section-anchor .group-photo {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: clamp(225px, 24vw, 340px);
+  min-height: 225px;
+  margin-top: clamp(2rem, 3.3vw, 3rem);
+  overflow: hidden;
+  border-radius: 19px;
+  isolation: isolate;
+  background: #e2cdb6;
+  box-shadow: 0 10px 26px rgba(24, 23, 20, .09);
+}
+.section-anchor .group-photo > img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center center;
+  padding: 0 !important;
+}
+.section-anchor .group-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(9, 25, 48, .8) 0%, rgba(9, 25, 48, .15) 48%, transparent 78%);
+}
+.section-anchor .group-photo .copy {
+  position: relative;
+  order: initial;
+  z-index: 2;
+  width: 100%;
+  padding: 1.35rem clamp(1.1rem, 3vw, 2rem);
+  color: #fff;
+}
+.section-anchor .group-photo h2,
+.section-anchor .group-photo p {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  color: #fff !important;
+  text-transform: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+}
+.section-anchor .group-photo h2 {
+  font-family: var(--font-franklin), sans-serif;
+  font-size: clamp(1.55rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+.section-anchor .group-photo p { font-size: .89rem; margin-top: .4rem; line-height: 1.4; }
+.section-anchor .group-type {
+  display: block;
+  background: #f1e6d4;
+  border: 1px solid #e1d2bc;
+  border-radius: 16px;
+  padding: 1.5rem;
+  min-height: 0;
+  margin-top: 2rem;
+}
+.section-anchor .group-type h2 {
+  color: #102f55;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  background: transparent;
+  padding: 0;
+  line-height: 1.15;
+}
+.section-anchor .group-type p { background: transparent; color: #52545b; }
+@media (max-width: 650px) {
+  .section-anchor .group-photo {
+    margin-top: 1.8rem;
+    height: 228px;
+    min-height: 228px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+  .section-anchor .group-photo .copy {
+    order: initial;
+    padding: .95rem 1rem;
+  }
+  .section-anchor .group-photo h2 { font-size: 1.55rem; line-height: 1.12; }
+}
+/* Full-scene photographs need neither cutout edges nor fake white silhouette
+   backplates. Keep genuine category photos inside controlled containers. */
+.extra-photos { display: none; }
