@@ -353,17 +353,26 @@ test("homepage separates illustrative menu applications from actual bakery produ
 });
 
 
-test("mobile contact launcher stays clear of main hero headline", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+test("mobile opening screen visibly includes bakery photography and a clear action", async ({ page }) => {
+  for (const width of [375, 390, 430, 768]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    const photograph = page.locator(".mobile-hero-photograph");
+    const image = photograph.locator("img");
+    await expect(photograph).toBeVisible();
+    await expect.poll(() => image.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
+    const bounds = await photograph.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.y, `photograph begins inside first screen at ${width}px`).toBeLessThan(720);
+    await expect(page.getByRole("link", { name: /Explore Our Products/ })).toBeVisible();
+    await expect(page.getByTestId("quick-actions")).toBeHidden();
+    expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const a = await page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" }).boundingBox();
-  const b = await page.getByTestId("quick-actions").boundingBox();
-  expect(a && b).toBeTruthy();
-  if (!a || !b) return;
-  const overlaps = !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
-  expect(overlaps).toBeFalsy();
+  await expect(page.locator(".mobile-hero-photograph")).toBeHidden();
+  await expect(page.locator(".seamless-hero-media")).toBeVisible();
 });
-
 
 test("assortment thumbnails remain contained inside their own positioned cards", async ({ page }) => {
   for (const width of [390, 768, 1440]) {
