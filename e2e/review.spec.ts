@@ -280,7 +280,7 @@ test("capture homepage and buyer-request visual review at desktop and mobile wid
   for (const [name, width] of [["desktop", 1440], ["mobile", 390]] as const) {
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
     await page.goto("/");
-    await expect.poll(async () => page.locator(".seamless-hero .hero-bread img").evaluateAll((imgs) => imgs.length === 5 && imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
+    await expect.poll(async () => page.locator(".seamless-hero-photo").evaluate((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0), { timeout: 18000 }).toBeTruthy();
     await page.screenshot({ path: `test-results/home-${name}.png`, fullPage: true, animations: "disabled" });
     await page.goto("/wholesale/");
     await page.getByTestId("inquiry-form").waitFor();
@@ -296,7 +296,8 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await expect(page.locator(".site-header .original-header-logo")).toHaveAttribute("src", /bluepoint-logo-refresh\.svg/);
     await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
     await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
-    await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(5);
+    await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(0);
+    await expect(page.locator(".seamless-hero-photo")).toHaveAttribute("src", /hero-assortment\.avif/);
     await expect(page.locator(".seamless-hero-media .approved-product")).toHaveCount(0);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
