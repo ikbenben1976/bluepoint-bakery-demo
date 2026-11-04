@@ -293,7 +293,8 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await expect(page.locator(".approved-hero-logo")).toHaveCount(0); // one brand logo in header only
-    await expect(page.locator(".site-header .lockup-name")).toHaveText("Bluepoint");
+    await expect(page.locator(".hero .heritage-logo")).toHaveCount(0);
+    await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("alt", /Bluepoint Bakery, established 1987/);
     await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
     await expect(page.locator(".approved-hero-benefits li")).toHaveCount(3);
     await expect(page.locator(".seamless-hero-media .hero-bread")).toHaveCount(0);
@@ -634,4 +635,148 @@ test("route dots stay beside the first word of the route name", async ({ page })
     const missed = rows.filter((row) => !row.inline);
     expect(missed, `route dot leaves the first line at ${width}px`).toEqual([]);
   }
+});
+
+test("homepage brand: serif headline, service icons, rolling-pin logo, and contact clearance", async ({ page }) => {
+  for (const width of [390, 768, 1024, 1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+
+    await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
+    await expect(page.locator(".approved-hero .lede")).toContainText("Colorado Front Range");
+    const actions = page.locator(".hero-actions a");
+    await expect(actions.nth(0)).toContainText("Explore Our Products");
+    await expect(actions.nth(1)).toContainText("Request a Wholesale Account");
+    await expect(actions.nth(0)).toHaveAttribute("href", /\/breads\/?$/);
+    await expect(actions.nth(1)).toHaveAttribute("href", /\/wholesale\/?$/);
+
+    const benefits = page.locator(".approved-hero-benefits li");
+    await expect(benefits).toHaveCount(3);
+    await expect(benefits.nth(0)).toContainText("Made from Scratch");
+    await expect(benefits.nth(1)).toContainText("Six-Day Delivery");
+    await expect(benefits.nth(2)).toContainText("Personal Service");
+    const iconsHidden = await page.locator(".approved-hero-benefits svg").evaluateAll((nodes) =>
+      nodes.every((node) => node.getAttribute("aria-hidden") === "true"),
+    );
+    expect(iconsHidden).toBeTruthy();
+
+    const type = await page.evaluate(() => {
+      const variable = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const family = (selector: string) => getComputedStyle(document.querySelector(selector)!).fontFamily;
+      const h1 = document.querySelector("#approved-hero-title")!;
+      const h1Style = getComputedStyle(h1);
+      return {
+        serif: variable("--font-serif"),
+        sans: variable("--font-franklin"),
+        h1: h1Style.fontFamily,
+        body: getComputedStyle(document.body).fontFamily,
+        nav: family(".nav-link"),
+        button: getComputedStyle(document.querySelector(".approved-hero-primary")!).backgroundColor,
+        wordBreak: h1Style.wordBreak,
+        overflowWrap: h1Style.overflowWrap,
+        hyphens: h1Style.hyphens,
+        h1Overflows: h1.scrollWidth > h1.clientWidth + 1,
+      };
+    });
+    const familyName = (value: string) => value.replace(/["']/g, "").split(",")[0].trim();
+    expect(type.h1, `headline font at ${width}`).toContain(familyName(type.serif));
+    expect(type.body, `body font at ${width}`).toContain(familyName(type.serif));
+    expect(type.nav, `nav font at ${width}`).toContain(familyName(type.sans));
+    expect(type.button, `primary button at ${width}`).toBe("rgb(11, 43, 81)");
+    expect(type.wordBreak).not.toBe("break-all");
+    expect(type.overflowWrap).not.toBe("anywhere");
+    expect(type.hyphens).not.toBe("auto");
+    expect(type.h1Overflows, `headline overflows at ${width}`).toBeFalsy();
+
+    await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("src", /bluepoint-logo\.png/);
+    await expect(page.locator(".hero .heritage-logo, .approved-hero-logo")).toHaveCount(0);
+    await expect(page.locator(".making-footnote")).toContainText("Our Product Assortment, above");
+
+    const headerHits = await page.evaluate(() => {
+      const nodes = [
+        ...document.querySelectorAll(
+          ".site-header .heritage-logo, .site-header .nav-link, .site-header .util-phone, .site-header .header-pricing, .site-header .customer-login, .site-header .menu-toggle",
+        ),
+      ];
+      const visible = nodes
+        .filter((el) => {
+          const style = getComputedStyle(el);
+          const rect = el.getBoundingClientRect();
+          return style.display !== "none" && style.visibility !== "hidden" && rect.width > 1 && rect.height > 1;
+        })
+        .map((el) => ({ name: (el.textContent || el.getAttribute("alt") || el.className).toString().trim().slice(0, 40), rect: el.getBoundingClientRect() }));
+      const hits: string[] = [];
+      for (let i = 0; i < visible.length; i++) {
+        for (let j = i + 1; j < visible.length; j++) {
+          const a = visible[i].rect;
+          const b = visible[j].rect;
+          const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+          const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+          if (overlapX > 1 && overlapY > 1) hits.push(`${visible[i].name} / ${visible[j].name}`);
+        }
+      }
+      return hits;
+    });
+    expect(headerHits, `header overlap at ${width}`).toEqual([]);
+    expect(await overflow(page), `overflow at ${width}`).toBeLessThanOrEqual(1);
+
+    const pillBox = await page.getByTestId("quick-actions").boundingBox();
+    expect(pillBox!.height).toBeGreaterThanOrEqual(44);
+    expect(pillBox!.width).toBeGreaterThanOrEqual(44);
+    const coveredAtTop = await page.evaluate(() => {
+      const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+      const hits: string[] = [];
+      for (const el of document.querySelectorAll(".hero-actions a, #approved-hero-title, .approved-hero .lede")) {
+        const rect = el.getBoundingClientRect();
+        const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
+        const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+        if (overlapX > 1 && overlapY > 1) hits.push((el.textContent || "").trim().slice(0, 48));
+      }
+      return hits;
+    });
+    expect(coveredAtTop, `contact pill covers the hero at ${width}`).toEqual([]);
+    if (width <= 480) {
+      const labelHits = await page.evaluate(() => {
+        const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+        const hits: string[] = [];
+        for (const el of document.querySelectorAll(".approved-hero-benefits li span")) {
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          for (const rect of range.getClientRects()) {
+            const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
+            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+            if (overlapX > 1 && overlapY > 1) hits.push((el.textContent || "").trim());
+          }
+        }
+        return hits;
+      });
+      expect(labelHits, `service labels under the contact pill at ${width}`).toEqual([]);
+    }
+  }
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  const primary = page.getByRole("link", { name: /Explore Our Products/ }).first();
+  await primary.focus();
+  await expect(primary).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/breads\/?$/);
+
+  await page.goto("/");
+  await page.getByRole("button", { name: "Contact" }).click();
+  await expect(page.getByRole("link", { name: "Call" })).toHaveAttribute("href", "tel:+13032981100");
+  await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
+  await expect(page.getByRole("link", { name: "Request pricing" }).last()).toHaveAttribute("href", /\/wholesale\/?$/);
+  const panelLink = await page.getByRole("link", { name: "Call" }).boundingBox();
+  expect(panelLink!.height).toBeGreaterThanOrEqual(44);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("link", { name: "Call" })).toBeHidden();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Menu" }).click();
+  await expect(page.locator("#mobile-menu")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#mobile-menu")).toBeHidden();
 });

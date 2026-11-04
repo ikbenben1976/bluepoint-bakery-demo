@@ -3422,3 +3422,257 @@ body.menu-open .lockup-bakery { color: #f6f1e8; }
   .trust-credential:first-child { padding-right: 6.75rem; }
 }
 
+/* Approved hero palette and type. The later navy/cream/gold hero outranks the
+   older royal-blue and orange layers. Delivery route colors are unchanged. */
+h1,
+h2,
+.seamless-hero h1,
+.approved-hero h1 {
+  font-family: var(--font-serif), "Source Serif 4", ui-serif, serif;
+  font-weight: 600;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.seamless-hero h1,
+.approved-hero h1 {
+  color: #0b2b51;
+}
+h1,
+h2,
+h3,
+.btn,
+.nav-link,
+.making-title,
+.assortment-card strong,
+.approved-hero-benefits li {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+a {
+  color: #0b2b51;
+}
+.btn-primary,
+.btn-orange,
+.quick-toggle,
+.seamless-hero .hero-actions .approved-hero-primary,
+.seamless-hero .hero-actions .approved-hero-primary:hover,
+.mobile-hero-primary {
+  background: #0b2b51;
+  border-color: #0b2b51;
+  color: #fff;
+}
+.btn-orange:hover {
+  background: #071a33;
+  border-color: #071a33;
+  color: #fff;
+}
+.btn-primary:hover,
+.quick-toggle:hover,
+.seamless-hero .hero-actions .approved-hero-primary:hover {
+  background: #071a33;
+  border-color: #071a33;
+}
+.kicker,
+.eyebrow,
+.fact-label,
+.making .making-explore,
+.buyer-proof-tabs button[aria-selected="true"] {
+  color: #6f4b0e;
+}
+.buyer-proof-tabs button[aria-selected="true"] {
+  border-bottom-color: #6f4b0e;
+}
+.site-footer .kicker,
+.mobile-menu .kicker,
+.ordering-guide .eyebrow,
+.ordering-guide h2,
+.ordering-guide h3,
+.site-footer a,
+.mobile-menu a,
+.ordering-guide a,
+.ordering-steps a,
+.existing-order-link a {
+  color: #f6f1e8;
+}
+.ordering-guide .eyebrow,
+.ordering-steps li > span,
+.site-footer .lockup-bakery,
+.footer-sub {
+  color: #e4c27a;
+}
+.site-header .nav-link:hover,
+.site-header .nav-link:focus-visible {
+  color: #0b2b51;
+}
+.site-footer a:hover,
+.site-footer a:focus-visible,
+.mobile-menu a:hover,
+.mobile-menu a:focus-visible {
+  color: #e4c27a;
+}
+.nav-link[aria-current="page"] {
+  box-shadow: inset 0 -3px 0 #8a5a12;
+}
+.approved-hero-benefits svg,
+.trust-line-icon {
+  color: #8a5a12;
+}
+.cloth-edge {
+  height: 6px;
+  background: #8a5a12;
+}
+:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.quick-toggle:focus-visible,
+.quick-panel a:focus-visible,
+.menu-toggle:focus-visible,
+a:focus-visible {
+  outline: 3px solid #0b2b51;
+  outline-offset: 3px;
+}
+.site-footer :focus-visible,
+.mobile-menu :focus-visible,
+.ordering-guide :focus-visible {
+  outline-color: #e4c27a;
+}
+.quick-toggle,
+.quick-panel a {
+  min-height: 44px;
+  min-width: 44px;
+}
+.quick-panel a {
+  min-width: 0;
+}
+
+.site-header .heritage-lockup,
+.site-footer .heritage-lockup {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  flex: none;
+  min-width: 0;
+}
+.site-header .heritage-logo {
+  display: block;
+  width: auto !important;
+  height: 58px !important;
+  max-width: min(196px, 42vw);
+  object-fit: contain;
+}
+.site-header.is-condensed .heritage-logo {
+  height: 46px !important;
+}
+.site-footer .heritage-lockup {
+  background: #f6f1e8;
+  border-radius: 10px;
+  padding: 0.35rem 0.5rem 0.4rem;
+}
+.site-footer .heritage-logo {
+  width: auto !important;
+  height: 84px !important;
+  max-width: 210px;
+}
+body.menu-open .site-header .heritage-lockup {
+  background: #f6f1e8;
+  border-radius: 8px;
+  padding: 0.12rem 0.28rem;
+}
+@media (max-width: 767px) {
+  .site-header .heritage-logo {
+    height: 46px !important;
+    max-width: 46vw;
+  }
+}
+@media (max-width: 480px) {
+  /* Keep the service labels above the fixed Contact pill. */
+  .seamless-hero .hero-figure,
+  .seamless-hero .seamless-hero-media {
+    height: 220px;
+    aspect-ratio: auto;
+  }
+}
+
+@media (min-width: 1100px) {
+  .site-header-row {
+    gap: 0.85rem;
+  }
+  .site-header .desk-nav {
+    gap: 0.2rem 0.42rem;
+    margin-left: 0.4rem;
+  }
+  .site-header .nav-link {
+    padding: 0.4rem 0.45rem;
+  }
+  .site-header .util {
+    gap: 0.75rem;
+    margin-left: auto;
+    padding-left: 0.9rem;
+  }
+}
+
+.illustrative-note {
+  left: 0.75rem;
+  right: auto;
+}
+@media (min-width: 1024px) {
+  .illustrative-note {
+    left: auto;
+    right: 8.75rem;
+    bottom: 1rem;
+  }
+}
+
+.site-footer {
+  padding-bottom: 5.75rem;
+}
+@media (max-width: 640px) {
+  .footer-base .shell {
+    padding-bottom: 0.25rem;
+  }
+  /* Keep reading text to the left of the fixed Contact pill. */
+  .seamless-hero .hero-intro,
+  .seamless-hero .hero-actions,
+  .seamless-hero .approved-hero-benefits,
+  main .shell:not(.delivery-page),
+  .site-footer .shell {
+    padding-right: 9.5rem;
+  }
+  .trust-credential:first-child {
+    padding-right: 0.85rem;
+  }
+  .trust-credential-list {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    max-width: 100%;
+  }
+  .trust-credential,
+  .trust-credential-copy {
+    min-width: 0;
+  }
+  /* The wide last assortment tile stays full-width, with the photo above the
+     label, so the contact gutter does not squash the side-by-side crop. */
+  .assortment-grid > li:last-child .assortment-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .assortment-grid > li:last-child .assortment-photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 4;
+    min-height: 0;
+  }
+  .assortment-grid > li:last-child strong,
+  .assortment-grid > li:last-child .assortment-arrow {
+    width: 100%;
+  }
+}
+@media (min-width: 1100px) {
+  main .shell:not(.delivery-page) {
+    padding-right: 6.75rem;
+  }
+}
+
