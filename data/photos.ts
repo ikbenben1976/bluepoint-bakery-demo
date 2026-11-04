@@ -62,54 +62,41 @@ export const cookStreetMap: Photo = {
   alt: "Map showing 5105 Cook St., Denver, CO 80216",
 };
 
-/** One studio plate per catalog group. Cloth backgrounds have been removed. */
+/** Curated, source-attributed Bluepoint bakery scene photography.
+ * Use genuine in-bakery photos for category introductions, not rough studio
+ * cutouts presented at enormous sizes. A scene may illustrate a related family
+ * of products but must never imply it depicts every SKU in the category.
+ */
 export const categoryPhotos: Record<string, Photo> = {
-  buns: studio("sesame-bun", "Sesame hamburger bun"),
-  "sandwich-rolls": studio("sandwich-rolls", "Club and Philly rolls"),
-  "french-breads": {
-    src: "/images/scenes/baguette-rack.webp",
-    width: 1200,
-    height: 1600,
-    alt: "Baguettes on a rack",
-  },
-  "deli-loaves": studio("marble-rye", "Marble rye"),
-  "pan-loaves": studio("pan-loaves", "Pan size loaves"),
-  "dinner-rolls": studio("brioche-rolls", "Brioche dinner rolls"),
-  "specialty-breads": studio("specialty", "Specialty breads"),
-  croissants: studio("croissant", "Butter croissants"),
-  danishes: studio("danish", "Danishes"),
-  "mini-danish": studio("danish", "Danishes"),
-  turnovers: studio("turnover", "Cherry turnover"),
-  scones: studio("scones", "Scones"),
-  "mini-scones": studio("scones", "Scones"),
-  "quick-breads": studio("quick-bread", "Pumpkin chocolate loaf and slice"),
-  muffins: studio("muffins", "Muffin variety"),
-  "half-size-muffins": studio("muffins", "Muffin variety"),
-  "muffin-tops": studio("muffins", "Muffin variety"),
-  cookies: studio("cookies", "Cookies"),
-  "specialty-cookies": studio("cookies", "Cookies"),
-  "cinnamon-rolls": studio("iced-ring", "Iced ring"),
-  biscotti: studio("biscotti", "Dipped and undipped biscotti"),
-  brownies: studio("brownies", "Brownies and a blondie"),
-  pies: studio("pie", "Dutch apple pie"),
+  buns: gallery[1],
+  "sandwich-rolls": gallery[8],
+  "french-breads": gallery[3],
+  "deli-loaves": gallery[0],
+  "pan-loaves": gallery[0],
+  "dinner-rolls": gallery[8],
+  "specialty-breads": gallery[7],
+  croissants: gallery[5],
+  danishes: gallery[5],
+  "mini-danish": gallery[5],
+  turnovers: gallery[5],
+  scones: gallery[5],
+  "mini-scones": gallery[5],
+  "quick-breads": gallery[0],
+  muffins: gallery[5],
+  "half-size-muffins": gallery[5],
+  "muffin-tops": gallery[5],
+  cookies: gallery[9],
+  "specialty-cookies": gallery[9],
+  "cinnamon-rolls": gallery[5],
+  biscotti: gallery[5],
+  brownies: gallery[9],
+  pies: gallery[6],
 };
 
-/** Further photographs for the same group, not repeated as the main plate. */
-export const extraPhotos: Record<string, readonly Photo[]> = {
-  buns: [studio("round-bun", "Round bun"), studio("split-bun", "Scored round bun")],
-  "french-breads": [studio("parisien", "Golden Parisien loaves")],
-  "deli-loaves": [studio("marble-slice", "Sliced marble rye")],
-  "specialty-breads": [studio("sixteen-loaf", "16x4 loaf")],
-  muffins: [studio("muffins-berry", "Blueberry muffins")],
-  brownies: [
-    {
-      src: "/images/scenes/brownie-sheet.webp",
-      width: 1200,
-      height: 1600,
-      alt: "Raspberry white chocolate brownie sheet",
-    },
-  ],
-};
+/** Extra studio cutouts have intentionally been retired from category headers.
+ * Their opaque/transparent edges were not acceptable at large display sizes.
+ */
+export const extraPhotos: Record<string, readonly Photo[]> = {};
 
 export const communityMarks: Photo[] = [
   { src: "/images/scenes/angel-heart.png", width: 301, height: 415, alt: "Project Angel Heart" },
