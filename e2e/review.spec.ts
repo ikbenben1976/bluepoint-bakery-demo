@@ -363,3 +363,36 @@ test("mobile contact launcher stays clear of main hero headline", async ({ page 
   const overlaps = !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
   expect(overlaps).toBeFalsy();
 });
+
+
+test("assortment thumbnails remain contained inside their own positioned cards", async ({ page }) => {
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const cards = page.locator(".assortment-card");
+    await expect(cards).toHaveCount(5);
+    for (const card of await cards.all()) {
+      const wrapper = card.locator(".assortment-photo");
+      const img = wrapper.locator("img");
+      await expect(img).toBeVisible();
+      const layout = await wrapper.evaluate((element) => {
+        const outer = element.getBoundingClientRect();
+        const image = element.querySelector("img")!.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return {
+          positioned: style.position === "relative",
+          clipped: style.overflow === "hidden",
+          aspect: outer.width / outer.height,
+          inside: image.left >= outer.left - 1 && image.top >= outer.top - 1 &&
+            image.right <= outer.right + 1 && image.bottom <= outer.bottom + 1,
+        };
+      });
+      expect(layout.positioned, `positioned width=${width}`).toBeTruthy();
+      expect(layout.clipped, `clipped width=${width}`).toBeTruthy();
+      expect(layout.aspect, `square width=${width}`).toBeGreaterThan(.95);
+      expect(layout.aspect, `square width=${width}`).toBeLessThan(1.05);
+      expect(layout.inside, `image contained width=${width}`).toBeTruthy();
+    }
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
+});
