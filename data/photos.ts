@@ -20,13 +20,6 @@ export const hero: Photo = {
   alt: "Golden Parisien loaves",
 };
 
-const studio = (slug: string, alt: string): Photo => ({
-  src: `/images/studio/${slug}.webp`,
-  width: 1200,
-  height: 900,
-  alt,
-});
-
 export const gallery: Photo[] = [
   { src: "/images/scenes/rack-loaves.webp", width: 360, height: 288, alt: "Loaves on a bakery rack" },
   { src: "/images/scenes/sesame-buns-rack.webp", width: 360, height: 288, alt: "Sesame-topped buns" },
@@ -112,8 +105,8 @@ export const communityMarks: Photo[] = [
  * on that page and has no logo file there, so it stays a text name.
  */
 export const customerMarks: Photo[] = [
-  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun mark published on Bluepoint’s community page" },
-  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues mark published on Bluepoint’s community page" },
+  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun" },
+  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues" },
 ];
 
 export const homeTiles: { href: string; label: string; category: string }[] = [

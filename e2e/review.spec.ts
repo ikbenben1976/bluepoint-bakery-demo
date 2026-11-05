@@ -154,7 +154,7 @@ test("what are you making filters the catalog and the spec card uses published f
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
   await card.locator("summary").click();
   await expect(card.getByText("24 hour notice for orders on all breads").first()).toBeVisible();
-  await expect(card.getByText("Confirm with bakery").first()).toBeVisible();
+  await expect(card.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(card.getByText("Individually wrapped")).toHaveCount(0);
 
   await page.goto("/pastries/");
@@ -296,7 +296,7 @@ test("homepage offers truthful commercial steps, sample question and published c
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
   await expect(page.locator(".verified-client-strip img")).toHaveCount(5);
   await expect(page.locator(".verified-client-wordmark")).toContainText("The Cherry Cricket");
-  await expect(page.locator(".verified-client-mark").filter({ hasText: "Customer listed on Bluepoint's community page" })).toBeVisible();
+  await expect(page.getByText("Customer listed on Bluepoint's community page")).toHaveCount(0);
   await expect(page.getByText("kicks ass")).toHaveCount(0);
 });
 
@@ -320,11 +320,12 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
 
   await expect(panel).toContainText("The Cherry Cricket");
   await expect(panel).toContainText("West Main Taproom + Grill");
-  await expect(panel).toContainText("Public posts: burger buns and marble rye.");
+  await expect(panel).toContainText("Ask permission before using this product photo on a live site.");
+  await expect(panel.getByRole("img", { name: "West Main burger on a bun, with fries" })).toBeVisible();
+  await expect(panel.getByRole("img", { name: "West Main Reuben on marble rye, with fries" })).toBeVisible();
   await expect(panel).toContainText("Revolver Kitchen");
-  await expect(panel).toContainText("Public post: bread sourced from Bluepoint.");
   await expect(panel).toContainText("Red Cedar Bistro");
-  await expect(panel).toContainText("Public post: named among local suppliers.");
+  await expect(panel).not.toContainText("Public post");
   await expect(panel).not.toContainText("Cafe 180");
   await expect(panel).not.toContainText("Urban Egg");
   await expect(panel).not.toContainText("Meet the Makers");
@@ -338,15 +339,16 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("tab", { name: "Cafés & coffee shops" })).toHaveAttribute("aria-selected", "true");
   await expect(panel).toContainText("Cafe 180");
-  await expect(panel).toContainText("Public post: sourdough and baguettes.");
+  await expect(panel.getByRole("img", { name: "Cafe 180 sandwiches on toasted bread" })).toBeVisible();
+  await expect(panel).toContainText("Ask permission before using this product photo on a live site.");
   await expect(panel).toContainText("Urban Egg");
-  await expect(panel).toContainText("Public post: Meet the Makers.");
+  await expect(panel).not.toContainText("Public post: Meet the Makers.");
   await expect(panel).toContainText("Urban Egg · Meet the Makers · October");
   await expect(panel).toContainText("they created the Stuffed French Toast Brioche specifically for Urban Egg");
   await expect(panel).toContainText("Public post, not a testimonial.");
   await expect(panel).not.toContainText("Blue Point Brewing");
   await expect(panel).toContainText("Windsor Lake Cafe & Marketplace");
-  await expect(panel).toContainText("Public post: some pastries from Bluepoint in Denver.");
+  await expect(panel.getByText("Ordering for our coffee shop for over 10 years")).toHaveCount(1);
   await expect(panel).toContainText("Restaurantji");
   await expect(panel).not.toContainText("West Main");
   await expect(panel).not.toContainText("The Cherry Cricket");
@@ -449,8 +451,12 @@ test("sector pages show useful related catalog links; contact email is clickable
   await expect(page.getByRole("navigation", { name: /Explore more for Cafés and coffee shops/ })).toContainText("Coffee and breakfast");
   await expect(page.getByText("Urban Egg · Meet the Makers · October")).toBeVisible();
   await expect(page.getByText(/Stuffed French Toast Brioche specifically for Urban Egg/)).toBeVisible();
+  await expect(page.getByRole("img", { name: "Cafe 180 sandwiches on toasted bread" })).toBeVisible();
+  await expect(page.getByText("Ordering for our coffee shop for over 10 years")).toHaveCount(1);
   await page.goto("/sectors/restaurants/");
   await expect(page.getByText("Meet the Makers")).toHaveCount(0);
+  await expect(page.getByRole("img", { name: "West Main burger on a bun, with fries" })).toBeVisible();
+  await expect(page.getByText("Since 1994 The Cherry Cricket")).toHaveCount(1);
   await page.goto("/sectors/hotels/");
   await expect(page.getByText("Meet the Makers")).toHaveCount(0);
   await page.goto("/sectors/institutions/");
@@ -479,7 +485,10 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
   await expect(page.locator(".featured-spec")).toBeVisible();
-  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
+  await expect(page.locator(".featured-spec-facts")).toContainText("24 hour notice for orders on all breads");
+  await expect(page.locator(".featured-spec-facts")).toContainText('4"');
+  await expect(page.locator(".featured-spec-facts")).not.toContainText("Case quantity");
+  await expect(page.locator(".featured-spec-facts")).not.toContainText(/confirm with bakery/i);
   await expect(page.locator(".application-section")).toHaveCount(0);
   await page.goto("/pastries/");
   await expect(page.locator(".application-section")).toHaveCount(0);
@@ -869,7 +878,7 @@ test("the removed Oskar Blues comment is not rendered on any page", async ({ pag
     await expect(page.locator("body"), path).not.toContainText(/kicks ass/i);
   }
   await page.goto("/");
-  await expect(page.locator(".verified-client-mark").filter({ hasText: "Customer listed on Bluepoint's community page" })).toBeVisible();
+  await expect(page.getByText("Customer listed on Bluepoint's community page")).toHaveCount(0);
   await expect(page.locator(".proof-quotes blockquote")).toHaveCount(2);
 });
 
@@ -880,10 +889,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(about).toContainText("Mary Clark");
   await expect(about).toContainText("Best Bakery");
   await expect(about).toContainText("Willie Ramirez");
-  await expect(about).toContainText("does not give a date");
+  await expect(about).not.toContainText("does not give a date");
   await expect(about).toContainText("Outstanding Small Business");
   await expect(about).toContainText("AFP Colorado Chapter");
-  await expect(page.locator(".about-figure figcaption")).toHaveText("Illustrative bakery photo. This is not Willie Ramirez.");
+  await expect(page.locator(".about-figure figcaption")).toHaveText("Baguettes on a rack.");
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
   await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
 
@@ -904,7 +913,7 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".brand-trust")).toContainText("Listed in the product directory");
   await expect(page.locator(".brand-trust")).toContainText("Family-owned");
   await expect(page.locator(".brand-trust")).toContainText("Minority-owned");
-  await expect(page.locator(".brand-trust")).toContainText("not a certification");
+  await expect(page.locator(".brand-trust")).not.toContainText("not a certification");
   await expect(page.locator(".brand-trust")).not.toContainText("Outstanding Small Business");
   await expect(page.locator(".brand-trust")).not.toContainText("AFP");
   await expect(page.locator("main")).not.toContainText("Outstanding Small Business");
@@ -912,7 +921,8 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(proof).toContainText("The Cherry Cricket");
   await expect(proof).toContainText("Mountain Sun");
   await expect(proof.locator(".verified-client-strip img[alt*='Oskar Blues']")).toBeVisible();
-  await expect(proof).toContainText("Customer listed on Bluepoint's community page");
+  await expect(proof).not.toContainText("Customer listed on Bluepoint's community page");
+  await expect(proof).toContainText("Ask permission before using this product photo on a live site.");
   await expect(proof).not.toContainText(/kicks ass/i);
   await expect(proof.locator(".verified-client-strip img")).toHaveCount(5);
   await expect(proof.getByRole("heading", { name: "Named in public" })).toHaveCount(0);
@@ -1277,10 +1287,10 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(panel).toBeVisible();
   await expect(panel).toContainText('4"');
   await expect(panel).toContainText('3.5"');
-  await expect(panel).toContainText("Confirm with bakery");
+  await expect(panel).not.toContainText(/confirm with bakery/i);
   await expect(panel.getByRole("link", { name: "Request pricing for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
   await brioche.locator("summary").click();
-  await expect(brioche.getByText("Confirm with bakery").first()).toBeVisible();
+  await expect(brioche.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
 });
 

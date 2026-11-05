@@ -102,7 +102,7 @@ export default function HomePage() {
               </span>
               <div className="trust-credential-copy">
                 <strong>Minority-owned</strong>
-                <span>The bakery&apos;s description, not a certification</span>
+                <span>Denver, Colorado</span>
               </div>
             </li>
           </ul>
@@ -139,7 +139,6 @@ export default function HomePage() {
               Ask about samples
             </Link>
           </div>
-          <p className="consult-disclaimer">The bakery must confirm whether samples are offered, along with any costs and conditions.</p>
         </div>
       </section>
 
@@ -190,7 +189,7 @@ export default function HomePage() {
             </p>
             <p>
               After 28 years of working in and managing the bakery, Willie Ramirez acquired full ownership, as told by{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital</a>. The account does not give a date.
+              <a href={RAMIREZ_STUDY}>44 Business Capital</a>.
             </p>
             <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
             <Link href="/about" className="btn btn-primary">

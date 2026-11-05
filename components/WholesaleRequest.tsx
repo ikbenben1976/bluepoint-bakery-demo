@@ -380,9 +380,9 @@ export function WholesaleRequest() {
                                 ))}
                               </select>
                             </label>
-                          ) : (
-                            <p className="request-help">{product.units[0] ? `Pack size: ${product.units[0]}` : "Pack size: confirm with bakery."}</p>
-                          )}
+                          ) : product.units[0] ? (
+                            <p className="request-help">Pack size: {product.units[0]}</p>
+                          ) : null}
                           {slices.length > 1 ? (
                             <label>
                               Slice thickness

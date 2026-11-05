@@ -50,7 +50,7 @@ export default function AboutPage() {
             */}
             <p>
               After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez acquired full ownership.{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery. The account does not give a date.
+              <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery.
             </p>
             <blockquote className="about-quote">
               <p>
@@ -85,17 +85,16 @@ export default function AboutPage() {
           <figure className="about-figure">
             <Image
               src={storyPhoto.src}
-              alt="Baguettes on a rack. Illustrative bakery photo, not a portrait of Willie Ramirez."
+              alt="Baguettes on a rack"
               width={storyPhoto.width}
               height={storyPhoto.height}
               className="about-story-photo"
               loading="eager"
             />
-            <figcaption>Illustrative bakery photo. This is not Willie Ramirez.</figcaption>
+            <figcaption>Baguettes on a rack.</figcaption>
           </figure>
         </div>
         <div className="about-gallery">
-          <p className="about-gallery-note">Bakery photographs from Bluepoint&apos;s site. None of these is a portrait of Willie Ramirez.</p>
           <div className="about-gallery-grid">
             {rest.map((photo) => (
               <Image

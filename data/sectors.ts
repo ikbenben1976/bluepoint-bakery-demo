@@ -14,7 +14,6 @@ export const sectors: readonly Sector[] = [
       "Hamburger buns, Kaiser rolls, hoagies, and sandwich breads for restaurants, delis, and bar and grills.",
     body: [
       "Bluepoint bakes hamburger buns, sandwich breads, and specialty rolls for restaurants, delis, bar and grills, and sandwich shops.",
-      "Published comments name Cherry Cricket, since 1994, for burgers and sandwiches, and Mountain Sun Pub, Southern Sun Pub, and Vine Street Pub for the burger bun. Oskar Blues is listed on Bluepoint’s community page.",
     ],
     links: [
       { href: "/making/burgers", label: "Burgers and sliders" },

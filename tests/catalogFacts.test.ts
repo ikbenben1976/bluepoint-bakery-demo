@@ -3,27 +3,38 @@ import { test } from "node:test";
 import sitemap from "../app/sitemap";
 import { products } from "../data/products";
 import { DEMO_ORIGIN, FACEBOOK, INSTAGRAM, customerComments } from "../data/site";
-import { CONFIRM, specRows } from "../lib/spec";
+import { specRows } from "../lib/spec";
 
-test("unpublished product specs read confirm with bakery", () => {
+test("unpublished product specs are omitted", () => {
+  for (const product of products) {
+    for (const row of specRows(product)) {
+      assert.notEqual(row.value.trim(), "", product.name);
+      assert.doesNotMatch(`${row.label} ${row.value}`, /confirm with bakery/i, product.name);
+    }
+  }
+
   const bun = products.find((product) => product.name === 'Brioche Bun 4"');
   assert.ok(bun);
   const rows = Object.fromEntries(specRows(bun).map((row) => [row.label, row.value]));
   assert.equal(rows["Published size"], '4"');
   assert.equal(rows["Order lead time"], "24 hour notice for orders on all breads");
-  assert.equal(rows["Pack size"], CONFIRM);
-  assert.equal(rows["Slicing"], CONFIRM);
-  assert.equal(rows["Ingredients / allergens"], CONFIRM);
-  assert.equal(rows["Shelf life / storage"], CONFIRM);
-  assert.equal(rows["Wholesale pricing"], CONFIRM);
-  assert.equal(rows["Dipped option"], CONFIRM);
+  assert.equal(rows["Pack size"], undefined);
+  assert.equal(rows["Slicing"], undefined);
+  assert.equal(rows["Ingredients / allergens"], undefined);
+  assert.equal(rows["Shelf life / storage"], undefined);
+  assert.equal(rows["Wholesale pricing"], undefined);
+  assert.equal(rows["Dipped option"], undefined);
 
   const croissant = products.find((product) => product.name === "Curved Butter Croissant 3 oz");
   assert.ok(croissant);
   const pastry = Object.fromEntries(specRows(croissant).map((row) => [row.label, row.value]));
-  assert.match(pastry["Ingredients / allergens"], /Pure butter/);
-  assert.match(pastry["Ingredients / allergens"], /Confirm with bakery/);
+  assert.equal(pastry["Ingredients / allergens"], "Pure butter");
   assert.equal(pastry["Order lead time"], "48 hour notice for orders on all pastries");
+
+  const loaf = products.find((product) => product.category === "deli-loaves" && product.name === "Vienna White");
+  assert.ok(loaf);
+  const sliced = Object.fromEntries(specRows(loaf).map((row) => [row.label, row.value]));
+  assert.match(sliced["Slicing"], /1\/2"/);
 
   const boule = products.find((product) => product.name === "Sourdough Boule 8 oz");
   assert.ok(boule);

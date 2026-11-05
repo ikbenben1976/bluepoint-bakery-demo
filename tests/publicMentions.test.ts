@@ -32,8 +32,8 @@ test("approved public mentions use real logo files and skip excluded names", () 
   const tabAudiences = new Set(["restaurants", "cafes", "hotels", "institutions"]);
   for (const mention of publicMentions) {
     assert.equal(fs.existsSync(`public${mention.src}`), true, mention.src);
-    assert.match(mention.caption, /Public post/);
-    assert.doesNotMatch(mention.caption, /current account|kicks ass/i);
+    assert.equal("caption" in mention, false);
+    assert.doesNotMatch(JSON.stringify(mention), /Public post|current account|kicks ass/i);
     if (mention.audience === "community") {
       assert.equal(tabAudiences.has(mention.audience), false);
     } else {
@@ -54,15 +54,16 @@ test("approved public mentions use real logo files and skip excluded names", () 
   assert.doesNotMatch(buyer, /fire-foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /FIRE Foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /Pie in the Sky/);
-  assert.match(fs.readFileSync("data/site.ts", "utf8"), /public post named Bluepoint Bakery breads as an add-on/);
+  assert.match(fs.readFileSync("data/site.ts", "utf8"), /Breads are an add-on for the CSA-style food box/);
+  assert.doesNotMatch(fs.readFileSync("data/site.ts", "utf8"), /public post named/);
   assert.match(fs.readFileSync("docs/OWNER-QUESTIONS.md", "utf8"), /no separate Named in public block/);
 });
 
-test("Urban Egg logo caption stays a short public-post label", () => {
+test("Urban Egg logo card has no provenance caption", () => {
   const urban = publicMentions.find((mention) => mention.name === "Urban Egg");
   assert.equal(urban?.audience, "cafes");
-  assert.equal(urban?.caption, "Public post: Meet the Makers.");
-  assert.doesNotMatch(urban?.caption ?? "", /Stuffed French Toast|brioche/i);
+  assert.equal("caption" in (urban ?? {}), false);
+  assert.doesNotMatch(JSON.stringify(urban), /Public post|Stuffed French Toast|brioche/i);
 });
 
 test("Urban Egg Meet the Makers is featured café proof and stays off other audiences", () => {
@@ -83,7 +84,8 @@ test("Urban Egg Meet the Makers is featured café proof and stays off other audi
   const customers = fs.readFileSync("data/customers.ts", "utf8");
   assert.match(buyer, /featuredPublicMentions/);
   assert.match(buyer, /story\.audience === selected/);
-  assert.match(buyer, /Public post, not a testimonial|not testimonials/);
+  assert.doesNotMatch(buyer, /confirmed with the bakery|Public post:/);
+  assert.match(buyer, /FeaturedMention/);
   assert.match(sector, /story\.audience === slug/);
   assert.match(featured, /\{mention\.name\} · \{mention\.series\} · \{mention\.when\}/);
   assert.match(featured, /Public post, not a testimonial/);

@@ -5,11 +5,11 @@
  *
  * Restaurant and café entries render inside the matching BuyerProof audience
  * tab, in the same logo cards as Cherry Cricket, Mountain Sun, and Oskar
- * Blues. There is no separate “Named in public” block.
- * Urban Egg’s Cafés tab (and the cafés sector page) also shows Urban Egg’s
- * October Meet the Makers public post in full. The logo
- * caption stays short so it does not repeat that quote. The paste did not
- * state a year, so the attribution says October only.
+ * Blues. Logo cards are the name and mark only. There is no separate
+ * “Named in public” block and no provenance caption.
+ * Urban Egg’s Cafés tab (and the cafés sector page) shows Urban Egg’s
+ * October Meet the Makers public post in the featured callout. The paste did
+ * not state a year, so the attribution says October only.
  * Blue Point Brewing, Nettie’s Country Bakery, and Blue Point Farmstand are
  * a Maryland beer-bread mention, not Denver Bluepoint Bakery, and are omitted.
  * - restaurants — West Main Taproom + Grill, Revolver Kitchen, Red Cedar Bistro
@@ -40,7 +40,6 @@ export type PublicMention = {
   width: number;
   height: number;
   alt: string;
-  caption: string;
   audience: PublicMentionAudience;
 };
 
@@ -71,7 +70,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 800,
     height: 215,
     alt: "Cafe 180 logo",
-    caption: "Public post: sourdough and baguettes.",
     audience: "cafes",
   },
   {
@@ -80,7 +78,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 640,
     height: 640,
     alt: "Urban Egg logo",
-    caption: "Public post: Meet the Makers.",
     audience: "cafes",
   },
   {
@@ -89,7 +86,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 900,
     height: 255,
     alt: "West Main Taproom + Grill logo",
-    caption: "Public posts: burger buns and marble rye.",
     audience: "restaurants",
   },
   {
@@ -98,7 +94,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 720,
     height: 777,
     alt: "Windsor Lake Cafe & Marketplace logo",
-    caption: "Public post: some pastries from Bluepoint in Denver.",
     audience: "cafes",
   },
   {
@@ -107,7 +102,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 520,
     height: 507,
     alt: "Revolver Kitchen logo",
-    caption: "Public post: bread sourced from Bluepoint.",
     audience: "restaurants",
   },
   {
@@ -116,7 +110,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 547,
     height: 235,
     alt: "Red Cedar Bistro logo",
-    caption: "Public post: named among local suppliers.",
     audience: "restaurants",
   },
   {
@@ -125,7 +118,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 800,
     height: 610,
     alt: "The GrowHaus logo",
-    caption: "Public post: breads as a CSA add-on. Also a community partner.",
     audience: "community",
   },
 ];

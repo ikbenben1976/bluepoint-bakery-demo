@@ -62,7 +62,7 @@ export default function DeliveryPage() {
               })}
             </tbody>
           </table>
-          <h2>Also named in writing</h2>
+          <h2>Service areas</h2>
           <ul className="serve-list">
             {SERVICE_AREAS.map((area) => (
               <li key={area.label}>{area.label}</li>

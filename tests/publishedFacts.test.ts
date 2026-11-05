@@ -26,8 +26,8 @@ test("About names the published founders, Westword recognition, and Willie witho
   assert.match(about, /Mary Clark/);
   assert.match(about, /Best Bakery/);
   assert.match(about, /Willie Ramirez/);
-  assert.match(about, /Illustrative bakery photo/);
-  assert.match(about, /not Willie Ramirez/);
+  assert.match(about, /Baguettes on a rack/);
+  assert.doesNotMatch(about, /not Willie Ramirez|Illustrative bakery photo|does not give a date/);
   assert.match(about, /westword\.com\/location\/bluepoint-bakery-5170644/);
   assert.match(about, /best-of-denver-winners-from-2000-5834471/);
 });
@@ -58,8 +58,11 @@ test("community marks are the four nonprofits and customer marks are the publish
 test("homepage trust strip does not invent a certification or an extra award", () => {
   const home = read("app/page.tsx");
   assert.match(home, /Listed in the product directory/);
-  assert.match(home, /not a certification/);
+  assert.match(home, /Minority-owned/);
   assert.match(home, /Headquartered in Denver, Colorado/);
+  assert.doesNotMatch(home, /not a certification/);
+  assert.doesNotMatch(home, /does not give a date/);
+  assert.doesNotMatch(home, /The bakery must confirm whether samples/);
   assert.doesNotMatch(home, /Independent Denver bakery/);
   assert.doesNotMatch(home, /MBE|certified minority/i);
 });

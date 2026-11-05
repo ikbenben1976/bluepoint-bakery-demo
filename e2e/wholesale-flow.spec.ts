@@ -162,8 +162,8 @@ test("new accounts and existing customers stay on different paths", async ({ pag
 
   await page.goto("/faq/");
   await expect(page.getByRole("link", { name: "existing customer login" })).toHaveAttribute("href", ORDER_URL);
-  await expect(page.getByRole("link", { name: "prepare a wholesale request" })).toHaveAttribute("href", /\/wholesale\/?$/);
-  await expect(page.getByText("This concept site does not submit wholesale requests.")).toBeVisible();
+  await expect(page.getByText(/sales professional will assist you/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "prepare a wholesale request" })).toHaveCount(0);
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
