@@ -84,37 +84,59 @@ export const reviews = [
   },
 ] as const;
 
-/** Facts from https://www.bluepointbakery.com/community — the 2016 award is not repeated here. */
+/**
+ * Partner stories adapted from https://www.bluepointbakery.com/community.
+ * Pie in the Sky has no dollar total. Monthly birthday-cake lines and Mary’s quote are omitted.
+ * The 2016 award stays on About only.
+ */
 export const communityPartners = [
   {
     name: "Project Angel Heart",
     points: [
-      "Donates thousands of baked goods every year.",
-      "Each month, donates birthday cakes to clients.",
-      "Prepares and donates all the pies for Pie in the Sky, since 2009.",
+      "We donate thousands of baked goods each year to Project Angel Heart, which home-delivers nutritious meals at no cost for people coping with life-threatening illness in metro Denver, Boulder, and Colorado Springs.",
+      "We prepare and donate all the fresh pies for Pie in the Sky, their annual fundraiser, a partnership that began in 2009.",
+    ],
+    links: [
+      { href: "http://www.projectangelheart.org/", label: "Project Angel Heart" },
+      { href: "http://www.pieintheskycolorado.org/", label: "Pie in the Sky" },
     ],
   },
   {
     name: "CASA of Adams & Broomfield Counties",
     points: [
-      "Provides cookies and baked goods through the year.",
-      "Sponsors the annual Cookie Campaign. The inaugural campaign in December 2013 raised over $15,000.",
-      "Has supported the CASA Classic Golf Tournament, Indulge for CASA, and Kaleidoscope of Hope.",
+      "We partner with CASA of Adams & Broomfield Counties year-round with cookies and baked goods.",
+      "We sponsor the annual Cookie Campaign with holiday sugar cookies (the first campaign in December 2013 raised over $15,000) and support the CASA Classic Golf Tournament, Indulge for CASA, and Kaleidoscope of Hope.",
+    ],
+    links: [
+      { href: "https://casa17th.org/", label: "CASA" },
+      { href: "http://casa17th.org/menus/cookies-count.html", label: "CASA Cookie Campaign" },
     ],
   },
   {
     name: "The GrowHaus",
     points: [
-      "Nonprofit indoor farm, marketplace, and educational center in Denver\u2019s Elyria-Swansea neighborhood.",
-      "Bluepoint assists with bread weekly for community distribution.",
-      "Breads are an add-on for the CSA-style food box.",
+      "The GrowHaus is a nonprofit indoor farm, marketplace, and education center in Denver's Elyria-Swansea neighborhood.",
+      "We supply bread weekly to help cut the costs of their food box program and support food access in the neighborhood.",
+    ],
+    links: [
+      { href: "http://www.thegrowhaus.com", label: "The GrowHaus" },
+      { href: "http://www.mercadolado.com", label: "Mercado Lado" },
     ],
   },
   {
     name: "Soup for the Soul",
     points: [
-      "For over 15 years, Bluepoint has donated desserts for around 700 attendees.",
-      "Proceeds support Porter Hospice, St. Anthony Hospice, and The Butterfly Program.",
+      "For more than 15 years we have donated desserts for Soup for the Soul, an annual tasting with soups and appetizers from more than 15 Denver restaurants and a silent auction for around 700 guests.",
+      "Proceeds support Centura Health at Home's Porter Hospice, St. Anthony Hospice, and The Butterfly Program.",
+    ],
+    links: [
+      { href: "http://www.soupforthesouldenver.org/", label: "Soup for the Soul" },
+      { href: "http://www.chahf.org/PorterHospice", label: "Porter Hospice" },
+      { href: "http://www.chahf.org/StAnthonyHospice", label: "St. Anthony Hospice" },
+      {
+        href: "http://www.centurahealthathome.org/CHH/Our-Specialties/The-Butterfly-Program/",
+        label: "The Butterfly Program",
+      },
     ],
   },
 ] as const;

@@ -41,6 +41,10 @@ export default function HomePage() {
             <Link href="/breads" className="btn btn-primary approved-hero-primary">Explore Our Products <span aria-hidden="true">→</span></Link>
             <Link href="/wholesale" className="btn btn-ghost approved-hero-secondary">Request a Wholesale Account</Link>
           </div>
+          <ul className="hero-lead-times" aria-label="Order notice">
+            <li>Order breads at least 24 hours ahead.</li>
+            <li>Order pastries at least 48 hours ahead.</li>
+          </ul>
         </div>
         <figure className="hero-figure seamless-hero-media">
           <picture>
@@ -192,6 +196,7 @@ export default function HomePage() {
               <a href={RAMIREZ_STUDY}>44 Business Capital</a>.
             </p>
             <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
+            <p className="home-why">Using high-quality ingredients, we bake and deliver for restaurants, cafés, hotels, hospitals, schools, and catering kitchens along the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.</p>
             <Link href="/about" className="btn btn-primary">
               About the bakery
             </Link>

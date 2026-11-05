@@ -13,6 +13,7 @@ import {
   PHONE_TEL,
 } from "@/data/site";
 import { cookStreetMap } from "@/data/photos";
+import { ContactMessage } from "@/components/ContactMessage";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
@@ -32,7 +33,8 @@ export default function ContactPage() {
         title="Contact"
         lede={<p>Our baking facility and office are at {ADDRESS}.</p>}
       />
-      <div className="shell contact-page content-page grid gap-10 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+      <div className="shell contact-page content-page">
+        <div className="contact-layout">
         <div className="contact-facts">
           <p>
             <span className="fact-label">Address</span>
@@ -96,6 +98,8 @@ export default function ContactPage() {
           />
           <figcaption>5105 Cook St., Denver, CO 80216. Map data © OpenStreetMap contributors.</figcaption>
         </figure>
+        </div>
+        <ContactMessage />
       </div>
     </>
   );

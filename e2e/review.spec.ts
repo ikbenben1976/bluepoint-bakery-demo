@@ -369,7 +369,8 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
 
   await page.goto("/community/");
   await expect(page.locator(".community-page")).toContainText("The GrowHaus");
-  await expect(page.locator(".community-page")).toContainText("add-on for the CSA-style food box");
+  await expect(page.locator(".community-page")).toContainText("food box program");
+  await expect(page.locator(".community-page")).not.toContainText("CSA-style");
   await expect(page.locator(".community-page")).toContainText("FIRE Foundation");
   await expect(page.locator(".community-mention img")).toHaveAttribute("alt", "FIRE Foundation of Denver");
 
@@ -421,6 +422,10 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await expect(page.locator(".seamless-hero-media .approved-product")).toHaveCount(0);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toHaveAttribute("href", /breads/);
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
+    await expect(page.locator(".hero-lead-times")).toContainText("Order breads at least 24 hours ahead.");
+    await expect(page.locator(".hero-lead-times")).toContainText("Order pastries at least 48 hours ahead.");
+    await expect(page.locator(".home-why")).toContainText("Using high-quality ingredients");
+    await expect(page.locator(".home-why")).not.toContainText("sports venues");
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
   }
   await page.goto("/");
@@ -916,6 +921,9 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(about).not.toContainText("does not give a date");
   await expect(about).toContainText("Outstanding Small Business");
   await expect(about).toContainText("AFP Colorado Chapter");
+  await expect(about).toContainText("made from scratch daily");
+  await expect(about).toContainText("minority-owned and family-owned");
+  await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
   await expect(page.locator(".about-figure figcaption")).toHaveText("Baguettes on a rack.");
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
   await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
@@ -930,6 +938,21 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
   await expect(page.locator(".community-page")).not.toContainText("Outstanding Small Business");
   await expect(page.locator(".community-page")).not.toContainText("AFP");
+  await expect(page.locator(".community-page")).toContainText("holiday sugar cookies");
+  await expect(page.locator(".community-page")).toContainText("raised over $15,000");
+  await expect(page.locator(".community-page")).toContainText("food box program");
+  await expect(page.locator(".community-page")).toContainText("silent auction");
+  await expect(page.locator(".community-page")).not.toContainText("birthday cake");
+  await expect(page.locator(".community-page")).not.toContainText("$1 million");
+  await expect(page.locator(".community-page")).not.toContainText("Philanthropist of the Year");
+  await expect(page.locator(".community-page")).not.toContainText("sports venues");
+  await expect(page.getByRole("link", { name: "Pie in the Sky" })).toHaveAttribute("href", "http://www.pieintheskycolorado.org/");
+  await expect(page.getByRole("link", { name: "CASA Cookie Campaign" })).toHaveAttribute("href", "http://casa17th.org/menus/cookies-count.html");
+  await expect(page.getByRole("link", { name: "Mercado Lado" })).toHaveAttribute("href", "http://www.mercadolado.com");
+  await expect(page.getByRole("link", { name: "The Butterfly Program" })).toHaveAttribute(
+    "href",
+    "http://www.centurahealthathome.org/CHH/Our-Specialties/The-Butterfly-Program/",
+  );
   await expect(page.locator(".partner-marks img")).toHaveCount(4);
 
   await page.goto("/");

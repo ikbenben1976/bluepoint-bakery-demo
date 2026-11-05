@@ -72,6 +72,7 @@ export default function AboutPage() {
             <p>
               All of our breads, pastries, and treats are made from scratch daily at our spacious facility. We are trusted by companies and industries that include restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. Orders can be customized to meet clients&apos; personality, characteristics, or vision.
             </p>
+            <p>We also deliver to Cheyenne and nearby communities in Wyoming.</p>
             <p>
               {ADDRESS}
               <br />
