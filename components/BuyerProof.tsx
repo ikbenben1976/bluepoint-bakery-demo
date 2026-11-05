@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CAFE_REVIEW, customerComments } from "@/data/site";
 import { customerMarks } from "@/data/photos";
-import { publicMentions } from "@/data/customers";
+import { publicMentions, type PublicMention } from "@/data/customers";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
@@ -17,9 +17,24 @@ const audiences = [
 
 type AudienceId = (typeof audiences)[number]["id"];
 
+function mentionsFor(audience: AudienceId) {
+  return publicMentions.filter((mention) => mention.audience === audience);
+}
+
+function PublicMentionCard({ mention }: { mention: PublicMention }) {
+  return (
+    <div className="verified-client-mark">
+      <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
+      <strong>{mention.name}</strong>
+      <small>{mention.caption}</small>
+    </div>
+  );
+}
+
 export function BuyerProof() {
   const [selected, setSelected] = useState<AudienceId>("restaurants");
   const audience = audiences.find((entry) => entry.id === selected)!;
+  const mentions = mentionsFor(selected);
   return (
     <section aria-labelledby="buyer-proof-heading" className="buyer-proof">
       <div className="section-intro">
@@ -28,19 +43,6 @@ export function BuyerProof() {
           <h2 id="buyer-proof-heading">Built for food-service businesses.</h2>
           <p>From neighborhood pubs to catering kitchens, find wholesale breads and pastries suited to your menu.</p>
         </div>
-      </div>
-      <div className="public-mentions-block">
-        <h3>Named in public</h3>
-        <p>These Front Range businesses have publicly named Bluepoint breads or pastries. Confirm current accounts with the bakery.</p>
-        <ul className="public-mentions" aria-label="Businesses that have publicly named Bluepoint">
-          {publicMentions.map((mention) => (
-            <li key={mention.src} className="public-mention">
-              <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
-              <strong>{mention.name}</strong>
-              <small>{mention.caption}</small>
-            </li>
-          ))}
-        </ul>
       </div>
       <div className="buyer-proof-tabs" role="tablist" aria-label="Customer type">
         {audiences.map((entry) => (
@@ -69,7 +71,7 @@ export function BuyerProof() {
         </div>
         {selected === "restaurants" ? (
           <div>
-            <div className="verified-client-strip" aria-label="Customers named on Bluepoint Bakery's community page">
+            <div className="verified-client-strip" aria-label="Restaurants and pubs named with Bluepoint">
               <div className="verified-client-wordmark">
                 <span>The Cherry Cricket</span>
                 <small>Quoted on Bluepoint&apos;s community page</small>
@@ -81,6 +83,9 @@ export function BuyerProof() {
                     <small>Customer listed on Bluepoint&apos;s community page</small>
                   ) : null}
                 </div>
+              ))}
+              {mentions.map((mention) => (
+                <PublicMentionCard key={mention.src} mention={mention} />
               ))}
             </div>
             <div className="proof-quotes">
@@ -94,6 +99,13 @@ export function BuyerProof() {
           </div>
         ) : selected === "cafes" ? (
           <div>
+            {mentions.length > 0 ? (
+              <div className="verified-client-strip" aria-label="Cafés and coffee shops named in a public post">
+                {mentions.map((mention) => (
+                  <PublicMentionCard key={mention.src} mention={mention} />
+                ))}
+              </div>
+            ) : null}
             <PublishedProof source="cafe" />
             <p className="proof-context">
               Croissants, muffins, scones, and danishes are on the pastry list.{" "}
@@ -101,26 +113,44 @@ export function BuyerProof() {
             </p>
           </div>
         ) : selected === "hotels" ? (
-          <div className="proof-empty">
-            <p>Hotels and catered events are named on Bluepoint’s site. The catalog includes dinner rolls, croissants, specialty breads, and pies.</p>
-            <p>
-              <Link href="/making/dinner">Dinner and catering</Link>
-              {" · "}
-              <Link href="/making/breakfast">Breakfast pastries</Link>
-            </p>
+          <div>
+            {mentions.length > 0 ? (
+              <div className="verified-client-strip" aria-label="Hotels and catering named in a public post">
+                {mentions.map((mention) => (
+                  <PublicMentionCard key={mention.src} mention={mention} />
+                ))}
+              </div>
+            ) : null}
+            <div className="proof-empty">
+              <p>Hotels and catered events are named on Bluepoint’s site. The catalog includes dinner rolls, croissants, specialty breads, and pies.</p>
+              <p>
+                <Link href="/making/dinner">Dinner and catering</Link>
+                {" · "}
+                <Link href="/making/breakfast">Breakfast pastries</Link>
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="proof-empty">
-            <p>Corporate dining rooms, hospitals, schools, universities, and airports are named on Bluepoint’s site. Sandwich loaves, club rolls, and breakfast pastries are in the catalog.</p>
-            <p>
-              <Link href="/making/sandwiches">Sandwich breads</Link>
-              {" · "}
-              <Link href="/pastries">Pastries</Link>
-            </p>
+          <div>
+            {mentions.length > 0 ? (
+              <div className="verified-client-strip" aria-label="Institutions named in a public post">
+                {mentions.map((mention) => (
+                  <PublicMentionCard key={mention.src} mention={mention} />
+                ))}
+              </div>
+            ) : null}
+            <div className="proof-empty">
+              <p>Corporate dining rooms, hospitals, schools, universities, and airports are named on Bluepoint’s site. Sandwich loaves, club rolls, and breakfast pastries are in the catalog.</p>
+              <p>
+                <Link href="/making/sandwiches">Sandwich breads</Link>
+                {" · "}
+                <Link href="/pastries">Pastries</Link>
+              </p>
+            </div>
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The logo cards are public mentions, and Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Current account relationships should be confirmed with the bakery.</p>
+      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Other logo cards in these tabs credit a public post and are not testimonials. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The GrowHaus public post stays on the Community page. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }

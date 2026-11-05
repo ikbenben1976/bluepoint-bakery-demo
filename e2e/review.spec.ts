@@ -294,10 +294,93 @@ test("homepage offers truthful commercial steps, sample question and published c
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "From your menu to the right order." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
-  await expect(page.locator(".verified-client-strip img")).toHaveCount(2);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(5);
   await expect(page.locator(".verified-client-wordmark")).toContainText("The Cherry Cricket");
   await expect(page.locator(".verified-client-mark").filter({ hasText: "Customer listed on Bluepoint's community page" })).toBeVisible();
   await expect(page.getByText("kicks ass")).toHaveCount(0);
+});
+
+test("public-mention logos sit inside the matching audience tabs", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Named in public" })).toHaveCount(0);
+  await expect(page.locator(".public-mentions, .public-mentions-block")).toHaveCount(0);
+  const panel = page.getByRole("tabpanel");
+  await expect(page.getByRole("tablist", { name: "Customer type" })).toBeVisible();
+  const placedInside = await page.evaluate(() => {
+    const tablist = document.querySelector(".buyer-proof-tabs");
+    const proofPanel = document.querySelector("#audience-proof-panel");
+    const strip = document.querySelector(".verified-client-strip");
+    if (!tablist || !proofPanel || !strip) return false;
+    const tabsBeforePanel = (tablist.compareDocumentPosition(proofPanel) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+    const tabs = tablist.getBoundingClientRect();
+    const cards = strip.getBoundingClientRect();
+    return tabsBeforePanel && proofPanel.contains(strip) && cards.top >= tabs.bottom - 1;
+  });
+  expect(placedInside).toBe(true);
+
+  await expect(panel).toContainText("The Cherry Cricket");
+  await expect(panel).toContainText("West Main Taproom + Grill");
+  await expect(panel).toContainText("Public posts: burger buns and marble rye.");
+  await expect(panel).toContainText("Revolver Kitchen");
+  await expect(panel).toContainText("Public post: bread sourced from Bluepoint.");
+  await expect(panel).toContainText("Red Cedar Bistro");
+  await expect(panel).toContainText("Public post: named among local suppliers.");
+  await expect(panel).not.toContainText("Cafe 180");
+  await expect(panel).not.toContainText("Urban Egg");
+  await expect(panel).not.toContainText("Windsor Lake");
+  await expect(panel).not.toContainText("GrowHaus");
+  await expect(panel).not.toContainText("FIRE Foundation");
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(5);
+
+  await page.getByRole("tab", { name: "Restaurants & pubs" }).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab", { name: "Cafés & coffee shops" })).toHaveAttribute("aria-selected", "true");
+  await expect(panel).toContainText("Cafe 180");
+  await expect(panel).toContainText("Public post: sourdough and baguettes.");
+  await expect(panel).toContainText("Urban Egg");
+  await expect(panel).toContainText("Public post: Stuffed French Toast brioche made for Urban Egg.");
+  await expect(panel).toContainText("Windsor Lake Cafe & Marketplace");
+  await expect(panel).toContainText("Public post: some pastries from Bluepoint in Denver.");
+  await expect(panel).toContainText("Restaurantji");
+  await expect(panel).not.toContainText("West Main");
+  await expect(panel).not.toContainText("The Cherry Cricket");
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(3);
+
+  await page.getByRole("tab", { name: "Hotels & catering" }).click();
+  await expect(panel).toContainText("dinner rolls");
+  await expect(panel).not.toContainText("Public post");
+  await expect(page.locator(".verified-client-strip")).toHaveCount(0);
+
+  await page.getByRole("tab", { name: "Institutions" }).click();
+  await expect(panel).toContainText("hospitals, schools, universities, and airports");
+  await expect(panel).not.toContainText("GrowHaus");
+  await expect(panel).not.toContainText("Public post");
+  await expect(page.locator(".verified-client-strip")).toHaveCount(0);
+
+  await page.goto("/community/");
+  await expect(page.locator(".community-page")).toContainText("The GrowHaus");
+  await expect(page.locator(".community-page")).toContainText("add-on for the CSA-style food box");
+  await expect(page.locator(".community-page")).toContainText("FIRE Foundation");
+  await expect(page.locator(".community-mention img")).toHaveAttribute("alt", "FIRE Foundation of Denver");
+
+  for (const width of [390, 768, 1280, 1440]) {
+    await page.setViewportSize({ width, height: width === 390 ? 900 : 1100 });
+    await page.goto("/");
+    await page.addStyleTag({ content: ".sticky-stack, .quick-actions { position: static !important; }" });
+    await page.getByRole("tab", { name: "Restaurants & pubs" }).click();
+    await expect(page.getByRole("tabpanel").getByText("Red Cedar Bistro")).toBeVisible();
+    await page.locator("#customers").screenshot({
+      path: `test-results/buyer-proof-restaurants-${width}.png`,
+      animations: "disabled",
+    });
+    await page.getByRole("tab", { name: "Cafés & coffee shops" }).click();
+    await expect(page.getByRole("tabpanel").getByText("Windsor Lake Cafe & Marketplace")).toBeVisible();
+    await page.locator("#customers").screenshot({
+      path: `test-results/buyer-proof-cafes-${width}.png`,
+      animations: "disabled",
+    });
+    expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
+  }
 });
 
 
@@ -817,7 +900,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(proof.locator(".verified-client-strip img[alt*='Oskar Blues']")).toBeVisible();
   await expect(proof).toContainText("Customer listed on Bluepoint's community page");
   await expect(proof).not.toContainText(/kicks ass/i);
-  await expect(proof.locator(".verified-client-strip img")).toHaveCount(2);
+  await expect(proof.locator(".verified-client-strip img")).toHaveCount(5);
+  await expect(proof.getByRole("heading", { name: "Named in public" })).toHaveCount(0);
+  await expect(proof).toContainText("West Main Taproom + Grill");
+  await expect(proof).not.toContainText("Cafe 180");
   await expect(proof.locator(".verified-client-wordmark")).not.toContainText("logo");
 });
 
