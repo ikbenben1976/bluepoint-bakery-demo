@@ -327,6 +327,8 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).toContainText("Public post: named among local suppliers.");
   await expect(panel).not.toContainText("Cafe 180");
   await expect(panel).not.toContainText("Urban Egg");
+  await expect(panel).not.toContainText("Meet the Makers");
+  await expect(panel).not.toContainText("Stuffed French Toast");
   await expect(panel).not.toContainText("Windsor Lake");
   await expect(panel).not.toContainText("GrowHaus");
   await expect(panel).not.toContainText("FIRE Foundation");
@@ -338,7 +340,11 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).toContainText("Cafe 180");
   await expect(panel).toContainText("Public post: sourdough and baguettes.");
   await expect(panel).toContainText("Urban Egg");
-  await expect(panel).toContainText("Public post: Stuffed French Toast brioche made for Urban Egg.");
+  await expect(panel).toContainText("Public post: Meet the Makers.");
+  await expect(panel).toContainText("Urban Egg · Meet the Makers · October");
+  await expect(panel).toContainText("they created the Stuffed French Toast Brioche specifically for Urban Egg");
+  await expect(panel).toContainText("Public post, not a testimonial.");
+  await expect(panel).not.toContainText("Blue Point Brewing");
   await expect(panel).toContainText("Windsor Lake Cafe & Marketplace");
   await expect(panel).toContainText("Public post: some pastries from Bluepoint in Denver.");
   await expect(panel).toContainText("Restaurantji");
@@ -441,6 +447,14 @@ test("wholesale preview keeps catalog selection AND additional requirements", as
 test("sector pages show useful related catalog links; contact email is clickable", async ({ page }) => {
   await page.goto("/sectors/cafes/");
   await expect(page.getByRole("navigation", { name: /Explore more for Cafés and coffee shops/ })).toContainText("Coffee and breakfast");
+  await expect(page.getByText("Urban Egg · Meet the Makers · October")).toBeVisible();
+  await expect(page.getByText(/Stuffed French Toast Brioche specifically for Urban Egg/)).toBeVisible();
+  await page.goto("/sectors/restaurants/");
+  await expect(page.getByText("Meet the Makers")).toHaveCount(0);
+  await page.goto("/sectors/hotels/");
+  await expect(page.getByText("Meet the Makers")).toHaveCount(0);
+  await page.goto("/sectors/institutions/");
+  await expect(page.getByText("Meet the Makers")).toHaveCount(0);
   await page.goto("/contact/");
   await expect(page.locator('.contact-facts a[href="mailto:sales@bluepointbakery.com"]')).toBeVisible();
 });

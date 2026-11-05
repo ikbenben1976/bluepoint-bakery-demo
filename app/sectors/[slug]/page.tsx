@@ -7,6 +7,8 @@ import { products } from "@/data/products";
 import { categoryPhotos } from "@/data/photos";
 import { sectors } from "@/data/sectors";
 import { CAFE_REVIEW } from "@/data/site";
+import { featuredPublicMentions } from "@/data/customers";
+import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
 
 type Params = { slug: string };
@@ -102,6 +104,11 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
           })}
         </ul>
         {slug === "restaurants" ? <PublishedProof /> : null}
+        {featuredPublicMentions
+          .filter((story) => story.audience === slug)
+          .map((story) => (
+            <FeaturedMention key={story.name} mention={story} />
+          ))}
         {quotes.length > 0 ? (
           <div className="quote-columns">
             {quotes.map((quote) => (

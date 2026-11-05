@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { CAFE_REVIEW, customerComments } from "@/data/site";
 import { customerMarks } from "@/data/photos";
-import { publicMentions, type PublicMention } from "@/data/customers";
+import { featuredPublicMentions, publicMentions, type PublicMention } from "@/data/customers";
+import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
@@ -35,6 +36,7 @@ export function BuyerProof() {
   const [selected, setSelected] = useState<AudienceId>("restaurants");
   const audience = audiences.find((entry) => entry.id === selected)!;
   const mentions = mentionsFor(selected);
+  const featured = featuredPublicMentions.filter((story) => story.audience === selected);
   return (
     <section aria-labelledby="buyer-proof-heading" className="buyer-proof">
       <div className="section-intro">
@@ -69,6 +71,9 @@ export function BuyerProof() {
           <h3>{audience.title}</h3>
           <Link className="btn btn-primary" href={audience.href}>{audience.cta}</Link>
         </div>
+        {featured.map((story) => (
+          <FeaturedMention key={story.name} mention={story} />
+        ))}
         {selected === "restaurants" ? (
           <div>
             <div className="verified-client-strip" aria-label="Restaurants and pubs named with Bluepoint">
@@ -150,7 +155,7 @@ export function BuyerProof() {
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Other logo cards in these tabs credit a public post and are not testimonials. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The GrowHaus public post stays on the Community page. Current account relationships should be confirmed with the bakery.</p>
+      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Other logo cards in these tabs credit a public post and are not testimonials. The Urban Egg Meet the Makers quote is from that public post and is not a testimonial. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The GrowHaus public post stays on the Community page. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }
