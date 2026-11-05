@@ -20,13 +20,6 @@ export const hero: Photo = {
   alt: "Golden Parisien loaves",
 };
 
-const studio = (slug: string, alt: string): Photo => ({
-  src: `/images/studio/${slug}.webp`,
-  width: 1200,
-  height: 900,
-  alt,
-});
-
 export const gallery: Photo[] = [
   { src: "/images/scenes/rack-loaves.webp", width: 360, height: 288, alt: "Loaves on a bakery rack" },
   { src: "/images/scenes/sesame-buns-rack.webp", width: 360, height: 288, alt: "Sesame-topped buns" },

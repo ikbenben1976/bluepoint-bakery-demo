@@ -485,7 +485,10 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
   await expect(page.locator(".featured-spec")).toBeVisible();
-  await expect(page.locator(".featured-spec-facts")).toContainText("Case quantity");
+  await expect(page.locator(".featured-spec-facts")).toContainText("24 hour notice for orders on all breads");
+  await expect(page.locator(".featured-spec-facts")).toContainText('4"');
+  await expect(page.locator(".featured-spec-facts")).not.toContainText("Case quantity");
+  await expect(page.locator(".featured-spec-facts")).not.toContainText(/confirm with bakery/i);
   await expect(page.locator(".application-section")).toHaveCount(0);
   await page.goto("/pastries/");
   await expect(page.locator(".application-section")).toHaveCount(0);
