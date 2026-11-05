@@ -3,7 +3,11 @@ import { test } from "node:test";
 import { checkDelivery } from "../lib/deliveryArea";
 import { DAY_TEXT, PUBLISHED_MAP_CITIES, ROUTE_CITIES, ROUTE_NAME, findRouteCity } from "../data/routes";
 
-const CALL = "Call us for the days on this route";
+const YELLOW = "Mon, Tue, Wed, Thu, Fri, Sat";
+const GREEN = "Mon, Wed, Fri, Sat";
+const BLUE = "Tue, Thu, Sat";
+const ORANGE = "Tue, Sat";
+const PURPLE = "Mon, Tue, Thu, Fri";
 
 test("map colors match the towns named on the current map page", () => {
   assert.equal(ROUTE_NAME[findRouteCity("Cheyenne")!.days], "Purple");
@@ -20,7 +24,15 @@ test("map colors match the towns named on the current map page", () => {
   assert.equal(ROUTE_NAME[findRouteCity("Breckenridge")!.days], "Orange");
   assert.equal(ROUTE_NAME[findRouteCity("Central City")!.days], "Orange");
   assert.equal(ROUTE_NAME[findRouteCity("Black Hawk")!.days], "Orange");
-  assert.equal(DAY_TEXT[findRouteCity("Denver")!.days], CALL);
+  assert.equal(DAY_TEXT[findRouteCity("Denver")!.days], YELLOW);
+  assert.equal(DAY_TEXT[findRouteCity("Fort Collins")!.days], GREEN);
+  assert.equal(DAY_TEXT[findRouteCity("Windsor")!.days], GREEN);
+  assert.equal(DAY_TEXT[findRouteCity("Colorado Springs")!.days], BLUE);
+  assert.equal(DAY_TEXT[findRouteCity("Fountain")!.days], BLUE);
+  assert.equal(DAY_TEXT[findRouteCity("Cheyenne")!.days], PURPLE);
+  assert.equal(DAY_TEXT[findRouteCity("Breckenridge")!.days], ORANGE);
+  assert.equal(DAY_TEXT[findRouteCity("Central City")!.days], ORANGE);
+  assert.equal(DAY_TEXT[findRouteCity("Black Hawk")!.days], ORANGE);
   assert.equal(findRouteCity("Keystone"), undefined);
   assert.equal(findRouteCity("Buena Vista"), undefined);
   for (const name of Object.values(ROUTE_NAME)) {
@@ -52,10 +64,12 @@ test("towns the current map does not color are not assigned a route", () => {
 test("a city the map colors is a yes, and an unlisted town is ask", () => {
   assert.equal(checkDelivery("Denver").status, "yes");
   assert.equal(checkDelivery("Aurora").status, "yes");
-  assert.equal(checkDelivery("Aurora").days, CALL);
+  assert.equal(checkDelivery("Aurora").days, YELLOW);
   assert.equal(checkDelivery("Windsor").status, "yes");
+  assert.equal(checkDelivery("Windsor").days, GREEN);
   assert.equal(checkDelivery("Fountain").status, "yes");
-  assert.equal(checkDelivery("Fountain").days, CALL);
+  assert.equal(checkDelivery("Fountain").days, BLUE);
+  assert.equal(checkDelivery("Cheyenne").days, PURPLE);
   assert.equal(checkDelivery("Evergreen").status, "yes");
   assert.equal(checkDelivery("Keystone").status, "ask");
   assert.equal(checkDelivery("Buena Vista").status, "ask");

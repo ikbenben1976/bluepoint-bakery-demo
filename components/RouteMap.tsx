@@ -165,7 +165,10 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
         {LEGEND.map((item) => (
           <li key={item.key}>
             <i style={{ background: DAY_SWATCH[item.key] }} />
-            {item.label}
+            <span className="legend-copy">
+              {item.label}
+              <span className="legend-days">{DAY_TEXT[item.key]}</span>
+            </span>
           </li>
         ))}
       </ul>

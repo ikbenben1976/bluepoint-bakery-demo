@@ -1758,6 +1758,60 @@ body {
   font-size: .72rem;
   line-height: 1.35;
 }
+.public-mentions-block { margin: 0 0 1.4rem; }
+.public-mentions-block h3 {
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 1.25rem;
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0 0 0.35rem;
+}
+.public-mentions-block > p { margin: 0 0 0.85rem; max-width: 42rem; }
+.public-mentions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.public-mention {
+  min-width: 0;
+  min-height: 11rem;
+  padding: 0.85rem 0.7rem 0.9rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+}
+.public-mention img {
+  align-self: center;
+  width: 100%;
+  max-width: 100%;
+  height: 88px;
+  object-fit: contain;
+}
+.public-mention strong,
+.public-mention small {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.public-mention strong {
+  margin-top: 0.5rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+.public-mention small {
+  margin-top: 0.3rem;
+  color: #575360;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
 .sample-interest {
   border: 1px solid #e4d8c4;
   padding: 1.15rem 1.25rem;
@@ -3092,6 +3146,40 @@ legend {
 .route-table i {
   border-radius: 3px;
 }
+.map-legend li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 100%;
+  min-width: 0;
+}
+.map-legend li i {
+  flex: none;
+  margin-top: 0.15rem;
+}
+.map-legend .legend-copy {
+  min-width: 0;
+}
+.map-legend .legend-days,
+.route-days-line {
+  display: block;
+  font-weight: 500;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #3c3832;
+}
+.route-days-line { margin-top: 0.2rem; }
+.delivery-page .map-legend,
+.atlas .map-legend {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.atlas-frame { min-width: 0; max-width: 100%; }
+.delivery-page .map-legend {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 
 .text-field,
 .atlas-search input,
@@ -4118,6 +4206,28 @@ body.menu-open .site-header .heritage-lockup {
 .community-note {
   margin-top: 2rem;
 }
+.community-mention {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e4d8c4;
+}
+.community-mention img {
+  width: min(100%, 280px);
+  height: auto;
+}
+.community-mention h2 {
+  font-family: var(--font-franklin), sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+.community-mention p { margin: 0; max-width: 40rem; }
+.community-mention > div { flex: 1 1 16rem; min-width: 0; }
 .buyer-proof,
 .trust-credential-list,
 .verified-client-strip {

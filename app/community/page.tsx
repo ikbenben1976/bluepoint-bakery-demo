@@ -51,6 +51,21 @@ export default function CommunityPage() {
             </li>
           ))}
         </ul>
+        <aside className="community-mention">
+          <Image
+            src="/images/customers/fire-foundation.png"
+            alt="FIRE Foundation of Denver"
+            width={687}
+            height={182}
+          />
+          <div>
+            <h2>FIRE Foundation</h2>
+            <p>
+              A Denver Catholic Schools post thanked Bluepoint for support of the FIRE Foundation Thanksgiving pie fundraiser.
+              Pie in the Sky, above, is the Project Angel Heart program.
+            </p>
+          </div>
+        </aside>
         <p className="community-note">
           <Link href="/#customers">Customer comments</Link> published on Bluepoint&apos;s site are shown with the other customer names.
         </p>

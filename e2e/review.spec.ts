@@ -1184,14 +1184,25 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
 });
 
-test("delivery map does not draw a route line and does not name weekdays", async ({ page }) => {
+test("delivery map shows the weekday overview and does not draw a route line", async ({ page }) => {
   await page.goto("/delivery/");
   await expect(page.locator(".city-link")).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Colors on the published map" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Colors and weekdays" })).toBeVisible();
   await expect(page.locator(".route-table")).toContainText("Yellow");
   await expect(page.locator(".route-table")).toContainText("Purple");
-  await expect(page.locator(".delivery-page").getByText(/Mon–Sat|North Front Range|Denver metro/)).toHaveCount(0);
-    await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver 6 days a week.");
+  for (const days of [
+    "Mon, Tue, Wed, Thu, Fri, Sat",
+    "Mon, Wed, Fri, Sat",
+    "Tue, Thu, Sat",
+    "Tue, Sat",
+    "Mon, Tue, Thu, Fri",
+  ]) {
+    await expect(page.locator(".route-table")).toContainText(days);
+    await expect(page.locator(".map-legend")).toContainText(days);
+  }
+  await expect(page.getByText("This is an overview. Please call us to see if we service your city").first()).toBeVisible();
+  await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver 6 days a week.");
+  await expect(page.getByText("kicks ass")).toHaveCount(0);
 });
 
 test("removed testimonial is gone and contact uses published links only", async ({ page }) => {

@@ -56,7 +56,7 @@ export function DeliveryChecker({ idPrefix, context, value, onChange }: Props) {
       ) : null}
       <p role="status" className="mt-3 font-bold">
         {result.status === "empty" ? "Type a city or a listed area." : null}
-        {result.status === "yes" ? `${result.area}. ${phrase}` : null}
+        {result.status === "yes" ? `${result.area}${result.days ? ` · ${result.days}` : ""}. ${phrase}` : null}
         {result.status === "ask" ? `${phrase}${result.days ? ` · ${result.days}` : ""}` : null}
       </p>
     </div>

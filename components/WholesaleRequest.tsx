@@ -567,7 +567,7 @@ export function WholesaleRequest() {
               <fieldset className="day-fieldset">
                 <legend>Preferred days to discuss</legend>
                 <p className="request-help">
-                  These are preferences, not guaranteed days. The published site does not list which six days are delivery days. Leave every day unselected if you do not have a preference.
+                  These are preferences to discuss, not a reserved stop. The delivery map lists a weekday overview for each color. Leave every day unselected if you do not have a preference.
                 </p>
                 <div className="day-choices">
                   {DELIVERY_DAYS.map((day) => {
