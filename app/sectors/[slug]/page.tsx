@@ -10,7 +10,6 @@ import { CAFE_REVIEW } from "@/data/site";
 import { featuredPublicMentions } from "@/data/customers";
 import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
-import { UseShots } from "@/components/UseShots";
 
 type Params = { slug: string };
 
@@ -104,7 +103,6 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
             );
           })}
         </ul>
-        {slug === "restaurants" || slug === "cafes" ? <UseShots audience={slug} /> : null}
         {slug === "restaurants" ? <PublishedProof /> : null}
         {featuredPublicMentions
           .filter((story) => story.audience === slug)

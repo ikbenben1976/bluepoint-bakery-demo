@@ -1,21 +1,24 @@
 /**
- * Plated photos of dishes the cited public posts describe.
- * West Main’s burger and Reuben are the restaurant’s public menu photos of
- * the plates those posts credit to Bluepoint buns and marble rye.
- * The Cafe 180 sandwiches are that café’s public photo. The Facebook paste
- * named the posts and did not include the image files.
- * These are food-use photos only. They are not logo-card captions.
+ * Plated photos for the home “What are you making?” cards.
+ * West Main’s burger and Cafe 180’s sandwiches are those businesses’ public
+ * photos of dishes their posts describe. The Facebook paste named the posts
+ * and did not include the image files.
+ *
+ * `public/images/use/west-main-reuben.jpg` stays in the repo. It is a portrait
+ * Reuben. The sandwiches card is one landscape frame, and Cafe 180’s sandwich
+ * photo is the plate that fits it. Breakfast and dinner have no fitting plated
+ * photo here, so those cards stay illustrative.
+ *
+ * These are food-use photos only. They are not BuyerProof logo captions and
+ * they are not a strip under the customer logos.
  */
 
-export type UseAudience = "restaurants" | "cafes";
-
 export type UsePhoto = {
-  audience: UseAudience;
+  slug: "burgers" | "sandwiches";
   src: string;
   width: number;
   height: number;
   alt: string;
-  name: string;
   credit: string;
 };
 
@@ -24,30 +27,23 @@ export const PERMISSION_NOTE =
 
 export const usePhotos: readonly UsePhoto[] = [
   {
-    audience: "restaurants",
+    slug: "burgers",
     src: "/images/use/west-main-burger.jpg",
     width: 1080,
     height: 720,
     alt: "West Main burger on a bun, with fries",
-    name: "Burger",
     credit: "West Main Taproom + Grill.",
   },
   {
-    audience: "restaurants",
-    src: "/images/use/west-main-reuben.jpg",
-    width: 720,
-    height: 1080,
-    alt: "West Main Reuben on marble rye, with fries",
-    name: "Reuben",
-    credit: "West Main Taproom + Grill.",
-  },
-  {
-    audience: "cafes",
+    slug: "sandwiches",
     src: "/images/use/cafe-180-sandwiches.jpg",
     width: 1500,
     height: 1000,
     alt: "Cafe 180 sandwiches on toasted bread",
-    name: "Sandwiches",
     credit: "Cafe 180.",
   },
 ];
+
+export function platedPhotoFor(slug: string): UsePhoto | undefined {
+  return usePhotos.find((photo) => photo.slug === slug);
+}

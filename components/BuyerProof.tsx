@@ -8,7 +8,6 @@ import { customerMarks } from "@/data/photos";
 import { featuredPublicMentions, publicMentions, type PublicMention } from "@/data/customers";
 import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
-import { UseShots } from "@/components/UseShots";
 
 const audiences = [
   { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads" },
@@ -89,7 +88,6 @@ export function BuyerProof() {
                 <PublicMentionCard key={mention.src} mention={mention} />
               ))}
             </div>
-            <UseShots audience="restaurants" />
             <div className="proof-quotes">
               {customerComments.map((comment) => (
                 <blockquote key={comment.name} className="proof-quote">
@@ -108,7 +106,6 @@ export function BuyerProof() {
                 ))}
               </div>
             ) : null}
-            <UseShots audience="cafes" />
             <PublishedProof source="cafe" />
             <p className="proof-context">
               Croissants, muffins, scones, and danishes are on the pastry list.{" "}
