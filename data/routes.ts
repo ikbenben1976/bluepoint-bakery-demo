@@ -1,8 +1,10 @@
 /**
  * Cities and colors named on https://www.bluepointbakery.com/map (checked 4 Nov 2026).
- * The page lists purple, green, yellow, orange, and blue areas. It does not
- * publish which weekdays each color is served. Keys below are color ids only.
- * Positions are real city coordinates, projected onto the basemap.
+ * Weekdays are from Ben’s distribution-map legend (5 Nov 2026). That legend
+ * assigns days to colors. City names stay the published list. On both the
+ * published page and Ben’s map, Colorado Springs and Fountain are blue and
+ * Cheyenne is purple. Keystone is shaded on Ben’s map and is not a published
+ * city name, so it is not pinned. Positions are real city coordinates.
  */
 
 export type DayKey = "mon-sat" | "mwfs" | "tts" | "ts" | "mttf" | "confirm";
@@ -21,13 +23,13 @@ export type RouteCity = {
   aliases?: readonly string[];
 };
 
-/** The map names colors, not weekdays. Do not invent a schedule. */
+/** Weekdays printed beside each color on Ben’s distribution map, 5 Nov 2026. */
 export const DAY_TEXT: Record<DayKey, string> = {
-  "mon-sat": "Call us for the days on this route",
-  mwfs: "Call us for the days on this route",
-  tts: "Call us for the days on this route",
-  ts: "Call us for the days on this route",
-  mttf: "Call us for the days on this route",
+  "mon-sat": "Mon, Tue, Wed, Thu, Fri, Sat",
+  mwfs: "Mon, Wed, Fri, Sat",
+  tts: "Tue, Thu, Sat",
+  ts: "Tue, Sat",
+  mttf: "Mon, Tue, Thu, Fri",
   confirm: "Call to confirm",
 };
 
@@ -122,7 +124,7 @@ export const ROUTE_CITIES: readonly RouteCity[] = [
 ];
 
 export const CAVEAT =
-  "The map lists these cities by color. It does not list delivery days. Call the bakery to confirm a street address.";
+  "This is an overview. Please call us to see if we service your city and to confirm the street address.";
 
 function norm(value: string): string {
   return value.trim().toLowerCase().replace(/\./g, "").replace(/,/g, "").replace(/\s+/g, " ");

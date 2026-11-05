@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CAFE_REVIEW, customerComments } from "@/data/site";
 import { customerMarks } from "@/data/photos";
+import { publicMentions } from "@/data/customers";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
@@ -27,6 +28,19 @@ export function BuyerProof() {
           <h2 id="buyer-proof-heading">Built for food-service businesses.</h2>
           <p>From neighborhood pubs to catering kitchens, find wholesale breads and pastries suited to your menu.</p>
         </div>
+      </div>
+      <div className="public-mentions-block">
+        <h3>Named in public</h3>
+        <p>These Front Range businesses have publicly named Bluepoint breads or pastries. Confirm current accounts with the bakery.</p>
+        <ul className="public-mentions" aria-label="Businesses that have publicly named Bluepoint">
+          {publicMentions.map((mention) => (
+            <li key={mention.src} className="public-mention">
+              <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
+              <strong>{mention.name}</strong>
+              <small>{mention.caption}</small>
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="buyer-proof-tabs" role="tablist" aria-label="Customer type">
         {audiences.map((entry) => (
@@ -106,7 +120,7 @@ export function BuyerProof() {
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. Current account relationships should be confirmed with the bakery.</p>
+      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The logo cards are public mentions, and Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }

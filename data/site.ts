@@ -107,6 +107,7 @@ export const communityPartners = [
     points: [
       "Nonprofit indoor farm, marketplace, and educational center in Denver\u2019s Elyria-Swansea neighborhood.",
       "Bluepoint assists with bread weekly for community distribution.",
+      "A public post named Bluepoint Bakery breads as an add-on for the CSA-style food box.",
     ],
   },
   {

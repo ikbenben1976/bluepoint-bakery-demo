@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { RouteMap } from "@/components/RouteMap";
-import { CAVEAT, DAY_SWATCH, ROUTE_CITIES, ROUTE_NAME, type DayKey } from "@/data/routes";
+import { CAVEAT, DAY_SWATCH, DAY_TEXT, ROUTE_CITIES, ROUTE_NAME, type DayKey } from "@/data/routes";
 import { SERVICE_AREAS } from "@/lib/deliveryArea";
 
 export const metadata: Metadata = {
@@ -26,8 +26,11 @@ export default function DeliveryPage() {
       <RouteMap />
       <div className="delivery-lower">
         <div className="delivery-routes">
-          <h2>Colors on the published map</h2>
-          <p>The bakery’s map names cities by color. It does not list which days each color is served.</p>
+          <h2>Colors and weekdays</h2>
+          <p>
+            Weekdays follow the bakery’s distribution map. Cities are the ones named on the published map.
+            {" "}{CAVEAT}
+          </p>
           <table className="route-table">
             <caption className="sr-only">Delivery routes and towns</caption>
             <thead>
@@ -47,6 +50,7 @@ export default function DeliveryPage() {
                         {first}
                       </span>
                       {rest.length > 0 ? ` ${rest.join(" ")}` : null}
+                      <span className="route-days-line">{DAY_TEXT[key]}</span>
                     </th>
                     <td>
                       {ROUTE_CITIES.filter((city) => city.days === key)
@@ -67,7 +71,7 @@ export default function DeliveryPage() {
         </div>
         <aside className="delivery-check">
           <h2>Check a city</h2>
-          <p>Same towns as the map. Call for the days. Breads need 24 hour notice, pastries need 48 hour notice, and Sourdough Boule needs 3 day notice.</p>
+          <p>Same towns as the map, with the weekdays from the distribution map. Call to confirm the city. Breads need 24 hour notice, pastries need 48 hour notice, and Sourdough Boule needs 3 day notice.</p>
           <DeliveryChecker idPrefix="delivery-page" context="page" />
         </aside>
       </div>
