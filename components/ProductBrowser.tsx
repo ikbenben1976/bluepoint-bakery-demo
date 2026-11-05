@@ -152,7 +152,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       {compared.length > 0 ? (
         <section className="compare-panel" aria-label="Compare products" data-testid="compare-panel">
           <h2>Compare</h2>
-          <p>Published catalog fields only. Anything bluepointbakery.com does not print reads Confirm with bakery.</p>
+          <p>Published catalog fields only.</p>
           <div className="compare-grid">
             {compared.map((product) => (
               <article key={product.id} className="compare-card">

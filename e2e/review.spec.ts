@@ -154,7 +154,7 @@ test("what are you making filters the catalog and the spec card uses published f
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
   await card.locator("summary").click();
   await expect(card.getByText("24 hour notice for orders on all breads").first()).toBeVisible();
-  await expect(card.getByText("Confirm with bakery").first()).toBeVisible();
+  await expect(card.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(card.getByText("Individually wrapped")).toHaveCount(0);
 
   await page.goto("/pastries/");
@@ -1284,10 +1284,10 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(panel).toBeVisible();
   await expect(panel).toContainText('4"');
   await expect(panel).toContainText('3.5"');
-  await expect(panel).toContainText("Confirm with bakery");
+  await expect(panel).not.toContainText(/confirm with bakery/i);
   await expect(panel.getByRole("link", { name: "Request pricing for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
   await brioche.locator("summary").click();
-  await expect(brioche.getByText("Confirm with bakery").first()).toBeVisible();
+  await expect(brioche.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
 });
 
