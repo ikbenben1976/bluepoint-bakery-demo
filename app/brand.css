@@ -1670,6 +1670,27 @@ body {
 }
 .proof-quote p { font-size: 1.03rem; font-style: italic; line-height: 1.5; margin: 0; }
 .proof-quote footer { color: #34344d; font-family: var(--font-franklin), sans-serif; font-size: .77rem; line-height: 1.55; }
+.featured-mention { margin: 0 0 1.35rem; }
+.featured-mention .eyebrow {
+  margin-bottom: 0.65rem;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.proof-quote-featured {
+  border-top-width: 6px;
+  padding: clamp(1.25rem, 2vw, 1.7rem) clamp(1.15rem, 2vw, 1.6rem);
+}
+.proof-quote-featured p {
+  font-size: clamp(1.12rem, 1.8vw, 1.38rem);
+  line-height: 1.45;
+}
+.featured-mention-note {
+  display: block;
+  color: #5d5d64;
+  font-weight: 600;
+}
 .proof-quotes-single { grid-template-columns: 1.4fr 1fr; align-items: center; }
 .proof-empty { max-width: 48rem; }
 .buyer-proof-note { font-size: .77rem; margin: .8rem 0 0; color: #5d5d64; }

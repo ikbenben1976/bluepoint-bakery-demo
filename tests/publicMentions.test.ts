@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { publicMentions } from "../data/customers";
+import { featuredPublicMentions, publicMentions } from "../data/customers";
+
+const URBAN_EGG_MEET_THE_MAKERS =
+  "Welcome to Part 3 of Meet the Makers, where we celebrate the trusted partner behind the ingredients that make our menu special. This time, we visited Bluepoint Bakery, the family- and minority-owned bakery behind so many of our breads. Most notably, they created the Stuffed French Toast Brioche specifically for Urban Egg! Getting to see where it all comes together was pretty special.";
 
 test("approved public mentions use real logo files and skip excluded names", () => {
   const names = publicMentions.map((mention) => mention.name);
@@ -53,4 +56,39 @@ test("approved public mentions use real logo files and skip excluded names", () 
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /Pie in the Sky/);
   assert.match(fs.readFileSync("data/site.ts", "utf8"), /public post named Bluepoint Bakery breads as an add-on/);
   assert.match(fs.readFileSync("docs/OWNER-QUESTIONS.md", "utf8"), /no separate Named in public block/);
+});
+
+test("Urban Egg logo caption stays a short public-post label", () => {
+  const urban = publicMentions.find((mention) => mention.name === "Urban Egg");
+  assert.equal(urban?.audience, "cafes");
+  assert.equal(urban?.caption, "Public post: Meet the Makers.");
+  assert.doesNotMatch(urban?.caption ?? "", /Stuffed French Toast|brioche/i);
+});
+
+test("Urban Egg Meet the Makers is featured café proof and stays off other audiences", () => {
+  const story = featuredPublicMentions.find((mention) => mention.name === "Urban Egg");
+  assert.ok(story);
+  assert.equal(featuredPublicMentions.length, 1);
+  assert.equal(story.audience, "cafes");
+  assert.equal(story.series, "Meet the Makers");
+  assert.equal(story.when, "October");
+  assert.doesNotMatch(story.when, /\d/);
+  assert.equal(story.quote, URBAN_EGG_MEET_THE_MAKERS);
+  assert.doesNotMatch(story.quote, /Nettie|Farmstand|Blue Point Brewing|facebook\.com|fb\.watch/i);
+  assert.doesNotMatch(story.quote, /current customer|current account/i);
+
+  const buyer = fs.readFileSync("components/BuyerProof.tsx", "utf8");
+  const sector = fs.readFileSync("app/sectors/[slug]/page.tsx", "utf8");
+  const featured = fs.readFileSync("components/FeaturedMention.tsx", "utf8");
+  const customers = fs.readFileSync("data/customers.ts", "utf8");
+  assert.match(buyer, /featuredPublicMentions/);
+  assert.match(buyer, /story\.audience === selected/);
+  assert.match(buyer, /Public post, not a testimonial|not testimonials/);
+  assert.match(sector, /story\.audience === slug/);
+  assert.match(featured, /\{mention\.name\} · \{mention\.series\} · \{mention\.when\}/);
+  assert.match(featured, /Public post, not a testimonial/);
+  assert.doesNotMatch(`${buyer}\n${sector}\n${featured}`, /Nettie|Farmstand|Blue Point Brewing|fb\.watch|facebook\.com\/urban/i);
+  assert.match(customers, /Maryland beer-bread/);
+  assert.match(fs.readFileSync("app/layout.tsx", "utf8"), /noindex,nofollow/);
+  assert.match(fs.readFileSync("app/layout.tsx", "utf8"), /demo-ribbon/);
 });

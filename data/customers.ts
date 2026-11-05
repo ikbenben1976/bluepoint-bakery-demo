@@ -6,6 +6,12 @@
  * Restaurant and café entries render inside the matching BuyerProof audience
  * tab, in the same logo cards as Cherry Cricket, Mountain Sun, and Oskar
  * Blues. There is no separate “Named in public” block.
+ * Urban Egg’s Cafés tab (and the cafés sector page) also shows Urban Egg’s
+ * October Meet the Makers public post in full. The logo
+ * caption stays short so it does not repeat that quote. The paste did not
+ * state a year, so the attribution says October only.
+ * Blue Point Brewing, Nettie’s Country Bakery, and Blue Point Farmstand are
+ * a Maryland beer-bread mention, not Denver Bluepoint Bakery, and are omitted.
  * - restaurants — West Main Taproom + Grill, Revolver Kitchen, Red Cedar Bistro
  * - cafes — Cafe 180, Urban Egg, Windsor Lake Cafe & Marketplace
  * - community — The GrowHaus. It is a community partner (nonprofit farm and
@@ -38,6 +44,26 @@ export type PublicMention = {
   audience: PublicMentionAudience;
 };
 
+export type FeaturedPublicMention = {
+  name: string;
+  series: string;
+  when: string;
+  quote: string;
+  audience: PublicMentionAudience;
+};
+
+/** Verbatim Urban Egg public post. October only — the paste did not state a year. */
+export const featuredPublicMentions: readonly FeaturedPublicMention[] = [
+  {
+    name: "Urban Egg",
+    series: "Meet the Makers",
+    when: "October",
+    quote:
+      "Welcome to Part 3 of Meet the Makers, where we celebrate the trusted partner behind the ingredients that make our menu special. This time, we visited Bluepoint Bakery, the family- and minority-owned bakery behind so many of our breads. Most notably, they created the Stuffed French Toast Brioche specifically for Urban Egg! Getting to see where it all comes together was pretty special.",
+    audience: "cafes",
+  },
+];
+
 export const publicMentions: readonly PublicMention[] = [
   {
     name: "Cafe 180",
@@ -54,7 +80,7 @@ export const publicMentions: readonly PublicMention[] = [
     width: 640,
     height: 640,
     alt: "Urban Egg logo",
-    caption: "Public post: Stuffed French Toast brioche made for Urban Egg.",
+    caption: "Public post: Meet the Makers.",
     audience: "cafes",
   },
   {
