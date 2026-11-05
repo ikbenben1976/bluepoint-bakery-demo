@@ -1,10 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FramedImage } from "@/components/FramedImage";
 import { applicationVisuals } from "@/data/illustrative";
+import { PERMISSION_NOTE, platedPhotoFor } from "@/data/usePhotos";
 import { uses } from "@/data/uses";
 
-// Menu applications are illustrative finished dishes, not individual Bluepoint SKUs.
-// The actual bakery assortment is displayed separately in AssortmentCards and catalog pages.
+// Finished dishes on the home cards. Burgers and sandwiches use plated photos
+// from public posts. Breakfast and dinner stay illustrative: no fitting plated
+// photo is in public/images/use. The bakery assortment is AssortmentCards.
 const descriptions: Record<keyof typeof applicationVisuals, string> = {
   burgers: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
   sandwiches: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
@@ -24,20 +27,38 @@ export function MakingCards() {
       </div>
       <ul className="making-visual-grid">
         {uses.map((use) => {
+          const plate = platedPhotoFor(use.slug);
           const example = applicationVisuals[use.slug as keyof typeof applicationVisuals];
           return (
             <li key={use.slug}>
               <Link className="making-visual-link" href={`/making/${use.slug}`}>
                 <span className="making-photo">
-                  <FramedImage
-                    webp={example.webp}
-                    avif={example.avif}
-                    alt={example.alt}
-                    width={example.width}
-                    height={example.height}
-                    sizes="(max-width: 650px) 100vw, (max-width: 1100px) 50vw, 540px"
-                    label="Illustrative image"
-                  />
+                  {plate ? (
+                    <>
+                      <span className="making-plate">
+                        <Image
+                          src={plate.src}
+                          alt={plate.alt}
+                          fill
+                          sizes="(max-width: 650px) 100vw, 50vw"
+                          style={{ objectFit: "cover" }}
+                        />
+                      </span>
+                      <span className="making-permission">
+                        {plate.credit} {PERMISSION_NOTE}
+                      </span>
+                    </>
+                  ) : (
+                    <FramedImage
+                      webp={example.webp}
+                      avif={example.avif}
+                      alt={example.alt}
+                      width={example.width}
+                      height={example.height}
+                      sizes="(max-width: 650px) 100vw, (max-width: 1100px) 50vw, 540px"
+                      label="Illustrative image"
+                    />
+                  )}
                 </span>
                 <span className="making-description">
                   <span className="making-title">{use.title}</span>
@@ -50,7 +71,8 @@ export function MakingCards() {
         })}
       </ul>
       <p className="making-footnote">
-        Illustrative images, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product
+        Burgers and sandwiches use plated photos for this demo. Coffee &amp; Breakfast and Dinner &amp; Catering are
+        illustrative images, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product
         Assortment, above.
       </p>
     </section>

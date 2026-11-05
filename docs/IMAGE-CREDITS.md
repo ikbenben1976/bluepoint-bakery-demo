@@ -21,7 +21,7 @@ Each master was encoded to WebP (quality 76) and AVIF (SVT-AV1 CRF 32). Product 
 ## Where they show
 
 - Home hero: `hero-desktop` from 1024px wide, `hero-mobile` below that.
-- “What are you making?”: one application file per card.
+- “What are you making?”: Coffee & Breakfast and Dinner & Catering still use `app-breakfast` and `app-dinner`. Burgers and sandwiches use plated photos in `public/images/use/` (`west-main-burger.jpg`, `cafe-180-sandwiches.jpg`), with a demo permission note. `west-main-reuben.jpg` is kept and is not on a card.
 - Catalog cards: one representative file per group below. Several catalog rows share a file when they are the same shape at another size, pack, or flavor. That shared file is not a verified photo of any of those items. Authentic per-item photographs are still missing.
 
 | File | Representative subject | Catalog ids that share it |
