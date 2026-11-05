@@ -54,7 +54,8 @@ test("approved public mentions use real logo files and skip excluded names", () 
   assert.doesNotMatch(buyer, /fire-foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /FIRE Foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /Pie in the Sky/);
-  assert.match(fs.readFileSync("data/site.ts", "utf8"), /Breads are an add-on for the CSA-style food box/);
+  assert.match(fs.readFileSync("data/site.ts", "utf8"), /food box program/);
+  assert.doesNotMatch(fs.readFileSync("data/site.ts", "utf8"), /CSA-style/);
   assert.doesNotMatch(fs.readFileSync("data/site.ts", "utf8"), /public post named/);
   assert.match(fs.readFileSync("docs/OWNER-QUESTIONS.md", "utf8"), /no separate Named in public block/);
 });

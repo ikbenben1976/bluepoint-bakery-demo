@@ -47,6 +47,15 @@ export default function CommunityPage() {
               {partner.points.map((point) => (
                 <p key={point}>{point}</p>
               ))}
+              <ul className="partner-links">
+                {partner.links.map((link) => (
+                  <li key={link.href}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
         </ul>
