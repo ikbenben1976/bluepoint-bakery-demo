@@ -112,8 +112,8 @@ export const communityMarks: Photo[] = [
  * on that page and has no logo file there, so it stays a text name.
  */
 export const customerMarks: Photo[] = [
-  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun mark published on Bluepoint’s community page" },
-  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues mark published on Bluepoint’s community page" },
+  { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun" },
+  { src: "/images/scenes/oskar-blues.webp", width: 174, height: 174, alt: "Oskar Blues" },
 ];
 
 export const homeTiles: { href: string; label: string; category: string }[] = [

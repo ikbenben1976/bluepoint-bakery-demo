@@ -41,7 +41,11 @@ export function PublishedProof({ source = "community" }: { source?: "community" 
   return (
     <div className="proof-groups">
       {THEMES.map((theme) => {
-        const quotes = items.filter((item) => item.themes.includes(theme.id));
+        const quotes = items.filter((item) => {
+          if (!item.themes.includes(theme.id)) return false;
+          const first = THEMES.find((entry) => item.themes.includes(entry.id));
+          return first?.id === theme.id;
+        });
         if (quotes.length === 0) return null;
         return (
           <section key={theme.id} aria-labelledby={`proof-${theme.id}`}>

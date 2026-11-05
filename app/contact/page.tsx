@@ -71,7 +71,6 @@ export default function ContactPage() {
               Open 5105 Cook St., Denver, CO 80216 in Google Maps
             </a>
           </p>
-          <p>This demo does not send email.</p>
           <p className="social-row">
             <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Bluepoint Bakery on Instagram">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">

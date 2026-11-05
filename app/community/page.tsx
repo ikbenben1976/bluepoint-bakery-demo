@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { communityPartners } from "@/data/site";
 import { communityMarks, gallery } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
@@ -61,14 +60,11 @@ export default function CommunityPage() {
           <div>
             <h2>FIRE Foundation</h2>
             <p>
-              A Denver Catholic Schools post thanked Bluepoint for support of the FIRE Foundation Thanksgiving pie fundraiser.
+              Bluepoint has supported the FIRE Foundation Thanksgiving pie fundraiser.
               Pie in the Sky, above, is the Project Angel Heart program.
             </p>
           </div>
         </aside>
-        <p className="community-note">
-          <Link href="/#customers">Customer comments</Link> published on Bluepoint&apos;s site are shown with the other customer names.
-        </p>
       </div>
     </>
   );

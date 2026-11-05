@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CAFE_REVIEW, customerComments } from "@/data/site";
+import { customerComments } from "@/data/site";
 import { customerMarks } from "@/data/photos";
 import { featuredPublicMentions, publicMentions, type PublicMention } from "@/data/customers";
 import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
+import { UseShots } from "@/components/UseShots";
 
 const audiences = [
   { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads" },
@@ -27,7 +28,6 @@ function PublicMentionCard({ mention }: { mention: PublicMention }) {
     <div className="verified-client-mark">
       <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
       <strong>{mention.name}</strong>
-      <small>{mention.caption}</small>
     </div>
   );
 }
@@ -76,23 +76,20 @@ export function BuyerProof() {
         ))}
         {selected === "restaurants" ? (
           <div>
-            <div className="verified-client-strip" aria-label="Restaurants and pubs named with Bluepoint">
+            <div className="verified-client-strip" aria-label="Restaurants and pubs">
               <div className="verified-client-wordmark">
                 <span>The Cherry Cricket</span>
-                <small>Quoted on Bluepoint&apos;s community page</small>
               </div>
               {customerMarks.map((mark) => (
                 <div key={mark.src} className="verified-client-mark">
                   <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} />
-                  {mark.src.includes("oskar-blues") ? (
-                    <small>Customer listed on Bluepoint&apos;s community page</small>
-                  ) : null}
                 </div>
               ))}
               {mentions.map((mention) => (
                 <PublicMentionCard key={mention.src} mention={mention} />
               ))}
             </div>
+            <UseShots audience="restaurants" />
             <div className="proof-quotes">
               {customerComments.map((comment) => (
                 <blockquote key={comment.name} className="proof-quote">
@@ -105,12 +102,13 @@ export function BuyerProof() {
         ) : selected === "cafes" ? (
           <div>
             {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Cafés and coffee shops named in a public post">
+              <div className="verified-client-strip" aria-label="Cafés and coffee shops">
                 {mentions.map((mention) => (
                   <PublicMentionCard key={mention.src} mention={mention} />
                 ))}
               </div>
             ) : null}
+            <UseShots audience="cafes" />
             <PublishedProof source="cafe" />
             <p className="proof-context">
               Croissants, muffins, scones, and danishes are on the pastry list.{" "}
@@ -120,7 +118,7 @@ export function BuyerProof() {
         ) : selected === "hotels" ? (
           <div>
             {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Hotels and catering named in a public post">
+              <div className="verified-client-strip" aria-label="Hotels and catering">
                 {mentions.map((mention) => (
                   <PublicMentionCard key={mention.src} mention={mention} />
                 ))}
@@ -138,7 +136,7 @@ export function BuyerProof() {
         ) : (
           <div>
             {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Institutions named in a public post">
+              <div className="verified-client-strip" aria-label="Institutions">
                 {mentions.map((mention) => (
                   <PublicMentionCard key={mention.src} mention={mention} />
                 ))}
@@ -155,7 +153,6 @@ export function BuyerProof() {
           </div>
         )}
       </div>
-      <p className="buyer-proof-note">Restaurant comments are from Bluepoint’s community page. Cherry Cricket, Mountain Sun, and Oskar Blues stay as published on that page. Other logo cards in these tabs credit a public post and are not testimonials. The Urban Egg Meet the Makers quote is from that public post and is not a testimonial. The café line is a {CAFE_REVIEW.source} review from {CAFE_REVIEW.when}. The GrowHaus public post stays on the Community page. Current account relationships should be confirmed with the bakery.</p>
     </section>
   );
 }
