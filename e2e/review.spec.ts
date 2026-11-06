@@ -1125,6 +1125,8 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
     expect(type.overflowWrap).not.toBe("anywhere");
     expect(type.hyphens).not.toBe("auto");
     expect(type.h1Overflows, `headline overflows at ${width}`).toBeFalsy();
+    const scratchLines = await page.locator(".hero-keep").evaluate((el) => el.getClientRects().length);
+    expect(scratchLines, `Scratch-Baked stays on one line at ${width}`).toBe(1);
 
     await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("src", /bluepoint-logo\.png/);
     await expect(page.locator(".hero .heritage-logo, .approved-hero-logo")).toHaveCount(0);
