@@ -4,16 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { customerComments } from "@/data/site";
-import { customerMarks } from "@/data/photos";
 import { featuredPublicMentions, publicMentions, type PublicMention } from "@/data/customers";
 import { FeaturedMention } from "@/components/FeaturedMention";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
-  { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads" },
-  { id: "cafes", label: "Cafés & coffee shops", title: "Pastries and breads for the morning rush", href: "/sectors/cafes", cta: "Explore café products" },
-  { id: "hotels", label: "Hotels & catering", title: "An assortment for gatherings, dining and service", href: "/sectors/hotels", cta: "Explore catering products" },
-  { id: "institutions", label: "Institutions", title: "Wholesale bread for food-service teams", href: "/sectors/institutions", cta: "Explore institution products" },
+  { id: "restaurants", label: "Restaurants & pubs", title: "Behind Colorado's favorite burgers and sandwiches", href: "/sectors/restaurants", cta: "Explore restaurant breads", strip: "Restaurants and pubs" },
+  { id: "cafes", label: "Cafés & coffee shops", title: "Pastries and breads for the morning rush", href: "/sectors/cafes", cta: "Explore café products", strip: "Cafés and coffee shops" },
+  { id: "hotels", label: "Hotels & catering", title: "An assortment for gatherings, dining and service", href: "/sectors/hotels", cta: "Explore catering products", strip: "Hotels and catering" },
+  { id: "institutions", label: "Institutions", title: "Wholesale bread for food-service teams", href: "/sectors/institutions", cta: "Explore institution products", strip: "Institutions" },
 ] as const;
 
 type AudienceId = (typeof audiences)[number]["id"];
@@ -23,9 +22,12 @@ function mentionsFor(audience: AudienceId) {
 }
 
 function PublicMentionCard({ mention }: { mention: PublicMention }) {
+  const ink = mention.surface === "ink";
   return (
-    <div className="verified-client-mark">
-      <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
+    <div className={ink ? "verified-client-mark is-ink" : "verified-client-mark"}>
+      <div className="verified-client-well">
+        <Image src={mention.src} alt={mention.alt} width={mention.width} height={mention.height} />
+      </div>
       <strong>{mention.name}</strong>
     </div>
   );
@@ -73,82 +75,32 @@ export function BuyerProof() {
         {featured.map((story) => (
           <FeaturedMention key={story.name} mention={story} />
         ))}
-        {selected === "restaurants" ? (
-          <div>
-            <div className="verified-client-strip" aria-label="Restaurants and pubs">
-              <div className="verified-client-wordmark">
-                <span>The Cherry Cricket</span>
-              </div>
-              {customerMarks.map((mark) => (
-                <div key={mark.src} className="verified-client-mark">
-                  <Image src={mark.src} alt={mark.alt} width={mark.width} height={mark.height} />
-                </div>
-              ))}
-              {mentions.map((mention) => (
-                <PublicMentionCard key={mention.src} mention={mention} />
-              ))}
-            </div>
-            <div className="proof-quotes">
-              {customerComments.map((comment) => (
-                <blockquote key={comment.name} className="proof-quote">
-                  <p>“{comment.quote}”</p>
-                  <footer><strong>{comment.place}</strong> · {comment.name}</footer>
-                </blockquote>
-              ))}
-            </div>
+        {mentions.length > 0 ? (
+          <div className="verified-client-strip" aria-label={audience.strip}>
+            {mentions.map((mention) => (
+              <PublicMentionCard key={mention.src} mention={mention} />
+            ))}
           </div>
-        ) : selected === "cafes" ? (
-          <div>
-            {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Cafés and coffee shops">
-                {mentions.map((mention) => (
-                  <PublicMentionCard key={mention.src} mention={mention} />
-                ))}
-              </div>
-            ) : null}
+        ) : null}
+        {selected === "restaurants" ? (
+          <div className="proof-quotes">
+            {customerComments.map((comment) => (
+              <blockquote key={comment.name} className="proof-quote">
+                <p>“{comment.quote}”</p>
+                <footer><strong>{comment.place}</strong> · {comment.name}</footer>
+              </blockquote>
+            ))}
+          </div>
+        ) : null}
+        {selected === "cafes" ? (
+          <>
             <PublishedProof source="cafe" />
             <p className="proof-context">
               Croissants, muffins, scones, and danishes are on the pastry list.{" "}
               <Link href="/making/breakfast">Coffee and breakfast</Link>
             </p>
-          </div>
-        ) : selected === "hotels" ? (
-          <div>
-            {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Hotels and catering">
-                {mentions.map((mention) => (
-                  <PublicMentionCard key={mention.src} mention={mention} />
-                ))}
-              </div>
-            ) : null}
-            <div className="proof-empty">
-              <p>Hotels and catered events are named on Bluepoint’s site. The catalog includes dinner rolls, croissants, specialty breads, and pies.</p>
-              <p>
-                <Link href="/making/dinner">Dinner and catering</Link>
-                {" · "}
-                <Link href="/making/breakfast">Breakfast pastries</Link>
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {mentions.length > 0 ? (
-              <div className="verified-client-strip" aria-label="Institutions">
-                {mentions.map((mention) => (
-                  <PublicMentionCard key={mention.src} mention={mention} />
-                ))}
-              </div>
-            ) : null}
-            <div className="proof-empty">
-              <p>Corporate dining rooms, hospitals, schools, universities, and airports are named on Bluepoint’s site. Sandwich loaves, club rolls, and breakfast pastries are in the catalog.</p>
-              <p>
-                <Link href="/making/sandwiches">Sandwich breads</Link>
-                {" · "}
-                <Link href="/pastries">Pastries</Link>
-              </p>
-            </div>
-          </div>
-        )}
+          </>
+        ) : null}
       </div>
     </section>
   );

@@ -100,9 +100,9 @@ export const communityMarks: Photo[] = [
 ];
 
 /**
- * Customer marks published on https://www.bluepointbakery.com/community
- * (comm5.jpg Mountain Sun, comm6 Oskar Blues). Cherry Cricket is named in text
- * on that page and has no logo file there, so it stays a text name.
+ * Marks published on https://www.bluepointbakery.com/community
+ * (comm5.jpg Mountain Sun, comm6 Oskar Blues). The Customer Showcase reads
+ * these same files from data/customers.ts, once each, with the Cherry Cricket logo.
  */
 export const customerMarks: Photo[] = [
   { src: "/images/scenes/mountain-sun.webp", width: 350, height: 318, alt: "Mountain Sun" },
