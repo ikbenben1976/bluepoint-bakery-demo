@@ -1,38 +1,24 @@
 /**
- * Front Range businesses Ben approved on 2026-11-05 for public-mention marks.
- * Each one named Denver Bluepoint in a public Facebook post. Logos are the
- * businesses’ own site assets. Nothing here says the account is current.
+ * Customer Showcase marks for the four BuyerProof tabs, plus The GrowHaus
+ * on the Community page. Each showcase brand appears once, in its tab.
+ * Logo cards are the name and the mark only. There is no provenance caption.
  *
- * Restaurant and café entries render inside the matching BuyerProof audience
- * tab, in the same logo cards as Cherry Cricket, Mountain Sun, and Oskar
- * Blues. Logo cards are the name and mark only. There is no separate
- * “Named in public” block and no provenance caption.
- * Urban Egg’s Cafés tab (and the cafés sector page) shows Urban Egg’s
- * October Meet the Makers public post in the featured callout. The paste did
- * not state a year, so the attribution says October only.
+ * West Main Taproom + Grill and Cafe 180 are omitted because no Bluepoint
+ * proof-point link was established. Their plated-food photos stay on the
+ * homepage “What are you making?” cards.
+ * The GrowHaus is a community partner (nonprofit farm), so it stays
+ * audience "community" and off the Institutions tab.
  * Blue Point Brewing, Nettie’s Country Bakery, and Blue Point Farmstand are
  * a Maryland beer-bread mention, not Denver Bluepoint Bakery, and are omitted.
- * - restaurants — West Main Taproom + Grill, Revolver Kitchen, Red Cedar Bistro
- * - cafes — Cafe 180, Urban Egg, Windsor Lake Cafe & Marketplace
- * - community — The GrowHaus. It is a community partner (nonprofit farm and
- *   CSA), not a hospital, school, university, or airport, so the public-post
- *   line stays on the Community page rather than the Institutions tab.
  *
- * Sources:
- * - Cafe 180 — https://www.cafe180.org/ header PNG (CAFE180_Logo_horizontal_2021.png)
- * - Urban Egg — https://www.urbanegg.com/ primary logo PNG
- * - West Main Taproom + Grill — https://westmaintaproom.com/ schema logo (white lockup, inked navy for a light card)
- * - Windsor Lake Cafe & Marketplace — og:image on https://wlcmarketplace.square.site/ (white knocked out)
- * - Revolver Kitchen — https://www.revolverkitchen.com/ header logo
- * - Red Cedar Bistro — https://redcedarbistro.com/ header logo
- * - The GrowHaus — https://www.thegrowhaus.org/ crest (also a community partner)
- *
- * Skipped (no clean public mark): Lincoln’s Roadhouse, T-Bonz Grill, Cosmic Coyote, The Grecian Grazer.
- * FIRE Foundation’s logo is used on Community, not in this list.
- * The Flour Shop / Bluepoint Hospitality (Easton, MD) is excluded.
+ * `surface: "ink"` is a dark badge behind marks that are light on transparent
+ * (or a cream extrusion that disappears on a light well). It is not shown as text.
+ * Snarf’s uses the stacked wordmark because it stays sharp at card size.
  */
 
 export type PublicMentionAudience = "restaurants" | "cafes" | "hotels" | "institutions" | "community";
+
+export type LogoSurface = "paper" | "ink";
 
 export type PublicMention = {
   name: string;
@@ -41,6 +27,7 @@ export type PublicMention = {
   height: number;
   alt: string;
   audience: PublicMentionAudience;
+  surface?: LogoSurface;
 };
 
 export type FeaturedPublicMention = {
@@ -63,38 +50,44 @@ export const featuredPublicMentions: readonly FeaturedPublicMention[] = [
   },
 ];
 
+const SHOWCASE_AUDIENCES = ["restaurants", "cafes", "hotels", "institutions"] as const;
+
+export function isShowcaseAudience(audience: PublicMentionAudience): boolean {
+  return (SHOWCASE_AUDIENCES as readonly string[]).includes(audience);
+}
+
 export const publicMentions: readonly PublicMention[] = [
   {
-    name: "Cafe 180",
-    src: "/images/customers/cafe-180.png",
-    width: 800,
-    height: 215,
-    alt: "Cafe 180 logo",
-    audience: "cafes",
-  },
-  {
-    name: "Urban Egg",
-    src: "/images/customers/urban-egg.png",
-    width: 640,
-    height: 640,
-    alt: "Urban Egg logo",
-    audience: "cafes",
-  },
-  {
-    name: "West Main Taproom + Grill",
-    src: "/images/customers/west-main.png",
-    width: 900,
-    height: 255,
-    alt: "West Main Taproom + Grill logo",
+    name: "The Cherry Cricket",
+    src: "/images/customers/cherry-cricket.svg",
+    width: 348,
+    height: 218,
+    alt: "The Cherry Cricket logo",
     audience: "restaurants",
   },
   {
-    name: "Windsor Lake Cafe & Marketplace",
-    src: "/images/customers/windsor-lake-cafe.png",
-    width: 720,
-    height: 777,
-    alt: "Windsor Lake Cafe & Marketplace logo",
-    audience: "cafes",
+    name: "Mountain Sun Pub & Brewery",
+    src: "/images/scenes/mountain-sun.webp",
+    width: 350,
+    height: 318,
+    alt: "Mountain Sun Pub & Brewery logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Oskar Blues Fooderies",
+    src: "/images/scenes/oskar-blues.webp",
+    width: 174,
+    height: 174,
+    alt: "Oskar Blues Fooderies logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Red Cedar Bistro",
+    src: "/images/customers/red-cedar-bistro.png",
+    width: 547,
+    height: 235,
+    alt: "Red Cedar Bistro logo",
+    audience: "restaurants",
   },
   {
     name: "Revolver Kitchen",
@@ -105,12 +98,185 @@ export const publicMentions: readonly PublicMention[] = [
     audience: "restaurants",
   },
   {
-    name: "Red Cedar Bistro",
-    src: "/images/customers/red-cedar-bistro.png",
-    width: 547,
-    height: 235,
-    alt: "Red Cedar Bistro logo",
+    name: "The Lobby Denver",
+    src: "/images/customers/lobby-denver.png",
+    width: 338,
+    height: 288,
+    alt: "The Lobby Denver logo",
     audience: "restaurants",
+  },
+  {
+    name: "Lindsay's Boulder Deli",
+    src: "/images/customers/lindsays.webp",
+    width: 800,
+    height: 488,
+    alt: "Lindsay's Boulder Deli logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Grande Station",
+    src: "/images/customers/grande-station.webp",
+    width: 800,
+    height: 652,
+    alt: "Grande Station logo",
+    audience: "restaurants",
+  },
+  {
+    name: "My Brother's Bar",
+    src: "/images/customers/my-brothers-bar.png",
+    width: 221,
+    height: 107,
+    alt: "My Brother's Bar logo",
+    surface: "ink",
+    audience: "restaurants",
+  },
+  {
+    name: "Snarf's Sandwiches",
+    src: "/images/customers/snarfs.webp",
+    width: 627,
+    height: 300,
+    alt: "Snarf's Sandwiches logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Bon Ami Bistro & Crêperie",
+    src: "/images/customers/bon-ami.png",
+    width: 174,
+    height: 174,
+    alt: "Bon Ami Bistro & Crêperie logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Chop Shop Casual Urban Eatery",
+    src: "/images/customers/chop-shop.webp",
+    width: 600,
+    height: 270,
+    alt: "Chop Shop Casual Urban Eatery logo",
+    surface: "ink",
+    audience: "restaurants",
+  },
+  {
+    name: "La Merise French Bistro",
+    src: "/images/customers/la-merise.png",
+    width: 437,
+    height: 133,
+    alt: "La Merise French Bistro logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Linger",
+    src: "/images/customers/linger.svg",
+    width: 294,
+    height: 146,
+    alt: "Linger logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Root Down",
+    src: "/images/customers/root-down.svg",
+    width: 488,
+    height: 151,
+    alt: "Root Down logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Wynkoop Brewing Company",
+    src: "/images/customers/wynkoop.svg",
+    width: 218,
+    height: 190,
+    alt: "Wynkoop Brewing Company logo",
+    audience: "restaurants",
+  },
+  {
+    name: "Urban Egg",
+    src: "/images/customers/urban-egg.png",
+    width: 640,
+    height: 640,
+    alt: "Urban Egg logo",
+    audience: "cafes",
+  },
+  {
+    name: "Fluid Coffee Bar",
+    src: "/images/customers/fluid.png",
+    width: 466,
+    height: 60,
+    alt: "Fluid Coffee Bar logo",
+    surface: "ink",
+    audience: "cafes",
+  },
+  {
+    name: "Urban Cafe Denver",
+    src: "/images/customers/urban-cafe.webp",
+    width: 574,
+    height: 435,
+    alt: "Urban Cafe Denver logo",
+    audience: "cafes",
+  },
+  {
+    name: "Windsor Lake Cafe & Marketplace",
+    src: "/images/customers/windsor-lake-cafe.png",
+    width: 720,
+    height: 777,
+    alt: "Windsor Lake Cafe & Marketplace logo",
+    audience: "cafes",
+  },
+  {
+    name: "Nosh Catering",
+    src: "/images/customers/nosh.webp",
+    width: 371,
+    height: 322,
+    alt: "Nosh Catering logo",
+    audience: "hotels",
+  },
+  {
+    name: "Front Porch Coffee Shop — Event Catering",
+    src: "/images/customers/front-porch.webp",
+    width: 418,
+    height: 418,
+    alt: "Front Porch Coffee Shop logo",
+    audience: "hotels",
+  },
+  {
+    name: "Vīb Hotel Denver RiNo — Lobby Café",
+    src: "/images/customers/vib-hotel.webp",
+    width: 800,
+    height: 800,
+    alt: "Vīb Hotel Denver RiNo logo",
+    surface: "ink",
+    audience: "hotels",
+  },
+  {
+    name: "University of Colorado Boulder",
+    src: "/images/customers/cu-boulder.svg",
+    width: 868,
+    height: 80,
+    alt: "University of Colorado Boulder logo",
+    audience: "institutions",
+  },
+  {
+    name: "Regis University — Ranger Dining",
+    src: "/images/customers/ranger-dining.webp",
+    width: 800,
+    height: 592,
+    alt: "Regis University Ranger Dining logo",
+    surface: "ink",
+    audience: "institutions",
+  },
+  {
+    name: "Arapahoe Libraries",
+    src: "/images/customers/arapahoe.png",
+    width: 500,
+    height: 120,
+    alt: "Arapahoe Libraries logo",
+    audience: "institutions",
+  },
+  {
+    name: "New Belgium Brewing — DEN Airport",
+    src: "/images/customers/new-belgium.webp",
+    width: 300,
+    height: 300,
+    alt: "New Belgium Brewing logo",
+    audience: "institutions",
   },
   {
     name: "The GrowHaus",
