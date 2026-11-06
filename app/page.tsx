@@ -31,7 +31,9 @@ export default function HomePage() {
         <div className="hero-copy">
           <div className="hero-intro">
             <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
-            <h1 id="approved-hero-title">Fresh, Scratch-Baked Breads, Rolls &amp; Pastries</h1>
+            <h1 id="approved-hero-title">
+              Fresh, <span className="hero-keep">Scratch-Baked</span><span className="hero-balance"></span> Breads, Rolls &amp; Pastries
+            </h1>
             <p className="lede">
               For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
             </p>

@@ -3334,6 +3334,12 @@ body.menu-open .lockup-bakery { color: #f6f1e8; }
 }
 .mobile-menu { padding-top: 7.2rem; }
 
+/* Keep the compound "Scratch-Baked" intact. Laptops break after it so the
+   headline reads as two lines instead of splitting on the hyphen. */
+.hero-keep {
+  white-space: nowrap;
+}
+
 /* Desktop hero stays full-bleed. Text sits in the left cream; height follows the copy. */
 @media (min-width: 1024px) {
   .seamless-hero.approved-hero.hero {
@@ -3349,12 +3355,19 @@ body.menu-open .lockup-bakery { color: #f6f1e8; }
     z-index: 3;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0.85rem;
-    width: min(44%, 38rem);
-    min-height: clamp(500px, 36vw, 560px);
-    padding: 2.5rem 1.25rem 2.5rem clamp(1.15rem, 3.5vw, 3.75rem);
+    justify-content: flex-start;
+    gap: 0.6rem;
+    width: min(58%, 44rem);
+    min-height: clamp(500px, 36vw, 540px);
+    padding: 1.45rem 1.15rem 1.3rem clamp(1.15rem, 3vw, 3rem);
     background: transparent;
+  }
+  .seamless-hero .hero-balance::before {
+    content: "\A";
+    white-space: pre;
+  }
+  .seamless-hero .hero-kicker {
+    margin: 0 0 0.4rem;
   }
   .seamless-hero .hero-figure {
     position: absolute;
@@ -3382,18 +3395,18 @@ body.menu-open .lockup-bakery { color: #f6f1e8; }
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    background: linear-gradient(90deg, rgba(249,243,235,.94) 0%, rgba(249,243,235,.78) 24%, rgba(249,243,235,.28) 42%, rgba(249,243,235,0) 58%);
+    background: linear-gradient(90deg, rgba(249,243,235,.96) 0%, rgba(249,243,235,.9) 20%, rgba(249,243,235,.62) 38%, rgba(249,243,235,.18) 50%, rgba(249,243,235,0) 62%);
   }
   .seamless-hero h1 {
     font-family: var(--font-franklin), "Libre Franklin", sans-serif;
-    font-size: clamp(3rem, 4.2vw, 4.25rem);
-    max-width: 20ch;
-    line-height: 1.02;
+    font-size: clamp(2.45rem, 3.65vw, 3.8rem);
+    max-width: none;
+    line-height: 1.04;
     color: #0d0d25;
-    margin: 0.35rem 0 0.45rem;
+    margin: 0.05rem 0 0.25rem;
   }
   .seamless-hero .lede { display: block; max-width: 36rem; margin: 0; }
-  .seamless-hero .approved-hero-benefits { margin: 0.35rem 0; }
+  .seamless-hero .approved-hero-benefits { margin: 0.15rem 0; }
   .seamless-hero .hero-actions { margin: 0; }
 }
 
