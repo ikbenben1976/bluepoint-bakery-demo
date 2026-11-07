@@ -20,14 +20,18 @@ test("2016 AFP award is written only in the About story", () => {
   }
 });
 
-test("About names the published founders, Westword recognition, and Willie without calling the photo Willie", () => {
+test("About names the published founders, Westword recognition, and Willie's portrait", () => {
   const about = read("app/about/page.tsx");
   assert.match(about, /Fred Bramhall/);
   assert.match(about, /Mary Clark/);
   assert.match(about, /Best Bakery/);
   assert.match(about, /Willie Ramirez/);
-  assert.match(about, /Baguettes on a rack/);
-  assert.doesNotMatch(about, /not Willie Ramirez|Illustrative bakery photo|does not give a date/);
+  assert.match(about, /WILLIE_CAPTION/);
+  assert.match(about, /williePortrait/);
+  assert.match(read("data/photos.ts"), /Willie, part of the Bluepoint family/);
+  assert.match(about, /about-gallery/);
+  assert.match(read("data/photos.ts"), /Baguettes on a rack/);
+  assert.doesNotMatch(about, /not Willie Ramirez|Illustrative bakery photo|does not give a date|Illustrative image/);
   assert.match(about, /westword\.com\/location\/bluepoint-bakery-5170644/);
   assert.match(about, /best-of-denver-winners-from-2000-5834471/);
 });

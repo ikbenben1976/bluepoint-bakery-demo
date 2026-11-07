@@ -21,7 +21,7 @@ Each master was encoded to WebP (quality 76) and AVIF (SVT-AV1 CRF 32). Product 
 ## Where they show
 
 - Home hero: `hero-desktop` from 1024px wide, `hero-mobile` below that.
-- “What are you making?”: Coffee & Breakfast and Dinner & Catering still use `app-breakfast` and `app-dinner`. Burgers and sandwiches use plated photos in `public/images/use/` (`west-main-burger.jpg`, `cafe-180-sandwiches.jpg`), with a demo permission note. `west-main-reuben.jpg` is kept and is not on a card.
+- “What are you making?”: Dinner & Catering still uses `app-dinner`. Burgers, sandwiches, and Coffee & Breakfast use plated photos in `public/images/use/` (`west-main-burger.jpg`, `cafe-180-sandwiches.jpg`, `stuffed-french-toast.webp`), with a demo permission note. The breakfast photo does not name a restaurant. `west-main-reuben.jpg` is kept and is not on a card. `app-breakfast` remains in the illustrative set and is no longer on a card.
 - Catalog cards: one representative file per group below. Several catalog rows share a file when they are the same shape at another size, pack, or flavor. That shared file is not a verified photo of any of those items. Authentic per-item photographs are still missing.
 
 | File | Representative subject | Catalog ids that share it |
@@ -75,5 +75,6 @@ These stay in use and are not labeled as illustrations:
 - Category headers on the bread and pastry pages, from `data/photos.ts` `categoryPhotos` (files under `public/images/scenes/`).
 - “Our Product Assortment” on the home page, also Bluepoint scene photographs.
 - The about, community, and delivery photographs that were already on the site.
+- The delivery-page truck photograph (`public/images/scenes/delivery-truck.webp`) and the About portrait of Willie (`public/images/scenes/willie-portrait.webp`). Both are Bluepoint photographs. They are not labeled as illustrations.
 
 Studio cutouts under `public/images/studio/` were not placed on the new product cards. `data/photos.ts` already records that those cutouts were retired from large display because of their edges. They are also not separate published photos of each catalog row. The card gap is filled with the generated files above.

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { WholesaleRequest } from "@/components/WholesaleRequest";
-import { categoryPhotos } from "@/data/photos";
 import { PageHero } from "@/components/PageHero";
+import { WholesaleRequest } from "@/components/WholesaleRequest";
+import { WhyBluepoint } from "@/components/WhyBluepoint";
+import { categoryPhotos } from "@/data/photos";
 
 export const metadata: Metadata = {
   title: "Become a wholesale customer",
@@ -20,6 +21,7 @@ export default function WholesalePage() {
         image={categoryPhotos.croissants}
         lede={<p>Tell us what you are making and where you are. A sales professional will assist you.</p>}
       />
+      <WhyBluepoint />
       <WholesaleRequest />
     </>
   );

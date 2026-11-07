@@ -526,20 +526,21 @@ test("homepage separates illustrative menu applications from actual bakery produ
   const dinner = applications.locator('.making-visual-link[href^="/making/dinner"]');
   await expect(burgers.locator("img")).toHaveAttribute("src", /\/images\/use\/west-main-burger\.jpg/);
   await expect(sandwiches.locator("img")).toHaveAttribute("src", /\/images\/use\/cafe-180-sandwiches\.jpg/);
-  await expect(breakfast.locator("img")).toHaveAttribute("src", /\/images\/illustrative\/app-breakfast/);
+  await expect(breakfast.locator("img")).toHaveAttribute("src", /\/images\/use\/stuffed-french-toast\.webp/);
   await expect(dinner.locator("img")).toHaveAttribute("src", /\/images\/illustrative\/app-dinner/);
   await expect(burgers.locator(".illustrative-label")).toHaveCount(0);
   await expect(sandwiches.locator(".illustrative-label")).toHaveCount(0);
-  await expect(breakfast.locator(".illustrative-label")).toHaveText("Illustrative image");
+  await expect(breakfast.locator(".illustrative-label")).toHaveCount(0);
   await expect(dinner.locator(".illustrative-label")).toHaveText("Illustrative image");
   await expect(burgers.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   await expect(sandwiches.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
+  await expect(breakfast.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   await expect(burgers.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(sandwiches.locator(".making-permission")).not.toContainText("Illustrative image");
-  await expect(breakfast.locator(".making-permission")).toHaveCount(0);
+  await expect(breakfast.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(dinner.locator(".making-permission")).toHaveCount(0);
   await expect(applications.locator(".making-footnote")).toContainText("plated photos for this demo");
-  await expect(applications.locator(".making-footnote")).toContainText("illustrative images");
+  await expect(applications.locator(".making-footnote")).toContainText("illustrative image");
   await expect(applications.locator(".making-footnote")).not.toContainText("Illustrative images, not photographs of Bluepoint products.");
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
@@ -555,6 +556,55 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(page.locator(".application-section")).toHaveCount(0);
 });
 
+test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", async ({ page }) => {
+  await page.goto("/delivery/");
+  const truck = page.locator(".delivery-truck img");
+  await expect(truck).toHaveAttribute("src", /delivery-truck\.webp/);
+  await expect(truck).toHaveAttribute("alt", /Everybody Must Get Sconed/);
+  await expect(page.locator(".delivery-truck figcaption")).toHaveText(
+    "Delivered fresh in our own trucks, six days a week.",
+  );
+  await expect(page.locator(".delivery-truck .illustrative-label")).toHaveCount(0);
+  await expect
+    .poll(() => truck.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+
+  await page.goto("/about/");
+  const willie = page.locator(".about-portrait img");
+  await expect(willie).toHaveAttribute("src", /willie-portrait\.webp/);
+  await expect(willie).toHaveAttribute("alt", "Willie in a Bluepoint Bakery uniform");
+  await expect(page.locator(".about-portrait figcaption")).toHaveText("Willie, part of the Bluepoint family.");
+  await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
+  await expect
+    .poll(() => willie.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+
+  await page.goto("/wholesale/");
+  const why = page.locator(".why-bluepoint");
+  await expect(why.getByRole("heading", { name: "Why Bluepoint" })).toBeVisible();
+  await expect(why.locator(".why-card")).toHaveCount(6);
+  for (const title of ["Product", "Company", "Selection", "Value", "Service", "Integrity"]) {
+    await expect(why.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  }
+  await expect(why).toContainText("handmade, baked fresh");
+  await expect(why).toContainText("six days a week");
+  await expect(why).not.toContainText(/confirm with bakery/i);
+  await expect(why.locator("img")).toHaveCount(0);
+
+  await page.goto("/");
+  const breakfast = page.locator('.making-visual-link[href^="/making/breakfast"]');
+  const photo = breakfast.locator("img");
+  await expect(photo).toHaveAttribute("src", /stuffed-french-toast\.webp/);
+  await expect(photo).toHaveAttribute("alt", "Plated stuffed French toast with berries and custard");
+  await expect(breakfast.locator(".making-permission")).toContainText("Customer plate.");
+  await expect(breakfast.locator(".making-permission")).toContainText(
+    "Shown for this demo. Ask permission before using this product photo on a live site.",
+  );
+  await expect(breakfast.locator(".illustrative-label")).toHaveCount(0);
+  await expect
+    .poll(() => photo.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+});
 
 test("mobile opening screen visibly includes bakery photography and a clear action", async ({ page }) => {
   for (const width of [375, 390, 430, 768]) {
@@ -956,7 +1006,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(about).toContainText("made from scratch daily");
   await expect(about).toContainText("minority-owned and family-owned");
   await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
-  await expect(page.locator(".about-figure figcaption")).toHaveText("Baguettes on a rack.");
+  await expect(page.locator(".about-figure figcaption")).toHaveText("Willie, part of the Bluepoint family.");
+  await expect(page.locator(".about-portrait img")).toHaveAttribute("src", /willie-portrait\.webp/);
+  await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
+  await expect(page.locator('.about-gallery img[alt="Baguettes on a rack"]')).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
   await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
 

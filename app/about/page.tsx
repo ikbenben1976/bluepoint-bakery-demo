@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { aboutPhoto, gallery } from "@/data/photos";
+import { aboutPhoto, gallery, WILLIE_CAPTION, williePortrait } from "@/data/photos";
 import { ADDRESS, HOURS, PHONE_DISPLAY, PHONE_TEL, RAMIREZ_STUDY, WESTWORD_2000, WESTWORD_FOUNDING } from "@/data/site";
 import { PageHero } from "@/components/PageHero";
 
@@ -13,8 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const storyPhoto = gallery.find((photo) => photo.src.endsWith("baguette-rack.webp"))!;
-  const rest = gallery.filter((photo) => photo.src !== storyPhoto.src);
+  const rest = [...gallery];
   if (!rest.some((photo) => photo.src === aboutPhoto.src)) rest.push(aboutPhoto);
 
   return (
@@ -83,16 +82,17 @@ export default function AboutPage() {
               Office hours {HOURS}
             </p>
           </div>
-          <figure className="about-figure">
+          <figure className="about-figure about-portrait">
             <Image
-              src={storyPhoto.src}
-              alt="Baguettes on a rack"
-              width={storyPhoto.width}
-              height={storyPhoto.height}
+              src={williePortrait.src}
+              alt={williePortrait.alt}
+              width={williePortrait.width}
+              height={williePortrait.height}
               className="about-story-photo"
-              loading="eager"
+              sizes="(max-width: 899px) 100vw, 480px"
+              priority
             />
-            <figcaption>Baguettes on a rack.</figcaption>
+            <figcaption>{WILLIE_CAPTION}</figcaption>
           </figure>
         </div>
         <div className="about-gallery">

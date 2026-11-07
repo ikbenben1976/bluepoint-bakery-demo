@@ -5,9 +5,8 @@ import { applicationVisuals } from "@/data/illustrative";
 import { PERMISSION_NOTE, platedPhotoFor } from "@/data/usePhotos";
 import { uses } from "@/data/uses";
 
-// Finished dishes on the home cards. Burgers and sandwiches use plated photos
-// from public posts. Breakfast and dinner stay illustrative: no fitting plated
-// photo is in public/images/use. The bakery assortment is AssortmentCards.
+// Finished dishes on the home cards. Burgers, sandwiches, and breakfast use
+// plated photos. Dinner stays illustrative. The bakery assortment is AssortmentCards.
 const descriptions: Record<keyof typeof applicationVisuals, string> = {
   burgers: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
   sandwiches: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
@@ -71,9 +70,9 @@ export function MakingCards() {
         })}
       </ul>
       <p className="making-footnote">
-        Burgers and sandwiches use plated photos for this demo. Coffee &amp; Breakfast and Dinner &amp; Catering are
-        illustrative images, not photographs of Bluepoint products. The bakery&apos;s own products are in Our Product
-        Assortment, above.
+        Burgers, sandwiches, and coffee and breakfast use plated photos for this demo. Dinner and catering
+        uses an illustrative image, not a photograph of a Bluepoint product. The bakery&apos;s own products are in Our
+        Product Assortment, above.
       </p>
     </section>
   );

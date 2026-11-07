@@ -6,15 +6,16 @@
  *
  * `public/images/use/west-main-reuben.jpg` stays in the repo. It is a portrait
  * Reuben. The sandwiches card is one landscape frame, and Cafe 180’s sandwich
- * photo is the plate that fits it. Breakfast and dinner have no fitting plated
- * photo here, so those cards stay illustrative.
+ * photo is the plate that fits it. Coffee & Breakfast uses a customer plated
+ * stuffed French toast. The photo does not name the restaurant. Dinner has no
+ * fitting plated photo here, so that card stays illustrative.
  *
  * These are food-use photos only. They are not BuyerProof logo captions and
  * they are not a strip under the customer logos.
  */
 
 export type UsePhoto = {
-  slug: "burgers" | "sandwiches";
+  slug: "burgers" | "sandwiches" | "breakfast";
   src: string;
   width: number;
   height: number;
@@ -41,6 +42,14 @@ export const usePhotos: readonly UsePhoto[] = [
     height: 1000,
     alt: "Cafe 180 sandwiches on toasted bread",
     credit: "Cafe 180.",
+  },
+  {
+    slug: "breakfast",
+    src: "/images/use/stuffed-french-toast.webp",
+    width: 480,
+    height: 360,
+    alt: "Plated stuffed French toast with berries and custard",
+    credit: "Customer plate.",
   },
 ];
 

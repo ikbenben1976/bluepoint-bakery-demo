@@ -2,19 +2,19 @@
 
 ## Two separate buyer journeys — do not conflate
 
-1. **Menu applications: "What are you making?"** shows finished dishes and catering contexts. Burgers and sandwiches use plated photos from public posts, labeled with a demo permission note. Breakfast and dinner stay **illustrative**. None of these photos are Bluepoint product shots.
+1. **Menu applications: "What are you making?"** shows finished dishes and catering contexts. Burgers, sandwiches, and breakfast use plated photos, labeled with a demo permission note. Dinner stays **illustrative**. None of these photos are Bluepoint product shots.
 2. **Our Product Assortment** shows existing Bluepoint bakery catalog item/category photographs from the original company's public website. Only these are presented as published Bluepoint product images.
 3. The **hero** uses a generated illustration in `public/images/illustrative/`, labeled “Illustrative image.” It is not a verified photograph of Bluepoint products. One refreshed logo remains in the global header; the HTML headline, icons and clickable buttons sit outside the photograph.
 
 ## Application photography
 
-Burgers and sandwiches on “What are you making?” use plated photos in `public/images/use/`. Each one carries the demo permission note from `PERMISSION_NOTE` in `data/usePhotos.ts`, and does not say “Illustrative image.” Coffee & Breakfast and Dinner & Catering still use generated images in `public/images/illustrative/`, labeled “Illustrative image.” They are not photographs of Bluepoint products. Earlier Unsplash CDN links were removed. Illustrative provenance is in `docs/IMAGE-CREDITS.md`.
+Burgers, sandwiches, and Coffee & Breakfast on “What are you making?” use plated photos in `public/images/use/`. Each one carries the demo permission note from `PERMISSION_NOTE` in `data/usePhotos.ts`, and does not say “Illustrative image.” Dinner & Catering still uses a generated image in `public/images/illustrative/`, labeled “Illustrative image.” These are not photographs of Bluepoint products. Earlier Unsplash CDN links were removed. Illustrative provenance is in `docs/IMAGE-CREDITS.md`.
 
 | Application | File |
 | --- | --- |
 | Burgers & Sliders | `/images/use/west-main-burger.jpg` |
 | Sandwiches & Subs | `/images/use/cafe-180-sandwiches.jpg` |
-| Coffee & Breakfast | `/images/illustrative/app-breakfast.webp` |
+| Coffee & Breakfast | `/images/use/stuffed-french-toast.webp` |
 | Dinner & Catering | `/images/illustrative/app-dinner.webp` |
 
 ## Unfinished visual acceptance

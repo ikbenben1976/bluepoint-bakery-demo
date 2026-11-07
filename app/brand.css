@@ -3906,6 +3906,50 @@ body.menu-open .site-header .heritage-lockup {
   border: 1px solid #e4d8c4;
   border-radius: 12px;
 }
+.why-bluepoint {
+  padding-top: 2rem;
+  padding-bottom: 0.25rem;
+}
+.why-bluepoint .section-intro {
+  margin-bottom: 1rem;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.why-card {
+  margin: 0;
+  min-width: 0;
+  padding: 0.95rem 1rem 1.05rem;
+  background: #fff;
+  border: 1px solid #e4d8c4;
+  border-top: 8px solid #f66631;
+  border-radius: 12px;
+}
+.why-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+.why-card p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+@media (min-width: 700px) {
+  .why-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .why-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 .request-flow label {
   display: grid;
   gap: 0.35rem;
@@ -4172,6 +4216,11 @@ body.menu-open .site-header .heritage-lockup {
   object-fit: cover;
   object-position: center;
 }
+.about-figure.about-portrait img,
+.about-portrait .about-story-photo {
+  max-height: none;
+  object-position: center 18%;
+}
 .about-figure figcaption,
 .community-line figcaption,
 .about-gallery-note {
@@ -4323,6 +4372,14 @@ body.menu-open .site-header .heritage-lockup {
   .about-figure { order: -1; }
   .about-figure img,
   .about-story-photo { max-height: 15rem; }
+  .about-figure.about-portrait {
+    width: min(100%, 24rem);
+    margin-inline: auto;
+  }
+  .about-figure.about-portrait img,
+  .about-portrait .about-story-photo {
+    max-height: none;
+  }
 }
 @media (min-width: 900px) {
   .about-story {

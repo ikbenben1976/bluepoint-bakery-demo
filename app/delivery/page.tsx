@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { RouteMap } from "@/components/RouteMap";
+import { DELIVERY_TRUCK_CAPTION, deliveryTruck } from "@/data/photos";
 import { CAVEAT, DAY_SWATCH, DAY_TEXT, ROUTE_CITIES, ROUTE_NAME, type DayKey } from "@/data/routes";
 import { SERVICE_AREAS } from "@/lib/deliveryArea";
 
@@ -22,6 +24,17 @@ export default function DeliveryPage() {
       <p className="delivery-lede">
         We bake and deliver 6 days a week. Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming. {CAVEAT}
       </p>
+      <figure className="delivery-truck">
+        <Image
+          src={deliveryTruck.src}
+          alt={deliveryTruck.alt}
+          width={deliveryTruck.width}
+          height={deliveryTruck.height}
+          sizes="(max-width: 800px) 100vw, 640px"
+          className="delivery-truck-photo"
+        />
+        <figcaption>{DELIVERY_TRUCK_CAPTION}</figcaption>
+      </figure>
       <div className="delivery-layout">
       <RouteMap />
       <div className="delivery-lower">
