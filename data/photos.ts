@@ -66,7 +66,7 @@ export const williePortrait: Photo = {
   alt: "Willie in a Bluepoint Bakery uniform",
 };
 
-export const WILLIE_CAPTION = "Willie, part of the Bluepoint family.";
+export const WILLIE_CAPTION = "Willie Ramirez, owner";
 
 export const cookStreetMap: Photo = {
   src: "/images/cook-st.jpg",

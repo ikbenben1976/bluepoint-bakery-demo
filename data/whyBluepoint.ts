@@ -16,15 +16,15 @@ export const whyBluepoint: readonly WhyPillar[] = [
   },
   {
     title: "Company",
-    body: "Bluepoint is Colorado’s oldest and largest locally owned wholesale bakery.",
+    body: "A family-owned Colorado wholesale bakery since 1987.",
   },
   {
     title: "Selection",
-    body: "With 600 items and sizes available, and new products every month, we have Colorado’s largest selection.",
+    body: "Hundreds of breads, rolls, and pastries, with new products added regularly.",
   },
   {
     title: "Value",
-    body: "MVPR: maximum value to price ratio. You always get the most for your money.",
+    body: "Maximum value for the price you pay. You always get the most for your money.",
   },
   {
     title: "Service",

@@ -74,7 +74,9 @@ export default function HomePage() {
         https://coloradoproud.com/product-finder/ (checked 2026-11-04).
         “We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.”
         https://www.bluepointbakery.com/about
-        No certification is claimed for minority-owned or family-owned.
+        The NMSDC Certified MBE badge is shown because Ben approved it as on the current bakery site.
+        The homepage and about HTML checked for this demo did not include an NMSDC image file, so the
+        mark is the supplied badge with the page background and a stray corner removed.
       */}
       <section className="brand-trust" aria-label="Bluepoint Bakery credentials">
         <div className="shell brand-trust-inner">
@@ -109,6 +111,17 @@ export default function HomePage() {
               <div className="trust-credential-copy">
                 <strong>Minority-owned</strong>
                 <span>Denver, Colorado</span>
+              </div>
+            </li>
+            <li className="trust-credential trust-mbe">
+              <Image
+                src="/images/brand/nmsdc-mbe.png"
+                alt="NMSDC Certified Minority Business Enterprise badge"
+                width={341}
+                height={382}
+              />
+              <div className="trust-credential-copy">
+                <strong>NMSDC Certified Minority Business Enterprise</strong>
               </div>
             </li>
           </ul>

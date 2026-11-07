@@ -38,6 +38,12 @@ export type FeaturedPublicMention = {
   audience: PublicMentionAudience;
 };
 
+/** Shortened pull quote for the homepage Cafés tab. The verbatim post stays below for the sector page. */
+export const URBAN_EGG_PULL_QUOTE =
+  "Bluepoint Bakery, the family- and minority-owned bakery behind so many of our breads… created the Stuffed French Toast Brioche specifically for Urban Egg!";
+
+export const URBAN_EGG_PULL_CREDIT = "Urban Egg, Meet the Makers";
+
 /** Verbatim Urban Egg public post. October only — the paste did not state a year. */
 export const featuredPublicMentions: readonly FeaturedPublicMention[] = [
   {

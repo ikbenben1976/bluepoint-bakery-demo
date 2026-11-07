@@ -42,6 +42,7 @@ export function MakingCards() {
                           sizes="(max-width: 650px) 100vw, 50vw"
                           style={{ objectFit: "cover" }}
                         />
+                        {plate.aiLabel ? <span className="illustrative-label">{plate.aiLabel}</span> : null}
                       </span>
                       <span className="making-permission">
                         {plate.credit} {PERMISSION_NOTE}

@@ -16,15 +16,18 @@ test("Why Bluepoint is six sentence-case pillars from the values sheets", () => 
     assert.doesNotMatch(pillar.body, /illustrative/i);
     assert.doesNotMatch(pillar.title, /confirm|MBE/i);
   }
-  assert.match(whyBluepoint[0].body, /handmade, baked fresh/);
-  assert.match(whyBluepoint[0].body, /six days a week/);
-  assert.match(whyBluepoint[1].body, /oldest and largest locally owned wholesale bakery/);
-  assert.match(whyBluepoint[2].body, /600 items and sizes/);
-  assert.match(whyBluepoint[2].body, /largest selection/);
-  assert.match(whyBluepoint[3].body, /maximum value to price ratio/);
-  assert.match(whyBluepoint[3].body, /most for your money/);
-  assert.match(whyBluepoint[4].body, /40 years of combined experience/);
-  assert.match(whyBluepoint[5].body, /honesty, integrity, and respect/);
+  assert.deepEqual(
+    whyBluepoint.map((pillar) => pillar.body),
+    [
+      "Our products are handmade, baked fresh, and delivered in our own trucks, six days a week.",
+      "A family-owned Colorado wholesale bakery since 1987.",
+      "Hundreds of breads, rolls, and pastries, with new products added regularly.",
+      "Maximum value for the price you pay. You always get the most for your money.",
+      "With over 40 years of combined experience, our sales and customer service staff always take the time to listen and work with you.",
+      "The entire Bluepoint team is committed to treating you, our customer, with the honesty, integrity, and respect you deserve.",
+    ],
+  );
+  assert.doesNotMatch(whyBluepoint.map((pillar) => pillar.body).join(" "), /MVPR|oldest and largest|600 items/);
 
   const component = fs.readFileSync("components/WhyBluepoint.tsx", "utf8");
   const page = fs.readFileSync("app/wholesale/page.tsx", "utf8");
@@ -37,7 +40,7 @@ test("Why Bluepoint is six sentence-case pillars from the values sheets", () => 
 
 test("truck and Willie photos are real, captioned, and optimized", () => {
   assert.equal(DELIVERY_TRUCK_CAPTION, "Delivered fresh in our own trucks, six days a week.");
-  assert.equal(WILLIE_CAPTION, "Willie, part of the Bluepoint family.");
+  assert.equal(WILLIE_CAPTION, "Willie Ramirez, owner");
   assert.doesNotMatch(deliveryTruck.alt, /illustrative|AI|generated/i);
   assert.doesNotMatch(williePortrait.alt, /illustrative|AI|generated/i);
   assert.match(fs.readFileSync("app/delivery/page.tsx", "utf8"), /DELIVERY_TRUCK_CAPTION/);

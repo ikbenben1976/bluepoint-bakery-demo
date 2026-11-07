@@ -19,22 +19,26 @@ const ROUTE_ORDER: DayKey[] = ["mon-sat", "mwfs", "tts", "ts", "mttf"];
 export default function DeliveryPage() {
   return (
     <div className="shell delivery-page content-page">
-      <p className="kicker">Delivery area</p>
-      <h1>Where we deliver</h1>
-      <p className="delivery-lede">
-        We bake and deliver 6 days a week. Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming. {CAVEAT}
-      </p>
-      <figure className="delivery-truck">
-        <Image
-          src={deliveryTruck.src}
-          alt={deliveryTruck.alt}
-          width={deliveryTruck.width}
-          height={deliveryTruck.height}
-          sizes="(max-width: 800px) 100vw, 640px"
-          className="delivery-truck-photo"
-        />
-        <figcaption>{DELIVERY_TRUCK_CAPTION}</figcaption>
-      </figure>
+      <div className="delivery-intro">
+        <div className="delivery-intro-copy">
+          <p className="kicker">Delivery area</p>
+          <h1>Where we deliver</h1>
+          <p className="delivery-lede">
+            We bake and deliver 6 days a week. Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming. {CAVEAT}
+          </p>
+        </div>
+        <figure className="delivery-truck">
+          <Image
+            src={deliveryTruck.src}
+            alt={deliveryTruck.alt}
+            width={deliveryTruck.width}
+            height={deliveryTruck.height}
+            sizes="(max-width: 1023px) 100vw, 520px"
+            className="delivery-truck-photo"
+          />
+          <figcaption>{DELIVERY_TRUCK_CAPTION}</figcaption>
+        </figure>
+      </div>
       <div className="delivery-layout">
       <RouteMap />
       <div className="delivery-lower">

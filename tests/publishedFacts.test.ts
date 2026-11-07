@@ -28,7 +28,7 @@ test("About names the published founders, Westword recognition, and Willie's por
   assert.match(about, /Willie Ramirez/);
   assert.match(about, /WILLIE_CAPTION/);
   assert.match(about, /williePortrait/);
-  assert.match(read("data/photos.ts"), /Willie, part of the Bluepoint family/);
+  assert.match(read("data/photos.ts"), /Willie Ramirez, owner/);
   assert.match(about, /about-gallery/);
   assert.match(read("data/photos.ts"), /Baguettes on a rack/);
   assert.doesNotMatch(about, /not Willie Ramirez|Illustrative bakery photo|does not give a date|Illustrative image/);
@@ -64,9 +64,11 @@ test("homepage trust strip does not invent a certification or an extra award", (
   assert.match(home, /Listed in the product directory/);
   assert.match(home, /Minority-owned/);
   assert.match(home, /Headquartered in Denver, Colorado/);
+  assert.match(home, /NMSDC Certified Minority Business Enterprise/);
+  assert.match(home, /nmsdc-mbe\.png/);
   assert.doesNotMatch(home, /not a certification/);
   assert.doesNotMatch(home, /does not give a date/);
   assert.doesNotMatch(home, /The bakery must confirm whether samples/);
   assert.doesNotMatch(home, /Independent Denver bakery/);
-  assert.doesNotMatch(home, /MBE|certified minority/i);
+  assert.doesNotMatch(home, /Do NOT add the MBE badge/);
 });

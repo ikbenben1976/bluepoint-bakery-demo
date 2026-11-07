@@ -21,6 +21,8 @@ export type UsePhoto = {
   height: number;
   alt: string;
   credit: string;
+  /** Small on-image label when the plate was extended. */
+  aiLabel?: string;
 };
 
 export const PERMISSION_NOTE =
@@ -46,10 +48,11 @@ export const usePhotos: readonly UsePhoto[] = [
   {
     slug: "breakfast",
     src: "/images/use/stuffed-french-toast.webp",
-    width: 480,
-    height: 360,
+    width: 1152,
+    height: 864,
     alt: "Plated stuffed French toast with berries and custard",
     credit: "Customer plate.",
+    aiLabel: "Edges extended with AI",
   },
 ];
 
