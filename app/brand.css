@@ -1706,7 +1706,7 @@ body {
   display: grid;
   gap: 1rem;
   align-items: stretch;
-  margin: 1.25rem 0 0.4rem;
+  margin: 1.25rem 0 24px;
 }
 .cafe-pull-quote {
   margin: 0;
@@ -1760,6 +1760,7 @@ body {
   .cafe-pull {
     grid-template-columns: minmax(0, 1.12fr) minmax(240px, 0.88fr);
     gap: 1.15rem 1.35rem;
+    margin-bottom: 32px;
   }
 }
 .proof-quotes-single { grid-template-columns: 1.4fr 1fr; align-items: center; }
