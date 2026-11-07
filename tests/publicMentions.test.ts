@@ -147,10 +147,14 @@ test("Urban Egg Meet the Makers is featured café proof and stays off other audi
   const sector = fs.readFileSync("app/sectors/[slug]/page.tsx", "utf8");
   const featured = fs.readFileSync("components/FeaturedMention.tsx", "utf8");
   const customers = fs.readFileSync("data/customers.ts", "utf8");
-  assert.match(buyer, /featuredPublicMentions/);
-  assert.match(buyer, /story\.audience === selected/);
-  assert.doesNotMatch(buyer, /confirmed with the bakery|Public post:/);
-  assert.match(buyer, /FeaturedMention/);
+  const pull = fs.readFileSync("components/CafePull.tsx", "utf8");
+  assert.match(buyer, /CafePull/);
+  assert.doesNotMatch(buyer, /FeaturedMention/);
+  assert.doesNotMatch(buyer, /confirmed with the bakery|Public post/);
+  assert.match(pull, /URBAN_EGG_PULL_QUOTE/);
+  assert.match(pull, /URBAN_EGG_PULL_CREDIT/);
+  assert.match(customers, /Urban Egg, Meet the Makers/);
+  assert.doesNotMatch(pull, /Public post, not a testimonial/);
   assert.match(sector, /story\.audience === slug/);
   assert.match(featured, /\{mention\.name\} · \{mention\.series\} · \{mention\.when\}/);
   assert.match(featured, /Public post, not a testimonial/);

@@ -349,13 +349,26 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).not.toContainText("Cafe 180");
   await expect(panel.locator(".use-shots")).toHaveCount(0);
   await expect(panel.getByRole("img", { name: "Cafe 180 sandwiches on toasted bread" })).toHaveCount(0);
-  await expect(panel).not.toContainText("Ask permission before using this product photo on a live site.");
+  await expect(panel.locator(".verified-client-strip")).not.toContainText("Ask permission before using this product photo on a live site.");
   await expect(panel).toContainText("Urban Egg");
   await expect(panel.locator(".verified-client-mark").filter({ hasText: "Urban Egg" })).toHaveCount(1);
   await expect(panel).not.toContainText("Public post: Meet the Makers.");
-  await expect(panel).toContainText("Urban Egg · Meet the Makers · October");
-  await expect(panel).toContainText("they created the Stuffed French Toast Brioche specifically for Urban Egg");
-  await expect(panel).toContainText("Public post, not a testimonial.");
+  await expect(panel).not.toContainText("Urban Egg · Meet the Makers · October");
+  await expect(panel).not.toContainText("Public post, not a testimonial.");
+  await expect(panel.locator(".cafe-pull")).toContainText("Bluepoint Bakery, the family- and minority-owned bakery behind so many of our breads");
+  await expect(panel.locator(".cafe-pull")).toContainText("created the Stuffed French Toast Brioche specifically for Urban Egg!");
+  await expect(panel.locator(".cafe-pull footer")).toHaveText("Urban Egg, Meet the Makers");
+  await expect(panel.locator(".cafe-pull .illustrative-label")).toHaveText("Edges extended with AI");
+  await expect(panel.locator(".cafe-pull .making-permission")).toContainText("Customer plate.");
+  await expect(panel.locator(".cafe-pull .making-permission")).toContainText("Ask permission before using this product photo on a live site.");
+  const cafeOrder = await page.evaluate(() => {
+    const strip = document.querySelector(".verified-client-strip");
+    const pull = document.querySelector(".cafe-pull");
+    if (!strip || !pull) return false;
+    const stripFirst = (strip.compareDocumentPosition(pull) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+    return stripFirst && strip.getBoundingClientRect().bottom <= pull.getBoundingClientRect().top + 1;
+  });
+  expect(cafeOrder).toBe(true);
   await expect(panel).not.toContainText("Blue Point Brewing");
   await expect(panel).toContainText("Fluid Coffee Bar");
   await expect(panel).toContainText("Urban Cafe Denver");
@@ -526,20 +539,22 @@ test("homepage separates illustrative menu applications from actual bakery produ
   const dinner = applications.locator('.making-visual-link[href^="/making/dinner"]');
   await expect(burgers.locator("img")).toHaveAttribute("src", /\/images\/use\/west-main-burger\.jpg/);
   await expect(sandwiches.locator("img")).toHaveAttribute("src", /\/images\/use\/cafe-180-sandwiches\.jpg/);
-  await expect(breakfast.locator("img")).toHaveAttribute("src", /\/images\/illustrative\/app-breakfast/);
+  await expect(breakfast.locator("img")).toHaveAttribute("src", /\/images\/use\/stuffed-french-toast\.webp/);
   await expect(dinner.locator("img")).toHaveAttribute("src", /\/images\/illustrative\/app-dinner/);
   await expect(burgers.locator(".illustrative-label")).toHaveCount(0);
   await expect(sandwiches.locator(".illustrative-label")).toHaveCount(0);
-  await expect(breakfast.locator(".illustrative-label")).toHaveText("Illustrative image");
+  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
   await expect(dinner.locator(".illustrative-label")).toHaveText("Illustrative image");
   await expect(burgers.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   await expect(sandwiches.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
+  await expect(breakfast.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   await expect(burgers.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(sandwiches.locator(".making-permission")).not.toContainText("Illustrative image");
-  await expect(breakfast.locator(".making-permission")).toHaveCount(0);
+  await expect(breakfast.locator(".making-permission")).not.toContainText("Illustrative image");
+  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
   await expect(dinner.locator(".making-permission")).toHaveCount(0);
   await expect(applications.locator(".making-footnote")).toContainText("plated photos for this demo");
-  await expect(applications.locator(".making-footnote")).toContainText("illustrative images");
+  await expect(applications.locator(".making-footnote")).toContainText("illustrative image");
   await expect(applications.locator(".making-footnote")).not.toContainText("Illustrative images, not photographs of Bluepoint products.");
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
@@ -555,6 +570,107 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(page.locator(".application-section")).toHaveCount(0);
 });
 
+test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", async ({ page }) => {
+  await page.goto("/delivery/");
+  const truck = page.locator(".delivery-truck img");
+  await expect(truck).toHaveAttribute("src", /delivery-truck\.webp/);
+  await expect(truck).toHaveAttribute("alt", /Everybody Must Get Sconed/);
+  await expect(page.locator(".delivery-truck figcaption")).toHaveText(
+    "Delivered fresh in our own trucks, six days a week.",
+  );
+  await expect(page.locator(".delivery-truck .illustrative-label")).toHaveCount(0);
+  await expect
+    .poll(() => truck.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+
+  await page.goto("/about/");
+  const willie = page.locator(".about-portrait img");
+  await expect(willie).toHaveAttribute("src", /willie-portrait\.webp/);
+  await expect(willie).toHaveAttribute("alt", "Willie in a Bluepoint Bakery uniform");
+  await expect(page.locator(".about-portrait figcaption")).toHaveText("Willie Ramirez, owner");
+  await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
+  await expect
+    .poll(() => willie.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+
+  await page.goto("/wholesale/");
+  const why = page.locator(".why-bluepoint");
+  await expect(why.getByRole("heading", { name: "Why Bluepoint" })).toBeVisible();
+  await expect(why.locator(".why-card")).toHaveCount(6);
+  for (const title of ["Product", "Company", "Selection", "Value", "Service", "Integrity"]) {
+    await expect(why.getByRole("heading", { name: title, exact: true })).toBeVisible();
+  }
+  await expect(why).toContainText("handmade, baked fresh");
+  await expect(why).toContainText("A family-owned Colorado wholesale bakery since 1987.");
+  await expect(why).toContainText("Hundreds of breads, rolls, and pastries, with new products added regularly.");
+  await expect(why).toContainText("Maximum value for the price you pay. You always get the most for your money.");
+  await expect(why).not.toContainText("MVPR");
+  await expect(why).not.toContainText("oldest and largest");
+  await expect(why).not.toContainText(/confirm with bakery/i);
+  await expect(why.locator("img")).toHaveCount(0);
+
+  await page.goto("/");
+  const breakfast = page.locator('.making-visual-link[href^="/making/breakfast"]');
+  const photo = breakfast.locator("img");
+  await expect(photo).toHaveAttribute("src", /stuffed-french-toast\.webp/);
+  await expect(photo).toHaveAttribute("alt", "Plated stuffed French toast with berries and custard");
+  await expect(breakfast.locator(".making-permission")).toContainText("Customer plate.");
+  await expect(breakfast.locator(".making-permission")).toContainText(
+    "Shown for this demo. Ask permission before using this product photo on a live site.",
+  );
+  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  await expect
+    .poll(() => photo.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
+    .toBeTruthy();
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/delivery/");
+  const truckLayout = await page.evaluate(() => {
+    const copy = document.querySelector(".delivery-intro-copy")!.getBoundingClientRect();
+    const photo = document.querySelector(".delivery-truck")!.getBoundingClientRect();
+    const img = document.querySelector(".delivery-truck img") as HTMLImageElement;
+    return {
+      beside: photo.left >= copy.right - 4,
+      sameBand: photo.top < copy.bottom && photo.bottom > copy.top,
+      height: img.getBoundingClientRect().height,
+    };
+  });
+  expect(truckLayout.beside).toBe(true);
+  expect(truckLayout.sameBand).toBe(true);
+  expect(truckLayout.height).toBeLessThanOrEqual(362);
+  expect(truckLayout.height).toBeGreaterThan(200);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/delivery/");
+  const stacked = await page.evaluate(() => {
+    const copy = document.querySelector(".delivery-lede")!.getBoundingClientRect();
+    const photo = document.querySelector(".delivery-truck")!.getBoundingClientRect();
+    return photo.top >= copy.bottom - 2 && photo.left <= copy.left + 2;
+  });
+  expect(stacked).toBe(true);
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/about/");
+  const willieLayout = await page.evaluate(() => {
+    const heading = document.querySelector(".willie-copy h2")!.getBoundingClientRect();
+    const photo = document.querySelector(".willie-portrait")!.getBoundingClientRect();
+    return {
+      beside: photo.left >= heading.right - 8,
+      sameBand: Math.abs(photo.top - heading.top) < 40,
+    };
+  });
+  expect(willieLayout.beside).toBe(true);
+  expect(willieLayout.sameBand).toBe(true);
+
+  await page.goto("/");
+  const quotes = page.locator(".buyer-proof-panel > .proof-quotes blockquote");
+  await expect(quotes).toHaveCount(2);
+  const quoteHeights = await quotes.evaluateAll((nodes) => nodes.map((node) => Math.round(node.getBoundingClientRect().height)));
+  expect(Math.abs(quoteHeights[0] - quoteHeights[1])).toBeLessThanOrEqual(2);
+  const shortSize = await page.locator(".proof-quote-short p").evaluate((node) => parseFloat(getComputedStyle(node).fontSize));
+  const longSize = await page.locator(".buyer-proof-panel > .proof-quotes blockquote:not(.proof-quote-short) p").evaluate((node) => parseFloat(getComputedStyle(node).fontSize));
+  expect(shortSize).toBeGreaterThan(longSize + 6);
+});
 
 test("mobile opening screen visibly includes bakery photography and a clear action", async ({ page }) => {
   for (const width of [375, 390, 430, 768]) {
@@ -654,10 +770,12 @@ test("branded trust rail and real bakery scene photos visually fit at desktop an
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     const badges = page.locator(".trust-credential");
-    await expect(badges).toHaveCount(3);
+    await expect(badges).toHaveCount(4);
     await expect(badges.nth(0)).toContainText("Colorado Proud");
     await expect(badges.nth(1)).toContainText("Family-owned");
     await expect(badges.nth(2)).toContainText("Minority-owned");
+    await expect(badges.nth(3)).toContainText("NMSDC Certified Minority Business Enterprise");
+    await expect(badges.nth(3).locator("img")).toHaveAttribute("src", /nmsdc-mbe\.png/);
     const photos = page.locator(".assortment-card .assortment-photo img");
     await expect(photos).toHaveCount(5);
     await expect.poll(() => photos.evaluateAll((imgs) => imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
@@ -956,7 +1074,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(about).toContainText("made from scratch daily");
   await expect(about).toContainText("minority-owned and family-owned");
   await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
-  await expect(page.locator(".about-figure figcaption")).toHaveText("Baguettes on a rack.");
+  await expect(page.locator(".about-figure figcaption")).toHaveText("Willie Ramirez, owner");
+  await expect(page.locator(".about-portrait img")).toHaveAttribute("src", /willie-portrait\.webp/);
+  await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
+  await expect(page.locator('.about-gallery img[alt="Baguettes on a rack"]')).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
   await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
 
@@ -992,6 +1113,8 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".brand-trust")).toContainText("Listed in the product directory");
   await expect(page.locator(".brand-trust")).toContainText("Family-owned");
   await expect(page.locator(".brand-trust")).toContainText("Minority-owned");
+  await expect(page.locator(".brand-trust")).toContainText("NMSDC Certified Minority Business Enterprise");
+  await expect(page.locator(".brand-trust img[alt='NMSDC Certified Minority Business Enterprise badge']")).toBeVisible();
   await expect(page.locator(".brand-trust")).not.toContainText("not a certification");
   await expect(page.locator(".brand-trust")).not.toContainText("Outstanding Small Business");
   await expect(page.locator(".brand-trust")).not.toContainText("AFP");

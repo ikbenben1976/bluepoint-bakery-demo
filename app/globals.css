@@ -1616,8 +1616,55 @@ legend {
 }
 
 .delivery-lede {
-  max-width: 42rem;
-  margin: 0.35rem 0 1rem;
+  max-width: none;
+  margin: 0.35rem 0 0;
+}
+
+.delivery-intro {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+  margin: 0 0 1.35rem;
+}
+
+.delivery-intro-copy {
+  min-width: 0;
+}
+
+.delivery-truck {
+  margin: 0;
+  min-width: 0;
+}
+
+.delivery-truck img,
+.delivery-truck-photo {
+  display: block;
+  width: 100%;
+  height: 240px;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: center 42%;
+  border: 1px solid #0d0d25;
+}
+
+.delivery-truck figcaption {
+  margin-top: 0.45rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 1024px) {
+  .delivery-intro {
+    grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
+    gap: 1.25rem 1.75rem;
+    align-items: center;
+  }
+
+  .delivery-truck img,
+  .delivery-truck-photo {
+    height: 360px;
+    max-height: 360px;
+  }
 }
 
 .atlas-stage {

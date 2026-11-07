@@ -48,6 +48,26 @@ export const aboutPhoto: Photo = {
   alt: "Cherry pies on a rack at Bluepoint Bakery",
 };
 
+/** Real photograph of a Bluepoint delivery truck. Not an illustration. */
+export const deliveryTruck: Photo = {
+  src: "/images/scenes/delivery-truck.webp",
+  width: 1112,
+  height: 886,
+  alt: "Bluepoint Bakery delivery truck with scones and the line Everybody Must Get Sconed",
+};
+
+export const DELIVERY_TRUCK_CAPTION = "Delivered fresh in our own trucks, six days a week.";
+
+/** Cropped portrait of Willie in a Bluepoint uniform. Not an illustration. */
+export const williePortrait: Photo = {
+  src: "/images/scenes/willie-portrait.webp",
+  width: 668,
+  height: 758,
+  alt: "Willie in a Bluepoint Bakery uniform",
+};
+
+export const WILLIE_CAPTION = "Willie Ramirez, owner";
+
 export const cookStreetMap: Photo = {
   src: "/images/cook-st.jpg",
   width: 1100,

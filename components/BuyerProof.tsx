@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { customerComments } from "@/data/site";
-import { featuredPublicMentions, publicMentions, type PublicMention } from "@/data/customers";
-import { FeaturedMention } from "@/components/FeaturedMention";
+import { publicMentions, type PublicMention } from "@/data/customers";
+import { CafePull } from "@/components/CafePull";
 import { PublishedProof } from "@/components/PublishedProof";
 
 const audiences = [
@@ -37,7 +37,6 @@ export function BuyerProof() {
   const [selected, setSelected] = useState<AudienceId>("restaurants");
   const audience = audiences.find((entry) => entry.id === selected)!;
   const mentions = mentionsFor(selected);
-  const featured = featuredPublicMentions.filter((story) => story.audience === selected);
   return (
     <section aria-labelledby="buyer-proof-heading" className="buyer-proof">
       <div className="section-intro">
@@ -72,9 +71,6 @@ export function BuyerProof() {
           <h3>{audience.title}</h3>
           <Link className="btn btn-primary" href={audience.href}>{audience.cta}</Link>
         </div>
-        {featured.map((story) => (
-          <FeaturedMention key={story.name} mention={story} />
-        ))}
         {mentions.length > 0 ? (
           <div className="verified-client-strip" aria-label={audience.strip}>
             {mentions.map((mention) => (
@@ -82,10 +78,11 @@ export function BuyerProof() {
             ))}
           </div>
         ) : null}
+        {selected === "cafes" ? <CafePull /> : null}
         {selected === "restaurants" ? (
           <div className="proof-quotes">
             {customerComments.map((comment) => (
-              <blockquote key={comment.name} className="proof-quote">
+              <blockquote key={comment.name} className={comment.quote.length < 80 ? "proof-quote proof-quote-short" : "proof-quote"}>
                 <p>“{comment.quote}”</p>
                 <footer><strong>{comment.place}</strong> · {comment.name}</footer>
               </blockquote>

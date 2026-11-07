@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { aboutPhoto, gallery } from "@/data/photos";
+import { aboutPhoto, gallery, WILLIE_CAPTION, williePortrait } from "@/data/photos";
 import { ADDRESS, HOURS, PHONE_DISPLAY, PHONE_TEL, RAMIREZ_STUDY, WESTWORD_2000, WESTWORD_FOUNDING } from "@/data/site";
 import { PageHero } from "@/components/PageHero";
 
@@ -13,8 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const storyPhoto = gallery.find((photo) => photo.src.endsWith("baguette-rack.webp"))!;
-  const rest = gallery.filter((photo) => photo.src !== storyPhoto.src);
+  const rest = [...gallery];
   if (!rest.some((photo) => photo.src === aboutPhoto.src)) rest.push(aboutPhoto);
 
   return (
@@ -40,24 +39,39 @@ export default function AboutPage() {
             <p>
               In Westword&apos;s Best of Denver 2000, Bluepoint is named <a href={WESTWORD_2000}>Best Bakery</a>.
             </p>
-            <h2>Willie Ramirez, from baker to owner</h2>
-            {/*
-              44 Business Capital, “From Baker to Manager to Owner. Long-time Employee Acquires Bakery Business with $2,675,000 SBA Loan.”
-              “After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez needed a bank and lender that would enable him to acquire full ownership of the bakery.”
-              The financing “left all of the employees and the entire operation intact.” The page gives no date.
-              The loan amount in the headline is not repeated on this page.
-              https://www.44businesscapital.com/business-loan-story/from-baker-to-manager-to-owner-long-time-employee-acquires-bakery-business-with-2675000-sba-loan/
-            */}
-            <p>
-              After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez acquired full ownership.{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery.
-            </p>
-            <blockquote className="about-quote">
-              <p>
-                &ldquo;Now that I own 100% of the bakery, I can focus on growing the business to meet the needs of my customers, namely providing the best breads to the best restaurants in Colorado.&rdquo;
-              </p>
-              <footer>Willie Ramirez, quoted by 44 Business Capital</footer>
-            </blockquote>
+            <div className="willie-story">
+              <div className="willie-copy">
+                <h2>Willie Ramirez, from baker to owner</h2>
+                {/*
+                  44 Business Capital, “From Baker to Manager to Owner. Long-time Employee Acquires Bakery Business with $2,675,000 SBA Loan.”
+                  “After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez needed a bank and lender that would enable him to acquire full ownership of the bakery.”
+                  The financing “left all of the employees and the entire operation intact.” The page gives no date.
+                  The loan amount in the headline is not repeated on this page.
+                  https://www.44businesscapital.com/business-loan-story/from-baker-to-manager-to-owner-long-time-employee-acquires-bakery-business-with-2675000-sba-loan/
+                */}
+                <p>
+                  After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez acquired full ownership.{" "}
+                  <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery.
+                </p>
+                <blockquote className="about-quote">
+                  <p>
+                    &ldquo;Now that I own 100% of the bakery, I can focus on growing the business to meet the needs of my customers, namely providing the best breads to the best restaurants in Colorado.&rdquo;
+                  </p>
+                  <footer>Willie Ramirez, quoted by 44 Business Capital</footer>
+                </blockquote>
+              </div>
+              <figure className="about-figure about-portrait willie-portrait">
+                <Image
+                  src={williePortrait.src}
+                  alt={williePortrait.alt}
+                  width={williePortrait.width}
+                  height={williePortrait.height}
+                  className="about-story-photo"
+                  sizes="(max-width: 899px) 100vw, 360px"
+                />
+                <figcaption>{WILLIE_CAPTION}</figcaption>
+              </figure>
+            </div>
             {/*
               The 2016 award appears only in this story.
               PR Newswire, 11 Oct 2016, Association of Fundraising Professionals, Colorado Chapter:
@@ -83,17 +97,6 @@ export default function AboutPage() {
               Office hours {HOURS}
             </p>
           </div>
-          <figure className="about-figure">
-            <Image
-              src={storyPhoto.src}
-              alt="Baguettes on a rack"
-              width={storyPhoto.width}
-              height={storyPhoto.height}
-              className="about-story-photo"
-              loading="eager"
-            />
-            <figcaption>Baguettes on a rack.</figcaption>
-          </figure>
         </div>
         <div className="about-gallery">
           <div className="about-gallery-grid">
