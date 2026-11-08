@@ -12,6 +12,7 @@ import { leadWords } from "@/lib/spec";
 import {
   PUBLISHED_CUSTOM_LINE,
   SAMPLE_QUESTION,
+  SAMPLE_REVIEW,
   areaSummary,
   dateStatus,
   extraProductNote,
@@ -64,6 +65,12 @@ function readStep(): number {
   return step >= 1 && step <= 4 ? step : 1;
 }
 
+function stepForHash(hash: string): number | null {
+  if (hash === "#sample-request" || hash === "#request-lines") return 2;
+  if (hash === "#wholesale-request") return 1;
+  return null;
+}
+
 export function WholesaleRequest() {
   const [ready, setReady] = useState(false);
   const [step, setStep] = useState(1);
@@ -78,9 +85,15 @@ export function WholesaleRequest() {
     const saved = loadDraft();
     setDraft(saved);
     setNow(new Date());
-    if (window.location.hash === "#sample-request") setStep(2);
-    else setStep(readStep());
+    const hashStep = stepForHash(window.location.hash);
+    setStep(hashStep ?? readStep());
     setReady(true);
+    const onHash = () => {
+      const next = stepForHash(window.location.hash);
+      if (next) setStep(next);
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
   useEffect(() => {
@@ -95,8 +108,10 @@ export function WholesaleRequest() {
   }, [step, ready]);
 
   useEffect(() => {
-    if (!ready || step !== 2 || window.location.hash !== "#sample-request") return;
-    document.getElementById("sample-request")?.scrollIntoView({ block: "start" });
+    if (!ready) return;
+    const hash = window.location.hash;
+    if (hash !== "#sample-request" && hash !== "#request-lines" && hash !== "#wholesale-request") return;
+    document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
   }, [ready, step]);
 
   const clock = now ?? new Date();
@@ -186,7 +201,7 @@ export function WholesaleRequest() {
     : deliverySuggestions(draft.deliveryCity);
 
   return (
-    <div className="shell request-flow" data-testid="request-flow">
+    <div id="wholesale-request" className="shell request-flow" data-testid="request-flow">
       {step < 4 ? (
         <>
           <AccountPaths />
@@ -339,6 +354,7 @@ export function WholesaleRequest() {
                   </button>
                 </div>
               </section>
+              <div id="request-lines">
               {draft.lines.length > 0 ? (
                 <ul className="request-lines">
                   {draft.lines.map((line) => {
@@ -451,6 +467,7 @@ export function WholesaleRequest() {
                   })}
                 </ul>
               ) : null}
+              </div>
               <label>
                 Other products or requirements
                 <textarea
@@ -502,7 +519,7 @@ export function WholesaleRequest() {
                 </label>
               </fieldset>
               <fieldset className="sample-interest" id="sample-request">
-                <legend>Ask about samples</legend>
+                <legend>Samples</legend>
                 <label className="choice-label">
                   <input
                     type="checkbox"
@@ -511,7 +528,7 @@ export function WholesaleRequest() {
                   />
                   {SAMPLE_QUESTION}
                 </label>
-                <p>Availability, cost, and fulfillment are not published on bluepointbakery.com.</p>
+                <p>We&apos;ll let you know what&apos;s available.</p>
                 {draft.askAboutSamples ? (
                   <label>
                     Products you want to ask about
@@ -524,7 +541,7 @@ export function WholesaleRequest() {
                   </label>
                 ) : null}
               </fieldset>
-              <div className="request-actions">
+              <div className="request-actions sample-actions">
                 <button className="btn btn-ghost" type="button" onClick={() => goTo(1)}>
                   Back
                 </button>
@@ -722,7 +739,7 @@ export function WholesaleRequest() {
             </dl>
             {draft.askAboutSamples ? (
               <p>
-                <strong>Samples:</strong> Please advise whether samples are available, and any cost or conditions.
+                <strong>Samples:</strong> {SAMPLE_REVIEW}
                 {draft.sampleInterest.trim() ? ` Products to ask about: ${draft.sampleInterest.trim()}.` : ""}
               </p>
             ) : null}

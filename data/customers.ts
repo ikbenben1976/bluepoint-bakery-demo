@@ -194,6 +194,14 @@ export const publicMentions: readonly PublicMention[] = [
     audience: "restaurants",
   },
   {
+    name: "New Belgium Brewing — DEN Airport",
+    src: "/images/customers/new-belgium.webp",
+    width: 300,
+    height: 300,
+    alt: "New Belgium Brewing logo",
+    audience: "restaurants",
+  },
+  {
     name: "Urban Egg",
     src: "/images/customers/urban-egg.png",
     width: 640,
@@ -274,14 +282,6 @@ export const publicMentions: readonly PublicMention[] = [
     width: 500,
     height: 120,
     alt: "Arapahoe Libraries logo",
-    audience: "institutions",
-  },
-  {
-    name: "New Belgium Brewing — DEN Airport",
-    src: "/images/customers/new-belgium.webp",
-    width: 300,
-    height: 300,
-    alt: "New Belgium Brewing logo",
     audience: "institutions",
   },
   {

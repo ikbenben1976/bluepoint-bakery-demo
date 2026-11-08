@@ -30,12 +30,14 @@ test("Why Bluepoint is six sentence-case pillars from the values sheets", () => 
   assert.doesNotMatch(whyBluepoint.map((pillar) => pillar.body).join(" "), /MVPR|oldest and largest|600 items/);
 
   const component = fs.readFileSync("components/WhyBluepoint.tsx", "utf8");
-  const page = fs.readFileSync("app/wholesale/page.tsx", "utf8");
+  const about = fs.readFileSync("app/about/page.tsx", "utf8");
+  const wholesale = fs.readFileSync("app/wholesale/page.tsx", "utf8");
   assert.match(component, /why-card/);
   assert.match(component, /why-grid/);
-  assert.match(page, /WhyBluepoint/);
+  assert.match(about, /WhyBluepoint/);
+  assert.doesNotMatch(wholesale, /WhyBluepoint/);
   assert.doesNotMatch(component, /values-sheet|\.png|confirm with bakery|MBE/i);
-  assert.doesNotMatch(page, /values-sheet|07-|08-|09-/);
+  assert.doesNotMatch(wholesale, /values-sheet|07-|08-|09-/);
 });
 
 test("truck and Willie photos are real, captioned, and optimized", () => {

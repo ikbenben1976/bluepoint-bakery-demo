@@ -4231,7 +4231,7 @@ body.menu-open .site-header .heritage-lockup {
 }
 .about-page {
   padding-top: 2rem;
-  padding-bottom: 6.5rem;
+  padding-bottom: 1rem;
 }
 .about-story {
   display: grid;
@@ -4310,7 +4310,63 @@ body.menu-open .site-header .heritage-lockup {
 }
 .about-gallery {
   width: 100%;
-  margin-top: 2.5rem;
+  margin-top: 0.5rem;
+  padding-bottom: 6.5rem;
+}
+.recognition {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.1rem 1.15rem;
+  background: #fff;
+  border-top: 6px solid #2035e8;
+}
+.recognition h2 {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+}
+.recognition p {
+  margin: 0;
+}
+#recognition,
+#wholesale-request,
+#request-lines,
+#sample-request {
+  scroll-margin-top: 7.5rem;
+}
+.card-actions .in-request {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.35rem 0.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.view-request-bar {
+  position: fixed;
+  left: 0.75rem;
+  bottom: 1rem;
+  z-index: 25;
+  max-width: calc(100% - 7.25rem);
+}
+.view-request-bar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.55rem 1rem;
+  background: #0b2b51;
+  color: #fff;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(13, 13, 37, 0.18);
+}
+body.menu-open .view-request-bar {
+  display: none;
 }
 .about-gallery-grid {
   display: grid;
@@ -5203,6 +5259,63 @@ legend,
   .site-header .heritage-logo,
   .site-header-row {
     transition: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .block {
+    padding: 1.5rem 0;
+  }
+  main p.map-attr {
+    display: block;
+    text-align: center;
+  }
+  .home-delivery-check label {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .site-footer img {
+    display: block;
+    margin-inline: auto;
+  }
+  .sample-interest,
+  .sample-interest legend,
+  .sample-interest p {
+    text-align: center;
+  }
+  .sample-interest legend {
+    margin-inline: auto;
+  }
+  .sample-interest .choice-label {
+    justify-content: center;
+    text-align: center;
+  }
+  .sample-actions {
+    justify-content: center;
+  }
+  .product-card,
+  .product-card.is-in-request {
+    min-height: 0;
+    height: auto;
+    justify-content: flex-start;
+  }
+  .product-card > *,
+  .product-card .product-photo,
+  .product-card .card-actions,
+  .product-card .btn,
+  .product-card .in-request {
+    flex-grow: 0;
+    margin-top: 0;
+  }
+  .product-card .card-actions {
+    margin-top: 0.35rem;
+  }
+  .product-card:hover,
+  .product-card.is-in-request:hover,
+  .product-card:focus-within {
+    transform: none;
+    box-shadow: none;
   }
 }
 

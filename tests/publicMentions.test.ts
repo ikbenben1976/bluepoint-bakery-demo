@@ -23,6 +23,7 @@ const RESTAURANTS = [
   "Linger",
   "Root Down",
   "Wynkoop Brewing Company",
+  "New Belgium Brewing — DEN Airport",
 ] as const;
 
 const CAFES = [
@@ -42,7 +43,6 @@ const INSTITUTIONS = [
   "University of Colorado Boulder",
   "Regis University — Ranger Dining",
   "Arapahoe Libraries",
-  "New Belgium Brewing — DEN Airport",
 ] as const;
 
 const INK = [

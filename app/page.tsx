@@ -8,7 +8,7 @@ import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { heroDesktop, heroMobile } from "@/data/illustrative";
-import { categoryPhotos, WILLIE_CAPTION, williePortrait } from "@/data/photos";
+import { categoryPhotos } from "@/data/photos";
 import { COLORADO_PROUD, ORDER_URL } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -174,36 +174,6 @@ export default function HomePage() {
       <section className="block buyer-proof-block" id="customers">
         <div className="shell">
           <BuyerProof />
-        </div>
-      </section>
-
-      <section className="block home-story">
-        <div className="shell split">
-          <figure className="split-photo">
-            <Image
-              src={williePortrait.src}
-              alt={williePortrait.alt}
-              width={williePortrait.width}
-              height={williePortrait.height}
-              loading="lazy"
-            />
-            <figcaption>{WILLIE_CAPTION}</figcaption>
-          </figure>
-          <div>
-            <p className="eyebrow">Our story</p>
-            <h2>
-              From baker to owner: <span className="story-name">Willie Ramirez</span>
-            </h2>
-            <p>
-              Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.
-            </p>
-            <p className="home-why">
-              Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.
-            </p>
-            <Link href="/about" className="btn btn-primary">
-              About the bakery
-            </Link>
-          </div>
         </div>
       </section>
 

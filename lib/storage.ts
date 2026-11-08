@@ -7,6 +7,12 @@ import {
 } from "@/lib/draft";
 
 const KEY = "bluepoint-demo-request-v1";
+export const REQUEST_CHANGE_EVENT = "bluepoint-request-change";
+
+function notifyRequestChange(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(REQUEST_CHANGE_EVENT));
+}
 
 function cleanLine(value: unknown): DraftLine | null {
   if (!value || typeof value !== "object") return null;
@@ -92,6 +98,7 @@ export function saveDraft(draft: Draft): void {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(KEY, JSON.stringify(draft));
+    notifyRequestChange();
   } catch {
     // Browser privacy settings or storage quota may block persistence.
   }
@@ -101,6 +108,7 @@ export function clearDraft(): void {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.removeItem(KEY);
+    notifyRequestChange();
   } catch {
     // Clearing is best-effort if storage is inaccessible.
   }

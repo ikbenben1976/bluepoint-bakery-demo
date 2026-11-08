@@ -6,14 +6,24 @@ import { communityPartners, customerComments } from "../data/site";
 
 const read = (path: string) => fs.readFileSync(path, "utf8");
 
-test("2016 AFP award is written only in the About story", () => {
+test("2016 AFP award is on the community page, with a link from About", () => {
   const about = read("app/about/page.tsx");
   const home = read("app/page.tsx");
   const community = read("app/community/page.tsx");
   const site = read("data/site.ts");
-  assert.match(about, /Outstanding Small Business/);
-  assert.match(about, /AFP Colorado Chapter/);
-  for (const source of [home, community, site]) {
+  assert.match(community, /id="recognition"/);
+  assert.match(
+    community,
+    /In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon\. That giving continues today\. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul\./,
+  );
+  assert.match(about, /Recognized for giving back — see our community work/);
+  assert.match(about, /href="\/community#recognition"/);
+  assert.doesNotMatch(about, /Outstanding Small Business/);
+  assert.doesNotMatch(about, /AFP Colorado/);
+  assert.match(community, /Outstanding Small Business/);
+  assert.doesNotMatch(community, /AFP Colorado/);
+  assert.doesNotMatch(community, /Philanthropist of the Year/);
+  for (const source of [home, site]) {
     assert.doesNotMatch(source, /Outstanding Small Business/);
     assert.doesNotMatch(source, /AFP Colorado/);
     assert.doesNotMatch(source, /Philanthropist of the Year/);
