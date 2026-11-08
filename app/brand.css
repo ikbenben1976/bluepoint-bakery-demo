@@ -4860,3 +4860,245 @@ legend,
   outline-offset: 3px;
 }
 
+/* Phone header: centered logo, call control, and a slim bar after scroll.
+   Desktop (min-width 1024px) keeps the existing row. */
+.header-call {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .seamless-hero .hero-balance::before {
+    content: "\A";
+    white-space: pre;
+  }
+  .seamless-hero h1 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.35rem;
+    min-height: 86px;
+    transition: min-height 0.28s ease, padding 0.28s ease;
+  }
+  .site-header.is-condensed .site-header-row {
+    min-height: 56px;
+    padding-block: 0.15rem;
+  }
+  .header-call {
+    display: inline-flex;
+    grid-column: 1;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #0d0d25;
+    border-radius: 999px;
+    background: #fff;
+    color: #0b2b51;
+  }
+  .site-header .brand {
+    grid-column: 2;
+    justify-content: center;
+    min-width: 0;
+  }
+  .site-header .util {
+    grid-column: 3;
+    margin-left: 0;
+  }
+  .site-header .heritage-logo {
+    height: 74px !important;
+    max-width: 100%;
+    transition: height 0.28s ease;
+  }
+  .site-header.is-condensed .heritage-logo {
+    height: 46px !important;
+  }
+  .menu-toggle {
+    min-height: 44px;
+    height: 44px;
+    padding: 0 0.85rem;
+  }
+  body.menu-open .header-call {
+    color: #f6f1e8;
+    border-color: rgba(246, 241, 232, 0.7);
+    background: transparent;
+  }
+  .mobile-menu {
+    padding-top: 11.25rem;
+  }
+
+  .seamless-hero .hero-intro {
+    padding-inline: 0.85rem;
+  }
+  .seamless-hero h1 {
+    font-size: clamp(1.55rem, 6.5vw, 1.82rem);
+  }
+  main :is(h3, p, li, blockquote, .lede, .sub, figcaption, dd, dt) {
+    text-align: left;
+  }
+  .seamless-hero .hero-kicker,
+  main :is(h1, h2),
+  main .eyebrow,
+  main .kicker {
+    text-align: center;
+    text-wrap: balance;
+  }
+  .atlas-card :is(h3, .kicker, p) {
+    text-align: left;
+  }
+  main :is(h1, h2, h3),
+  .trust-credential-copy strong,
+  .assortment-card strong,
+  .verified-client-mark strong {
+    text-wrap: balance;
+  }
+  .section-intro {
+    flex-direction: column;
+    align-items: center;
+  }
+  .section-intro > div,
+  .section-intro p {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  .trust-credential {
+    justify-content: center;
+    align-items: center;
+  }
+  .trust-credential:first-child {
+    padding-right: 0.78rem;
+  }
+
+  .assortment-grid > li:last-child {
+    grid-column: 1 / -1;
+  }
+  .assortment-grid > li:last-child .assortment-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    text-align: left;
+  }
+  .assortment-grid > li:last-child .assortment-photo {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 5 / 4;
+  }
+  .assortment-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .assortment-actions .btn {
+    width: 100%;
+  }
+
+  .making .making-explore {
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
+
+  .consult .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .consult .hero-actions .btn {
+    width: 100%;
+  }
+
+  .ordering-steps a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .verified-client-mark {
+    min-height: 240px;
+    justify-content: center;
+  }
+  .verified-client-mark strong {
+    text-align: center;
+  }
+
+  .home-story .story-name {
+    display: block;
+  }
+
+  .atlas.is-preview .atlas-stage {
+    height: 360px;
+    max-height: 360px;
+  }
+
+  .home-community .btn {
+    width: 100%;
+  }
+
+  .footer-grid {
+    justify-items: center;
+    text-align: center;
+  }
+  .site-footer .heritage-lockup {
+    margin-inline: auto;
+  }
+  .site-footer .social-row {
+    justify-content: center;
+  }
+  .footer-note {
+    padding-inline: 1.15rem;
+  }
+  .site-footer {
+    padding-bottom: 8.5rem;
+  }
+  .footer-base .shell {
+    padding-bottom: 0.6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .title-break { display: block; }
+}
+
+@media (max-width: 899px) {
+  .atlas.is-preview .atlas-stage {
+    aspect-ratio: auto;
+    height: 480px;
+    max-height: 480px;
+  }
+  .atlas.is-preview .atlas-fit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1400 / 2528;
+    transform: translateY(-34%);
+  }
+  .atlas.is-preview .atlas-side {
+    position: static;
+    inset: auto;
+    width: 100%;
+    margin-top: 0.85rem;
+    background: transparent;
+  }
+}
+
+@media (max-width: 767px) {
+  .atlas.is-preview .atlas-stage {
+    height: 360px;
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .site-header .heritage-logo,
+  .site-header-row {
+    transition: none;
+  }
+}
+

@@ -42,7 +42,7 @@ export function BuyerProof() {
       <div className="section-intro">
         <div>
           <p className="eyebrow">The people we serve</p>
-          <h2 id="buyer-proof-heading">Built for food-service businesses.</h2>
+          <h2 id="buyer-proof-heading">Built for <span className="title-break">food-service businesses.</span></h2>
           <p>From neighborhood pubs to catering kitchens, find wholesale breads and pastries suited to your menu.</p>
         </div>
       </div>

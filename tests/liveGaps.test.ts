@@ -5,8 +5,11 @@ import { communityPartners } from "../data/site";
 
 const read = (path: string) => fs.readFileSync(path, "utf8");
 
-const WHY_US =
-  "Using high-quality ingredients, we bake and deliver for restaurants, cafés, hotels, hospitals, schools, and catering kitchens along the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.";
+const STORY_OPENING =
+  "Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.";
+
+const STORY_TODAY =
+  "Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.";
 
 test("homepage states bread and pastry lead times near the order actions", () => {
   const home = read("app/page.tsx");
@@ -21,12 +24,17 @@ test("homepage states bread and pastry lead times near the order actions", () =>
 test("homepage why-us blurb is the approved rewrite and skips sports venues and accolades", () => {
   const home = read("app/page.tsx");
   assert.match(home, /home-why/);
-  assert.ok(home.includes(WHY_US));
+  assert.ok(home.includes(STORY_OPENING));
+  assert.ok(home.includes(STORY_TODAY));
+  assert.match(home, /From your menu to your order\./);
+  assert.doesNotMatch(home, /From your menu to the right order/);
   const story = home.indexOf("Our story");
   const why = home.indexOf("home-why");
   assert.ok(story > 0 && why > story, "why-us blurb sits under the existing story");
   assert.doesNotMatch(home, /sports venues/);
   assert.doesNotMatch(home, /accolades|finest ingredients|newspaper reviews/i);
+  assert.doesNotMatch(home, /Best of Denver|44 Business Capital/);
+  assert.match(home, /WILLIE_CAPTION/);
 });
 
 test("about keeps scratch-made and ownership lines and names Cheyenne, Wyoming", () => {

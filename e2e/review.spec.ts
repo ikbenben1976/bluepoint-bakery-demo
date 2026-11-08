@@ -293,7 +293,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
 
 test("homepage offers truthful commercial steps, sample question and published customer marks", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "From your menu to the right order." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From your menu to your order." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
   await expect(page.locator(".verified-client-strip img")).toHaveCount(16);
   await expect(page.locator(".verified-client-mark").filter({ hasText: "The Cherry Cricket" })).toBeVisible();
@@ -469,7 +469,9 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
     await expect(page.locator(".hero-lead-times")).toContainText("Order breads at least 24 hours ahead.");
     await expect(page.locator(".hero-lead-times")).toContainText("Order pastries at least 48 hours ahead.");
-    await expect(page.locator(".home-why")).toContainText("Using high-quality ingredients");
+    await expect(page.locator(".home-why")).toContainText("high-quality ingredients");
+    await expect(page.locator(".home-why")).toContainText("minority-owned, family-owned");
+    await expect(page.locator(".home-story figcaption")).toHaveText("Willie Ramirez, owner");
     await expect(page.locator(".home-why")).not.toContainText("sports venues");
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
   }

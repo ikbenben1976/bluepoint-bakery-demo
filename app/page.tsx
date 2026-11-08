@@ -8,14 +8,8 @@ import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { heroDesktop, heroMobile } from "@/data/illustrative";
-import { categoryPhotos, gallery } from "@/data/photos";
-import {
-  COLORADO_PROUD,
-  RAMIREZ_STUDY,
-  WESTWORD_2000,
-  WESTWORD_FOUNDING,
-  ORDER_URL,
-} from "@/data/site";
+import { categoryPhotos, WILLIE_CAPTION, williePortrait } from "@/data/photos";
+import { COLORADO_PROUD, ORDER_URL } from "@/data/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -23,8 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const production = gallery.find((photo) => photo.src.endsWith("bakers-line.webp"))!;
-
   return (
     <>
       <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
@@ -166,7 +158,7 @@ export default function HomePage() {
           <div className="section-intro">
             <div>
               <p className="eyebrow">How wholesale inquiries work</p>
-              <h2 id="ordering-guide-heading">From your menu to the right order.</h2>
+              <h2 id="ordering-guide-heading">From your menu to your order.</h2>
               <p>New to Bluepoint? Prepare the details a sales professional will need, without guessing prices or case quantities.</p>
             </div>
           </div>
@@ -185,33 +177,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block">
+      <section className="block home-story">
         <div className="shell split">
           <figure className="split-photo">
-            <Image src={production.src} alt={production.alt} width={production.width} height={production.height} loading="lazy" />
-            <figcaption>Bakers on the line at the Denver bakery.</figcaption>
+            <Image
+              src={williePortrait.src}
+              alt={williePortrait.alt}
+              width={williePortrait.width}
+              height={williePortrait.height}
+              loading="lazy"
+            />
+            <figcaption>{WILLIE_CAPTION}</figcaption>
           </figure>
           <div>
             <p className="eyebrow">Our story</p>
-            <h2>From baker to owner: Willie Ramirez</h2>
-            {/*
-              Same Westword wording as the About page.
-              https://www.westword.com/location/bluepoint-bakery-5170644/
-              https://www.westword.com/news/best-of-denver-winners-from-2000-5834471/
-            */}
-            <p className="pull-text">
-              Bluepoint Bakery was founded in 1987 by chefs Fred Bramhall and Mary Clark.
-            </p>
+            <h2>
+              From baker to owner: <span className="story-name">Willie Ramirez</span>
+            </h2>
             <p>
-              <a href={WESTWORD_FOUNDING}>Westword</a> describes the retail bakery on Sixth Avenue and the wholesale bakery in north Denver. In its Best of Denver 2000 list, Bluepoint is named{" "}
-              <a href={WESTWORD_2000}>Best Bakery</a>.
+              Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.
             </p>
-            <p>
-              After 28 years of working in and managing the bakery, Willie Ramirez acquired full ownership, as told by{" "}
-              <a href={RAMIREZ_STUDY}>44 Business Capital</a>.
+            <p className="home-why">
+              Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.
             </p>
-            <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
-            <p className="home-why">Using high-quality ingredients, we bake and deliver for restaurants, cafés, hotels, hospitals, schools, and catering kitchens along the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.</p>
             <Link href="/about" className="btn btn-primary">
               About the bakery
             </Link>
@@ -237,7 +225,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block">
+      <section className="block home-community">
         <div className="shell split">
           <div>
             <h2>Community</h2>

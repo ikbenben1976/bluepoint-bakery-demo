@@ -4,6 +4,7 @@ import "./brand.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { CallSheetProvider } from "@/components/CallSheet";
 import { Notice } from "@/components/Notice";
 import { QuickActions } from "@/components/QuickActions";
 import { franklin, sourceSerif } from "@/app/fonts";
@@ -42,18 +43,20 @@ export default function RootLayout({
         <meta name="robots" content="noindex,nofollow" />
       </head>
       <body>
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <div className="sticky-stack no-print">
-          <p className="demo-ribbon">{DISCLAIMER}</p>
-          <Header />
-        </div>
-        <main id="main">{children}</main>
-        <Footer />
-        <QuickActions />
-        <Notice />
-        <JsonLd />
+        <CallSheetProvider>
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <div className="sticky-stack no-print">
+            <p className="demo-ribbon">{DISCLAIMER}</p>
+            <Header />
+          </div>
+          <main id="main">{children}</main>
+          <Footer />
+          <QuickActions />
+          <Notice />
+          <JsonLd />
+        </CallSheetProvider>
       </body>
     </html>
   );

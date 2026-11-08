@@ -1,34 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
-import { NOTICE_DELAY_MS, browserNoticeStore } from "@/lib/noticeMemory";
+import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import { useCallSheet } from "@/components/CallSheet";
 
 export function Notice() {
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useCallSheet();
   const pathname = usePathname();
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 
   const dismiss = useCallback(() => {
-    browserNoticeStore().remember("dismissed");
     setOpen(false);
-  }, []);
+  }, [setOpen]);
 
   useEffect(() => {
-    if (pathname !== "/") return;
-    const store = browserNoticeStore();
-    if (store.suppressed()) return;
-    const timer = window.setTimeout(() => {
-      const current = browserNoticeStore();
-      if (current.suppressed()) return;
-      current.remember("shown");
-      setOpen(true);
-    }, NOTICE_DELAY_MS);
-    return () => window.clearTimeout(timer);
-  }, [pathname]);
+    setOpen(false);
+  }, [pathname, setOpen]);
 
   useEffect(() => {
     if (!open) return;
@@ -77,7 +67,7 @@ export function Notice() {
     };
   }, [open, dismiss]);
 
-  if (!open || pathname !== "/") return null;
+  if (!open) return null;
 
   return (
     <div className="call-notice-layer">
@@ -97,6 +87,7 @@ export function Notice() {
         <p>{PHONE_DISPLAY}. A sales professional will help you open an account.</p>
         <div className="call-notice-actions">
           <a href={`tel:${PHONE_TEL}`}>Call</a>
+          <a href={`mailto:${EMAIL}`}>Email</a>
           <Link href="/wholesale">Request pricing</Link>
           <button type="button" onClick={dismiss}>
             Close
