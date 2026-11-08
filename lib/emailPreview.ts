@@ -9,7 +9,7 @@ import {
   extraProductNote,
   kindsInDraft,
   PUBLISHED_CUSTOM_LINE,
-  SAMPLE_QUESTION,
+  SAMPLE_REVIEW,
 } from "@/lib/requestFlow";
 import { earliestDeliveryIso, formatLongDate, isOnOrAfter, leadTimeExplanation } from "@/lib/leadTime";
 
@@ -69,7 +69,7 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
 
   const sample = draft.askAboutSamples
     ? [
-        `Samples: ${SAMPLE_QUESTION}. Please advise whether samples are available, and any cost or conditions.`,
+        `Samples: ${SAMPLE_REVIEW}`,
         draft.sampleInterest.trim() ? `Products to ask about: ${draft.sampleInterest.trim()}` : "",
       ].filter(Boolean)
     : [];

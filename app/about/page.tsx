@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { aboutPhoto, gallery, WILLIE_CAPTION, williePortrait } from "@/data/photos";
 import { ADDRESS, HOURS, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { PageHero } from "@/components/PageHero";
+import { WhyBluepoint } from "@/components/WhyBluepoint";
 
 export const metadata: Metadata = {
   title: "About",
@@ -47,15 +49,8 @@ export default function AboutPage() {
                 <figcaption>{WILLIE_CAPTION}</figcaption>
               </figure>
             </div>
-            {/*
-              The 2016 award appears only in this story.
-              PR Newswire, 11 Oct 2016, Association of Fundraising Professionals, Colorado Chapter:
-              “Outstanding Small Business: Bluepoint Bakery (Denver)” at the National Philanthropy Day in Colorado Luncheon on 10 Nov 2016.
-              https://www.prnewswire.com/news-releases/outstanding-colorado-philanthropists-honored-300342380.html
-              bluepointbakery.com/community says “2016 Colorado Small Business Philanthropist of the Year.” That wording is not used here.
-            */}
             <p>
-              In 2016, the Association of Fundraising Professionals, Colorado Chapter (AFP Colorado Chapter) named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day in Colorado luncheon on November 10.
+              <Link href="/community#recognition">Recognized for giving back — see our community work</Link>
             </p>
             {/* https://www.bluepointbakery.com/about */}
             <p>
@@ -73,7 +68,9 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
-        <div className="about-gallery">
+      </article>
+      <WhyBluepoint />
+      <div className="shell about-gallery">
           <div className="about-gallery-grid">
             {rest.map((photo) => (
               <Image
@@ -87,7 +84,6 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </article>
     </>
   );
 }

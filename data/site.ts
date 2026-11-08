@@ -17,7 +17,6 @@ export const DISCLAIMER = "Demo prepared for review — not the official site";
 export const NAV = [
   { href: "/breads", label: "Breads" },
   { href: "/pastries", label: "Pastries" },
-  { href: "/wholesale", label: "Wholesale" },
   { href: "/delivery", label: "Delivery Area" },
   { href: "/about", label: "About" },
   { href: "/community", label: "Community" },

@@ -12,8 +12,9 @@ import {
 export const PUBLISHED_CUSTOM_LINE =
   "Orders can be customized to meet clients' personality, characteristics, or vision.";
 
-export const SAMPLE_QUESTION =
-  "Ask the bakery whether samples are available";
+export const SAMPLE_QUESTION = "I'd like to ask about trying a product first";
+
+export const SAMPLE_REVIEW = "Interested in trying products first.";
 
 export function kindsInDraft(draft: Draft): LeadKind[] {
   const kinds: LeadKind[] = [];

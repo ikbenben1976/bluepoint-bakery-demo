@@ -5,9 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { useCallSheet } from "@/components/CallSheet";
+import { useRequestCount } from "@/components/useRequestCount";
+import { requestPricingHref, requestPricingLabel } from "@/lib/requestLink";
 
 export function Notice() {
   const { open, setOpen } = useCallSheet();
+  const requestCount = useRequestCount();
   const pathname = usePathname();
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -88,7 +91,7 @@ export function Notice() {
         <div className="call-notice-actions">
           <a href={`tel:${PHONE_TEL}`}>Call</a>
           <a href={`mailto:${EMAIL}`}>Email</a>
-          <Link href="/wholesale">Request pricing</Link>
+          <Link href={requestPricingHref(requestCount)}>{requestPricingLabel(requestCount)}</Link>
           <button type="button" onClick={dismiss}>
             Close
           </button>

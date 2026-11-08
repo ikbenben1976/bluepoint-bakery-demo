@@ -3,13 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
 import { cardFacts, categoryNotice, leadWords, specRows } from "@/lib/spec";
-import { loadDraft, saveDraft } from "@/lib/storage";
+import { REQUEST_CHANGE_EVENT, loadDraft, saveDraft } from "@/lib/storage";
+import { requestPricingHref } from "@/lib/requestLink";
+import { useRequestCount } from "@/components/useRequestCount";
 
 type Props = {
   groups: readonly CatalogGroup[];
@@ -22,13 +25,22 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const [category, setCategory] = useState("all");
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
+  const [requestNote, setRequestNote] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const resultsRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
+  const pathname = usePathname() || "/";
+  const requestCount = useRequestCount();
+  const requestHref = "/wholesale/#request-lines";
+  const catalogPath = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  const showRequestBar = !onAdd && requestCount > 0 && (catalogPath === "/breads" || catalogPath === "/pastries");
 
   useEffect(() => {
     if (onAdd) return;
-    setStoredIds(loadDraft().lines.map((line) => line.productId));
+    const read = () => setStoredIds(loadDraft().lines.map((line) => line.productId));
+    read();
+    window.addEventListener(REQUEST_CHANGE_EVENT, read);
+    return () => window.removeEventListener(REQUEST_CHANGE_EVENT, read);
   }, [onAdd]);
 
   useEffect(() => {
@@ -45,32 +57,38 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   function add(product: Product) {
     if (onAdd) {
       onAdd(product);
+      setRequestNote(true);
       setNote(`${product.name} added to your request.`);
       return;
     }
     const next = addProductLine(loadDraft(), product);
     saveDraft(next);
     setStoredIds(next.lines.map((line) => line.productId));
+    setRequestNote(true);
     setNote(`${product.name} added to your request.`);
   }
 
   function toggleCompare(product: Product) {
     if (compareIds.includes(product.id)) {
       setCompareIds(compareIds.filter((id) => id !== product.id));
+      setRequestNote(false);
       setNote(`${product.name} removed from the comparison.`);
       return;
     }
     if (compareIds.length >= 3) {
+      setRequestNote(false);
       setNote("Compare up to 3 products.");
       return;
     }
     setCompareIds([...compareIds, product.id]);
+    setRequestNote(false);
     setNote(`${product.name} added to the comparison.`);
   }
 
   function resetFilters() {
     setQuery("");
     setCategory("all");
+    setRequestNote(false);
     setNote("Search and filters cleared.");
   }
 
@@ -116,7 +134,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
             />
           </div>
         </div>
-        <Link href="/wholesale" className="btn btn-ghost catalog-request">
+        <Link href={requestPricingHref(requestCount)} className="btn btn-ghost catalog-request">
           Open your request
         </Link>
         {filtersActive ? (
@@ -148,6 +166,12 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       </div>
       <p role="status" className="mt-4 min-h-6 text-sm font-semibold text-site">
         {note}
+        {requestNote ? (
+          <>
+            {" "}
+            <Link href={requestHref}>View request</Link>
+          </>
+        ) : null}
       </p>
       {compared.length > 0 ? (
         <section className="compare-panel" aria-label="Compare products" data-testid="compare-panel">
@@ -170,7 +194,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                     Remove from comparison
                   </button>
                   {selected.has(product.id) ? (
-                    <p className="font-semibold">In your request</p>
+                    <Link className="in-request" href={requestHref}>In your request</Link>
                   ) : (
                     <button type="button" className="btn btn-primary" onClick={() => add(product)}>
                       Add to request
@@ -238,7 +262,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
               {items.map((product) => {
                 const visual = visualForProduct(product.id);
                 return (
-                <li key={product.id} id={product.id} className="product-card">
+                <li key={product.id} id={product.id} className={`product-card${selected.has(product.id) ? " is-in-request" : ""}`}>
                   <div className="product-photo">
                     <FramedImage
                       webp={visual.webp}
@@ -279,7 +303,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                       {compareIds.includes(product.id) ? "In comparison" : "Compare"}
                     </button>
                     {selected.has(product.id) ? (
-                      <p className="font-semibold">In your request</p>
+                      <Link className="in-request" href={requestHref}>In your request</Link>
                     ) : (
                       <button type="button" className="btn btn-ghost" onClick={() => add(product)}>
                         Add to request
@@ -294,6 +318,11 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         );
       })}
       </div>
+      {showRequestBar ? (
+        <div className="view-request-bar no-print">
+          <Link href={requestHref}>View request ({requestCount})</Link>
+        </div>
+      ) : null}
     </div>
   );
 }

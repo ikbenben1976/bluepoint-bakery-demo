@@ -149,7 +149,7 @@ test("the preview keeps catalog lines, written notes, sample questions, and cust
   assert.match(preview, /To: sales@bluepointbakery.com/);
   assert.match(preview, /Brioche Bun 4"/);
   assert.match(preview, /custom sandwich roll/);
-  assert.match(preview, /Please advise whether samples are available/);
+  assert.match(preview, /Samples: Interested in trying products first\./);
   assert.match(preview, /brioche buns/);
   assert.match(preview, /Examples to discuss/);
   assert.match(preview, /a diameter to discuss/);

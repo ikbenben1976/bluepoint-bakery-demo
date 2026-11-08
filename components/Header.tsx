@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { LogoLockup } from "@/components/Mark";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import { requestPricingHref, requestPricingLabel } from "@/lib/requestLink";
+import { useRequestCount } from "@/components/useRequestCount";
 
 function normalize(path: string): string {
   if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1);
@@ -15,6 +17,9 @@ export function Header() {
   const pathname = normalize(usePathname() || "/");
   const [condensed, setCondensed] = useState(false);
   const [open, setOpen] = useState(false);
+  const requestCount = useRequestCount();
+  const pricingHref = requestPricingHref(requestCount);
+  const pricingLabel = requestPricingLabel(requestCount);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -84,8 +89,8 @@ export function Header() {
             </svg>
             {PHONE_DISPLAY}
           </a>
-          <Link href="/wholesale" className="btn btn-primary header-pricing">
-            Request pricing
+          <Link href={pricingHref} className="btn btn-primary header-pricing">
+            {pricingLabel}
           </Link>
           <details className="customer-login">
             <summary>Customer login</summary>
@@ -120,7 +125,7 @@ export function Header() {
           ))}
         </nav>
         <div className="mobile-menu-actions">
-          <Link href="/wholesale" className="btn btn-primary mobile-pricing">Request pricing</Link>
+          <Link href={pricingHref} className="btn btn-primary mobile-pricing">{pricingLabel}</Link>
           <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
           <a href={ORDER_URL}>Order online (existing customers)</a>
           <a href={PAY_URL}>Pay an invoice</a>

@@ -61,7 +61,7 @@ test("product options follow the catalog and an early date warns without blockin
   await page.locator("#inquiry-custom-size").fill("a diameter to discuss");
   await page.locator("#inquiry-custom-packaging").fill("a pack to discuss");
   await page.locator("#inquiry-products").fill("Also a seeded roll to discuss");
-  await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();
+  await page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i }).check();
   await page.locator("#inquiry-sample-products").fill("Vienna White");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
 
@@ -93,7 +93,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(review).toContainText("a diameter to discuss");
   await expect(review).toContainText("a pack to discuss");
   await expect(review).toContainText("Examples to discuss.");
-  await expect(review).toContainText("Please advise whether samples are available");
+  await expect(review).toContainText("Interested in trying products first");
   await expect(review).toContainText("Tuesday (preferences, not a confirmed route)");
   await expect(review).toContainText("earlier than the published notice");
   await expect(review).not.toContainText("$");
@@ -140,8 +140,9 @@ test("copy summary reads the unsent preview", async ({ page, context }) => {
 test("ask about samples opens from the wholesale hash", async ({ page }) => {
   await page.goto("/wholesale/#sample-request");
   await expect(page.locator("#sample-request")).toBeVisible();
-  await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).toBeVisible();
-  await expect(page.getByText(/not published on bluepointbakery.com/i)).toBeVisible();
+  await expect(page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i })).toBeVisible();
+  await expect(page.getByText("We'll let you know what's available.")).toBeVisible();
+  await expect(page.getByText(/not published on bluepointbakery.com/i)).toHaveCount(0);
 });
 
 test("new accounts and existing customers stay on different paths", async ({ page }) => {
@@ -169,7 +170,8 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await page.goto("/");
   await page.getByRole("button", { name: "Menu" }).click();
   await expect(page.locator("#mobile-menu").getByRole("link", { name: "Order online (existing customers)" })).toHaveAttribute("href", ORDER_URL);
-  await expect(page.locator("#mobile-menu").getByRole("link", { name: "Request pricing" })).toHaveAttribute("href", /\/wholesale\/?$/);
+  await expect(page.locator("#mobile-menu").getByRole("link", { name: "Request pricing" })).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
+  await expect(page.locator("#mobile-menu").getByRole("link", { name: "Wholesale", exact: true })).toHaveCount(0);
 
   await page.goto("/");
   const footer = page.locator("footer.site-footer");
@@ -274,7 +276,7 @@ test("request steps use the column width and leave the contact pill clear", asyn
     await expect(page.locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
     await checkFit("products");
     await page.locator("#inquiry-products").fill("Kaiser rolls");
-    await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();
+    await page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i }).check();
     await page.getByRole("button", { name: "Continue to delivery" }).click();
     await checkFit("delivery");
     await page.locator("#inquiry-delivery").fill("Denver");

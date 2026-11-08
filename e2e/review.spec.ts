@@ -116,7 +116,7 @@ test("keyboard can complete the wholesale form", async ({ page }) => {
   await page.getByRole("button", { name: "Continue to products" }).focus();
   await page.keyboard.press("Enter");
   await fillWithKeyboard("#inquiry-products", "Kaiser rolls");
-  await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).focus();
+  await page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i }).focus();
   await page.keyboard.press("Space");
   await page.getByRole("button", { name: "Continue to delivery" }).focus();
   await page.keyboard.press("Enter");
@@ -127,7 +127,7 @@ test("keyboard can complete the wholesale form", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
-  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Please advise whether samples are available");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Interested in trying products first");
 });
 
 for (const width of [375, 390]) {
@@ -268,7 +268,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await page.locator("#inquiry-quantity").fill("40 dozen per week");
   await page.getByRole("button", { name: "Continue to products" }).click();
   await page.locator("#inquiry-products").fill("Hamburger buns");
-  await page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i }).check();
+  await page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i }).check();
   await page.locator("#inquiry-sample-products").fill("hamburger buns");
   await page.goto("/breads/");
   await page.goto("/wholesale/");
@@ -276,26 +276,26 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await expect(page.locator("#inquiry-business")).toHaveValue("A Test Kitchen");
   await expect(page.locator("#inquiry-quantity")).toHaveValue("40 dozen per week");
   await page.getByRole("button", { name: "Products", exact: true }).click();
-  await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).toBeChecked();
+  await expect(page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i })).toBeChecked();
   await expect(page.locator("#inquiry-products")).toHaveValue("Hamburger buns");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
-  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Please advise whether samples are available");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Interested in trying products first");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("hamburger buns");
   await page.getByRole("button", { name: "Clear request" }).click();
   await expect(page.locator("#inquiry-business")).toHaveValue("");
   await page.getByRole("button", { name: "Products", exact: true }).click();
-  await expect(page.getByRole("checkbox", { name: /Ask the bakery whether samples are available/i })).not.toBeChecked();
+  await expect(page.getByRole("checkbox", { name: /I'd like to ask about trying a product first/i })).not.toBeChecked();
 });
 
 test("homepage offers truthful commercial steps, sample question and published customer marks", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "From your menu to your order." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
-  await expect(page.locator(".verified-client-strip img")).toHaveCount(16);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(17);
   await expect(page.locator(".verified-client-mark").filter({ hasText: "The Cherry Cricket" })).toBeVisible();
   await expect(page.locator(".verified-client-wordmark")).toHaveCount(0);
   await expect(page.getByText("Customer listed on Bluepoint's community page")).toHaveCount(0);
@@ -330,6 +330,7 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).toContainText("Red Cedar Bistro");
   await expect(panel).toContainText("Oskar Blues Fooderies");
   await expect(panel).toContainText("Wynkoop Brewing Company");
+  await expect(panel).toContainText("New Belgium Brewing — DEN Airport");
   await expect(panel).not.toContainText("Public post");
   await expect(panel).not.toContainText("Cafe 180");
   await expect(panel).not.toContainText("Urban Egg");
@@ -338,8 +339,8 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).not.toContainText("Windsor Lake");
   await expect(panel).not.toContainText("GrowHaus");
   await expect(panel).not.toContainText("FIRE Foundation");
-  await expect(panel.locator(".verified-client-mark")).toHaveCount(16);
-  await expect(page.locator(".verified-client-strip img")).toHaveCount(16);
+  await expect(panel.locator(".verified-client-mark")).toHaveCount(17);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(17);
   const restaurantNames = await panel.locator(".verified-client-mark strong").allTextContents();
   expect(new Set(restaurantNames).size).toBe(restaurantNames.length);
 
@@ -393,12 +394,12 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel).toContainText("University of Colorado Boulder");
   await expect(panel).toContainText("Regis University — Ranger Dining");
   await expect(panel).toContainText("Arapahoe Libraries");
-  await expect(panel).toContainText("New Belgium Brewing — DEN Airport");
+  await expect(panel).not.toContainText("New Belgium Brewing — DEN Airport");
   await expect(panel).not.toContainText("GrowHaus");
   await expect(panel).not.toContainText("Public post");
   await expect(panel).not.toContainText("confirm with bakery");
-  await expect(panel.locator(".verified-client-mark")).toHaveCount(4);
-  await expect(page.locator(".verified-client-strip img")).toHaveCount(4);
+  await expect(panel.locator(".verified-client-mark")).toHaveCount(3);
+  await expect(page.locator(".verified-client-strip img")).toHaveCount(3);
 
   await page.goto("/community/");
   await expect(page.locator(".community-page")).toContainText("The GrowHaus");
@@ -469,10 +470,8 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /wholesale/);
     await expect(page.locator(".hero-lead-times")).toContainText("Order breads at least 24 hours ahead.");
     await expect(page.locator(".hero-lead-times")).toContainText("Order pastries at least 48 hours ahead.");
-    await expect(page.locator(".home-why")).toContainText("high-quality ingredients");
-    await expect(page.locator(".home-why")).toContainText("minority-owned, family-owned");
-    await expect(page.locator(".home-story figcaption")).toHaveText("Willie Ramirez, owner");
-    await expect(page.locator(".home-why")).not.toContainText("sports venues");
+    await expect(page.locator(".home-story")).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText("Our story");
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
   }
   await page.goto("/");
@@ -595,7 +594,6 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
     .poll(() => willie.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
     .toBeTruthy();
 
-  await page.goto("/wholesale/");
   const why = page.locator(".why-bluepoint");
   await expect(why.getByRole("heading", { name: "Why Bluepoint" })).toBeVisible();
   await expect(why.locator(".why-card")).toHaveCount(6);
@@ -610,6 +608,9 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
   await expect(why).not.toContainText("oldest and largest");
   await expect(why).not.toContainText(/confirm with bakery/i);
   await expect(why.locator("img")).toHaveCount(0);
+  await page.goto("/wholesale/");
+  await expect(page.locator(".why-bluepoint")).toHaveCount(0);
+  await expect(page.getByTestId("request-flow")).toBeVisible();
 
   await page.goto("/");
   const breakfast = page.locator('.making-visual-link[href^="/making/breakfast"]');
@@ -1076,8 +1077,12 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(about).not.toContainText("Westword");
   await expect(about).not.toContainText("Best of Denver");
   await expect(about).not.toContainText("44 Business");
-  await expect(about).toContainText("Outstanding Small Business");
-  await expect(about).toContainText("AFP Colorado Chapter");
+  await expect(about).not.toContainText("Outstanding Small Business");
+  await expect(about).not.toContainText("AFP Colorado Chapter");
+  await expect(about.getByRole("link", { name: "Recognized for giving back — see our community work" })).toHaveAttribute(
+    "href",
+    "/community/#recognition",
+  );
   await expect(about).toContainText("made from scratch daily");
   await expect(about).toContainText("minority-owned, family-owned");
   await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
@@ -1096,7 +1101,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".community-page")).not.toContainText("Mountain Sun");
   await expect(page.locator(".community-page")).not.toContainText("Oskar Blues");
   await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
-  await expect(page.locator(".community-page")).not.toContainText("Outstanding Small Business");
+  await expect(page.locator("#recognition")).toContainText(
+    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.",
+  );
+  await expect(page.locator(".community-page")).toContainText("Outstanding Small Business");
   await expect(page.locator(".community-page")).not.toContainText("AFP");
   await expect(page.locator(".community-page")).toContainText("holiday sugar cookies");
   await expect(page.locator(".community-page")).toContainText("raised over $15,000");
@@ -1134,7 +1142,7 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(proof.locator(".use-shots")).toHaveCount(0);
   await expect(proof).not.toContainText("Ask permission before using this product photo on a live site.");
   await expect(proof).not.toContainText(/kicks ass/i);
-  await expect(proof.locator(".verified-client-strip img")).toHaveCount(16);
+  await expect(proof.locator(".verified-client-strip img")).toHaveCount(17);
   await expect(proof.getByRole("heading", { name: "Named in public" })).toHaveCount(0);
   await expect(proof).not.toContainText("West Main");
   await expect(proof).not.toContainText("Cafe 180");
@@ -1336,7 +1344,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
   await page.getByRole("button", { name: "Contact" }).click();
   await expect(page.getByRole("link", { name: "Call" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
-  await expect(page.getByRole("link", { name: "Request pricing" }).last()).toHaveAttribute("href", /\/wholesale\/?$/);
+  await expect(page.getByRole("link", { name: "Request pricing" }).last()).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
   const panelLink = await page.getByRole("link", { name: "Call" }).boundingBox();
   expect(panelLink!.height).toBeGreaterThanOrEqual(44);
   await page.keyboard.press("Escape");

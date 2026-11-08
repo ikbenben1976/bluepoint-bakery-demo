@@ -21,20 +21,21 @@ test("homepage states bread and pastry lead times near the order actions", () =>
   assert.ok(actions > 0 && lead > actions, "lead-time notice follows the hero order actions");
 });
 
-test("homepage why-us blurb is the approved rewrite and skips sports venues and accolades", () => {
+test("homepage food service leads into delivery and community, without the story", () => {
   const home = read("app/page.tsx");
-  assert.match(home, /home-why/);
-  assert.ok(home.includes(STORY_OPENING));
-  assert.ok(home.includes(STORY_TODAY));
+  const about = read("app/about/page.tsx");
+  assert.doesNotMatch(home, /home-story|home-why|Our story|WILLIE_CAPTION/);
+  assert.ok(about.includes(STORY_OPENING));
+  assert.ok(about.includes(STORY_TODAY));
   assert.match(home, /From your menu to your order\./);
   assert.doesNotMatch(home, /From your menu to the right order/);
-  const story = home.indexOf("Our story");
-  const why = home.indexOf("home-why");
-  assert.ok(story > 0 && why > story, "why-us blurb sits under the existing story");
+  const food = home.indexOf("buyer-proof-block");
+  const deliver = home.indexOf("Where we deliver");
+  const community = home.indexOf("home-community");
+  assert.ok(food > 0 && deliver > food && community > deliver);
   assert.doesNotMatch(home, /sports venues/);
   assert.doesNotMatch(home, /accolades|finest ingredients|newspaper reviews/i);
   assert.doesNotMatch(home, /Best of Denver|44 Business Capital/);
-  assert.match(home, /WILLIE_CAPTION/);
 });
 
 test("about keeps scratch-made and ownership lines and names Cheyenne, Wyoming", () => {
