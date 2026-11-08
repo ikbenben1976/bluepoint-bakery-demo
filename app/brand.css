@@ -5026,7 +5026,8 @@ legend,
     text-align: center;
   }
 
-  .home-story .story-name {
+  .home-story .story-name,
+  .about-page .story-name {
     display: block;
   }
 

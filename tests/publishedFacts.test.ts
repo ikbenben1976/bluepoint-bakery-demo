@@ -20,20 +20,27 @@ test("2016 AFP award is written only in the About story", () => {
   }
 });
 
-test("About names the published founders, Westword recognition, and Willie's portrait", () => {
+test("About uses the approved Willie story and keeps his portrait", () => {
   const about = read("app/about/page.tsx");
-  assert.match(about, /Fred Bramhall/);
-  assert.match(about, /Mary Clark/);
-  assert.match(about, /Best Bakery/);
+  const site = read("data/site.ts");
+  assert.match(about, /From baker to owner:/);
   assert.match(about, /Willie Ramirez/);
+  assert.match(
+    about,
+    /Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark\. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership\./,
+  );
+  assert.match(
+    about,
+    /Today Bluepoint is a proud minority-owned, family-owned business\. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range\. Reliable, on-time delivery and clear communication are how we work with every account\./,
+  );
   assert.match(about, /WILLIE_CAPTION/);
   assert.match(about, /williePortrait/);
   assert.match(read("data/photos.ts"), /Willie Ramirez, owner/);
   assert.match(about, /about-gallery/);
   assert.match(read("data/photos.ts"), /Baguettes on a rack/);
   assert.doesNotMatch(about, /not Willie Ramirez|Illustrative bakery photo|does not give a date|Illustrative image/);
-  assert.match(about, /westword\.com\/location\/bluepoint-bakery-5170644/);
-  assert.match(about, /best-of-denver-winners-from-2000-5834471/);
+  assert.doesNotMatch(about, /Westword|Best of Denver|Best Bakery|44 Business|44businesscapital|westword\.com/i);
+  assert.doesNotMatch(site, /Westword|44 Business|44businesscapital|westword\.com|Best of Denver/i);
 });
 
 test("community marks are the four nonprofits and customer marks are the published logos", () => {

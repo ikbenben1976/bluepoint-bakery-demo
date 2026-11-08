@@ -170,10 +170,3 @@ export const CAFE_REVIEW = {
   source: "Restaurantji",
   themes: ["quality", "longevity"] as const satisfies readonly ProofTheme[],
 } as const;
-
-export const RAMIREZ_STUDY =
-  "https://www.44businesscapital.com/business-loan-story/from-baker-to-manager-to-owner-long-time-employee-acquires-bakery-business-with-2675000-sba-loan/";
-
-export const WESTWORD_FOUNDING = "https://www.westword.com/location/bluepoint-bakery-5170644/";
-
-export const WESTWORD_2000 = "https://www.westword.com/news/best-of-denver-winners-from-2000-5834471/";

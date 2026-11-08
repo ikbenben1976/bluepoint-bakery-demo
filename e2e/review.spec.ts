@@ -1068,20 +1068,23 @@ test("about story, community partners, and homepage proof use published facts on
   const about = page.locator(".about-copy");
   await expect(about).toContainText("Fred Bramhall");
   await expect(about).toContainText("Mary Clark");
-  await expect(about).toContainText("Best Bakery");
-  await expect(about).toContainText("Willie Ramirez");
+  await expect(about).toContainText("From baker to owner: Willie Ramirez");
+  await expect(about).toContainText("Willie Ramirez started in the kitchen");
   await expect(about).not.toContainText("does not give a date");
+  await expect(about).not.toContainText("Westword");
+  await expect(about).not.toContainText("Best of Denver");
+  await expect(about).not.toContainText("44 Business");
   await expect(about).toContainText("Outstanding Small Business");
   await expect(about).toContainText("AFP Colorado Chapter");
   await expect(about).toContainText("made from scratch daily");
-  await expect(about).toContainText("minority-owned and family-owned");
+  await expect(about).toContainText("minority-owned, family-owned");
   await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
   await expect(page.locator(".about-figure figcaption")).toHaveText("Willie Ramirez, owner");
   await expect(page.locator(".about-portrait img")).toHaveAttribute("src", /willie-portrait\.webp/);
   await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
   await expect(page.locator('.about-gallery img[alt="Baguettes on a rack"]')).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
-  await expect(page.getByRole("heading", { name: "Willie Ramirez, from baker to owner" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From baker to owner: Willie Ramirez" })).toBeVisible();
 
   await page.goto("/community/");
   await expect(page.locator(".community-page")).toContainText("Project Angel Heart");
