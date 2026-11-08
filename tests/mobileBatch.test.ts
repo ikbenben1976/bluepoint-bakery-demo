@@ -14,6 +14,13 @@ test("the call sheet does not schedule itself and opens from the contact control
   assert.doesNotMatch(contact, /setTimeout/);
 });
 
+test("phone cards center their titles, descriptions, and arrows", () => {
+  const css = read("app/brand.css");
+  assert.match(css, /\.assortment-card strong,\s*\.assortment-card \.assortment-line,\s*\.assortment-card \.assortment-arrow \{\s*text-align: center;/);
+  assert.match(css, /\.making \.making-title,\s*\.making \.making-summary,\s*\.making \.making-explore \{\s*text-align: center;/);
+  assert.match(css, /\.making \.making-permission,\s*\.making \.making-footnote,\s*\.illustrative-label,\s*\.illustrative-note \{\s*text-align: left;/);
+});
+
 test("mobile header keeps a phone link and a tall menu control", () => {
   const header = read("components/Header.tsx");
   const css = read("app/brand.css");

@@ -4948,8 +4948,11 @@ legend,
     text-align: center;
     text-wrap: balance;
   }
-  .atlas-card :is(h3, .kicker, p) {
+  .atlas-card p {
     text-align: left;
+  }
+  .atlas-card :is(h3, .kicker) {
+    text-align: center;
   }
   main :is(h1, h2, h3),
   .trust-credential-copy strong,
@@ -4982,7 +4985,6 @@ legend,
     display: flex;
     flex-direction: column;
     min-height: 0;
-    text-align: left;
   }
   .assortment-grid > li:last-child .assortment-photo {
     width: 100%;
@@ -4998,10 +5000,59 @@ legend,
     width: 100%;
   }
 
+  .assortment-card,
+  .assortment-grid > li:last-child .assortment-card,
+  .assortment-card strong,
+  .assortment-card .assortment-line,
+  .assortment-card .assortment-arrow {
+    text-align: center;
+  }
+  .assortment-card {
+    align-items: center;
+  }
+  .assortment-card strong,
+  .assortment-card .assortment-arrow {
+    align-self: center;
+    width: 100%;
+  }
+  .making .making-title,
+  .making .making-summary,
+  .making .making-explore {
+    text-align: center;
+  }
   .making .making-explore {
     justify-self: center;
     align-self: center;
+  }
+  .making .making-permission,
+  .making .making-footnote,
+  .illustrative-label,
+  .illustrative-note {
+    text-align: left;
+  }
+  .ordering-steps li {
+    align-items: center;
+  }
+  .ordering-steps h3,
+  .ordering-steps p,
+  .ordering-steps a,
+  .buyer-proof-heading h3,
+  .home-delivery-check h3,
+  .atlas-card h3,
+  .product-card h3,
+  .product-card .card-fact,
+  .product-card .meta,
+  .why-card h3,
+  .why-card p {
     text-align: center;
+  }
+  .buyer-proof-heading {
+    justify-content: center;
+  }
+  .product-card .spec,
+  .product-card .spec dt,
+  .product-card .spec dd {
+    text-align: left;
   }
 
   .consult .hero-actions {
