@@ -17,10 +17,18 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setCondensed(window.scrollY > 40);
+    const media = window.matchMedia("(max-width: 767px)");
+    const onScroll = () => {
+      const narrow = media.matches;
+      setCondensed(window.scrollY > (narrow ? 80 : 40));
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    media.addEventListener("change", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      media.removeEventListener("change", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -45,6 +53,14 @@ export function Header() {
     <>
     <header className={`site-header no-print ${condensed ? "is-condensed" : ""}`}>
       <div className="site-header-row">
+        <a className="header-call" href={`tel:${PHONE_TEL}`} aria-label={`Call ${PHONE_DISPLAY}`}>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M7 3h3l1.5 4-2 1.2a12 12 0 0 0 6.3 6.3L17 12.5 21 14v3a2 2 0 0 1-2.2 2A16 16 0 0 1 5 6.2 2 2 0 0 1 7 3z"
+            />
+          </svg>
+        </a>
         <Link href="/" className="brand">
           <LogoLockup inverse={open} />
         </Link>
