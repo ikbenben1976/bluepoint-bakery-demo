@@ -4978,8 +4978,12 @@ legend,
     padding-right: 0.78rem;
   }
 
+  .assortment-grid {
+    grid-template-columns: 1fr;
+  }
+  .assortment-grid > li,
   .assortment-grid > li:last-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
   .assortment-grid > li:last-child .assortment-card {
     display: flex;
@@ -5089,6 +5093,54 @@ legend,
 
   .home-community .btn {
     width: 100%;
+  }
+
+  .seamless-hero .hero-intro,
+  .seamless-hero .lede,
+  .seamless-hero .hero-lead-times,
+  .seamless-hero .hero-lead-times li,
+  .section-intro p,
+  .section-head p,
+  .consult p,
+  .home-community .pull-text,
+  .existing-order-link,
+  .home-delivery-check > div > p,
+  .home-delivery-check > .text-link,
+  .ticket-hero,
+  .ticket-hero .sub,
+  .ticket-hero .sub p,
+  .atlas-card p,
+  .buyer-proof-tabs button {
+    text-align: center;
+  }
+  .making .making-description {
+    justify-items: center;
+    text-align: center;
+  }
+  .making .making-title,
+  .making .making-summary {
+    width: 100%;
+  }
+  .hero-actions,
+  .assortment-actions,
+  .consult .hero-actions {
+    justify-content: center;
+    align-items: center;
+  }
+  .home-story .btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+  .home-story p:not(.eyebrow),
+  .about-copy .willie-copy > p:not(.eyebrow),
+  .about-copy > p,
+  .making .making-footnote,
+  .making .making-permission,
+  .illustrative-label,
+  .illustrative-note,
+  figcaption {
+    text-align: left;
   }
 
   .footer-grid {

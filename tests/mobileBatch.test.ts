@@ -19,6 +19,7 @@ test("phone cards center their titles, descriptions, and arrows", () => {
   assert.match(css, /\.assortment-card strong,\s*\.assortment-card \.assortment-line,\s*\.assortment-card \.assortment-arrow \{\s*text-align: center;/);
   assert.match(css, /\.making \.making-title,\s*\.making \.making-summary,\s*\.making \.making-explore \{\s*text-align: center;/);
   assert.match(css, /\.making \.making-permission,\s*\.making \.making-footnote,\s*\.illustrative-label,\s*\.illustrative-note \{\s*text-align: left;/);
+  assert.match(css, /\.assortment-grid \{\s*grid-template-columns: 1fr;\s*\}/);
 });
 
 test("mobile header keeps a phone link and a tall menu control", () => {
