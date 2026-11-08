@@ -1,10 +1,10 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
 type CallSheetValue = {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const CallSheetContext = createContext<CallSheetValue | null>(null);
