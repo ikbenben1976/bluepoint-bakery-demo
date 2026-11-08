@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { aboutPhoto, gallery, WILLIE_CAPTION, williePortrait } from "@/data/photos";
-import { ADDRESS, HOURS, PHONE_DISPLAY, PHONE_TEL, RAMIREZ_STUDY, WESTWORD_2000, WESTWORD_FOUNDING } from "@/data/site";
+import { ADDRESS, HOURS, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
@@ -22,43 +22,18 @@ export default function AboutPage() {
       <article className="shell about-page">
         <div className="about-story">
           <div className="about-copy">
-            {/* https://www.bluepointbakery.com/about */}
-            <p>We are a proud, minority-owned and family-owned business headquartered in Denver, Colorado.</p>
-            {/*
-              Westword location page, wording only:
-              “Bluepoint Bakery, founded in 1987 by chefs Fred Bramhall and Mary Clark, was once one of the town’s top retail bakeries, with a storefront that exuded good smells up and down Sixth Avenue. Today, Bluepoint continues to bake from its wholesale spot in north Denver…”
-              https://www.westword.com/location/bluepoint-bakery-5170644/
-              Best of Denver 2000: “Best Bakery – Bluepoint Bakery”
-              https://www.westword.com/news/best-of-denver-winners-from-2000-5834471/
-              The location page still prints 1721 E. 58th Ave. That address is not used here.
-            */}
-            <p>
-              Bluepoint Bakery was founded in 1987 by chefs Fred Bramhall and Mary Clark.{" "}
-              <a href={WESTWORD_FOUNDING}>Westword</a> describes it as once one of the town&apos;s top retail bakeries, with a storefront on Sixth Avenue, and today a wholesale bakery in north Denver.
-            </p>
-            <p>
-              In Westword&apos;s Best of Denver 2000, Bluepoint is named <a href={WESTWORD_2000}>Best Bakery</a>.
-            </p>
             <div className="willie-story">
               <div className="willie-copy">
-                <h2>Willie Ramirez, from baker to owner</h2>
-                {/*
-                  44 Business Capital, “From Baker to Manager to Owner. Long-time Employee Acquires Bakery Business with $2,675,000 SBA Loan.”
-                  “After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez needed a bank and lender that would enable him to acquire full ownership of the bakery.”
-                  The financing “left all of the employees and the entire operation intact.” The page gives no date.
-                  The loan amount in the headline is not repeated on this page.
-                  https://www.44businesscapital.com/business-loan-story/from-baker-to-manager-to-owner-long-time-employee-acquires-bakery-business-with-2675000-sba-loan/
-                */}
+                <p className="eyebrow">Our story</p>
+                <h2>
+                  From baker to owner: <span className="story-name">Willie Ramirez</span>
+                </h2>
                 <p>
-                  After 28 years of working in and managing Bluepoint Bakery, Willie Ramirez acquired full ownership.{" "}
-                  <a href={RAMIREZ_STUDY}>44 Business Capital</a> says the employees and the operation were left intact, and that family members surround him in the bakery.
+                  Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.
                 </p>
-                <blockquote className="about-quote">
-                  <p>
-                    &ldquo;Now that I own 100% of the bakery, I can focus on growing the business to meet the needs of my customers, namely providing the best breads to the best restaurants in Colorado.&rdquo;
-                  </p>
-                  <footer>Willie Ramirez, quoted by 44 Business Capital</footer>
-                </blockquote>
+                <p>
+                  Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.
+                </p>
               </div>
               <figure className="about-figure about-portrait willie-portrait">
                 <Image

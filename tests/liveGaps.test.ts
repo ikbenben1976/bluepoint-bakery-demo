@@ -39,7 +39,8 @@ test("homepage why-us blurb is the approved rewrite and skips sports venues and 
 
 test("about keeps scratch-made and ownership lines and names Cheyenne, Wyoming", () => {
   const about = read("app/about/page.tsx");
-  assert.match(about, /minority-owned and family-owned business headquartered in Denver, Colorado/);
+  assert.match(about, /proud minority-owned, family-owned business/);
+  assert.doesNotMatch(about, /Westword|Best of Denver|44 Business/i);
   assert.match(about, /made from scratch daily at our spacious facility/);
   assert.match(about, /We also deliver to Cheyenne and nearby communities in Wyoming\./);
 });
