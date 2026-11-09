@@ -103,10 +103,10 @@ test("slice, pack, wrap, and dipped choices follow the published product", () =>
 test("delivery days are optional, a ZIP is not eligible, and a published city is labeled as such", () => {
   const draft = { ...readyBusiness(), productsText: "Kaiser rolls", days: [] };
   assert.deepEqual(validateStep(draft, 3, afternoon), []);
-  assert.match(areaSummary("Denver"), /Confirmed published area: Denver Metro Area/);
-  assert.match(areaSummary("Denver"), /does not confirm the street address/);
+  assert.match(areaSummary("Denver"), /Listed delivery area: Denver Metro Area/);
+  assert.match(areaSummary("Denver"), /confirm service to your address/);
   assert.match(areaSummary("80216"), /ZIP code is not used to confirm delivery/);
-  assert.match(areaSummary("Paris"), /Ask Bluepoint/);
+  assert.match(areaSummary("Paris"), /contact Bluepoint/i);
   assert.doesNotMatch(areaSummary("80216"), /Confirmed published area/);
 });
 
@@ -128,7 +128,7 @@ test("desired dates warn from the published notice, including a mixed order and 
 
   draft = { ...draft, firstDelivery: "2026-11-10" };
   assert.equal(dateWarning(draft, afternoon), null);
-  assert.match(dateStatus(draft, afternoon), /on or after the published notice/);
+  assert.match(dateStatus(draft, afternoon), /meets the published notice period/);
   assert.match(dateStatus(draft, afternoon), /48 hour notice|3 day notice|longer notice applies/);
 
   const beforeSpringForward = new Date("2026-03-07T18:00:00Z");
