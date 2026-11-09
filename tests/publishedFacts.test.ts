@@ -33,7 +33,7 @@ test("2016 AFP award is on the community page, with a link from About", () => {
 test("About uses the approved Willie story and keeps his portrait", () => {
   const about = read("app/about/page.tsx");
   const site = read("data/site.ts");
-  assert.match(about, /From baker to owner:/);
+  assert.match(about, /From the bakery floor to business ownership:/);
   assert.match(about, /Willie Ramirez/);
   assert.match(
     about,
@@ -78,7 +78,7 @@ test("community marks are the four nonprofits and customer marks are the publish
 
 test("homepage trust strip does not invent a certification or an extra award", () => {
   const home = read("app/page.tsx");
-  assert.match(home, /Listed in the product directory/);
+  assert.match(home, /Made in Colorado/);
   assert.match(home, /Minority-owned/);
   assert.match(home, /Headquartered in Denver, Colorado/);
   assert.match(home, /NMSDC Certified Minority Business Enterprise/);

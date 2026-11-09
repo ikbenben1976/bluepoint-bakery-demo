@@ -7,7 +7,7 @@ import { whyBluepoint } from "../data/whyBluepoint";
 test("Why Bluepoint is six sentence-case pillars from the values sheets", () => {
   assert.deepEqual(
     whyBluepoint.map((pillar) => pillar.title),
-    ["Product", "Company", "Selection", "Value", "Service", "Integrity"],
+    ["Fresh, scratch-baked quality", "Colorado roots since 1987", "A wide selection for every menu", "Quality that works for your business", "A team that knows wholesale", "Relationships built on trust"],
   );
   for (const pillar of whyBluepoint) {
     assert.equal(pillar.body, pillar.body.trim());
@@ -22,8 +22,8 @@ test("Why Bluepoint is six sentence-case pillars from the values sheets", () => 
       "Our products are handmade, baked fresh, and delivered in our own trucks, six days a week.",
       "A family-owned Colorado wholesale bakery since 1987.",
       "Hundreds of breads, rolls, and pastries, with new products added regularly.",
-      "Maximum value for the price you pay. You always get the most for your money.",
-      "With over 40 years of combined experience, our sales and customer service staff always take the time to listen and work with you.",
+      "Quality products, dependable service and practical choices to help you get more from your bakery purchasing.",
+      "Our experienced sales and customer service team takes time to understand your operation and help you find the right products.",
       "The entire Bluepoint team is committed to treating you, our customer, with the honesty, integrity, and respect you deserve.",
     ],
   );

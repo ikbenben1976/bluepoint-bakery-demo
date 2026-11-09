@@ -237,7 +237,7 @@ test("contact facts and portal URLs are the published ones", () => {
   assert.equal(PAY_URL, "https://app.paywholesail.com/portal/bluepointbakery");
   assert.equal(DISCLAIMER, "Demo prepared for review — not the official site");
   assert.equal(faqs.length, 6);
-  assert.match(faqs[3].a, /sales professional will assist you/);
+  assert.match(faqs[3].a, /sales team.*account setup process/);
   assert.match(faqs[2].a, /5105 Cook St\. Denver, CO 80216/);
 });
 

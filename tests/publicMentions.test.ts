@@ -154,7 +154,7 @@ test("Urban Egg Meet the Makers is featured café proof and stays off other audi
   assert.match(pull, /URBAN_EGG_PULL_QUOTE/);
   assert.match(pull, /URBAN_EGG_PULL_CREDIT/);
   assert.match(customers, /Urban Egg, Meet the Makers/);
-  assert.doesNotMatch(pull, /Public post, not a testimonial/);
+  assert.doesNotMatch(pull, /Public mention; not a customer testimonial/);
   assert.match(sector, /story\.audience === slug/);
   assert.match(featured, /\{mention\.name\} · \{mention\.series\} · \{mention\.when\}/);
   assert.match(featured, /Public post, not a testimonial/);
