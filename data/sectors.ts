@@ -13,7 +13,7 @@ export const sectors: readonly Sector[] = [
     description:
       "Hamburger buns, Kaiser rolls, hoagies, and sandwich breads for restaurants, delis, and bar and grills.",
     body: [
-      "Bluepoint bakes hamburger buns, sandwich breads, and specialty rolls for restaurants, delis, bar and grills, and sandwich shops.",
+      "Build your menu with hamburger buns, sandwich breads and specialty rolls suited to restaurants, delis, pubs and sandwich shops.",
     ],
     links: [
       { href: "/making/burgers", label: "Burgers and sliders" },
@@ -27,8 +27,8 @@ export const sectors: readonly Sector[] = [
     description:
       "Croissants, muffins, scones, and other breakfast pastries for cafés and espresso bars.",
     body: [
-      "Bluepoint lists cafés and espresso bars among the kitchens it bakes for, along with breakfast pastries and desserts.",
-      "Croissants, muffins, scones, and danishes are on the pastry list. Pastries need 48 hour notice.",
+      "Keep your café's bakery selection fresh with croissants, muffins, scones, Danish pastries and desserts.",
+      "Explore our breakfast pastry selection. Please allow at least 48 hours' notice for pastry orders.",
     ],
     links: [
       { href: "/making/breakfast", label: "Coffee and breakfast" },
@@ -41,8 +41,8 @@ export const sectors: readonly Sector[] = [
     description:
       "Dinner rolls, breakfast pastries, and pies for hotels, country clubs, and catering.",
     body: [
-      "Hotels, country clubs, and catering businesses are among the kitchens Bluepoint says it serves, including catered events along the Front Range.",
-      "The published catalog for that service includes dinner rolls, rustic rolls, breakfast pastries, and pies.",
+      "From hotel dining rooms to catered events, Bluepoint offers breads, rolls and pastries for a wide range of food-service occasions.",
+      "Explore dinner rolls, rustic breads, breakfast pastries and pies for your next menu.",
     ],
     links: [
       { href: "/making/dinner", label: "Dinner and catering" },
@@ -56,8 +56,8 @@ export const sectors: readonly Sector[] = [
     description:
       "Sandwich loaves and breakfast pastries for hospitals, schools, universities, and airports.",
     body: [
-      "Corporate dining rooms, hospitals, schools, universities, and airports are among the institutions named on Bluepoint’s site.",
-      "Sandwich loaves, pan loaves, club rolls, and breakfast pastries are in the published catalog for that kind of service.",
+      "Bluepoint serves institutional food-service operations, including hospitals, schools, universities, airports and corporate dining facilities.",
+      "Our selection includes sandwich loaves, club rolls and breakfast pastries for a variety of food-service needs.",
     ],
     links: [
       { href: "/breads", label: "Breads" },

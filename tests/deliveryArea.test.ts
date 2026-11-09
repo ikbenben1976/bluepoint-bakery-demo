@@ -52,9 +52,9 @@ test("matching ignores case and extra spaces", () => {
 
 test("phrases match the request builder and the delivery page", () => {
   const served =
-    "Bluepoint serves businesses in this area. Contact the bakery to confirm your address, delivery days, and ordering requirements.";
+    "This area appears on Bluepoint's delivery map. Contact our team to confirm service to your address and available delivery days.";
   assert.equal(deliveryPhrase("yes", "page"), served);
   assert.equal(deliveryPhrase("yes", "wholesale"), served);
-  assert.equal(deliveryPhrase("ask", "page"), "Ask us");
-  assert.equal(deliveryPhrase("ask", "wholesale"), "We'll check — ask us");
+  assert.equal(deliveryPhrase("ask", "page"), "Contact Bluepoint to check availability");
+  assert.equal(deliveryPhrase("ask", "wholesale"), "Please contact Bluepoint to check availability");
 });

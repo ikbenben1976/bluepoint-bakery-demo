@@ -4,17 +4,17 @@ const THEMES: readonly { id: ProofTheme; title: string; lead: string }[] = [
   {
     id: "quality",
     title: "Quality",
-    lead: "Comments that talk about the bread itself.",
+    lead: "What customers say about the quality of our breads and baked goods.",
   },
   {
     id: "service",
     title: "Responsive service",
-    lead: "Comments that talk about working with the bakery.",
+    lead: "What customers value about working with our team.",
   },
   {
     id: "longevity",
     title: "Long relationships",
-    lead: "Comments that name how long a kitchen has ordered.",
+    lead: "Some customer relationships go back decades.",
   },
 ];
 

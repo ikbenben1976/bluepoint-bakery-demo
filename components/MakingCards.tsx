@@ -8,10 +8,10 @@ import { uses } from "@/data/uses";
 // Finished dishes on the home cards. Burgers, sandwiches, and breakfast use
 // plated photos. Dinner stays illustrative. The bakery assortment is AssortmentCards.
 const descriptions: Record<keyof typeof applicationVisuals, string> = {
-  burgers: "Browse brioche hamburger buns, Kaiser rolls and slider options.",
-  sandwiches: "Explore deli loaves, hoagies, Philly rolls, baguettes and sliced breads.",
-  breakfast: "Find croissants, muffins, scones, Danish and quick breads.",
-  dinner: "Explore dinner rolls, rustic breads and bread-service options.",
+  burgers: "Find the right foundation for your burgers, from brioche buns to classic Kaisers and sliders.",
+  sandwiches: "Build your sandwich menu with deli breads, hoagie rolls, baguettes and more.",
+  breakfast: "Round out your morning menu with croissants, muffins, scones and other breakfast favorites.",
+  dinner: "From dinner rolls to specialty breads, explore options for the table and catered events.",
 };
 
 export function MakingCards() {
@@ -21,7 +21,7 @@ export function MakingCards() {
         <div>
           <p className="eyebrow">Start with your menu</p>
           <h2 id="making-heading">What are you making?</h2>
-          <p>Choose the dish or service you have in mind. We&apos;ll help you explore relevant breads and pastries.</p>
+          <p>Start with what you&apos;re serving. Find breads and pastries that bring your menu together.</p>
         </div>
       </div>
       <ul className="making-visual-grid">
@@ -63,7 +63,7 @@ export function MakingCards() {
                 <span className="making-description">
                   <span className="making-title">{use.title}</span>
                   <span className="making-summary">{descriptions[use.slug as keyof typeof descriptions]}</span>
-                  <span className="making-explore">Find matching products <span aria-hidden="true">→</span></span>
+                  <span className="making-explore">Explore recommended products <span aria-hidden="true">→</span></span>
                 </span>
               </Link>
             </li>
@@ -71,9 +71,7 @@ export function MakingCards() {
         })}
       </ul>
       <p className="making-footnote">
-        Burgers, sandwiches, and coffee and breakfast use plated photos for this demo. Dinner and catering
-        uses an illustrative image, not a photograph of a Bluepoint product. The bakery&apos;s own products are in Our
-        Product Assortment, above.
+        Menu images illustrate serving ideas; they do not identify specific Bluepoint products.
       </p>
     </section>
   );

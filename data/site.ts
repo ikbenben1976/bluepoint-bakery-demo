@@ -30,13 +30,13 @@ export const MAPS_SEARCH_URL =
 export const faqs = [
   {
     id: "what",
-    q: "What is Bluepoint Bakery?",
-    a: "Bluepoint Bakery is a locally owned, independent provider of fresh baked goods to the food service community of the front range of Colorado. Fine restaurants, delis, bar & grills, specialty groceries and espresso bars have been enjoying our breads and pastries for over 30 years.",
+    q: "Who is Bluepoint Bakery?",
+    a: "Bluepoint Bakery is a locally owned wholesale bakery in Denver, serving restaurants, cafés and other food-service businesses across Colorado's Front Range.",
   },
   {
     id: "does",
-    q: "What does Bluepoint Bakery do?",
-    a: "We bake and deliver 6 days a week. Our product line includes, but is not limited to, a variety of different styles, sizes and flavors of hamburger buns, many flavors of sliced breads in different sizes and thickness of slice, baguette/hoagie rolls in various lengths and styles, as well as a full line of breakfast pastries.",
+    q: "What products does Bluepoint offer?",
+    a: "We specialize in fresh wholesale breads, hamburger buns, sandwich rolls, sliced loaves, baguettes and breakfast pastries, with a range of sizes and styles for food-service menus.",
   },
   {
     id: "where",
@@ -46,12 +46,12 @@ export const faqs = [
   {
     id: "become",
     q: "How do I become a customer?",
-    a: "It\u2019s easy! You can set up an account by contacting us through phone or email and a sales professional will assist you!",
+    a: "Contact our sales team to discuss your business, product needs and delivery location. We'll guide you through the account setup process.",
   },
   {
     id: "deliver",
     q: "Where does Bluepoint Bakery deliver?",
-    a: "Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming.",
+    a: "Our published delivery areas include the Denver metro area, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming. Contact us to confirm service to your address.",
   },
   {
     id: "order",
@@ -103,7 +103,7 @@ export const communityPartners = [
   {
     name: "CASA of Adams & Broomfield Counties",
     points: [
-      "We partner with CASA of Adams & Broomfield Counties year-round with cookies and baked goods.",
+      "Our work with CASA of Adams & Broomfield Counties has included cookies and baked goods.",
       "We sponsor the annual Cookie Campaign with holiday sugar cookies (the first campaign in December 2013 raised over $15,000) and support the CASA Classic Golf Tournament, Indulge for CASA, and Kaleidoscope of Hope.",
     ],
     links: [
@@ -115,7 +115,7 @@ export const communityPartners = [
     name: "The GrowHaus",
     points: [
       "The GrowHaus is a nonprofit indoor farm, marketplace, and education center in Denver's Elyria-Swansea neighborhood.",
-      "We supply bread weekly to help cut the costs of their food box program and support food access in the neighborhood.",
+      "Our donated bread has helped support the organization’s food-box program and its efforts to improve food access in the neighborhood.",
     ],
     links: [
       { href: "http://www.thegrowhaus.com", label: "The GrowHaus" },
@@ -125,7 +125,7 @@ export const communityPartners = [
   {
     name: "Soup for the Soul",
     points: [
-      "For more than 15 years we have donated desserts for Soup for the Soul, an annual tasting with soups and appetizers from more than 15 Denver restaurants and a silent auction for around 700 guests.",
+      "For more than 15 years, Bluepoint has contributed desserts to Soup for the Soul, an annual tasting with soups and appetizers from more than 15 Denver restaurants and a silent auction for around 700 guests.",
       "Proceeds support Centura Health at Home's Porter Hospice, St. Anthony Hospice, and The Butterfly Program.",
     ],
     links: [

@@ -24,7 +24,7 @@ export default function DeliveryPage() {
           <p className="kicker">Delivery area</p>
           <h1>Where we deliver</h1>
           <p className="delivery-lede">
-            We bake and deliver 6 days a week. Deliveries are available from Denver Metro Area; Colorado Springs; Fort Collins; Greeley; Loveland; Summit County; Blackhawk; and Cheyenne, Wyoming. {CAVEAT}
+            We bake and deliver six days a week, serving the Denver metro area and communities throughout the Front Range, including Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming. {CAVEAT}
           </p>
         </div>
         <figure className="delivery-truck">
@@ -43,9 +43,9 @@ export default function DeliveryPage() {
       <RouteMap />
       <div className="delivery-lower">
         <div className="delivery-routes">
-          <h2>Colors and weekdays</h2>
+          <h2>Delivery routes & days</h2>
           <p>
-            Weekdays follow the bakery’s distribution map. Cities are the ones named on the published map.
+            Explore published delivery routes and service days for the areas we serve.
             {" "}{CAVEAT}
           </p>
           <table className="route-table">
@@ -79,7 +79,7 @@ export default function DeliveryPage() {
               })}
             </tbody>
           </table>
-          <h2>Service areas</h2>
+          <h2>Areas we serve</h2>
           <ul className="serve-list">
             {SERVICE_AREAS.map((area) => (
               <li key={area.label}>{area.label}</li>
@@ -87,8 +87,8 @@ export default function DeliveryPage() {
           </ul>
         </div>
         <aside className="delivery-check">
-          <h2>Check a city</h2>
-          <p>Same towns as the map, with the weekdays from the distribution map. Call to confirm the city. Breads need 24 hour notice, pastries need 48 hour notice, and Sourdough Boule needs 3 day notice.</p>
+          <h2>Check your delivery area</h2>
+          <p>Enter your city to view published delivery information. Our team can confirm your route schedule and ordering requirements.</p>
           <DeliveryChecker idPrefix="delivery-page" context="page" />
         </aside>
       </div>

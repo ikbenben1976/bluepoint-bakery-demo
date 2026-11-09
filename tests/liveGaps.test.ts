@@ -6,10 +6,10 @@ import { communityPartners } from "../data/site";
 const read = (path: string) => fs.readFileSync(path, "utf8");
 
 const STORY_OPENING =
-  "Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.";
+  "Bluepoint Bakery began in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez built his career inside the bakery, spending 28 years baking, managing operations and helping the business grow before becoming its owner.";
 
 const STORY_TODAY =
-  "Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.";
+  "Today, Bluepoint continues its tradition as a minority-owned, family-owned Colorado bakery, combining scratch baking with dedicated wholesale service. From independent restaurants to institutional kitchens, we focus on dependable delivery, quality products and strong customer relationships.";
 
 test("homepage states bread and pastry lead times near the order actions", () => {
   const home = read("app/page.tsx");
@@ -27,10 +27,10 @@ test("homepage food service leads into delivery and community, without the story
   assert.doesNotMatch(home, /home-story|home-why|Our story|WILLIE_CAPTION/);
   assert.ok(about.includes(STORY_OPENING));
   assert.ok(about.includes(STORY_TODAY));
-  assert.match(home, /From your menu to your order\./);
+  assert.match(home, /From first conversation to first order/);
   assert.doesNotMatch(home, /From your menu to the right order/);
   const food = home.indexOf("buyer-proof-block");
-  const deliver = home.indexOf("Where we deliver");
+  const deliver = home.indexOf("Delivery across the Front Range");
   const community = home.indexOf("home-community");
   assert.ok(food > 0 && deliver > food && community > deliver);
   assert.doesNotMatch(home, /sports venues/);
@@ -40,9 +40,9 @@ test("homepage food service leads into delivery and community, without the story
 
 test("about keeps scratch-made and ownership lines and names Cheyenne, Wyoming", () => {
   const about = read("app/about/page.tsx");
-  assert.match(about, /proud minority-owned, family-owned business/);
+  assert.match(about, /minority-owned, family-owned Colorado bakery/);
   assert.doesNotMatch(about, /Westword|Best of Denver|44 Business/i);
-  assert.match(about, /made from scratch daily at our spacious facility/);
+  assert.match(about, /prepares fresh breads, pastries and specialty baked goods/);
   assert.match(about, /We also deliver to Cheyenne and nearby communities in Wyoming\./);
 });
 
@@ -76,7 +76,7 @@ test("community partners use the approved rewrites, links, and banned omissions"
 
   const growText = grow.points.join(" ");
   assert.match(growText, /education center in Denver.s Elyria-Swansea neighborhood/);
-  assert.match(growText, /food box program/);
+  assert.match(growText, /food[- ]box program/);
   assert.doesNotMatch(growText, /CSA-style/);
   assert.deepEqual(
     grow.links.map((link) => link.href),
@@ -117,7 +117,7 @@ test("contact message form is client-side only and does not send mail", () => {
   assert.match(page, /FACEBOOK/);
   assert.match(page, /INSTAGRAM/);
   assert.match(page, /HOURS/);
-  assert.match(form, /This concept site does not send contact messages/);
+  assert.match(form, /This demo prepares your message but does not send it/);
   assert.match(form, /contact-message-form/);
   assert.match(form, /contact-message-confirmation/);
   assert.match(form, /First name/);

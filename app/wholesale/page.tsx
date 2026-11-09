@@ -4,7 +4,7 @@ import { WholesaleRequest } from "@/components/WholesaleRequest";
 import { categoryPhotos } from "@/data/photos";
 
 export const metadata: Metadata = {
-  title: "Become a wholesale customer",
+  title: "Let's get your wholesale account started",
   description:
     "Prepare a new wholesale account request for Bluepoint Bakery. The demo previews an email to sales@bluepointbakery.com and does not send it.",
   alternates: { canonical: "/wholesale/" },
@@ -18,7 +18,7 @@ export default function WholesalePage() {
         kicker="New accounts"
         title="Become a wholesale customer"
         image={categoryPhotos.croissants}
-        lede={<p>Tell us what you are making and where you are. A sales professional will assist you.</p>}
+        lede={<p>Tell us about your business, the products you&apos;re interested in and your anticipated needs. Our sales team can help with the next steps.</p>}
       />
       <WholesaleRequest />
     </>

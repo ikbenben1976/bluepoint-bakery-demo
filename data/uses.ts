@@ -17,7 +17,7 @@ export const uses: readonly UseCase[] = [
     slug: "burgers",
     title: "Burgers & Sliders",
     summary:
-      "Hamburger buns, Kaiser rolls, and the 6×5 slider buns.",
+      "Explore hamburger buns, Kaiser rolls and slider options for your menu.",
     match: (product) =>
       product.category === "buns" || product.name.startsWith("6x5 Slider"),
   },

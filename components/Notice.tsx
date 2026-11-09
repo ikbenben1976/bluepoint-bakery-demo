@@ -36,7 +36,7 @@ export function Notice() {
     }
 
     const initial = focusables();
-    (initial[initial.length - 1] ?? root)?.focus({ preventScroll: true });
+    (initial[0] ?? root)?.focus({ preventScroll: true });
 
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -74,9 +74,10 @@ export function Notice() {
 
   return (
     <div className="call-notice-layer">
-      <button type="button" className="call-notice-backdrop" aria-label="Dismiss call notice" onClick={dismiss} />
+      <button type="button" className="call-notice-backdrop" tabIndex={-1} aria-hidden="true" onClick={dismiss} />
       <div
         ref={dialogRef}
+        id="call-notice"
         className="call-notice"
         role="dialog"
         aria-modal="true"
@@ -84,17 +85,17 @@ export function Notice() {
         data-testid="call-notice"
         tabIndex={-1}
       >
-        <p id="call-notice-title">
-          <strong>Call us today.</strong>
-        </p>
-        <p>{PHONE_DISPLAY}. A sales professional will help you open an account.</p>
-        <div className="call-notice-actions">
-          <a href={`tel:${PHONE_TEL}`}>Call</a>
-          <a href={`mailto:${EMAIL}`}>Email</a>
-          <Link href={requestPricingHref(requestCount)}>Request pricing</Link>
-          <button type="button" onClick={dismiss}>
-            Close
+        <header className="call-notice-header">
+          <h2 id="call-notice-title">Contact Bluepoint</h2>
+          <button type="button" className="call-notice-close" aria-label="Close" onClick={dismiss}>
+            <span aria-hidden="true">×</span>
           </button>
+        </header>
+        <p>Talk with our Denver bakery about products, delivery, or opening a wholesale account.</p>
+        <Link className="btn btn-primary" href={requestPricingHref(requestCount)} onClick={dismiss}>Request a quote</Link>
+        <div className="call-notice-actions">
+          <a href={`tel:${PHONE_TEL}`}>Call {PHONE_DISPLAY}</a>
+          <a href={`mailto:${EMAIL}`}>Email sales</a>
         </div>
       </div>
     </div>

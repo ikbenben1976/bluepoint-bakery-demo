@@ -3,14 +3,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
-import { EMAIL, HOURS, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import { EMAIL, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { CUSTOM_FAMILIES, CUSTOMER_TYPES, DELIVERY_DAYS, QUANTITY_BASES, addProductLine, emptyDraft, parseEstimateQty, type Draft, type QuantityBasis } from "@/lib/draft";
 import { deliverySuggestions } from "@/lib/deliveryArea";
 import { buildEmailPreview } from "@/lib/emailPreview";
 import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
 import { publishedUnit } from "@/lib/spec";
 import {
-  PUBLISHED_CUSTOM_LINE,
   SAMPLE_QUESTION,
   SAMPLE_REVIEW,
   areaSummary,
@@ -395,7 +394,7 @@ export function WholesaleRequest() {
         <>
           <AccountPaths />
           <p className="request-notice">
-            This concept site does not submit wholesale requests. This is a pricing request, not an order.
+            Demo preview: Your information is not submitted. You can review and copy your inquiry to share with Bluepoint directly.
           </p>
         </>
       ) : null}
@@ -419,7 +418,7 @@ export function WholesaleRequest() {
             <section data-testid="wholesale-step" data-step="business">
               <RequestProgress step={1} onGo={goTo} />
               <h2>Business</h2>
-              <p className="request-help">What you type stays in this browser until you clear it.</p>
+              <p className="request-help">Your progress is saved in this browser so you can return to it later.</p>
               <div className="request-grid">
                 <label>
                   Business name
@@ -483,7 +482,7 @@ export function WholesaleRequest() {
                   />
                 </label>
               </div>
-              <p className="request-help">A rough note for the conversation.</p>
+              <p className="request-help">An estimate is fine—we can discuss the details later.</p>
               <label>
                 Notes for the bakery
                 <textarea
@@ -508,7 +507,7 @@ export function WholesaleRequest() {
             <section data-testid="wholesale-step" data-step="products">
               <RequestProgress step={2} onGo={goTo} />
               <h2>Products and options</h2>
-              <p className="request-help">Options appear only when that product publishes them.</p>
+              <p className="request-help">Available options are shown for each product.</p>
               <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
                 <h3 id="inquiry-picker-title">Add a product to your request</h3>
                 <p>
@@ -546,7 +545,7 @@ export function WholesaleRequest() {
                 </div>
               </section>
               <div id="request-lines">
-              <p className="request-help">Each product has its own estimate. This is not a delivery schedule.</p>
+              <p className="request-help">Enter your estimated needs for each product.</p>
               {draft.lines.length > 0 ? (
                 <ul className="request-lines">
                   {draft.lines.map((line) => {
@@ -698,11 +697,11 @@ export function WholesaleRequest() {
                   onChange={(event) => setDraft({ ...draft, productsText: event.target.value })}
                 />
               </label>
-              <p className="request-help">Kept together with the catalog lines above.</p>
+              <p className="request-help">Include any additional products, special requests or questions here.</p>
               <fieldset className="custom-interest">
-                <legend>Customization to discuss</legend>
+                <legend>Special requests &amp; customization</legend>
                 <p>
-                  Bluepoint&apos;s About page says: &ldquo;{PUBLISHED_CUSTOM_LINE}&rdquo; Examples to discuss.
+                  Have a specific product, size or packaging requirement in mind? Tell us what you&apos;re looking for.
                 </p>
                 <div className="request-grid">
                   <label>
@@ -721,7 +720,7 @@ export function WholesaleRequest() {
                     </select>
                   </label>
                   <label>
-                    Size or dimensions to discuss
+                    Preferred size or dimensions
                     <input
                       id="inquiry-custom-size"
                       value={draft.customSize}
@@ -730,7 +729,7 @@ export function WholesaleRequest() {
                   </label>
                 </div>
                 <label>
-                  Packaging or other requirements to discuss
+                  Packaging &amp; other requirements
                   <textarea
                     id="inquiry-custom-packaging"
                     rows={2}
@@ -749,7 +748,7 @@ export function WholesaleRequest() {
                   />
                   {SAMPLE_QUESTION}
                 </label>
-                <p>We&apos;ll let you know what&apos;s available.</p>
+                <p>Ask Bluepoint&apos;s sales team about sample availability and any applicable conditions.</p>
                 {draft.askAboutSamples ? (
                   <label>
                     Products you want to ask about
@@ -776,9 +775,9 @@ export function WholesaleRequest() {
           {step === 3 ? (
             <section data-testid="wholesale-step" data-step="delivery">
               <RequestProgress step={3} onGo={goTo} />
-              <h2>Delivery and timing</h2>
+              <h2>Delivery preferences</h2>
               <p className="request-help">
-                Office hours are {HOURS}. Bluepoint bakes and delivers 6 days a week. A preferred day or date is a question for the bakery, not a reserved route.
+                Bluepoint bakes and delivers six days a week. Select your preferred timing; the bakery will confirm availability and route details.
               </p>
               <label htmlFor="inquiry-delivery">Delivery city</label>
               <input
@@ -803,9 +802,9 @@ export function WholesaleRequest() {
                 <Link href="/delivery">See the delivery map</Link>.
               </p>
               <fieldset className="day-fieldset">
-                <legend>Preferred days to discuss</legend>
+                <legend>Preferred delivery days</legend>
                 <p className="request-help">
-                  These are preferences to discuss, not a reserved stop. The delivery map lists a weekday overview for each color. Leave every day unselected if you do not have a preference.
+                  Select preferred delivery days, or leave this blank if you&apos;re flexible. Final scheduling is subject to confirmation.
                 </p>
                 <div className="day-choices">
                   {DELIVERY_DAYS.map((day) => {
@@ -829,7 +828,7 @@ export function WholesaleRequest() {
                   })}
                 </div>
               </fieldset>
-              <label htmlFor="inquiry-start">Desired first date</label>
+              <label htmlFor="inquiry-start">When would you like to start?</label>
               <input
                 id="inquiry-start"
                 type="date"
@@ -846,7 +845,7 @@ export function WholesaleRequest() {
                   checked={draft.consent}
                   onChange={(event) => setDraft({ ...draft, consent: event.target.checked })}
                 />
-                I understand this concept site does not submit this request
+                I understand this is a preview and my information will not be sent automatically
               </label>
               <div className="request-actions">
                 <button className="btn btn-ghost" type="button" onClick={() => goTo(2)}>
@@ -865,17 +864,33 @@ export function WholesaleRequest() {
           <article className="review-card">
             <header className="review-head">
               <div>
-                <p className="kicker">Review your details</p>
+                <p className="kicker">Review your wholesale inquiry</p>
                 <h2>Your request</h2>
               </div>
-              <p className="demo-badge">Demo: not sent</p>
+              <p className="demo-badge">Preview only — not submitted</p>
             </header>
             <p id="send-notice">
-              This is a preview only. No message has been sent to Bluepoint Bakery. This concept site does not submit wholesale requests. This is a pricing request, not an order.
+              Nothing has been submitted or ordered. Copy your inquiry to share it with Bluepoint.
             </p>
             <p>
-              You can discuss this draft with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
+              Share this summary with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
             </p>
+            <div className="request-actions">
+              <button type="button" className="btn btn-primary" onClick={copySummary}>
+                Copy inquiry
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
+                Print
+              </button>
+            </div>
+            {copyFallback ? (
+              <p role="status">Clipboard is unavailable in this browser. Select the inquiry summary below and copy it.</p>
+            ) : null}
+            {copied ? (
+              <p className="request-help" role="status">
+                Summary copied.
+              </p>
+            ) : null}
             <dl className="inquiry-summary">
               <div>
                 <dt>Business</dt>
@@ -914,7 +929,7 @@ export function WholesaleRequest() {
                 <dd>
                   {draft.days.length
                     ? `${draft.days.join(", ")} (preferences, not a confirmed route)`
-                    : "No day selected. That is allowed."}
+                    : "Flexible — no preferred delivery day selected."}
                 </dd>
               </div>
               <div>
@@ -935,7 +950,7 @@ export function WholesaleRequest() {
                 <div>
                   <dt>Customization to discuss</dt>
                   <dd>
-                    Examples to discuss. {PUBLISHED_CUSTOM_LINE}
+                    Customization requests are subject to Bluepoint&apos;s review and availability.
                     {draft.customFamily ? (
                       <>
                         <br />
@@ -967,7 +982,7 @@ export function WholesaleRequest() {
             {draft.lines.length > 0 || extraNote ? (
               <div>
                 <h3>Products</h3>
-                <p className="request-help">Estimates only. This is not a confirmed order or delivery schedule.</p>
+                <p className="request-help">Estimated quantities only; pricing and delivery are subject to confirmation.</p>
                 <ul className="product-chips">
                   {draft.lines.map((line) => {
                     const product = getProduct(line.productId);
@@ -978,27 +993,8 @@ export function WholesaleRequest() {
                 </ul>
               </div>
             ) : null}
-            <h3>Email preview</h3>
+            <h3>Your inquiry summary</h3>
             <pre id="request-preview">{preview}</pre>
-            {copyFallback ? (
-              <p role="status">Clipboard is unavailable in this browser. Select the preview above and copy it.</p>
-            ) : null}
-            {copied ? (
-              <p className="request-help" role="status">
-                Summary copied.
-              </p>
-            ) : null}
-            <div className="request-actions">
-              <button type="button" className="btn btn-primary" onClick={copySummary}>
-                Copy summary
-              </button>
-              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
-                Print
-              </button>
-              <button type="button" className="btn" disabled aria-describedby="send-notice">
-                Send to Bluepoint (demo: not connected)
-              </button>
-            </div>
             <div className="request-actions">
               <button type="button" className="btn btn-ghost" onClick={() => goTo(1)}>
                 Edit business
@@ -1023,7 +1019,7 @@ export function WholesaleRequest() {
 function AccountPaths() {
   return (
     <section className="account-paths" aria-labelledby="account-paths-title">
-      <h2 id="account-paths-title">Existing customers and new accounts</h2>
+      <h2 id="account-paths-title">Already a customer?</h2>
       <div className="account-path-grid">
         <p className="account-path">
           <strong>Existing customers</strong> order by phone at <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>, by email at{" "}
@@ -1035,7 +1031,7 @@ function AccountPaths() {
           <a href={PAY_URL} target="_blank" rel="noopener noreferrer">Pay an invoice</a> is a separate login.
         </p>
         <p className="account-path">
-          <strong>New accounts</strong> use the request on this page. A sales professional will assist you.
+          <strong>New to Bluepoint?</strong> Start by preparing your wholesale inquiry below. Contact the bakery to discuss next steps.
         </p>
       </div>
     </section>

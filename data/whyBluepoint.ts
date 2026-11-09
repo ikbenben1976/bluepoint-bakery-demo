@@ -11,27 +11,27 @@ export type WhyPillar = {
 
 export const whyBluepoint: readonly WhyPillar[] = [
   {
-    title: "Product",
+    title: "Fresh, scratch-baked quality",
     body: "Our products are handmade, baked fresh, and delivered in our own trucks, six days a week.",
   },
   {
-    title: "Company",
+    title: "Colorado roots since 1987",
     body: "A family-owned Colorado wholesale bakery since 1987.",
   },
   {
-    title: "Selection",
+    title: "A wide selection for every menu",
     body: "Hundreds of breads, rolls, and pastries, with new products added regularly.",
   },
   {
-    title: "Value",
-    body: "Maximum value for the price you pay. You always get the most for your money.",
+    title: "Quality that works for your business",
+    body: "Quality products, dependable service and practical choices to help you get more from your bakery purchasing.",
   },
   {
-    title: "Service",
-    body: "With over 40 years of combined experience, our sales and customer service staff always take the time to listen and work with you.",
+    title: "A team that knows wholesale",
+    body: "Our experienced sales and customer service team takes time to understand your operation and help you find the right products.",
   },
   {
-    title: "Integrity",
+    title: "Relationships built on trust",
     body: "The entire Bluepoint team is committed to treating you, our customer, with the honesty, integrity, and respect you deserve.",
   },
 ];

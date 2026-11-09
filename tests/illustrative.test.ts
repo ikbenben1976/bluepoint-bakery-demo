@@ -6,10 +6,15 @@ import { illustrativeFiles } from "../data/illustrative";
 import { products } from "../data/products";
 import { visualForProduct } from "../data/illustrative";
 
-test("every catalog item has a labeled illustrative image on disk", () => {
+test("catalog illustrations are labeled and exist, and Bear Claw has no substitute photo", () => {
   const seen = new Set<string>();
   for (const product of products) {
     const visual = visualForProduct(product.id);
+    if (product.id === "danishes-bear-claw") {
+      assert.equal(visual, undefined);
+      continue;
+    }
+    assert.ok(visual, product.id);
     assert.equal(visual.illustrative, true);
     assert.match(visual.alt, /^Illustrative image of /);
     assert.match(visual.alt, /Not a verified photograph of this Bluepoint product/);

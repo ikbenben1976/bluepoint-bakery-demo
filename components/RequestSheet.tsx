@@ -186,12 +186,12 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
               const unit = publishedUnit(product);
               return (
                 <li key={line.productId} className="request-line">
-                  <div className="request-thumb-col">
+                  {visual ? <div className="request-thumb-col">
                     <div className="request-thumb">
                       <Image src={visual.webp} alt="" width={96} height={96} className="request-thumb-img" />
                     </div>
                     <p className="request-thumb-note">Illustrative</p>
-                  </div>
+                  </div> : null}
                   <div className="request-line-copy">
                     <div className="request-line-top">
                       <h3>{product.name}</h3>
@@ -245,13 +245,13 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
             })}
           </ul>
         )}
-        <p className="request-sheet-note">This is a pricing request, not an order. Estimates are not a delivery schedule.</p>
+        <p className="request-sheet-note">These are estimated quantities, not a confirmed order. Bluepoint will confirm pricing and delivery.</p>
         <div className="request-sheet-actions">
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Continue browsing
           </button>
           <Link className="btn btn-primary" href={requestPricingHref(count)} onClick={onClose}>
-            Go to request
+            Review selections
           </Link>
         </div>
       </div>

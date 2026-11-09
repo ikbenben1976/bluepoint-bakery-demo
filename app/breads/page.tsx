@@ -8,7 +8,7 @@ import { FeaturedProductSpec } from "@/components/FeaturedProductSpec";
 export const metadata: Metadata = {
   title: "Breads",
   description:
-    "Wholesale breads from Bluepoint Bakery. 24 hour notice for orders on all breads. Sourdough Boule: 3 day notice required.",
+    "Wholesale breads from Bluepoint Bakery. Please allow at least 24 hours&apos; notice for bread orders. Sourdough Boule requires three days&apos; advance notice.",
   alternates: { canonical: "/breads/" },
   robots: { index: false, follow: false },
 };

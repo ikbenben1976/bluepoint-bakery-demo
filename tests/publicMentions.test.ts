@@ -111,7 +111,7 @@ test("the customer showcase lists 27 brands once across the four tabs", () => {
   assert.doesNotMatch(buyer, /fire-foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /FIRE Foundation/);
   assert.match(fs.readFileSync("app/community/page.tsx", "utf8"), /Pie in the Sky/);
-  assert.match(fs.readFileSync("data/site.ts", "utf8"), /food box program/);
+  assert.match(fs.readFileSync("data/site.ts", "utf8"), /food[- ]box program/);
   assert.doesNotMatch(fs.readFileSync("data/site.ts", "utf8"), /CSA-style/);
   assert.doesNotMatch(fs.readFileSync("data/site.ts", "utf8"), /public post named/);
   const questions = fs.readFileSync("docs/OWNER-QUESTIONS.md", "utf8");
@@ -154,10 +154,10 @@ test("Urban Egg Meet the Makers is featured café proof and stays off other audi
   assert.match(pull, /URBAN_EGG_PULL_QUOTE/);
   assert.match(pull, /URBAN_EGG_PULL_CREDIT/);
   assert.match(customers, /Urban Egg, Meet the Makers/);
-  assert.doesNotMatch(pull, /Public post, not a testimonial/);
+  assert.doesNotMatch(pull, /Public mention; not a customer testimonial/);
   assert.match(sector, /story\.audience === slug/);
   assert.match(featured, /\{mention\.name\} · \{mention\.series\} · \{mention\.when\}/);
-  assert.match(featured, /Public post, not a testimonial/);
+  assert.match(featured, /Public mention; not a customer testimonial/);
   assert.doesNotMatch(`${buyer}\n${sector}\n${featured}`, /Nettie|Farmstand|Blue Point Brewing|fb\.watch|facebook\.com\/urban/i);
   assert.match(customers, /Maryland beer-bread/);
   assert.match(fs.readFileSync("app/layout.tsx", "utf8"), /noindex,nofollow/);

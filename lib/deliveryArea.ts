@@ -81,10 +81,10 @@ export function deliveryPhrase(
   context: "page" | "wholesale",
 ): string {
   if (status === "yes") {
-    return "Bluepoint serves businesses in this area. Contact the bakery to confirm your address, delivery days, and ordering requirements.";
+    return "This area appears on Bluepoint's delivery map. Contact our team to confirm service to your address and available delivery days.";
   }
   if (status === "empty") return "";
-  return context === "wholesale" ? "We'll check — ask us" : "Ask us";
+  return context === "wholesale" ? "Please contact Bluepoint to check availability" : "Contact Bluepoint to check availability";
 }
 
 export function deliverySuggestions(

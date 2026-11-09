@@ -1,31 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
 import { useCallSheet } from "@/components/CallSheet";
 
 export function QuickActions() {
   const { open, setOpen } = useCallSheet();
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, setOpen]);
-
   return (
-    <div className={`quick-actions no-print ${open ? "is-open" : ""}`} data-testid="quick-actions">
+    <div className="quick-actions no-print" data-testid="quick-actions">
       <button
         type="button"
         className="quick-toggle"
         aria-expanded={open}
         aria-controls="call-notice"
-        onClick={() => setOpen((value) => !value)}
+        aria-haspopup="dialog"
+        onClick={() => setOpen(true)}
       >
         <PhoneIcon />
-        {open ? "Close" : "Contact"}
+        Contact
       </button>
     </div>
   );

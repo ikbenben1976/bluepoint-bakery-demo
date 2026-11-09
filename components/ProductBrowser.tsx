@@ -131,7 +131,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
           </div>
         </div>
         <Link href={requestPricingHref(requestCount)} className="btn btn-ghost catalog-request">
-          Open your request
+          Review my selections
         </Link>
         {filtersActive ? (
           <button type="button" className="btn btn-ghost" onClick={resetFilters}>
@@ -166,7 +166,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       {compared.length > 0 ? (
         <section className="compare-panel" aria-label="Compare products" data-testid="compare-panel">
           <h2>Compare</h2>
-          <p>Published catalog fields only.</p>
+          <p>Compare available sizes, specifications and ordering details.</p>
           <div className="compare-grid">
             {compared.map((product) => (
               <article key={product.id} className="compare-card">
@@ -196,7 +196,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
           </div>
           <p>
             <Link className="btn btn-primary" href="/wholesale">
-              Request pricing for these
+              Request a quote for selected products
             </Link>
           </p>
         </section>
@@ -204,7 +204,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       <div ref={resultsRef}>
       {visible.length === 0 ? (
         <div className="catalog-empty">
-          <p>No products match that search.</p>
+          <p>No matching products found. Try a different search or browse another category.</p>
           <button type="button" className="btn btn-ghost" onClick={resetFilters}>
             Reset search and filters
           </button>
@@ -245,7 +245,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
               </ul>
             ) : null}
             <p className="catalog-photo-note">
-              The category photograph above is Bluepoint&apos;s own. Each product photo below is an illustrative image, not a verified photograph of that item.
+              Product images are for illustration; actual products may vary.
             </p>
             <p className="category-notice">{categoryNotice(group.lead)}</p>
             <ul className="product-grid">
@@ -253,7 +253,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                 const visual = visualForProduct(product.id);
                 return (
                 <li key={product.id} id={product.id} className={`product-card${selected.has(product.id) ? " is-in-request" : ""}`}>
-                  <div className="product-photo">
+                  {visual ? <div className="product-photo">
                     <FramedImage
                       webp={visual.webp}
                       avif={visual.avif}
@@ -263,7 +263,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                       sizes="(max-width: 699px) 92vw, (max-width: 1023px) 46vw, 300px"
                       label="Illustrative image"
                     />
-                  </div>
+                  </div> : null}
                   <h3>{product.name}</h3>
                   {specChips(product).length > 0 ? (
                     <ul className="spec-chips">

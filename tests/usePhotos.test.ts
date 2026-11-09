@@ -33,7 +33,7 @@ test("making cards show the permission note and buyer proof has no plated strip"
   assert.match(making, /PERMISSION_NOTE/);
   assert.match(making, /making-permission/);
   assert.match(making, /label="Illustrative image"/);
-  assert.match(making, /plated photos for this demo/);
+  assert.match(making, /Menu images illustrate serving ideas/);
   assert.doesNotMatch(making, /Illustrative images, not photographs/);
   assert.equal(fs.existsSync("components/UseShots.tsx"), false);
   assert.doesNotMatch(buyer, /UseShots|use-shots|usePhotos/);

@@ -45,7 +45,7 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p className="footer-note">This concept website does not submit wholesale requests. Policies for any future official site require Bluepoint approval.</p>
+          <p className="footer-note">Concept preview only — wholesale requests are not submitted through this website.</p>
         </div>
         <div>
           <p className="kicker">Accounts</p>

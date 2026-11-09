@@ -22,12 +22,12 @@ export default function HomePage() {
       <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
           <div className="hero-intro">
-            <p className="hero-kicker">Colorado&apos;s wholesale bakery</p>
+            <p className="hero-kicker">Denver-baked. Made for your business.</p>
             <h1 id="approved-hero-title">
               Fresh, <span className="hero-keep">Scratch-Baked</span><span className="hero-balance"></span> Breads, Rolls &amp; Pastries
             </h1>
             <p className="lede">
-              For restaurants, cafés, hotels, hospitals and more across the Colorado Front Range — for over 30 years.
+              Fresh breads, rolls and pastries baked in Denver for restaurants, cafés, hotels and food-service businesses across the Front Range.
             </p>
           </div>
           <HeroBenefits />
@@ -77,8 +77,8 @@ export default function HomePage() {
               <Image src="/images/colorado-proud.jpg" alt="Colorado Proud program emblem" width={62} height={62} />
               <div className="trust-credential-copy">
                 <strong>Colorado Proud</strong>
-                <span>Listed in the product directory</span>
-                <a href={COLORADO_PROUD}>Find Bluepoint <span aria-hidden="true">→</span></a>
+                <span>Made in Colorado</span>
+                <a href={COLORADO_PROUD}>View our listing <span aria-hidden="true">→</span></a>
               </div>
             </li>
             <li className="trust-credential">
@@ -134,17 +134,17 @@ export default function HomePage() {
 
       <section className="block consult">
         <div className="shell">
-          <h2>Let&apos;s find the right bread for your business.</h2>
-          <p>Tell us what you&apos;re making, where you&apos;re located, and approximately what you need.</p>
+          <h2>The right bread for your menu starts here.</h2>
+          <p>Tell us about your menu, location and anticipated volume. We&apos;ll help you explore products suited to your operation.</p>
           <p>
-            Looking for something specific? Ask about customization. Bluepoint describes custom orders on its About page; ask what is available for your business.
+            Need something specific? Ask our team about specialty products and available customization options.
           </p>
           <div className="hero-actions">
             <Link href="/breads" className="btn btn-primary">
               Explore products
             </Link>
             <Link href="/wholesale" className="btn btn-ghost">
-              Request pricing
+              Request a quote
             </Link>
             <Link href="/wholesale/#sample-request" className="btn btn-ghost">
               Ask about samples
@@ -157,9 +157,9 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-intro">
             <div>
-              <p className="eyebrow">How wholesale inquiries work</p>
-              <h2 id="ordering-guide-heading">From your menu to your order.</h2>
-              <p>New to Bluepoint? Prepare the details a sales professional will need, without guessing prices or case quantities.</p>
+              <p className="eyebrow">Getting started with Bluepoint</p>
+              <h2 id="ordering-guide-heading">From first conversation to first order.</h2>
+              <p>New to Bluepoint? Share what your business needs, explore the options and connect with our sales team.</p>
             </div>
           </div>
           <ol className="ordering-steps">
@@ -180,17 +180,17 @@ export default function HomePage() {
       <section className="block">
         <div className="shell">
           <div className="section-head">
-            <h2>Where we deliver</h2>
-            <p>We bake and deliver 6 days a week. Published areas include Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Blackhawk, and Cheyenne, Wyoming.</p>
+            <h2>Delivery across the Front Range</h2>
+            <p>We bake and deliver six days a week across the Front Range, with published service areas including Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">
             <div>
-              <h3>Wondering about your location?</h3>
-              <p>Look up a published delivery area, then confirm the exact address, route days and order requirements with Bluepoint.</p>
+              <h3>Do we deliver to your area?</h3>
+              <p>Find your city and explore our delivery coverage. Our team can confirm service to your address and available delivery days.</p>
             </div>
             <DeliveryChecker idPrefix="home-delivery" context="page" />
-            <Link className="text-link" href="/delivery">Full delivery map and details →</Link>
+            <Link className="text-link" href="/delivery">View delivery areas and routes →</Link>
           </div>
         </div>
       </section>

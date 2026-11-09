@@ -103,10 +103,10 @@ test("slice, pack, wrap, and dipped choices follow the published product", () =>
 test("delivery days are optional, a ZIP is not eligible, and a published city is labeled as such", () => {
   const draft = { ...readyBusiness(), productsText: "Kaiser rolls", days: [] };
   assert.deepEqual(validateStep(draft, 3, afternoon), []);
-  assert.match(areaSummary("Denver"), /Confirmed published area: Denver Metro Area/);
-  assert.match(areaSummary("Denver"), /does not confirm the street address/);
+  assert.match(areaSummary("Denver"), /Listed delivery area: Denver Metro Area/);
+  assert.match(areaSummary("Denver"), /confirm service to your address/);
   assert.match(areaSummary("80216"), /ZIP code is not used to confirm delivery/);
-  assert.match(areaSummary("Paris"), /Ask Bluepoint/);
+  assert.match(areaSummary("Paris"), /contact Bluepoint/i);
   assert.doesNotMatch(areaSummary("80216"), /Confirmed published area/);
 });
 
@@ -128,7 +128,7 @@ test("desired dates warn from the published notice, including a mixed order and 
 
   draft = { ...draft, firstDelivery: "2026-11-10" };
   assert.equal(dateWarning(draft, afternoon), null);
-  assert.match(dateStatus(draft, afternoon), /on or after the published notice/);
+  assert.match(dateStatus(draft, afternoon), /meets the published notice period/);
   assert.match(dateStatus(draft, afternoon), /48 hour notice|3 day notice|longer notice applies/);
 
   const beforeSpringForward = new Date("2026-03-07T18:00:00Z");
@@ -154,23 +154,23 @@ test("the preview keeps catalog lines, written notes, sample questions, and cust
   };
   const preview = buildEmailPreview(draft, afternoon);
   assert.match(preview, /DEMO PREVIEW/);
-  assert.match(preview, /does not submit wholesale requests/);
+  assert.match(preview, /nothing has been sent or ordered/i);
   assert.match(preview, /To: sales@bluepointbakery.com/);
   assert.match(preview, /Brioche Bun 4"/);
   assert.match(preview, /custom sandwich roll/);
   assert.match(preview, /Samples: Interested in trying products first\./);
   assert.match(preview, /brioche buns/);
-  assert.match(preview, /Examples to discuss/);
+  assert.match(preview, /Special requests and customization/);
   assert.match(preview, /a diameter to discuss/);
   assert.match(preview, /a pack to discuss/);
   assert.match(preview, /Tuesday/);
-  assert.match(preview, /not a confirmed route/);
+  assert.match(preview, /subject to confirmation/);
   assert.match(preview, /about 20 dozen/);
   assert.equal(preview.includes("$"), false);
   assert.equal(preview.toLowerCase().includes("mailto:"), false);
   assert.equal(preview.toLowerCase().includes("free sample"), false);
   assert.equal(preview.includes("How often:"), false);
-  assert.match(preview, /not a confirmed order or delivery schedule/);
+  assert.match(preview, /Estimated products and quantities \(subject to confirmation\)/);
 });
 
 test("a new product starts with a blank per-week estimate, and Not sure can stay blank", () => {

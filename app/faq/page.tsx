@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <>
-      <PageHero kicker="FAQ" title="Questions" lede={<p>Some of the Questions We Are Asked</p>} />
+      <PageHero kicker="Helpful answers" title="Frequently asked questions" lede={<p>Find answers about products, delivery, ordering and wholesale accounts.</p>} />
       <div className="shell max-w-3xl py-10">
         {faqs.map((item) => (
           <details key={item.id} className="faq-item" open>
@@ -33,9 +33,9 @@ export default function FaqPage() {
         ))}
         <h2 className="section-title mt-16">Lead times</h2>
         <ul className="mt-4 max-w-xl list-disc space-y-2 pl-5">
-          <li>24 hour notice for orders on all breads.</li>
-          <li>48 hour notice for orders on all pastries.</li>
-          <li>Sourdough Boule: 3 day notice required.</li>
+          <li>Please allow at least 24 hours&apos; notice for bread orders.</li>
+          <li>Please allow at least 48 hours&apos; notice for pastry orders.</li>
+          <li>Sourdough Boule requires three days&apos; advance notice.</li>
         </ul>
       </div>
     </>
