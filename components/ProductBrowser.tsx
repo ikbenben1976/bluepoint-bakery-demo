@@ -9,7 +9,7 @@ import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
-import { cardFacts, categoryNotice, leadWords, specRows } from "@/lib/spec";
+import { categoryNotice, specChips, specRows } from "@/lib/spec";
 import { REQUEST_CHANGE_EVENT, loadDraft, saveDraft } from "@/lib/storage";
 import { requestBarLabel, requestPricingHref } from "@/lib/requestLink";
 import { useRequestCount } from "@/components/useRequestCount";
@@ -265,24 +265,17 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                     />
                   </div>
                   <h3>{product.name}</h3>
-                  <p className="card-fact">{cardFacts(product)}</p>
-                  {product.lead !== group.lead ? <p className="meta">{leadWords(product)}</p> : null}
+                  {specChips(product).length > 0 ? (
+                    <ul className="spec-chips">
+                      {specChips(product).map((fact) => (
+                        <li key={fact}>{fact}</li>
+                      ))}
+                    </ul>
+                  ) : null}
                   <div className="badges">
                     {product.individuallyWrapped ? <span className="badge">Individually wrapped</span> : null}
                     {product.seasonal ? <span className="badge">Seasonal</span> : null}
                   </div>
-                  {product.detail ? <p className="meta">{product.detail}</p> : null}
-                  <details className="spec" data-testid="spec">
-                    <summary>Specifications</summary>
-                    <dl>
-                      {specRows(product).map((row) => (
-                        <div key={row.label}>
-                          <dt>{row.label}</dt>
-                          <dd>{row.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </details>
                   <div className="card-actions">
                     <button
                       type="button"

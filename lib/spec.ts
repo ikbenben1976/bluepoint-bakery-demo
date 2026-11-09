@@ -11,58 +11,91 @@ export function publishedSize(name: string): string | null {
   return null;
 }
 
-export function leadWords(product: Product): string {
-  return categoryNotice(product.lead);
-}
-
 export function categoryNotice(lead: Product["lead"]): string {
   if (lead === "3d") return "3 day notice required";
   if (lead === "48h") return "48 hour notice for orders on all pastries";
   return "24 hour notice for orders on all breads";
 }
 
-/** One factual line from fields already stored on the product. */
-export function cardFacts(product: Product): string {
-  const bits: string[] = [];
-  const size = publishedSize(product.name);
-  if (size) bits.push(size);
-  if (product.detail && !/notice/i.test(product.detail)) bits.push(product.detail);
-  if (product.individuallyWrapped) bits.push("Individually wrapped");
-  if (product.seasonal) bits.push("Seasonal");
-  if (product.sliceOptions?.length) bits.push(product.sliceOptions.join(", "));
-  if (product.dippedOption) bits.push("Dipped or undipped");
-  if (product.units.length) bits.push(product.units.join(" or "));
-  if (bits.length === 0) bits.push(product.categoryLabel);
-  return bits.join(" · ");
+export function leadWords(product: Product): string {
+  return categoryNotice(product.lead);
 }
 
-/** Published catalog fields only. A missing value is omitted, not filled in. */
-export function specRows(product: Product): SpecRow[] {
-  const size = publishedSize(product.name);
-  const rows: SpecRow[] = [];
-  if (size) rows.push({ label: "Published size", value: size });
-  rows.push({ label: "Category", value: product.categoryLabel });
-  if (product.sliceOptions?.length) {
-    rows.push({ label: "Slicing", value: product.sliceOptions.join(", ") });
-  }
-  rows.push({ label: "Order lead time", value: leadWords(product) });
-  if (product.units.length > 0) {
-    rows.push({ label: "Pack size", value: product.units.join(" or ") });
-  }
-  const cases = product.units.filter((unit) => /case/i.test(unit));
-  if (cases.length > 0) {
-    rows.push({ label: "Case quantity", value: cases.join(" or ") });
-  }
-  rows.push({
-    label: "Wrapping",
-    value: product.individuallyWrapped ? "Marked on the catalog page" : "Not marked on the catalog page",
+/** Category pages already state the usual notice. Only an exception is a product fact. */
+export function leadIsCategoryDefault(product: Product): boolean {
+  if (product.family === "pastries") return product.lead === "48h";
+  return product.lead === "24h";
+}
+
+function sliceFact(product: Product): string | null {
+  const slices = product.sliceOptions ?? [];
+  if (slices.length === 0) return null;
+  if (slices.length === 1) return `${slices[0]} slice`;
+  return `${slices.join(" or ")} slices`;
+}
+
+function weightFact(product: Product): string | null {
+  const detail = product.detail?.trim() ?? "";
+  const match = detail.match(/^(\d+(?:\.\d+)?)\s*oz$/i);
+  if (!match) return null;
+  if (new RegExp(`${match[1]}\\s*oz`, "i").test(product.name)) return null;
+  return `${match[1]} oz`;
+}
+
+/** A pack fact only when the catalog names a real count or pack. A bare "case" is not one. */
+export function packFact(product: Product): string | null {
+  const caseCount = product.name.match(/case\s+(\d+)/i);
+  if (caseCount) return `Case of ${caseCount[1]}`;
+  const namedCount = product.name.match(/(\d+)\s*count/i);
+  if (namedCount) return `${namedCount[1]} count`;
+  if (/\bdozen\b/i.test(product.name)) return null;
+  const extra = product.units.filter((unit) => {
+    if (/^case$/i.test(unit)) return false;
+    return !product.name.toLowerCase().includes(unit.toLowerCase());
   });
-  rows.push({ label: "Seasonal", value: product.seasonal ? "Seasonal" : "Not marked seasonal" });
-  if (product.dippedOption) {
-    rows.push({ label: "Dipped option", value: "Dipped or undipped" });
+  if (extra.length === 0) return null;
+  return extra.join(" or ");
+}
+
+/** The single published selling unit, when the catalog names exactly one. */
+export function publishedUnit(product: Product): string | null {
+  if (product.units.length !== 1) return null;
+  const unit = product.units[0];
+  if (/^case$/i.test(unit)) {
+    const count = product.name.match(/case\s+(\d+)/i);
+    return count ? `case of ${count[1]}` : null;
   }
-  if (product.category === "croissants") {
-    rows.push({ label: "Ingredients / allergens", value: "Pure butter" });
+  return unit;
+}
+
+/** Known catalog facts only. Missing wrapping, season, size, and pack are omitted. */
+export function specRows(product: Product): SpecRow[] {
+  const rows: SpecRow[] = [];
+  const slice = sliceFact(product);
+  if (slice) rows.push({ label: "Slice", value: slice });
+  const weight = weightFact(product);
+  if (weight) rows.push({ label: "Weight", value: weight });
+  const pack = packFact(product);
+  if (pack) rows.push({ label: "Pack", value: pack });
+  if (!leadIsCategoryDefault(product)) {
+    rows.push({ label: "Order lead time", value: categoryNotice(product.lead) });
   }
+  if (product.individuallyWrapped) rows.push({ label: "Wrapping", value: "Individually wrapped" });
+  if (product.seasonal) rows.push({ label: "Seasonal", value: "Seasonal" });
+  if (product.dippedOption) rows.push({ label: "Finish", value: "Dipped or undipped" });
+  if (product.category === "croissants") rows.push({ label: "Ingredients", value: "Pure butter" });
   return rows;
+}
+
+/** Extra facts for a card. Wrapping and seasonal stay on their badges. */
+export function cardFacts(product: Product): string {
+  return specRows(product)
+    .filter((row) => row.label !== "Wrapping" && row.label !== "Seasonal")
+    .map((row) => row.value)
+    .join(" · ");
+}
+
+export function specChips(product: Product): string[] {
+  const facts = cardFacts(product);
+  return facts ? facts.split(" · ") : [];
 }

@@ -1,6 +1,7 @@
 import { getProduct } from "@/data/products";
 import {
   DELIVERY_DAYS,
+  ORDER_FREQUENCIES,
   emptyDraft,
   type Draft,
   type DraftLine,
@@ -72,6 +73,9 @@ export function loadDraft(): Draft {
       notes: stringField(parsed.notes),
       productsText: stringField(parsed.productsText),
       weeklyQuantity: stringField(parsed.weeklyQuantity),
+      orderFrequency: ORDER_FREQUENCIES.some(([id]) => id === parsed.orderFrequency)
+        ? (parsed.orderFrequency as string)
+        : "",
       askAboutSamples: parsed.askAboutSamples === true,
       sampleInterest: stringField(parsed.sampleInterest),
       customFamily: ["breads", "pastries", "other"].includes(parsed.customFamily ?? "")

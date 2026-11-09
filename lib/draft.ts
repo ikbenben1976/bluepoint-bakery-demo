@@ -24,6 +24,14 @@ export const DELIVERY_DAYS = [
   "Sunday",
 ] as const;
 
+export const ORDER_FREQUENCIES = [
+  ["weekly", "Weekly"],
+  ["few-times", "A few times a week"],
+  ["monthly", "Monthly"],
+  ["one-time", "One-time"],
+  ["not-sure", "Not sure"],
+] as const;
+
 /** Catalog sections a buyer can name. Not a promise that a change is available. */
 export const CUSTOM_FAMILIES = [
   ["breads", "Breads"],
@@ -53,6 +61,8 @@ export type Draft = {
   lines: DraftLine[];
   firstDelivery: string;
   weeklyQuantity: string;
+  /** weekly | few-times | monthly | one-time | not-sure | "" */
+  orderFrequency: string;
   askAboutSamples: boolean;
   /** Free text naming products to mention if the buyer asks about samples. */
   sampleInterest: string;
@@ -78,6 +88,7 @@ export function emptyDraft(): Draft {
     lines: [],
     firstDelivery: "",
     weeklyQuantity: "",
+    orderFrequency: "",
     askAboutSamples: false,
     sampleInterest: "",
     customFamily: "",

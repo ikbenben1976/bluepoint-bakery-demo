@@ -51,7 +51,7 @@ test("request builder adds, edits, removes, and persists", async ({ page }) => {
   await page.goto("/wholesale/");
   await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.getByTestId("inquiry-form").locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
-  const qty = page.getByRole("spinbutton", { name: 'Quantity for Brioche Bun 4"' });
+  const qty = page.getByRole("spinbutton", { name: 'Quantity per delivery for Brioche Bun 4"' });
   await qty.fill("4");
   await page.goto("/pastries/");
   await page.goto("/wholesale/");
@@ -152,8 +152,9 @@ test("what are you making filters the catalog and the spec card uses published f
   await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
   await expect(page.getByText(/Published sizes on the bun list/)).toBeVisible();
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
-  await card.locator("summary").click();
-  await expect(card.getByText("24 hour notice for orders on all breads").first()).toBeVisible();
+  await expect(card.locator("summary")).toHaveCount(0);
+  await expect(card.getByText("Not marked")).toHaveCount(0);
+  await expect(card.getByText("Published size")).toHaveCount(0);
   await expect(card.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(card.getByText("Individually wrapped")).toHaveCount(0);
 
@@ -562,8 +563,9 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
   await expect(page.locator(".featured-spec")).toBeVisible();
-  await expect(page.locator(".featured-spec-facts")).toContainText("24 hour notice for orders on all breads");
-  await expect(page.locator(".featured-spec-facts")).toContainText('4"');
+  await expect(page.locator(".featured-spec-facts")).not.toContainText("24 hour notice for orders on all breads");
+  await expect(page.locator(".featured-spec-facts")).not.toContainText("Published size");
+  await expect(page.locator(".featured-spec-facts")).not.toContainText("Not marked");
   await expect(page.locator(".featured-spec-facts")).not.toContainText("Case quantity");
   await expect(page.locator(".featured-spec-facts")).not.toContainText(/confirm with bakery/i);
   await expect(page.locator(".application-section")).toHaveCount(0);
@@ -1510,9 +1512,10 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(panel).toContainText('3.5"');
   await expect(panel).not.toContainText(/confirm with bakery/i);
   await expect(panel.getByRole("link", { name: "Request pricing for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
-  await brioche.locator("summary").click();
+  await expect(brioche.locator("summary")).toHaveCount(0);
   await expect(brioche.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
+  await expect(brioche.getByText("Not marked")).toHaveCount(0);
 });
 
 test("delivery map shows the weekday overview and does not draw a route line", async ({ page }) => {

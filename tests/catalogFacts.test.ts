@@ -16,29 +16,50 @@ test("unpublished product specs are omitted", () => {
   const bun = products.find((product) => product.name === 'Brioche Bun 4"');
   assert.ok(bun);
   const rows = Object.fromEntries(specRows(bun).map((row) => [row.label, row.value]));
-  assert.equal(rows["Published size"], '4"');
-  assert.equal(rows["Order lead time"], "24 hour notice for orders on all breads");
-  assert.equal(rows["Pack size"], undefined);
-  assert.equal(rows["Slicing"], undefined);
-  assert.equal(rows["Ingredients / allergens"], undefined);
-  assert.equal(rows["Shelf life / storage"], undefined);
+  assert.equal(rows["Published size"], undefined);
+  assert.equal(rows["Category"], undefined);
+  assert.equal(rows["Order lead time"], undefined);
+  assert.equal(rows["Pack"], undefined);
+  assert.equal(rows["Slice"], undefined);
+  assert.equal(rows["Wrapping"], undefined);
+  assert.equal(rows["Seasonal"], undefined);
+  assert.equal(rows["Ingredients"], undefined);
   assert.equal(rows["Wholesale pricing"], undefined);
-  assert.equal(rows["Dipped option"], undefined);
 
   const croissant = products.find((product) => product.name === "Curved Butter Croissant 3 oz");
   assert.ok(croissant);
   const pastry = Object.fromEntries(specRows(croissant).map((row) => [row.label, row.value]));
-  assert.equal(pastry["Ingredients / allergens"], "Pure butter");
-  assert.equal(pastry["Order lead time"], "48 hour notice for orders on all pastries");
+  assert.equal(pastry["Ingredients"], "Pure butter");
+  assert.equal(pastry["Order lead time"], undefined);
+  assert.equal(pastry["Published size"], undefined);
 
   const loaf = products.find((product) => product.category === "deli-loaves" && product.name === "Vienna White");
   assert.ok(loaf);
   const sliced = Object.fromEntries(specRows(loaf).map((row) => [row.label, row.value]));
-  assert.match(sliced["Slicing"], /1\/2"/);
+  assert.equal(sliced["Slice"], '1/2" or 5/8" or 3/4" slices');
+
+  const dakota = products.find((product) => product.name === "Dakota");
+  assert.ok(dakota);
+  const dakotaText = specRows(dakota).map((row) => row.value).join(" ");
+  assert.match(dakotaText, /1\/2" or 3\/4" slices/);
+  assert.doesNotMatch(dakotaText, /no 5\/8/);
+
+  const rosemary = products.find((product) => product.name === "Potato Rosemary");
+  assert.ok(rosemary);
+  assert.equal(specRows(rosemary).filter((row) => row.label === "Slice").length, 1);
+  assert.equal(specRows(rosemary).find((row) => row.label === "Slice")?.value, '3/4" slice');
+
+  const rollCase = products.find((product) => product.name === "Brioche (Case 120)");
+  assert.ok(rollCase);
+  const rollRows = specRows(rollCase);
+  assert.equal(rollRows.find((row) => row.label === "Pack")?.value, "Case of 120");
+  assert.equal(rollRows.find((row) => row.label === "Weight")?.value, "1.5 oz");
+  assert.equal(rollRows.filter((row) => /case/i.test(row.value) && row.value !== "Case of 120").length, 0);
 
   const boule = products.find((product) => product.name === "Sourdough Boule 8 oz");
   assert.ok(boule);
   assert.equal(specRows(boule).find((row) => row.label === "Order lead time")?.value, "3 day notice required");
+  assert.equal(specRows(boule).filter((row) => row.value === "3 day notice required").length, 1);
 });
 
 test("the removed testimonial is not in the published comments", () => {
