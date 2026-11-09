@@ -1037,8 +1037,13 @@ test("delivery content uses the full phone and tablet width without breaking tab
     if (width <= 420) {
       expect(fit.stageWidth, `map fills the content column at ${width}px`).toBeGreaterThanOrEqual(fit.columnWidth * 0.9);
     }
-    expect(fit.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
-    expect(fit.padBottom, `bottom clearance at ${width}px`).toBeGreaterThanOrEqual(fit.pillHeight);
+    if (width < 768) {
+      await expect(page.locator(".header-call")).toBeVisible();
+      expect(fit.pillVisible, `floating contact hidden at ${width}px`).toBeFalsy();
+    } else {
+      expect(fit.pillVisible, `contact pill visible at ${width}px`).toBeTruthy();
+      expect(fit.padBottom, `bottom clearance at ${width}px`).toBeGreaterThanOrEqual(fit.pillHeight);
+    }
     const broken = fit.cells.filter(
       (cell) => cell.wordBreak === "break-all" || cell.overflowWrap === "anywhere" || cell.overflows,
     );
@@ -1383,7 +1388,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
 
     await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("src", /bluepoint-logo\.png/);
     await expect(page.locator(".hero .heritage-logo, .approved-hero-logo")).toHaveCount(0);
-    await expect(page.locator(".making-footnote")).toContainText("Explore Our Bakery Products, above");
+    await expect(page.locator(".making-footnote")).toContainText("do not identify specific Bluepoint products");
 
     const headerHits = await page.evaluate(() => {
       const nodes = [
@@ -1457,13 +1462,15 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
 
   await page.goto("/");
   await page.getByRole("button", { name: "Contact" }).click();
-  await expect(page.getByRole("link", { name: "Call" })).toHaveAttribute("href", "tel:+13032981100");
-  await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
-  await expect(page.getByRole("link", { name: "Request a quote" }).last()).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
-  const panelLink = await page.getByRole("link", { name: "Call" }).boundingBox();
+  const dialog = page.getByRole("dialog", { name: "Contact Bluepoint" });
+  const call = dialog.getByRole("link", { name: /^Call / });
+  await expect(call).toHaveAttribute("href", "tel:+13032981100");
+  await expect(dialog.getByRole("link", { name: "Email sales" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
+  await expect(dialog.getByRole("link", { name: "Request a quote" })).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
+  const panelLink = await call.boundingBox();
   expect(panelLink!.height).toBeGreaterThanOrEqual(44);
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("link", { name: "Call" })).toBeHidden();
+  await expect(dialog).toBeHidden();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
