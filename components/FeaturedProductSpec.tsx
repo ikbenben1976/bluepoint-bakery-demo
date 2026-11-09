@@ -12,19 +12,19 @@ export function FeaturedProductSpec() {
       <div className="section-intro">
         <div>
           <p className="eyebrow">A closer look</p>
-          <h2 id="featured-spec-heading">Product details at a glance</h2>
-          <p>Explore documented specifications before starting your wholesale request.</p>
+          <h2 id="featured-spec-heading">Product specifications</h2>
+          <p>Review product sizes, available options and ordering details to help plan your purchase.</p>
         </div>
       </div>
       <div className="featured-spec-card">
         <figure className="featured-spec-image">
           <Image src="/images/scenes/sesame-buns-rack.webp" alt="Bluepoint buns on a bakery rack; representative category photograph" fill sizes="(max-width: 650px) 75vw, 270px" />
-          <figcaption>Bluepoint bakery photograph — representative of the bun category, not a verified image of this specific SKU.</figcaption>
+          <figcaption>Representative product image; appearance may vary.</figcaption>
         </figure>
         <div className="featured-spec-info">
           <h3>{brioche.name}</h3>
           <p>{brioche.categoryLabel}</p>
-          <p className="featured-spec-label">Wholesale product</p>
+          <p className="featured-spec-label">Available for wholesale</p>
           <Link href="/breads/#buns">Explore buns and rolls <span aria-hidden="true">→</span></Link>
         </div>
         <dl className="featured-spec-facts">

@@ -85,15 +85,15 @@ export function Notice() {
         tabIndex={-1}
       >
         <p id="call-notice-title">
-          <strong>Call us today.</strong>
+          <strong>Let&apos;s talk bakery.</strong>
         </p>
-        <p>{PHONE_DISPLAY}. A sales professional will help you open an account.</p>
+        <p>Have questions about products, delivery or a wholesale account? Our team is happy to help. Call {PHONE_DISPLAY}.</p>
         <div className="call-notice-actions">
-          <a href={`tel:${PHONE_TEL}`}>Call</a>
-          <a href={`mailto:${EMAIL}`}>Email</a>
-          <Link href={requestPricingHref(requestCount)}>Request pricing</Link>
+          <a href={`tel:${PHONE_TEL}`}>Call Bluepoint</a>
+          <a href={`mailto:${EMAIL}`}>Email sales</a>
+          <Link href={requestPricingHref(requestCount)}>Request a quote</Link>
           <button type="button" onClick={dismiss}>
-            Close
+            Not now
           </button>
         </div>
       </div>

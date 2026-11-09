@@ -10,8 +10,8 @@ type Params = { slug: string };
 
 const guides: Record<string, { heading: string; body: string; picks: { category: string; name: string }[] }> = {
   burgers: {
-    heading: "Buns, Kaisers, and sliders",
-    body: "The bun list publishes 4 inch and 5 inch hamburger buns and Kaiser rolls, plus a 3.5 inch picnic bun. Premium Brioche Bun has no size printed on that list. Slider buns are the 6x5, 30 count, 1.5 oz line. Breads need 24 hour notice.",
+    heading: "Buns for every burger",
+    body: "Choose from hamburger buns and Kaiser rolls in 4-inch and 5-inch sizes, plus a 3.5-inch picnic bun. Explore slider options below. Allow at least 24 hours' notice for bread orders.",
     picks: [
       { category: "buns", name: 'Brioche Bun 4"' },
       { category: "buns", name: 'Picnic Bun 3.5"' },
@@ -20,8 +20,8 @@ const guides: Record<string, { heading: string; body: string; picks: { category:
     ],
   },
   sandwiches: {
-    heading: "Rolls, loaves, and French breads",
-    body: "Sandwich rolls include a 7 inch soft hoagie, a 6 inch Philly roll, and club rolls at 6 and 8 inches, including sliced club rolls. Deli loaves publish 1/2, 5/8, and 3/4 inch slices, with Potato Rosemary at 3/4 inch only and Dakota without a 5/8 inch slice. French breads run from a 6 inch baguette to a 24 inch Parisien.",
+    heading: "Find the right bread for every sandwich",
+    body: "From soft hoagie and Philly rolls to sliced deli loaves and French baguettes, find breads to suit your sandwich menu. Compare sizes and slicing options in the listings below.",
     picks: [
       { category: "sandwich-rolls", name: 'Soft Hoagie 7"' },
       { category: "sandwich-rolls", name: 'Club Roll 6" sliced' },
@@ -30,8 +30,8 @@ const guides: Record<string, { heading: string; body: string; picks: { category:
     ],
   },
   breakfast: {
-    heading: "Pastry for the morning",
-    body: "Croissants are marked pure butter. The pastry page also lists danishes, scones, muffins, muffin tops, and quick breads. Pastries need 48 hour notice. An asterisk on the pastry page is shown here as individually wrapped.",
+    heading: "Start the day with something fresh",
+    body: "Build your morning selection with butter croissants, Danish pastries, scones, muffins and quick breads. Individual wrapping is available on select items; please allow at least 48 hours' notice.",
     picks: [
       { category: "croissants", name: "Curved Butter Croissant 3 oz" },
       { category: "danishes", name: "Cream Cheese" },
@@ -40,8 +40,8 @@ const guides: Record<string, { heading: string; body: string; picks: { category:
     ],
   },
   dinner: {
-    heading: "Rolls and breads for service",
-    body: "Dinner rolls are 1.5 oz. Brioche and potato rolls are listed by the dozen and by the case of 120. Specialty breads include rustic rolls, focaccia, and a sourdough boule that needs 3 day notice. Pies are on the pastry list.",
+    heading: "Breads for the table and beyond",
+    body: "Explore dinner rolls, rustic breads and focaccia for table service or catered events. Check individual product listings for pack sizes and lead times; Sourdough Boule requires three days' notice.",
     picks: [
       { category: "dinner-rolls", name: "Brioche (Dozen)" },
       { category: "dinner-rolls", name: "Brioche (Case 120)" },
@@ -82,7 +82,7 @@ export default async function MakingPage({ params }: { params: Promise<Params> }
       <h1>{use.title}</h1>
       <p>{use.summary}</p>
       {sizes.length > 0 ? (
-        <p>Published sizes on the bun list: {sizes.join(", ")}. Each size is its own item.</p>
+        <p>Available bun sizes include {sizes.join(", ")}. Explore individual products below for details.</p>
       ) : null}
       {guide ? (
         <section className="menu-guide" aria-labelledby="menu-guide-heading">

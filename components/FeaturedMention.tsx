@@ -9,7 +9,7 @@ export function FeaturedMention({ mention }: { mention: FeaturedPublicMention })
       <blockquote className="proof-quote proof-quote-featured">
         <p>“{mention.quote}”</p>
         <footer>
-          <span className="featured-mention-note">Public post, not a testimonial.</span>
+          <span className="featured-mention-note">Public mention; not a customer testimonial.</span>
         </footer>
       </blockquote>
     </aside>

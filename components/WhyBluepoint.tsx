@@ -6,7 +6,7 @@ export function WhyBluepoint() {
       <div className="section-intro">
         <div>
           <p className="eyebrow">Wholesale buyers</p>
-          <h2 id="why-bluepoint-heading">Why Bluepoint</h2>
+          <h2 id="why-bluepoint-heading">Why businesses choose Bluepoint</h2>
         </div>
       </div>
       <ul className="why-grid">

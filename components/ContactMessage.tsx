@@ -54,12 +54,12 @@ export function ContactMessage() {
           <header className="review-head">
             <div>
               <p className="kicker">Demo only</p>
-              <h2>This message was not sent</h2>
+              <h2>Your message is ready to review</h2>
             </div>
-            <p className="demo-badge">Demo: not sent</p>
+            <p className="demo-badge">Preview only — not submitted</p>
           </header>
           <p>
-            This is a preview only. No message has been sent to Bluepoint Bakery. This concept site does not send contact messages.
+            Your message has not been sent. Contact Bluepoint directly by phone or email to share your inquiry.
           </p>
           <p>
             For a real reply, call <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a> or email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
@@ -87,7 +87,7 @@ export function ContactMessage() {
             </div>
           </dl>
           <button className="btn btn-ghost" type="button" onClick={() => setDone(false)}>
-            Write another message
+            Prepare another message
           </button>
         </article>
       </section>
@@ -96,9 +96,9 @@ export function ContactMessage() {
 
   return (
     <div className="contact-message request-flow">
-      <h2>Message</h2>
+      <h2>Prepare a message</h2>
       <p className="request-notice" data-testid="contact-demo-notice">
-        This concept site does not send contact messages.
+        This demo prepares your message but does not send it.
       </p>
       <form data-testid="contact-message-form" noValidate onSubmit={preview}>
         {errors.length > 0 ? (
@@ -164,7 +164,7 @@ export function ContactMessage() {
             checked={fields.acknowledged}
             onChange={(event) => update("acknowledged", event.target.checked)}
           />
-          I understand this concept site does not send this message
+          I understand this is a preview and my message will not be sent automatically
         </label>
         <div className="request-actions">
           <button className="btn btn-primary" type="submit">

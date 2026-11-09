@@ -14,7 +14,7 @@ import { PublishedProof } from "@/components/PublishedProof";
 type Params = { slug: string };
 
 const SERVED =
-  "Bluepoint serves businesses in this area. Contact the bakery to confirm your address, delivery days, and ordering requirements.";
+  "Interested in working with Bluepoint? Contact our team to discuss products, delivery options and ordering requirements.";
 
 const featured: Record<string, { category: string; name: string }[]> = {
   restaurants: [
@@ -59,7 +59,7 @@ export function generateMetadata({ params }: { params: Promise<Params> }): Promi
     const sector = sectors.find((item) => item.slug === slug);
     return {
       title: sector ? sector.title : "Who we bake for",
-      description: sector?.description ?? "Who Bluepoint Bakery says it serves.",
+      description: sector?.description ?? "Explore wholesale bakery products for your business.",
       alternates: { canonical: `/sectors/${slug}/` },
       robots: { index: false, follow: false },
     };
