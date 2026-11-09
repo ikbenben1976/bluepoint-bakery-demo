@@ -144,7 +144,7 @@ export default function HomePage() {
               Explore products
             </Link>
             <Link href="/wholesale" className="btn btn-ghost">
-              Request pricing
+              Request a quote
             </Link>
             <Link href="/wholesale/#sample-request" className="btn btn-ghost">
               Ask about samples
@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-head">
             <h2>Delivery across the Front Range</h2>
-            <p>We bake and deliver 6 days a week. Published areas include Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Blackhawk, and Cheyenne, Wyoming.</p>
+            <p>We bake and deliver six days a week across the Front Range, with published service areas including Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">

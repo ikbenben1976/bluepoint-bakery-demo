@@ -873,7 +873,7 @@ export function WholesaleRequest() {
               Your inquiry is ready to review. Nothing has been submitted or ordered. Copy the summary below to share it with Bluepoint.
             </p>
             <p>
-              You can discuss this draft with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
+              Share this summary with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
             </p>
             <dl className="inquiry-summary">
               <div>
@@ -993,9 +993,6 @@ export function WholesaleRequest() {
               </button>
               <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
                 Print
-              </button>
-              <button type="button" className="btn" disabled aria-describedby="send-notice">
-                Preview only — sending not enabled
               </button>
             </div>
             <div className="request-actions">

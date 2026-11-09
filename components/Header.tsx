@@ -79,7 +79,7 @@ export function Header() {
             );
           })}
           <Link href={pricingHref} className="nav-link" aria-current={pricingCurrent}>
-            Request pricing
+            Request a quote
           </Link>
         </nav>
         <div className="util">
@@ -123,7 +123,7 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link href={pricingHref}>Request pricing</Link>
+          <Link href={pricingHref}>Request a quote</Link>
         </nav>
         <div className="mobile-menu-actions">
           <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>

@@ -39,9 +39,9 @@ export function areaSummary(city: string): string {
   }
   const delivery = checkDelivery(trimmed);
   if (delivery.status === "yes" && delivery.area) {
-    return `Confirmed published area: ${delivery.area}. This matches a place named on the bakery site. It does not confirm the street address or how often a route runs.`;
+    return `Listed delivery area: ${delivery.area}. Bluepoint can confirm service to your address and available delivery days.`;
   }
-  return "Ask Bluepoint. This demo cannot confirm delivery here from the published area list.";
+  return "Please contact Bluepoint to confirm delivery to this location.";
 }
 
 export function isExactPublishedPlace(city: string): boolean {
@@ -70,11 +70,11 @@ export function dateWarning(draft: Draft, now: Date): string | null {
   if (!draft.firstDelivery) return null;
   const kinds = kindsInDraft(draft);
   if (kinds.length === 0) {
-    return "This date is not compared with a lead time until a catalog product is added. A written description is confirmed by the bakery.";
+    return "Add a catalog product to check its published lead time. Bluepoint will confirm timing for custom requests.";
   }
   const earliest = earliestDeliveryIso(now, kinds);
   if (!isOnOrAfter(draft.firstDelivery, earliest)) {
-    return `This date is earlier than the published notice. The earliest date from now is ${formatLongDate(earliest)}. ${leadTimeExplanation(kinds)}.`;
+    return `Your preferred date is earlier than the published notice period. The earliest date based on that notice is ${formatLongDate(earliest)}. ${leadTimeExplanation(kinds)}.`;
   }
   return null;
 }
@@ -88,7 +88,7 @@ export function dateStatus(draft: Draft, now: Date): string {
       ? `No date chosen. ${leadTimeExplanation(kinds)}.`
       : "No date chosen. Published notice is 24 hours for breads, 48 hours for pastries, and 3 days for Sourdough Boule.";
   }
-  return `This date is on or after the published notice. ${leadTimeExplanation(kinds)}.`;
+  return `Your preferred date meets the published notice period, subject to Bluepoint's delivery confirmation. ${leadTimeExplanation(kinds)}.`;
 }
 
 function validEmail(value: string): boolean {
@@ -129,7 +129,7 @@ function issuesFor(draft: Draft, step: 1 | 2 | 3, now: Date): FieldIssue[] {
   if (step === 3) {
     if (!draft.deliveryCity.trim()) issues.push({ fieldId: "inquiry-delivery", message: "Enter a delivery city." });
     if (!draft.consent) {
-      issues.push({ fieldId: "inquiry-consent", message: "Confirm that this concept site does not submit the request." });
+      issues.push({ fieldId: "inquiry-consent", message: "Please confirm you understand this is a preview and does not submit your inquiry." });
     }
   }
   return issues;

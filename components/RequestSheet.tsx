@@ -245,13 +245,13 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
             })}
           </ul>
         )}
-        <p className="request-sheet-note">This is a pricing request, not an order. Estimates are not a delivery schedule.</p>
+        <p className="request-sheet-note">These are estimated quantities, not a confirmed order. Bluepoint will confirm pricing and delivery.</p>
         <div className="request-sheet-actions">
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Continue browsing
           </button>
           <Link className="btn btn-primary" href={requestPricingHref(count)} onClick={onClose}>
-            Go to request
+            Review selections
           </Link>
         </div>
       </div>

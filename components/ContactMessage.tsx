@@ -42,7 +42,7 @@ export function ContactMessage() {
     if (!fields.lastName.trim()) next.push("Enter a last name.");
     if (!validEmail(fields.email)) next.push("Enter an email address.");
     if (!fields.message.trim()) next.push("Enter a message.");
-    if (!fields.acknowledged) next.push("Confirm that this concept site does not send the message.");
+    if (!fields.acknowledged) next.push("Please confirm you understand this preview does not send your message.");
     setErrors(next);
     if (next.length === 0) setDone(true);
   }
