@@ -31,7 +31,7 @@ test("search finds a partial name and shows an empty state", async ({ page }) =>
   await expect(page.getByRole("heading", { name: "Bear Claw" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Apple" })).toHaveCount(0);
   await page.locator("#product-search").fill("zzzznotaproduct");
-  await expect(page.getByText("No products match that search.")).toBeVisible();
+  await expect(page.getByText("No matching products found. Try a different search or browse another category.")).toBeVisible();
 });
 
 test("category filter selects and clears", async ({ page }) => {
@@ -85,7 +85,7 @@ test("products keep separate estimates, and a blank Not sure stays blank", async
   await expect(sheet.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
   await sheet.getByRole("combobox", { name: 'Estimate basis for Brioche Bun 4"' }).selectOption("unsure");
   await sheet.getByRole("textbox", { name: 'Delivery preferences for Brioche Bun 4"' }).fill("Skip some weeks.");
-  await sheet.getByRole("link", { name: "Go to request" }).click();
+  await sheet.getByRole("link", { name: "Review selections" }).click();
 
   await expect(page).toHaveURL(/\/wholesale\/#request-lines/);
   await expect(page.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" })).toHaveValue("2");
@@ -113,7 +113,7 @@ test("products keep separate estimates, and a blank Not sure stays blank", async
 
   const review = page.getByTestId("inquiry-confirmation");
   await expect(review).toBeVisible();
-  await expect(review.getByText("Estimates only. This is not a confirmed order or delivery schedule.")).toBeVisible();
+  await expect(review.getByText("Estimated quantities only; pricing and delivery are subject to confirmation.")).toBeVisible();
   await expect(review.getByText(/Brioche \(Dozen\) — 2 dozen, one-time/)).toBeVisible();
   await expect(review.getByText(/Brioche Bun 4" — Not sure/)).toBeVisible();
   await expect(review.getByRole("term", { name: "How often" })).toHaveCount(0);
@@ -187,15 +187,15 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Enter a delivery city.");
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("button", { name: "Preview request" }).click();
-  await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("does not submit the request");
-  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
+  await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("does not submit your inquiry");
+  await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
     "This is a preview only. No message has been sent to Bluepoint Bakery.",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");
-  await expect(page.getByTestId("inquiry-confirmation")).toContainText("This concept site does not submit wholesale requests.");
+  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Nothing has been submitted or ordered.");
 
   await page.goto("/breads/");
   await page.locator(".product-card", { hasText: 'Potato Bun 4"' }).getByRole("button", { name: "Add to request" }).click();
@@ -244,7 +244,7 @@ for (const width of [375, 390]) {
     }
     await page.goto("/");
     await page.getByRole("button", { name: "Menu" }).click();
-    await expect(page.locator("#mobile-menu").getByRole("link", { name: "Request pricing" })).toBeVisible();
+    await expect(page.locator("#mobile-menu").getByRole("link", { name: "Request a quote" })).toBeVisible();
     await expect(page.locator("#mobile-menu").getByRole("link", { name: "Order online (existing customers)" })).toBeVisible();
     expect(await overflow(page)).toBeLessThanOrEqual(1);
   });
@@ -255,7 +255,7 @@ test("what are you making filters the catalog and the spec card uses published f
   await page.getByRole("link", { name: /Burgers & Sliders/ }).click();
   await expect(page.getByRole("heading", { name: 'Brioche Bun 4"' })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
-  await expect(page.getByText(/Published sizes on the bun list/)).toBeVisible();
+  await expect(page.getByText(/Available bun sizes include/)).toBeVisible();
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
   await expect(card.locator("summary")).toHaveCount(0);
   await expect(card.getByText("Not marked")).toHaveCount(0);
@@ -315,7 +315,7 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
     expect(overlaps, `contact pill covers the request link at ${width}px`).toBeFalsy();
     if (width < 800) {
       await page.getByRole("button", { name: "Menu" }).click();
-      await expect(page.locator("#mobile-menu nav").getByRole("link", { name: "Request pricing" })).toBeVisible();
+      await expect(page.locator("#mobile-menu nav").getByRole("link", { name: "Request a quote" })).toBeVisible();
     }
   }
 });
@@ -360,7 +360,7 @@ test("home delivery lookup qualifies city and does not promise a specific route"
   await page.goto("/");
   await page.locator("#home-delivery-city").fill("Denver");
   await expect(page.getByRole("status").filter({ hasText: "Denver" }).first()).toBeVisible();
-  await expect(page.locator(".home-delivery-check")).toContainText("confirm the exact address");
+  await expect(page.locator(".home-delivery-check")).toContainText("confirm service to your address");
 });
 
 
@@ -386,7 +386,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await expect(page.locator("#inquiry-products")).toHaveValue("Hamburger buns");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
-  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
+  await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Interested in trying products first");
@@ -399,7 +399,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
 
 test("homepage offers truthful commercial steps, sample question and published customer marks", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "From your menu to your order." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From first conversation to first order." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Ask about samples" })).toHaveAttribute("href", /wholesale.*sample-request/);
   await expect(page.locator(".verified-client-strip img")).toHaveCount(17);
   await expect(page.locator(".verified-client-mark").filter({ hasText: "The Cherry Cricket" })).toBeVisible();
@@ -509,7 +509,7 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
 
   await page.goto("/community/");
   await expect(page.locator(".community-page")).toContainText("The GrowHaus");
-  await expect(page.locator(".community-page")).toContainText("food box program");
+  await expect(page.locator(".community-page")).toContainText("food-box program");
   await expect(page.locator(".community-page")).not.toContainText("CSA-style");
   await expect(page.locator(".community-page")).toContainText("FIRE Foundation");
   await expect(page.locator(".community-mention img")).toHaveAttribute("alt", "FIRE Foundation of Denver");
@@ -599,7 +599,7 @@ test("wholesale preview keeps catalog selection AND additional requirements", as
   await page.locator("#inquiry-products").fill("Also interested in a custom sandwich roll.");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
-  await page.getByRole("checkbox", { name: /concept site does not submit this request/i }).check();
+  await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
@@ -632,7 +632,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   const applications = page.locator(".application-section");
   const assortment = page.locator(".assortment");
   await expect(applications.getByRole("heading", { name: "What are you making?" })).toBeVisible();
-  await expect(assortment.getByRole("heading", { name: "Our Product Assortment" })).toBeVisible();
+  await expect(assortment.getByRole("heading", { name: "Explore Our Bakery Products" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Product details at a glance" })).toHaveCount(0);
   const assortmentBounds = await assortment.boundingBox();
   const applicationsBounds = await applications.boundingBox();
@@ -1215,7 +1215,7 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".community-page")).not.toContainText("AFP");
   await expect(page.locator(".community-page")).toContainText("holiday sugar cookies");
   await expect(page.locator(".community-page")).toContainText("raised over $15,000");
-  await expect(page.locator(".community-page")).toContainText("food box program");
+  await expect(page.locator(".community-page")).toContainText("food-box program");
   await expect(page.locator(".community-page")).toContainText("silent auction");
   await expect(page.locator(".community-page")).not.toContainText("birthday cake");
   await expect(page.locator(".community-page")).not.toContainText("$1 million");
@@ -1375,7 +1375,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
 
     await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("src", /bluepoint-logo\.png/);
     await expect(page.locator(".hero .heritage-logo, .approved-hero-logo")).toHaveCount(0);
-    await expect(page.locator(".making-footnote")).toContainText("Our Product Assortment, above");
+    await expect(page.locator(".making-footnote")).toContainText("Explore Our Bakery Products, above");
 
     const headerHits = await page.evaluate(() => {
       const nodes = [
@@ -1451,7 +1451,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
   await page.getByRole("button", { name: "Contact" }).click();
   await expect(page.getByRole("link", { name: "Call" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(page.getByRole("link", { name: "Email" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
-  await expect(page.getByRole("link", { name: "Request pricing" }).last()).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
+  await expect(page.getByRole("link", { name: "Request a quote" }).last()).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
   const panelLink = await page.getByRole("link", { name: "Call" }).boundingBox();
   expect(panelLink!.height).toBeGreaterThanOrEqual(44);
   await page.keyboard.press("Escape");
@@ -1597,7 +1597,7 @@ test("catalog search combines with a category filter and can be reset", async ({
   await expect(page.locator("#scones").getByRole("heading", { name: "Blueberry", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Apple Cinnamon Crunch" })).toHaveCount(0);
   await page.locator("#product-search").fill("zzzznotaproduct");
-  await expect(page.getByText("No products match that search.")).toBeVisible();
+  await expect(page.getByText("No matching products found. Try a different search or browse another category.")).toBeVisible();
   await page.getByRole("button", { name: "Reset search and filters" }).first().click();
   await expect(page.getByRole("heading", { name: "Croissants" })).toBeVisible();
   await page.locator("#product-search").focus();
@@ -1616,7 +1616,7 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(panel).toContainText('4"');
   await expect(panel).toContainText('3.5"');
   await expect(panel).not.toContainText(/confirm with bakery/i);
-  await expect(panel.getByRole("link", { name: "Request pricing for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
+  await expect(panel.getByRole("link", { name: "Request a quote for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
   await expect(brioche.locator("summary")).toHaveCount(0);
   await expect(brioche.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
