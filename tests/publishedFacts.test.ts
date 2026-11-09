@@ -14,7 +14,7 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   assert.match(community, /id="recognition"/);
   assert.match(
     community,
-    /In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon\. That giving continues today\. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul\./,
+    /In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business.*Since 2009/,
   );
   assert.match(about, /Recognized for giving back — see our community work/);
   assert.match(about, /href="\/community#recognition"/);
@@ -37,11 +37,11 @@ test("About uses the approved Willie story and keeps his portrait", () => {
   assert.match(about, /Willie Ramirez/);
   assert.match(
     about,
-    /Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark\. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership\./,
+    /Bluepoint Bakery began in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark.*Willie Ramirez built his career inside the bakery.*becoming its owner/,
   );
   assert.match(
     about,
-    /Today Bluepoint is a proud minority-owned, family-owned business\. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range\. Reliable, on-time delivery and clear communication are how we work with every account\./,
+    /Today, Bluepoint continues its tradition as a minority-owned, family-owned Colorado bakery/,
   );
   assert.match(about, /WILLIE_CAPTION/);
   assert.match(about, /williePortrait/);

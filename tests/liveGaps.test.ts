@@ -27,7 +27,7 @@ test("homepage food service leads into delivery and community, without the story
   assert.doesNotMatch(home, /home-story|home-why|Our story|WILLIE_CAPTION/);
   assert.ok(about.includes(STORY_OPENING));
   assert.ok(about.includes(STORY_TODAY));
-  assert.match(home, /From your menu to your order\./);
+  assert.match(home, /From first conversation to first order/);
   assert.doesNotMatch(home, /From your menu to the right order/);
   const food = home.indexOf("buyer-proof-block");
   const deliver = home.indexOf("Delivery across the Front Range");
