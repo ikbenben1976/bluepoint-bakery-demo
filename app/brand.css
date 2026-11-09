@@ -4448,14 +4448,73 @@ body.request-sheet-open .view-request-bar {
 }
 .request-sheet-list li {
   display: grid;
-  gap: 0.55rem;
-  padding: 0.9rem 1rem;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: 0.45rem 0.75rem;
+  align-items: start;
+  padding: 0.85rem;
   background: #fff;
   border: 1px solid #e4d8c4;
 }
+.request-thumb {
+  position: relative;
+  width: 4.25rem;
+  height: 4.25rem;
+  overflow: hidden;
+  background: #f6f1e8;
+}
+.request-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.request-thumb span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0.08rem 0.12rem;
+  background: rgba(249, 243, 235, 0.94);
+  color: #0d0d25;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+}
 .request-sheet-list h3 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
+}
+.request-sheet-note {
+  margin: 0;
+  font-size: 0.92rem;
+}
+.qty-unit {
+  font-weight: 600;
+}
+.spec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.spec-chips li {
+  margin: 0;
+  padding: 0.16rem 0.5rem;
+  background: #f6f1e8;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+@media (max-width: 767px) {
+  .product-card .spec-chips {
+    justify-content: center;
+  }
 }
 .request-sheet-list p,
 .request-sheet-list label {

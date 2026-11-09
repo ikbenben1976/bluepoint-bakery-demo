@@ -153,7 +153,9 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(paths.getByRole("link", { name: "Pay an invoice" })).toHaveAttribute("href", PAY_URL);
   await expect(paths.getByRole("link", { name: "(303) 298-1100" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(paths.getByRole("link", { name: "sales@bluepointbakery.com" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
-  await expect(page.locator(".request-notice")).toHaveText("This concept site does not submit wholesale requests.");
+  await expect(page.locator(".request-notice")).toHaveText(
+    "This concept site does not submit wholesale requests. This is a pricing request, not an order.",
+  );
   await expect(paths).toContainText("New accounts");
 
   await page.goto("/");

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
   createContext,
@@ -12,8 +13,10 @@ import {
   type ReactNode,
 } from "react";
 import { getProduct } from "@/data/products";
+import { visualForProduct } from "@/data/illustrative";
 import type { Draft, DraftLine } from "@/lib/draft";
 import { requestPricingHref } from "@/lib/requestLink";
+import { publishedUnit } from "@/lib/spec";
 import { REQUEST_CHANGE_EVENT, loadDraft, saveDraft } from "@/lib/storage";
 
 type RequestSheetValue = {
@@ -29,9 +32,9 @@ export function useRequestSheet(): RequestSheetValue {
   return value;
 }
 
-function optionText(line: DraftLine): string {
+function optionText(line: DraftLine, units: readonly string[]): string {
   const bits: string[] = [];
-  if (line.unit) bits.push(line.unit);
+  if (units.length > 1 && line.unit) bits.push(line.unit);
   if (line.slice) bits.push(`slice ${line.slice}`);
   if (line.wrapped) bits.push("individually wrapped");
   if (line.dipped) bits.push(line.dipped);
@@ -180,33 +183,41 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
             {draft.lines.map((line) => {
               const product = getProduct(line.productId);
               if (!product) return null;
-              const options = optionText(line);
+              const visual = visualForProduct(product.id);
+              const options = optionText(line, product.units);
+              const unit = publishedUnit(product);
               return (
-                <li key={line.productId}>
+                <li key={line.productId} className="request-sheet-item">
+                  <div className="request-thumb">
+                    <Image src={visual.webp} alt="" width={68} height={68} />
+                    <span>Illustrative</span>
+                  </div>
                   <div>
                     <h3>{product.name}</h3>
                     {options ? <p>{options}</p> : null}
+                    <label>
+                      Quantity per delivery
+                      {unit ? <span className="qty-unit"> {unit}</span> : null}
+                      <input
+                        type="number"
+                        min={1}
+                        max={9999}
+                        inputMode="numeric"
+                        value={line.qty}
+                        aria-label={`Quantity per delivery for ${product.name}`}
+                        onChange={(event) => updateQty(line.productId, event.target.value)}
+                      />
+                    </label>
+                    <button type="button" className="btn btn-ghost" onClick={() => removeLine(line.productId)}>
+                      Remove
+                    </button>
                   </div>
-                  <label>
-                    Quantity
-                    <input
-                      type="number"
-                      min={1}
-                      max={9999}
-                      inputMode="numeric"
-                      value={line.qty}
-                      aria-label={`Quantity for ${product.name}`}
-                      onChange={(event) => updateQty(line.productId, event.target.value)}
-                    />
-                  </label>
-                  <button type="button" className="btn btn-ghost" onClick={() => removeLine(line.productId)}>
-                    Remove
-                  </button>
                 </li>
               );
             })}
           </ul>
         )}
+        <p className="request-sheet-note">This is a pricing request, not an order.</p>
         <div className="request-sheet-actions">
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Continue browsing

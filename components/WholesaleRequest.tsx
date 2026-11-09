@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL, HOURS, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
-import { CUSTOM_FAMILIES, CUSTOMER_TYPES, DELIVERY_DAYS, addProductLine, emptyDraft, type Draft } from "@/lib/draft";
+import { CUSTOM_FAMILIES, CUSTOMER_TYPES, DELIVERY_DAYS, ORDER_FREQUENCIES, addProductLine, emptyDraft, type Draft } from "@/lib/draft";
 import { deliverySuggestions } from "@/lib/deliveryArea";
 import { buildEmailPreview } from "@/lib/emailPreview";
 import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
-import { leadWords } from "@/lib/spec";
+import { publishedUnit } from "@/lib/spec";
 import {
   PUBLISHED_CUSTOM_LINE,
   SAMPLE_QUESTION,
@@ -219,7 +219,9 @@ export function WholesaleRequest() {
       {step < 4 ? (
         <>
           <AccountPaths />
-          <p className="request-notice">This concept site does not submit wholesale requests.</p>
+          <p className="request-notice">
+            This concept site does not submit wholesale requests. This is a pricing request, not an order.
+          </p>
         </>
       ) : null}
       {step < 4 ? (
@@ -305,6 +307,21 @@ export function WholesaleRequest() {
                     onChange={(event) => setDraft({ ...draft, weeklyQuantity: event.target.value })}
                   />
                 </label>
+                <label>
+                  How often do you expect to order?
+                  <select
+                    id="inquiry-frequency"
+                    value={draft.orderFrequency}
+                    onChange={(event) => setDraft({ ...draft, orderFrequency: event.target.value })}
+                  >
+                    <option value="">Choose one</option>
+                    {ORDER_FREQUENCIES.map(([id, label]) => (
+                      <option key={id} value={id}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <p className="request-help">A rough note for the conversation.</p>
               <label>
@@ -379,13 +396,13 @@ export function WholesaleRequest() {
                       <li key={line.productId} className="request-line">
                         <div>
                           <span className="line-name">{product.name}</span>
-                          <small>{leadWords(product)}</small>
                         </div>
                         <div className="request-line-grid">
                           <label>
-                            Quantity
+                            Quantity per delivery
+                            {publishedUnit(product) ? <span className="qty-unit"> {publishedUnit(product)}</span> : null}
                             <input
-                              aria-label={`Quantity for ${product.name}`}
+                              aria-label={`Quantity per delivery for ${product.name}`}
                               type="number"
                               min={1}
                               max={9999}
@@ -664,7 +681,7 @@ export function WholesaleRequest() {
               <p className="demo-badge">Demo: not sent</p>
             </header>
             <p id="send-notice">
-              This is a preview only. No message has been sent to Bluepoint Bakery. This concept site does not submit wholesale requests.
+              This is a preview only. No message has been sent to Bluepoint Bakery. This concept site does not submit wholesale requests. This is a pricing request, not an order.
             </p>
             <p>
               You can discuss this draft with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
@@ -694,6 +711,12 @@ export function WholesaleRequest() {
                   <dd>{draft.weeklyQuantity.trim()}</dd>
                 </div>
               ) : null}
+              <div>
+                <dt>How often</dt>
+                <dd>
+                  {ORDER_FREQUENCIES.find(([id]) => id === draft.orderFrequency)?.[1] ?? "Not chosen"}
+                </dd>
+              </div>
               <div>
                 <dt>City</dt>
                 <dd>
