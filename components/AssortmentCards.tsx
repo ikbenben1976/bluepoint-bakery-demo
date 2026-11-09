@@ -8,7 +8,7 @@ const assortment = [
   { href: "/breads/#deli-loaves", name: "Breads & Loaves", line: "Deli loaves, pan loaves, and French breads", src: "/images/scenes/baguette-rack.webp", alt: "Baguettes on a rack at Bluepoint Bakery" },
   { href: "/pastries/#croissants", name: "Pastries", line: "Croissants, Danish, muffins, and other pastries", src: "/images/scenes/chocolate-pastries.webp", alt: "Finished chocolate pastries on Bluepoint bakery racks" },
   { href: "/breads/#specialty-breads", name: "Specialty Breads", line: "Focaccia, rustic rolls, and sourdough boule", src: "/images/scenes/baguette-tray.webp", alt: "Bluepoint specialty French breads on a baking tray" },
-  { href: "/pastries/", name: "Sweet Bakery Favorites", line: "Pies, brownies, cookies, and muffins", src: "/images/scenes/brownie-sheet.webp", alt: "A sheet of brownies in the Bluepoint bakery" },
+  { href: "/pastries/", name: "Desserts & Sweet Treats", line: "Pies, brownies, cookies, and muffins", src: "/images/scenes/brownie-sheet.webp", alt: "A sheet of brownies in the Bluepoint bakery" },
 ] as const;
 
 export function AssortmentCards() {
@@ -16,9 +16,9 @@ export function AssortmentCards() {
     <section className="assortment" aria-labelledby="assortment-heading">
       <div className="section-intro">
         <div>
-          <p className="eyebrow">The Bluepoint catalog</p>
-          <h2 id="assortment-heading">Our Product Assortment</h2>
-          <p>Explore the actual wholesale categories, from breads and rolls to pastries and specialty items.</p>
+          <p className="eyebrow">Baked for your business</p>
+          <h2 id="assortment-heading">Explore Our Bakery Products</h2>
+          <p>From everyday sandwich breads to specialty rolls and pastries, discover the products behind your menu.</p>
         </div>
         <Link className="text-link" href="/breads">Explore the catalog <span aria-hidden="true">→</span></Link>
       </div>
@@ -37,8 +37,8 @@ export function AssortmentCards() {
         ))}
       </ul>
       <div className="assortment-actions">
-        <Link href="/breads" className="btn btn-ghost">All breads and rolls</Link>
-        <Link href="/pastries" className="btn btn-ghost">All pastries</Link>
+        <Link href="/breads" className="btn btn-ghost">Browse all breads & rolls</Link>
+        <Link href="/pastries" className="btn btn-ghost">Browse all pastries</Link>
       </div>
     </section>
   );

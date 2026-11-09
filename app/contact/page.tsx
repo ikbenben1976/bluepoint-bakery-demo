@@ -30,8 +30,8 @@ export default function ContactPage() {
       <PageHero
         className="contact-hero"
         kicker="Contact"
-        title="Contact"
-        lede={<p>Our baking facility and office are at {ADDRESS}.</p>}
+        title="Let&apos;s talk about your bakery needs"
+        lede={<p>Reach our Denver team by phone or email, or find our bakery at {ADDRESS}.</p>}
       />
       <div className="shell contact-page content-page">
         <div className="contact-layout">

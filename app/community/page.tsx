@@ -18,19 +18,19 @@ export default function CommunityPage() {
     <>
       <PageHero
         kicker="Community"
-        title="Partners"
-        lede={<p>Bluepoint Bakery is active in the Front Range community.</p>}
+        title="Giving back to the communities we serve"
+        lede={<p>Our commitment to Colorado goes beyond the bakery. We&apos;re proud to support organizations that make a difference in our communities.</p>}
         contained
       />
       {/* Intro and partner facts: https://www.bluepointbakery.com/community */}
       <div className="shell community-page content-page">
         <p className="community-intro">
-          We&apos;re proud to have ongoing relationships with several local charity organizations, including the following.
+          Through donated baked goods and community fundraising events, Bluepoint has supported causes close to home.
         </p>
         <section className="recognition" id="recognition" aria-labelledby="recognition-heading">
-          <h2 id="recognition-heading">Recognition</h2>
+          <h2 id="recognition-heading">Recognized for community giving</h2>
           <p>
-            In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.
+            In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. Community involvement has long been part of Bluepoint&apos;s story. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.
           </p>
         </section>
         <ul className="partner-marks" aria-label="Community partners">
@@ -75,8 +75,7 @@ export default function CommunityPage() {
           <div>
             <h2>FIRE Foundation</h2>
             <p>
-              Bluepoint has supported the FIRE Foundation Thanksgiving pie fundraiser.
-              Pie in the Sky, above, is the Project Angel Heart program.
+              Bluepoint has also supported the FIRE Foundation&apos;s Thanksgiving pie fundraiser, helping bring the community together around a meaningful cause.
             </p>
           </div>
         </aside>

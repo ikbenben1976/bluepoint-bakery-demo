@@ -20,7 +20,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageHero kicker="Since 1987" title="About" lede={<p>Denver</p>} contained />
+      <PageHero kicker="Our story" title="Baking for Colorado since 1987" lede={<p>Fresh from Denver, serving the Front Range.</p>} contained />
       <article className="shell about-page">
         <div className="about-story">
           <div className="about-copy">
@@ -28,13 +28,13 @@ export default function AboutPage() {
               <div className="willie-copy">
                 <p className="eyebrow">Our story</p>
                 <h2>
-                  From baker to owner: <span className="story-name">Willie Ramirez</span>
+                  From the bakery floor to business ownership: <span className="story-name">Willie Ramirez</span>
                 </h2>
                 <p>
-                  Bluepoint Bakery opened in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez started in the kitchen and spent 28 years baking for and running the bakery before taking full ownership.
+                  Bluepoint Bakery began in Denver in 1987, founded by chefs Fred Bramhall and Mary Clark. Willie Ramirez built his career inside the bakery, spending 28 years baking, managing operations and helping the business grow before becoming its owner.
                 </p>
                 <p>
-                  Today Bluepoint is a proud minority-owned, family-owned business. We still bake from scratch with high-quality ingredients and deliver to restaurants, cafés, hotels, hospitals, schools and catering kitchens up and down the Front Range. Reliable, on-time delivery and clear communication are how we work with every account.
+                  Today, Bluepoint continues its tradition as a minority-owned, family-owned Colorado bakery, combining scratch baking with dedicated wholesale service. From independent restaurants to institutional kitchens, we focus on dependable delivery, quality products and strong customer relationships.
                 </p>
               </div>
               <figure className="about-figure about-portrait willie-portrait">
@@ -54,7 +54,7 @@ export default function AboutPage() {
             </p>
             {/* https://www.bluepointbakery.com/about */}
             <p>
-              All of our breads, pastries, and treats are made from scratch daily at our spacious facility. We are trusted by companies and industries that include restaurants, cafes, hotels, country clubs, airports, universities, and catering businesses. Orders can be customized to meet clients&apos; personality, characteristics, or vision.
+              Every day, our Denver bakery prepares fresh breads, pastries and specialty baked goods for food-service businesses throughout the region. Our customers span hospitality and food service, from local cafés and restaurants to hotels, universities and catering operations. Have something specific in mind? Our team can discuss customization options to suit your menu and business needs.
             </p>
             <p>We also deliver to Cheyenne and nearby communities in Wyoming.</p>
             <p>
