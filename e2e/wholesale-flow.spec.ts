@@ -56,6 +56,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(page.locator("#request-errors")).toContainText("Choose a published pack size for Pumpkin Chocolate.");
   await page.getByRole("combobox", { name: "Slice thickness for Vienna White" }).selectOption('5/8"');
   await page.getByRole("combobox", { name: "Pack size for Pumpkin Chocolate" }).selectOption("loaf");
+  await page.getByRole("spinbutton", { name: "Estimated quantity for Pumpkin Chocolate" }).fill("2");
   await page.getByRole("combobox", { name: "Dipped or undipped for Almond" }).selectOption("undipped");
   await page.locator("#inquiry-custom-family").selectOption("breads");
   await page.locator("#inquiry-custom-size").fill("a diameter to discuss");
@@ -85,9 +86,9 @@ test("product options follow the catalog and an early date warns without blockin
   const review = page.getByTestId("inquiry-confirmation");
   await expect(review).toContainText("This is a preview only. No message has been sent to Bluepoint Bakery.");
   await expect(review).toContainText("This concept site does not submit wholesale requests.");
-  await expect(review).toContainText('Vienna White — 1; slice 5/8"');
-  await expect(review).toContainText("Pumpkin Chocolate — 1 loaf");
-  await expect(review).toContainText("Almond — 1; undipped");
+  await expect(review).toContainText('Vienna White — Per week, quantity not estimated; slice 5/8"');
+  await expect(review).toContainText("Pumpkin Chocolate — 2 loaf per week");
+  await expect(review).toContainText("Almond — Per week, quantity not estimated; undipped");
   await expect(review).toContainText("individually wrapped");
   await expect(review).toContainText("Also a seeded roll to discuss");
   await expect(review).toContainText("a diameter to discuss");

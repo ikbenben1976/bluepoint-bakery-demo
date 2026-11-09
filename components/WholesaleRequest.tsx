@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL, HOURS, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
-import { CUSTOM_FAMILIES, CUSTOMER_TYPES, DELIVERY_DAYS, ORDER_FREQUENCIES, addProductLine, emptyDraft, type Draft } from "@/lib/draft";
+import { CUSTOM_FAMILIES, CUSTOMER_TYPES, DELIVERY_DAYS, QUANTITY_BASES, addProductLine, emptyDraft, parseEstimateQty, type Draft, type QuantityBasis } from "@/lib/draft";
 import { deliverySuggestions } from "@/lib/deliveryArea";
 import { buildEmailPreview } from "@/lib/emailPreview";
 import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
@@ -307,21 +307,6 @@ export function WholesaleRequest() {
                     onChange={(event) => setDraft({ ...draft, weeklyQuantity: event.target.value })}
                   />
                 </label>
-                <label>
-                  How often do you expect to order?
-                  <select
-                    id="inquiry-frequency"
-                    value={draft.orderFrequency}
-                    onChange={(event) => setDraft({ ...draft, orderFrequency: event.target.value })}
-                  >
-                    <option value="">Choose one</option>
-                    {ORDER_FREQUENCIES.map(([id, label]) => (
-                      <option key={id} value={id}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
               </div>
               <p className="request-help">A rough note for the conversation.</p>
               <label>
@@ -386,6 +371,7 @@ export function WholesaleRequest() {
                 </div>
               </section>
               <div id="request-lines">
+              <p className="request-help">Each product has its own estimate. This is not a delivery schedule.</p>
               {draft.lines.length > 0 ? (
                 <ul className="request-lines">
                   {draft.lines.map((line) => {
@@ -399,16 +385,42 @@ export function WholesaleRequest() {
                         </div>
                         <div className="request-line-grid">
                           <label>
-                            Quantity per delivery
-                            {publishedUnit(product) ? <span className="qty-unit"> {publishedUnit(product)}</span> : null}
+                            <span>
+                              Estimated quantity
+                              {publishedUnit(product) ? <span className="qty-unit"> {publishedUnit(product)}</span> : null}
+                            </span>
                             <input
-                              aria-label={`Quantity per delivery for ${product.name}`}
+                              aria-label={`Estimated quantity for ${product.name}`}
                               type="number"
                               min={1}
                               max={9999}
                               inputMode="numeric"
-                              value={line.qty}
-                              onChange={(event) => updateLine(product.id, { qty: Number(event.target.value) })}
+                              value={line.qty ?? ""}
+                              onChange={(event) => updateLine(product.id, { qty: parseEstimateQty(event.target.value) })}
+                            />
+                          </label>
+                          <label>
+                            Estimate basis
+                            <select
+                              aria-label={`Estimate basis for ${product.name}`}
+                              value={line.basis}
+                              onChange={(event) => updateLine(product.id, { basis: event.target.value as QuantityBasis })}
+                            >
+                              {QUANTITY_BASES.map(([id, label]) => (
+                                <option key={id} value={id}>
+                                  {label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label>
+                            Delivery preferences or varying needs
+                            <textarea
+                              rows={2}
+                              maxLength={500}
+                              aria-label={`Delivery preferences for ${product.name}`}
+                              value={line.scheduleNote}
+                              onChange={(event) => updateLine(product.id, { scheduleNote: event.target.value })}
                             />
                           </label>
                           {product.units.length > 1 ? (
@@ -712,12 +724,6 @@ export function WholesaleRequest() {
                 </div>
               ) : null}
               <div>
-                <dt>How often</dt>
-                <dd>
-                  {ORDER_FREQUENCIES.find(([id]) => id === draft.orderFrequency)?.[1] ?? "Not chosen"}
-                </dd>
-              </div>
-              <div>
                 <dt>City</dt>
                 <dd>
                   {draft.deliveryCity}
@@ -783,6 +789,7 @@ export function WholesaleRequest() {
             {draft.lines.length > 0 || extraNote ? (
               <div>
                 <h3>Products</h3>
+                <p className="request-help">Estimates only. This is not a confirmed order or delivery schedule.</p>
                 <ul className="product-chips">
                   {draft.lines.map((line) => {
                     const product = getProduct(line.productId);

@@ -24,6 +24,7 @@ export const DELIVERY_DAYS = [
   "Sunday",
 ] as const;
 
+/** Kept only so an older saved draft can be copied into notes. Not a product schedule. */
 export const ORDER_FREQUENCIES = [
   ["weekly", "Weekly"],
   ["few-times", "A few times a week"],
@@ -31,6 +32,15 @@ export const ORDER_FREQUENCIES = [
   ["one-time", "One-time"],
   ["not-sure", "Not sure"],
 ] as const;
+
+export const QUANTITY_BASES = [
+  ["week", "Per week"],
+  ["delivery", "Per delivery"],
+  ["once", "One-time"],
+  ["unsure", "Not sure"],
+] as const;
+
+export type QuantityBasis = (typeof QUANTITY_BASES)[number][0];
 
 /** Catalog sections a buyer can name. Not a promise that a change is available. */
 export const CUSTOM_FAMILIES = [
@@ -41,11 +51,15 @@ export const CUSTOM_FAMILIES = [
 
 export type DraftLine = {
   productId: string;
-  qty: number;
+  /** Null until the buyer types a number. Never filled in as 0 or 1. */
+  qty: number | null;
   unit: string;
   slice: string;
   wrapped: boolean;
   dipped: "" | "dipped" | "undipped";
+  basis: QuantityBasis;
+  /** Optional note for this product only. Not a confirmed route. */
+  scheduleNote: string;
 };
 
 export type Draft = {
@@ -61,8 +75,6 @@ export type Draft = {
   lines: DraftLine[];
   firstDelivery: string;
   weeklyQuantity: string;
-  /** weekly | few-times | monthly | one-time | not-sure | "" */
-  orderFrequency: string;
   askAboutSamples: boolean;
   /** Free text naming products to mention if the buyer asks about samples. */
   sampleInterest: string;
@@ -88,7 +100,6 @@ export function emptyDraft(): Draft {
     lines: [],
     firstDelivery: "",
     weeklyQuantity: "",
-    orderFrequency: "",
     askAboutSamples: false,
     sampleInterest: "",
     customFamily: "",
@@ -98,15 +109,27 @@ export function emptyDraft(): Draft {
   };
 }
 
-export function lineFromProduct(product: Product, qty = 1): DraftLine {
+export function lineFromProduct(product: Product): DraftLine {
   return {
     productId: product.id,
-    qty,
+    qty: null,
     unit: product.units.length === 1 ? product.units[0] : "",
     slice: product.sliceOptions?.length === 1 ? product.sliceOptions[0] : "",
     wrapped: false,
     dipped: "",
+    basis: "week",
+    scheduleNote: "",
   };
+}
+
+/** Empty stays empty. A typed number below 1 is not turned into 1. */
+export function parseEstimateQty(value: string): number | null {
+  if (value.trim() === "") return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  const rounded = Math.round(parsed);
+  if (rounded < 1) return null;
+  return Math.min(9999, rounded);
 }
 
 export function addProductLine(draft: Draft, product: Product): Draft {

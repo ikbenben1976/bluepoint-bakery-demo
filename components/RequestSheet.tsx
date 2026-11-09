@@ -14,7 +14,7 @@ import {
 } from "react";
 import { getProduct } from "@/data/products";
 import { visualForProduct } from "@/data/illustrative";
-import type { Draft, DraftLine } from "@/lib/draft";
+import { QUANTITY_BASES, parseEstimateQty, type Draft, type DraftLine, type QuantityBasis } from "@/lib/draft";
 import { requestPricingHref } from "@/lib/requestLink";
 import { publishedUnit } from "@/lib/spec";
 import { REQUEST_CHANGE_EVENT, loadDraft, saveDraft } from "@/lib/storage";
@@ -108,7 +108,7 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
     const previously = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const focusables = () => {
       if (!root) return [];
-      return [...root.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled])")].filter(
+      return [...root.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])")].filter(
         (el) => el.tabIndex !== -1 && !el.hasAttribute("disabled"),
       );
     };
@@ -144,12 +144,10 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
     saveDraft(next);
   }
 
-  function updateQty(productId: string, value: string) {
-    const parsed = Math.round(Number(value));
-    const qty = Number.isFinite(parsed) ? Math.min(9999, Math.max(1, parsed)) : 1;
+  function patchLine(productId: string, patch: Partial<DraftLine>) {
     write({
       ...draft,
-      lines: draft.lines.map((line) => (line.productId === productId ? { ...line, qty } : line)),
+      lines: draft.lines.map((line) => (line.productId === productId ? { ...line, ...patch } : line)),
     });
   }
 
@@ -204,7 +202,7 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
                     {options ? <p className="request-line-options">{options}</p> : null}
                     <label className="request-qty">
                       <span>
-                        Quantity per delivery
+                        Estimated quantity
                         {unit ? <span className="qty-unit"> · {unit}</span> : null}
                       </span>
                       <input
@@ -212,9 +210,33 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
                         min={1}
                         max={9999}
                         inputMode="numeric"
-                        value={line.qty}
-                        aria-label={`Quantity per delivery for ${product.name}`}
-                        onChange={(event) => updateQty(line.productId, event.target.value)}
+                        value={line.qty ?? ""}
+                        aria-label={`Estimated quantity for ${product.name}`}
+                        onChange={(event) => patchLine(line.productId, { qty: parseEstimateQty(event.target.value) })}
+                      />
+                    </label>
+                    <label className="request-basis">
+                      Estimate basis
+                      <select
+                        aria-label={`Estimate basis for ${product.name}`}
+                        value={line.basis}
+                        onChange={(event) => patchLine(line.productId, { basis: event.target.value as QuantityBasis })}
+                      >
+                        {QUANTITY_BASES.map(([id, label]) => (
+                          <option key={id} value={id}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="request-line-note">
+                      Delivery preferences or varying needs
+                      <textarea
+                        rows={2}
+                        maxLength={500}
+                        aria-label={`Delivery preferences for ${product.name}`}
+                        value={line.scheduleNote}
+                        onChange={(event) => patchLine(line.productId, { scheduleNote: event.target.value })}
                       />
                     </label>
                   </div>
@@ -223,7 +245,7 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
             })}
           </ul>
         )}
-        <p className="request-sheet-note">This is a pricing request, not an order.</p>
+        <p className="request-sheet-note">This is a pricing request, not an order. Estimates are not a delivery schedule.</p>
         <div className="request-sheet-actions">
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Continue browsing
