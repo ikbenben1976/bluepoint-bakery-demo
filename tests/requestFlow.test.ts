@@ -154,23 +154,23 @@ test("the preview keeps catalog lines, written notes, sample questions, and cust
   };
   const preview = buildEmailPreview(draft, afternoon);
   assert.match(preview, /DEMO PREVIEW/);
-  assert.match(preview, /does not submit wholesale requests/);
+  assert.match(preview, /nothing has been sent or ordered/i);
   assert.match(preview, /To: sales@bluepointbakery.com/);
   assert.match(preview, /Brioche Bun 4"/);
   assert.match(preview, /custom sandwich roll/);
   assert.match(preview, /Samples: Interested in trying products first\./);
   assert.match(preview, /brioche buns/);
-  assert.match(preview, /Examples to discuss/);
+  assert.match(preview, /Special requests and customization/);
   assert.match(preview, /a diameter to discuss/);
   assert.match(preview, /a pack to discuss/);
   assert.match(preview, /Tuesday/);
-  assert.match(preview, /not a confirmed route/);
+  assert.match(preview, /subject to confirmation/);
   assert.match(preview, /about 20 dozen/);
   assert.equal(preview.includes("$"), false);
   assert.equal(preview.toLowerCase().includes("mailto:"), false);
   assert.equal(preview.toLowerCase().includes("free sample"), false);
   assert.equal(preview.includes("How often:"), false);
-  assert.match(preview, /not a confirmed order or delivery schedule/);
+  assert.match(preview, /Estimated products and quantities \(subject to confirmation\)/);
 });
 
 test("a new product starts with a blank per-week estimate, and Not sure can stay blank", () => {

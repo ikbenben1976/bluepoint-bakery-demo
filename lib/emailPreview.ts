@@ -9,7 +9,6 @@ import {
   estimatePhrase,
   extraProductNote,
   kindsInDraft,
-  PUBLISHED_CUSTOM_LINE,
   SAMPLE_REVIEW,
 } from "@/lib/requestFlow";
 import { earliestDeliveryIso, formatLongDate, isOnOrAfter, leadTimeExplanation } from "@/lib/leadTime";
@@ -56,9 +55,9 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
   if (extra) itemLines.push(`Also described: ${extra}`);
 
   const customBits = [
-    draft.customFamily && `Product family to discuss: ${familyLabel(draft.customFamily)}`,
-    draft.customSize.trim() && `Size or dimensions to discuss: ${draft.customSize.trim()}`,
-    draft.customPackaging.trim() && `Packaging or other requirements to discuss: ${draft.customPackaging.trim()}`,
+    draft.customFamily && `Product family: ${familyLabel(draft.customFamily)}`,
+    draft.customSize.trim() && `Preferred size or dimensions: ${draft.customSize.trim()}`,
+    draft.customPackaging.trim() && `Packaging and other requirements: ${draft.customPackaging.trim()}`,
   ].filter(Boolean);
 
   const contact = [
@@ -77,8 +76,7 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     : [];
 
   return [
-    "DEMO PREVIEW — nothing has been sent.",
-    "This concept site does not submit wholesale requests.",
+    "DEMO PREVIEW — nothing has been sent or ordered.",
     `To: ${EMAIL}`,
     `Subject: New wholesale account request — ${draft.businessName.trim() || "(business name)"}`,
     "",
@@ -86,19 +84,17 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     `Business type: ${draft.businessType ? formatCustomerType(draft.businessType) : "(not chosen)"}`,
     `Delivery city: ${draft.deliveryCity.trim() || "(not entered)"}`,
     `Delivery area: ${areaLine}`,
-    `Preferred days to discuss (not a confirmed route): ${draft.days.length ? draft.days.join(", ") : "(none chosen — that is allowed)"}`,
+    `Preferred delivery days (subject to confirmation): ${draft.days.length ? draft.days.join(", ") : "(none chosen — that is allowed)"}`,
     timing,
     lead ? `Lead time: ${lead}` : "",
     warning ? `Date note: ${warning}` : "",
     "",
-    "Product estimates (not a confirmed order or delivery schedule):",
+    "Estimated products and quantities (subject to confirmation):",
     itemLines.length ? itemLines.join("\n") : "(none added)",
     "",
     customBits.length
       ? [
-          "Customization to discuss:",
-          `Bluepoint's About page says: "${PUBLISHED_CUSTOM_LINE}"`,
-          "Examples to discuss.",
+          "Special requests and customization (subject to Bluepoint's review):",
           ...customBits,
           "",
         ].join("\n")
