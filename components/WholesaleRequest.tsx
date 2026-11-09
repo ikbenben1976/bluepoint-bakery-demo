@@ -870,11 +870,27 @@ export function WholesaleRequest() {
               <p className="demo-badge">Preview only — not submitted</p>
             </header>
             <p id="send-notice">
-              Your inquiry is ready to review. Nothing has been submitted or ordered. Copy the summary below to share it with Bluepoint.
+              Nothing has been submitted or ordered. Copy your inquiry to share it with Bluepoint.
             </p>
             <p>
               Share this summary with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
             </p>
+            <div className="request-actions">
+              <button type="button" className="btn btn-primary" onClick={copySummary}>
+                Copy inquiry
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
+                Print
+              </button>
+            </div>
+            {copyFallback ? (
+              <p role="status">Clipboard is unavailable in this browser. Select the inquiry summary below and copy it.</p>
+            ) : null}
+            {copied ? (
+              <p className="request-help" role="status">
+                Summary copied.
+              </p>
+            ) : null}
             <dl className="inquiry-summary">
               <div>
                 <dt>Business</dt>
@@ -979,22 +995,6 @@ export function WholesaleRequest() {
             ) : null}
             <h3>Your inquiry summary</h3>
             <pre id="request-preview">{preview}</pre>
-            {copyFallback ? (
-              <p role="status">Clipboard is unavailable in this browser. Select the preview above and copy it.</p>
-            ) : null}
-            {copied ? (
-              <p className="request-help" role="status">
-                Summary copied.
-              </p>
-            ) : null}
-            <div className="request-actions">
-              <button type="button" className="btn btn-primary" onClick={copySummary}>
-                Copy inquiry
-              </button>
-              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
-                Print
-              </button>
-            </div>
             <div className="request-actions">
               <button type="button" className="btn btn-ghost" onClick={() => goTo(1)}>
                 Edit business

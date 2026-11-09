@@ -5,7 +5,7 @@ const PAGES = [
   ["/", "Bluepoint Bakery"],
   ["/breads/", "Breads"],
   ["/pastries/", "Pastries"],
-  ["/wholesale/", "Become a wholesale customer"],
+  ["/wholesale/", "wholesale account"],
   ["/delivery/", "Delivery Area"],
   ["/about/", "About"],
   ["/community/", "Community"],
@@ -30,6 +30,14 @@ test("search finds a partial name and shows an empty state", async ({ page }) =>
   await page.locator("#product-search").fill("bear");
   await expect(page.getByRole("heading", { name: "Bear Claw" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Apple" })).toHaveCount(0);
+  const bearClaw = page.locator("#danishes-bear-claw");
+  await expect(bearClaw.locator("img")).toHaveCount(0);
+  await bearClaw.getByRole("button", { name: "Add to request" }).click();
+  const sheet = page.getByTestId("request-sheet");
+  await expect(sheet.getByRole("heading", { name: "Bear Claw" })).toBeVisible();
+  await expect(sheet.locator("img")).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(sheet).toBeHidden();
   await page.locator("#product-search").fill("zzzznotaproduct");
   await expect(page.getByText("No matching products found. Try a different search or browse another category.")).toBeVisible();
 });
@@ -123,8 +131,7 @@ test("products keep separate estimates, and a blank Not sure stays blank", async
 });
 
 test("an older saved draft keeps its quantity as per delivery", async ({ page }) => {
-  await page.goto("/wholesale/");
-  await page.evaluate(() => {
+  await page.addInitScript(() => {
     localStorage.setItem(
       "bluepoint-demo-request-v1",
       JSON.stringify({
@@ -191,11 +198,10 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
-    "This is a preview only. No message has been sent to Bluepoint Bakery.",
+    "Nothing has been submitted or ordered.",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");
-  await expect(page.getByTestId("inquiry-confirmation")).toContainText("Nothing has been submitted or ordered.");
 
   await page.goto("/breads/");
   await page.locator(".product-card", { hasText: 'Potato Bun 4"' }).getByRole("button", { name: "Add to request" }).click();
@@ -299,9 +305,10 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
   for (const width of [375, 390, 768, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto("/breads/");
-    const action = page.getByRole("link", { name: "Open your request" });
+    const action = page.getByRole("link", { name: "Review my selections" });
     await expect(action).toBeVisible();
-    await expect(page.getByTestId("quick-actions")).toBeVisible();
+    await expect(width < 768 ? page.locator(".header-call") : page.getByTestId("quick-actions")).toBeVisible();
+    if (width < 768) await expect(page.getByTestId("quick-actions")).toBeHidden();
     const linkBox = await action.boundingBox();
     const pillBox = await page.getByTestId("quick-actions").boundingBox();
     const overlaps = Boolean(
@@ -660,8 +667,8 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(breakfast.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
   await expect(dinner.locator(".making-permission")).toHaveCount(0);
-  await expect(applications.locator(".making-footnote")).toContainText("plated photos for this demo");
-  await expect(applications.locator(".making-footnote")).toContainText("illustrative image");
+  await expect(applications.locator(".making-footnote")).toContainText("Menu images illustrate serving ideas");
+  await expect(applications.locator(".making-footnote")).toContainText("do not identify specific Bluepoint products");
   await expect(applications.locator(".making-footnote")).not.toContainText("Illustrative images, not photographs of Bluepoint products.");
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
@@ -702,15 +709,15 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
     .toBeTruthy();
 
   const why = page.locator(".why-bluepoint");
-  await expect(why.getByRole("heading", { name: "Why Bluepoint" })).toBeVisible();
+  await expect(why.getByRole("heading", { name: "Why businesses choose Bluepoint" })).toBeVisible();
   await expect(why.locator(".why-card")).toHaveCount(6);
-  for (const title of ["Product", "Company", "Selection", "Value", "Service", "Integrity"]) {
+  for (const title of ["Fresh, scratch-baked quality", "Colorado roots since 1987", "A wide selection for every menu", "Quality that works for your business", "A team that knows wholesale", "Relationships built on trust"]) {
     await expect(why.getByRole("heading", { name: title, exact: true })).toBeVisible();
   }
   await expect(why).toContainText("handmade, baked fresh");
   await expect(why).toContainText("A family-owned Colorado wholesale bakery since 1987.");
   await expect(why).toContainText("Hundreds of breads, rolls, and pastries, with new products added regularly.");
-  await expect(why).toContainText("Maximum value for the price you pay. You always get the most for your money.");
+  await expect(why).toContainText("Quality products, dependable service and practical choices");
   await expect(why).not.toContainText("MVPR");
   await expect(why).not.toContainText("oldest and largest");
   await expect(why).not.toContainText(/confirm with bakery/i);
@@ -794,7 +801,8 @@ test("mobile opening screen visibly includes bakery photography and a clear acti
     expect(bounds).not.toBeNull();
     expect(bounds!.y, `photograph begins inside first screen at ${width}px`).toBeLessThan(720);
     await expect(page.getByRole("link", { name: /Explore Our Products/ })).toBeVisible();
-    await expect(page.getByTestId("quick-actions")).toBeVisible();
+    await expect(width < 768 ? page.locator(".header-call") : page.getByTestId("quick-actions")).toBeVisible();
+    if (width < 768) await expect(page.getByTestId("quick-actions")).toBeHidden();
     expect(await overflow(page), `overflow at ${width}px`).toBeLessThanOrEqual(1);
   }
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -1111,7 +1119,7 @@ test("homepage sections use the shared container width on phone, tablet, and des
           .map((el) => (el.textContent || "").replace(/\s+/g, " ").trim());
         return { columns, clipped };
       });
-      expect(trust.columns, "trust strip stacks at 390px").toBe(1);
+      expect(trust.columns, "trust strip has two columns at 390px").toBe(2);
       expect(trust.clipped, "trust labels clipped at 390px").toEqual([]);
     }
 
@@ -1178,8 +1186,8 @@ test("about story, community partners, and homepage proof use published facts on
   const about = page.locator(".about-copy");
   await expect(about).toContainText("Fred Bramhall");
   await expect(about).toContainText("Mary Clark");
-  await expect(about).toContainText("From baker to owner: Willie Ramirez");
-  await expect(about).toContainText("Willie Ramirez started in the kitchen");
+  await expect(about).toContainText("From the bakery floor to business ownership: Willie Ramirez");
+  await expect(about).toContainText("spending 28 years baking, managing operations");
   await expect(about).not.toContainText("does not give a date");
   await expect(about).not.toContainText("Westword");
   await expect(about).not.toContainText("Best of Denver");
@@ -1190,7 +1198,7 @@ test("about story, community partners, and homepage proof use published facts on
     "href",
     "/community/#recognition",
   );
-  await expect(about).toContainText("made from scratch daily");
+  await expect(about).toContainText("tradition as a minority-owned, family-owned Colorado bakery, combining scratch baking");
   await expect(about).toContainText("minority-owned, family-owned");
   await expect(about).toContainText("We also deliver to Cheyenne and nearby communities in Wyoming.");
   await expect(page.locator(".about-figure figcaption")).toHaveText("Willie Ramirez, owner");
@@ -1198,7 +1206,7 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".about-portrait .illustrative-label")).toHaveCount(0);
   await expect(page.locator('.about-gallery img[alt="Baguettes on a rack"]')).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).not.toContainText("Willie");
-  await expect(page.getByRole("heading", { name: "From baker to owner: Willie Ramirez" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "From the bakery floor to business ownership: Willie Ramirez" })).toBeVisible();
 
   await page.goto("/community/");
   await expect(page.locator(".community-page")).toContainText("Project Angel Heart");
@@ -1209,7 +1217,7 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".community-page")).not.toContainText("Oskar Blues");
   await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
   await expect(page.locator("#recognition")).toContainText(
-    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.",
+    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. Community involvement has long been part of Bluepoint's story. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.",
   );
   await expect(page.locator(".community-page")).toContainText("Outstanding Small Business");
   await expect(page.locator(".community-page")).not.toContainText("AFP");
@@ -1232,7 +1240,7 @@ test("about story, community partners, and homepage proof use published facts on
 
   await page.goto("/");
   await expect(page.locator(".brand-trust")).toContainText("Colorado Proud");
-  await expect(page.locator(".brand-trust")).toContainText("Listed in the product directory");
+  await expect(page.locator(".brand-trust")).toContainText("Made in Colorado");
   await expect(page.locator(".brand-trust")).toContainText("Family-owned");
   await expect(page.locator(".brand-trust")).toContainText("Minority-owned");
   await expect(page.locator(".brand-trust")).toContainText("NMSDC Certified Minority Business Enterprise");
@@ -1326,7 +1334,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
     await page.evaluate(() => document.fonts.ready);
 
     await expect(page.getByRole("heading", { name: "Fresh, Scratch-Baked Breads, Rolls & Pastries" })).toBeVisible();
-    await expect(page.locator(".approved-hero .lede")).toContainText("Colorado Front Range");
+    await expect(page.locator(".approved-hero .lede")).toContainText("Front Range");
     const actions = page.locator(".hero-actions a");
     await expect(actions.nth(0)).toContainText("Explore Our Products");
     await expect(actions.nth(1)).toContainText("Request a Wholesale Account");
@@ -1405,9 +1413,9 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
     expect(headerHits, `header overlap at ${width}`).toEqual([]);
     expect(await overflow(page), `overflow at ${width}`).toBeLessThanOrEqual(1);
 
-    const pillBox = await page.getByTestId("quick-actions").boundingBox();
-    expect(pillBox!.height).toBeGreaterThanOrEqual(44);
-    expect(pillBox!.width).toBeGreaterThanOrEqual(44);
+    const contactBox = await page.getByRole("button", { name: "Contact", exact: true }).boundingBox();
+    expect(contactBox!.height).toBeGreaterThanOrEqual(44);
+    expect(contactBox!.width).toBeGreaterThanOrEqual(44);
     const coveredAtTop = await page.evaluate(() => {
       const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
       const hits: string[] = [];
@@ -1616,7 +1624,7 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(panel).toContainText('4"');
   await expect(panel).toContainText('3.5"');
   await expect(panel).not.toContainText(/confirm with bakery/i);
-  await expect(panel.getByRole("link", { name: "Request a quote for these" })).toHaveAttribute("href", /\/wholesale\/?$/);
+  await expect(panel.getByRole("link", { name: "Request a quote for selected products" })).toHaveAttribute("href", /\/wholesale\/?$/);
   await expect(brioche.locator("summary")).toHaveCount(0);
   await expect(brioche.getByText(/confirm with bakery/i)).toHaveCount(0);
   await expect(brioche.getByText("Ask sales for a quote")).toHaveCount(0);
@@ -1626,7 +1634,7 @@ test("two products compare published fields and offer an inquiry", async ({ page
 test("delivery map shows the weekday overview and does not draw a route line", async ({ page }) => {
   await page.goto("/delivery/");
   await expect(page.locator(".city-link")).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Colors and weekdays" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Delivery routes & days" })).toBeVisible();
   await expect(page.locator(".route-table")).toContainText("Yellow");
   await expect(page.locator(".route-table")).toContainText("Purple");
   for (const days of [
@@ -1639,8 +1647,8 @@ test("delivery map shows the weekday overview and does not draw a route line", a
     await expect(page.locator(".route-table")).toContainText(days);
     await expect(page.locator(".map-legend")).toContainText(days);
   }
-  await expect(page.getByText("This is an overview. Please call us to see if we service your city").first()).toBeVisible();
-  await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver 6 days a week.");
+  await expect(page.locator(".delivery-lede")).toContainText("confirm the street address");
+  await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver six days a week");
   await expect(page.getByText("kicks ass")).toHaveCount(0);
 });
 

@@ -253,7 +253,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                 const visual = visualForProduct(product.id);
                 return (
                 <li key={product.id} id={product.id} className={`product-card${selected.has(product.id) ? " is-in-request" : ""}`}>
-                  <div className="product-photo">
+                  {visual ? <div className="product-photo">
                     <FramedImage
                       webp={visual.webp}
                       avif={visual.avif}
@@ -263,7 +263,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                       sizes="(max-width: 699px) 92vw, (max-width: 1023px) 46vw, 300px"
                       label="Illustrative image"
                     />
-                  </div>
+                  </div> : null}
                   <h3>{product.name}</h3>
                   {specChips(product).length > 0 ? (
                     <ul className="spec-chips">

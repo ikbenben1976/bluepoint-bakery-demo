@@ -83,7 +83,7 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     `Business name: ${draft.businessName.trim() || "(not entered)"}`,
     `Business type: ${draft.businessType ? formatCustomerType(draft.businessType) : "(not chosen)"}`,
     `Delivery city: ${draft.deliveryCity.trim() || "(not entered)"}`,
-    `Delivery area: ${areaLine}`,
+    areaLine,
     `Preferred delivery days (subject to confirmation): ${draft.days.length ? draft.days.join(", ") : "(none chosen — that is allowed)"}`,
     timing,
     lead ? `Lead time: ${lead}` : "",

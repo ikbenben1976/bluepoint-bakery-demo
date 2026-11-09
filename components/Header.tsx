@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useCallSheet } from "@/components/CallSheet";
 import { LogoLockup } from "@/components/Mark";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { requestPricingHref } from "@/lib/requestLink";
@@ -17,6 +18,7 @@ export function Header() {
   const pathname = normalize(usePathname() || "/");
   const [condensed, setCondensed] = useState(false);
   const [open, setOpen] = useState(false);
+  const { open: contactOpen, setOpen: setContactOpen } = useCallSheet();
   const requestCount = useRequestCount();
   const pricingHref = requestPricingHref(requestCount);
   const pricingCurrent = pathname === "/wholesale" ? "page" : undefined;
@@ -58,14 +60,15 @@ export function Header() {
     <>
     <header className={`site-header no-print ${condensed ? "is-condensed" : ""}`}>
       <div className="site-header-row">
-        <a className="header-call" href={`tel:${PHONE_TEL}`} aria-label={`Call ${PHONE_DISPLAY}`}>
+        <button type="button" className="header-call" aria-label="Contact" aria-haspopup="dialog"
+          aria-expanded={contactOpen} aria-controls="call-notice" onClick={() => setContactOpen(true)}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path
               fill="currentColor"
               d="M7 3h3l1.5 4-2 1.2a12 12 0 0 0 6.3 6.3L17 12.5 21 14v3a2 2 0 0 1-2.2 2A16 16 0 0 1 5 6.2 2 2 0 0 1 7 3z"
             />
           </svg>
-        </a>
+        </button>
         <Link href="/" className="brand">
           <LogoLockup inverse={open} />
         </Link>

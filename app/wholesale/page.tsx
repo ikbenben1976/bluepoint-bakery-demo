@@ -4,7 +4,7 @@ import { WholesaleRequest } from "@/components/WholesaleRequest";
 import { categoryPhotos } from "@/data/photos";
 
 export const metadata: Metadata = {
-  title: "Let&apos;s get your wholesale account started",
+  title: "Let's get your wholesale account started",
   description:
     "Prepare a new wholesale account request for Bluepoint Bakery. The demo previews an email to sales@bluepointbakery.com and does not send it.",
   alternates: { canonical: "/wholesale/" },

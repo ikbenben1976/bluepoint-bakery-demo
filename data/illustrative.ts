@@ -141,7 +141,6 @@ const groups: Record<keyof typeof shots, readonly string[]> = {
     "danishes-apple",
     "danishes-cherry",
     "danishes-cream-cheese",
-    "danishes-bear-claw",
     "danishes-variety-pack-2-apple-2-cherry-2-cream-cheese",
     "mini-danish-apple",
     "mini-danish-cherry",
@@ -227,12 +226,17 @@ for (const [key, ids] of Object.entries(groups) as [keyof typeof shots, readonly
   }
 }
 
-const missing = products.filter((product) => !byProduct.has(product.id)).map((product) => product.id);
+// The generic Danish illustration does not represent this product.
+const withoutIllustration = new Set(["danishes-bear-claw"]);
+const missing = products
+  .filter(({ id }) => !byProduct.has(id) && !withoutIllustration.has(id))
+  .map(({ id }) => id);
 if (missing.length > 0) {
   throw new Error(`Products without an illustrative image: ${missing.join(", ")}`);
 }
 
-export function visualForProduct(id: string): Visual {
+export function visualForProduct(id: string): Visual | undefined {
+  if (withoutIllustration.has(id)) return undefined;
   const visual = byProduct.get(id);
   if (!visual) throw new Error(`No illustrative visual for ${id}`);
   return visual;
