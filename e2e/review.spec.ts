@@ -51,13 +51,118 @@ test("request builder adds, edits, removes, and persists", async ({ page }) => {
   await page.goto("/wholesale/");
   await page.getByRole("button", { name: "Products", exact: true }).click();
   await expect(page.getByTestId("inquiry-form").locator(".line-name", { hasText: 'Brioche Bun 4"' })).toBeVisible();
-  const qty = page.getByRole("spinbutton", { name: 'Quantity per delivery for Brioche Bun 4"' });
+  const qty = page.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' });
   await qty.fill("4");
   await page.goto("/pastries/");
   await page.goto("/wholesale/");
   await expect(qty).toHaveValue("4");
   await page.getByRole("button", { name: 'Remove Brioche Bun 4"' }).click();
   await expect(page.locator("#inquiry-products")).toBeVisible();
+});
+
+test("products keep separate estimates, and a blank Not sure stays blank", async ({ page }) => {
+  await page.goto("/breads/");
+  await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+  await page.reload();
+  const dozen = page.locator(".product-card", { hasText: "Brioche (Dozen)" });
+  await dozen.getByRole("button", { name: "Add to request" }).click();
+  const sheet = page.getByTestId("request-sheet");
+  await expect(sheet).toBeVisible();
+  const dozenQty = sheet.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" });
+  await expect(dozenQty).toHaveValue("");
+  await expect(sheet.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("week");
+  await dozenQty.fill("2");
+  await page.keyboard.press("Escape");
+  await expect(sheet).toBeHidden();
+
+  const bun = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
+  await bun.scrollIntoViewIfNeeded();
+  await bun.getByRole("button", { name: "Add to request" }).click();
+  await expect(sheet).toBeVisible();
+  await expect(sheet.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
+  await sheet.getByRole("combobox", { name: 'Estimate basis for Brioche Bun 4"' }).selectOption("unsure");
+  await sheet.getByRole("textbox", { name: 'Delivery preferences for Brioche Bun 4"' }).fill("Skip some weeks.");
+  await sheet.getByRole("link", { name: "Go to request" }).click();
+
+  await expect(page).toHaveURL(/\/wholesale\/#request-lines/);
+  await expect(page.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" })).toHaveValue("2");
+  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("week");
+  await expect(page.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
+  await expect(page.getByRole("combobox", { name: 'Estimate basis for Brioche Bun 4"' })).toHaveValue("unsure");
+  await page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" }).selectOption("once");
+  await page.getByRole("textbox", { name: "Delivery preferences for Brioche (Dozen)" }).fill("Holiday tray only.");
+  await page.reload();
+  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("once");
+  await expect(page.getByRole("textbox", { name: "Delivery preferences for Brioche (Dozen)" })).toHaveValue("Holiday tray only.");
+  await expect(page.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
+
+  await page.getByRole("button", { name: "Business", exact: true }).click();
+  await page.locator("#inquiry-business").fill("Key Cafe");
+  await page.locator("#inquiry-type").selectOption("cafe");
+  await page.locator("#inquiry-contact").fill("Ada Baker");
+  await page.locator("#inquiry-email").fill("ada@example.com");
+  await page.locator("#inquiry-phone").fill("3035550100");
+  await expect(page.locator("#inquiry-frequency")).toHaveCount(0);
+  await page.getByRole("button", { name: "Review", exact: true }).click();
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.locator("#inquiry-consent").check();
+  await page.getByRole("button", { name: "Review", exact: true }).click();
+
+  const review = page.getByTestId("inquiry-confirmation");
+  await expect(review).toBeVisible();
+  await expect(review.getByText("Estimates only. This is not a confirmed order or delivery schedule.")).toBeVisible();
+  await expect(review.getByText(/Brioche \(Dozen\) — 2 dozen, one-time/)).toBeVisible();
+  await expect(review.getByText(/Brioche Bun 4" — Not sure/)).toBeVisible();
+  await expect(review.getByRole("term", { name: "How often" })).toHaveCount(0);
+  await expect(review.locator("#request-preview")).toContainText("2 dozen, one-time");
+  await expect(review.locator("#request-preview")).toContainText("Not sure");
+  await expect(review.locator("#request-preview")).not.toContainText("How often:");
+});
+
+test("an older saved draft keeps its quantity as per delivery", async ({ page }) => {
+  await page.goto("/wholesale/");
+  await page.evaluate(() => {
+    localStorage.setItem(
+      "bluepoint-demo-request-v1",
+      JSON.stringify({
+        businessName: "Key Cafe",
+        businessType: "cafe",
+        contactName: "Ada Baker",
+        contactEmail: "ada@example.com",
+        contactPhone: "3035550100",
+        weeklyQuantity: "about 20 dozen",
+        orderFrequency: "few-times",
+        notes: "Side door.",
+        consent: true,
+        deliveryCity: "Denver",
+        days: ["Tuesday"],
+        lines: [
+          {
+            productId: "dinner-rolls-brioche-dozen",
+            qty: 4,
+            unit: "dozen",
+            slice: "",
+            wrapped: false,
+            dipped: "",
+          },
+        ],
+      }),
+    );
+  });
+  await page.goto("/wholesale/#request-lines");
+  await expect(page.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" })).toHaveValue("4");
+  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("delivery");
+  await page.getByRole("button", { name: "Review", exact: true }).click();
+  const review = page.getByTestId("inquiry-confirmation");
+  await expect(review.getByText(/Brioche \(Dozen\) — 4 dozen per delivery/)).toBeVisible();
+  await expect(review.getByRole("definition").filter({ hasText: "Side door." })).toContainText(
+    "Earlier answer, not a product schedule: how often — A few times a week.",
+  );
+  await expect(review.getByRole("definition").filter({ hasText: "about 20 dozen" })).toBeVisible();
+  await expect(review.getByRole("term", { name: "How often" })).toHaveCount(0);
 });
 
 test("wholesale form validates, then confirms, empty and prefilled", async ({ page }) => {

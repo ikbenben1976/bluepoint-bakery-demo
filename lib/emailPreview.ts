@@ -1,11 +1,12 @@
 import { getProduct } from "@/data/products";
 import { ADDRESS, EMAIL, HOURS, PHONE_DISPLAY } from "@/data/site";
 import type { Draft } from "@/lib/draft";
-import { CUSTOM_FAMILIES, ORDER_FREQUENCIES } from "@/lib/draft";
+import { CUSTOM_FAMILIES } from "@/lib/draft";
 import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
 import {
   areaSummary,
   dateWarning,
+  estimatePhrase,
   extraProductNote,
   kindsInDraft,
   PUBLISHED_CUSTOM_LINE,
@@ -41,8 +42,9 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     const product = getProduct(line.productId);
     if (!product) return `${index + 1}. Unknown item`;
     const bits = [
-      `${index + 1}. ${product.name} (${product.categoryLabel}) — ${line.qty}${line.unit ? ` ${line.unit}` : " (pack size not specified)"}`,
+      `${index + 1}. ${product.name} (${product.categoryLabel}) — ${estimatePhrase(line, product)}`,
     ];
+    if (line.scheduleNote.trim()) bits.push(line.scheduleNote.trim());
     if (line.slice) bits.push(`slice ${line.slice}`);
     if (line.wrapped) bits.push("individually wrapped");
     if (line.dipped) bits.push(line.dipped);
@@ -65,8 +67,6 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     draft.contactPhone && `Phone: ${formatPhone(draft.contactPhone)}`,
     draft.notes.trim() && `Notes: ${draft.notes.trim()}`,
     draft.weeklyQuantity.trim() && `Approximate weekly needs: ${draft.weeklyQuantity.trim()}`,
-    draft.orderFrequency &&
-      `How often: ${ORDER_FREQUENCIES.find(([id]) => id === draft.orderFrequency)?.[1] ?? ""}`,
   ].filter(Boolean);
 
   const sample = draft.askAboutSamples
@@ -91,7 +91,7 @@ export function buildEmailPreview(draft: Draft, now: Date): string {
     lead ? `Lead time: ${lead}` : "",
     warning ? `Date note: ${warning}` : "",
     "",
-    "Products (quantity per delivery):",
+    "Product estimates (not a confirmed order or delivery schedule):",
     itemLines.length ? itemLines.join("\n") : "(none added)",
     "",
     customBits.length

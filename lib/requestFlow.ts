@@ -1,5 +1,6 @@
 import { getProduct, leadKindFor, type Product } from "@/data/products";
-import type { Draft, DraftLine } from "@/lib/draft";
+import { QUANTITY_BASES, type Draft, type DraftLine } from "@/lib/draft";
+import { publishedUnit } from "@/lib/spec";
 import { checkDelivery, normalizePlace } from "@/lib/deliveryArea";
 import {
   earliestDeliveryIso,
@@ -112,7 +113,7 @@ export function validateStep(draft: Draft, step: 1 | 2 | 3, now: Date): string[]
     for (const line of draft.lines) {
       const product = getProduct(line.productId);
       if (!product) continue;
-      if (!Number.isInteger(line.qty) || line.qty < 1) {
+      if (line.qty != null && (!Number.isInteger(line.qty) || line.qty < 1)) {
         errors.push(`Enter a quantity for ${product.name}.`);
       }
       if (product.units.length > 1 && !line.unit) {
@@ -132,8 +133,19 @@ export function validateStep(draft: Draft, step: 1 | 2 | 3, now: Date): string[]
   return errors;
 }
 
+/** Buyer estimate only. Blank stays blank, and Not sure is not a number. */
+export function estimatePhrase(line: DraftLine, product: Product): string {
+  const unit = publishedUnit(product) || line.unit;
+  const amount = line.qty == null ? "" : unit ? `${line.qty} ${unit}` : String(line.qty);
+  if (line.basis === "unsure") return amount ? `${amount}, Not sure` : "Not sure";
+  const basis = line.basis === "week" ? "per week" : line.basis === "delivery" ? "per delivery" : "one-time";
+  if (!amount) return `${QUANTITY_BASES.find(([id]) => id === line.basis)?.[1] ?? "Per week"}, quantity not estimated`;
+  return line.basis === "once" ? `${amount}, one-time` : `${amount} ${basis}`;
+}
+
 export function lineSummary(line: DraftLine, product: Product): string {
-  const bits = [`${product.name} — ${line.qty}${line.unit ? ` ${line.unit}` : ""}`];
+  const bits = [`${product.name} — ${estimatePhrase(line, product)}`];
+  if (line.scheduleNote.trim()) bits.push(line.scheduleNote.trim());
   if (line.slice) bits.push(`slice ${line.slice}`);
   if (line.wrapped) bits.push("individually wrapped");
   if (line.dipped === "dipped" || line.dipped === "undipped") bits.push(line.dipped);

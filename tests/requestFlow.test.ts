@@ -3,14 +3,8 @@ import { test } from "node:test";
 import { products } from "../data/products";
 import { addProductLine, emptyDraft, lineFromProduct } from "../lib/draft";
 import { buildEmailPreview } from "../lib/emailPreview";
-import {
-  areaSummary,
-  dateStatus,
-  dateWarning,
-  extraProductNote,
-  showWrappedChoice,
-  validateStep,
-} from "../lib/requestFlow";
+import { estimatePhrase, areaSummary, dateStatus, dateWarning, extraProductNote, lineSummary, showWrappedChoice, validateStep } from "../lib/requestFlow";
+import { draftFromStored } from "../lib/storage";
 
 const afternoon = new Date("2026-11-03T15:00:00-07:00");
 
@@ -160,4 +154,56 @@ test("the preview keeps catalog lines, written notes, sample questions, and cust
   assert.equal(preview.includes("$"), false);
   assert.equal(preview.toLowerCase().includes("mailto:"), false);
   assert.equal(preview.toLowerCase().includes("free sample"), false);
+  assert.equal(preview.includes("How often:"), false);
+  assert.match(preview, /not a confirmed order or delivery schedule/);
+});
+
+test("a new product starts with a blank per-week estimate, and Not sure can stay blank", () => {
+  const dozen = product("dinner-rolls", "Brioche (Dozen)");
+  const bun = product("buns", 'Brioche Bun 4"');
+  const fresh = lineFromProduct(dozen);
+  assert.equal(fresh.qty, null);
+  assert.equal(fresh.basis, "week");
+  assert.equal(estimatePhrase(fresh, dozen), "Per week, quantity not estimated");
+  assert.equal(estimatePhrase({ ...fresh, qty: 2 }, dozen), "2 dozen per week");
+  assert.equal(estimatePhrase({ ...fresh, qty: 2, basis: "delivery" }, dozen), "2 dozen per delivery");
+  assert.equal(estimatePhrase({ ...fresh, qty: 2, basis: "once" }, dozen), "2 dozen, one-time");
+  assert.equal(estimatePhrase({ ...lineFromProduct(bun), basis: "unsure" }, bun), "Not sure");
+  assert.equal(estimatePhrase({ ...fresh, qty: 2, basis: "unsure" }, dozen), "2 dozen, Not sure");
+  const draft = addProductLine(addProductLine(readyBusiness(), dozen), bun);
+  draft.lines[1] = { ...draft.lines[1], basis: "unsure", scheduleNote: "Skip some weeks." };
+  assert.deepEqual(validateStep(draft, 2, afternoon), []);
+  assert.match(lineSummary(draft.lines[1], bun), /Not sure/);
+  assert.match(lineSummary(draft.lines[1], bun), /Skip some weeks/);
+  const preview = buildEmailPreview(draft, afternoon);
+  assert.match(preview, /2 dozen per week|Per week, quantity not estimated/);
+  assert.match(preview, /Brioche Bun 4".*Not sure/);
+  assert.doesNotMatch(preview, /How often:/);
+});
+
+test("older saved drafts keep their quantities as per delivery and do not invent 1", () => {
+  const dozen = product("dinner-rolls", "Brioche (Dozen)");
+  const migrated = draftFromStored({
+    notes: "Side door.",
+    orderFrequency: "few-times",
+    weeklyQuantity: "about 20 dozen",
+    lines: [{ productId: dozen.id, qty: 4, unit: "dozen", slice: "", wrapped: false, dipped: "" }],
+  });
+  assert.equal(migrated.lines[0]?.qty, 4);
+  assert.equal(migrated.lines[0]?.basis, "delivery");
+  assert.match(migrated.notes, /Side door\./);
+  assert.match(migrated.notes, /Earlier answer, not a product schedule: how often — A few times a week\./);
+  assert.equal("orderFrequency" in migrated, false);
+  const again = draftFromStored({ notes: migrated.notes, lines: migrated.lines });
+  assert.equal(again.notes.match(/Earlier answer/g)?.length, 1);
+
+  const blank = draftFromStored({
+    lines: [
+      { productId: dozen.id, qty: null, basis: "unsure", scheduleNote: "" },
+      { productId: dozen.id, qty: 0 },
+    ],
+  });
+  assert.equal(blank.lines[0]?.qty, null);
+  assert.equal(blank.lines[0]?.basis, "unsure");
+  assert.equal(blank.lines.filter((line) => line.qty === 0 || line.qty === 1).length, 0);
 });
