@@ -209,7 +209,7 @@ test("the mobile catalog request CTA is unobstructed and contact is in navigatio
     expect(overlaps, `contact pill covers the request link at ${width}px`).toBeFalsy();
     if (width < 800) {
       await page.getByRole("button", { name: "Menu" }).click();
-      await expect(page.locator(".mobile-menu-actions").getByRole("link", { name: /Request pricing/ })).toBeVisible();
+      await expect(page.locator("#mobile-menu nav").getByRole("link", { name: "Request pricing" })).toBeVisible();
     }
   }
 });

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { useCallSheet } from "@/components/CallSheet";
 import { useRequestCount } from "@/components/useRequestCount";
-import { requestPricingHref, requestPricingLabel } from "@/lib/requestLink";
+import { requestPricingHref } from "@/lib/requestLink";
 
 export function Notice() {
   const { open, setOpen } = useCallSheet();
@@ -91,7 +91,7 @@ export function Notice() {
         <div className="call-notice-actions">
           <a href={`tel:${PHONE_TEL}`}>Call</a>
           <a href={`mailto:${EMAIL}`}>Email</a>
-          <Link href={requestPricingHref(requestCount)}>{requestPricingLabel(requestCount)}</Link>
+          <Link href={requestPricingHref(requestCount)}>Request pricing</Link>
           <button type="button" onClick={dismiss}>
             Close
           </button>
