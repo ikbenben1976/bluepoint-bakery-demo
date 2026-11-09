@@ -4,7 +4,7 @@ import { WholesaleRequest } from "@/components/WholesaleRequest";
 import { categoryPhotos } from "@/data/photos";
 
 export const metadata: Metadata = {
-  title: "Let's get your wholesale account started",
+  title: "Request a wholesale account",
   description:
     "Prepare a new wholesale account request for Bluepoint Bakery. The demo previews an email to sales@bluepointbakery.com and does not send it.",
   alternates: { canonical: "/wholesale/" },
@@ -15,10 +15,11 @@ export default function WholesalePage() {
   return (
     <>
       <PageHero
+        className="wholesale-hero"
         kicker="New accounts"
-        title="Become a wholesale customer"
+        title="Request a wholesale account"
         image={categoryPhotos.croissants}
-        lede={<p>Tell us about your business, the products you&apos;re interested in and your anticipated needs. Our sales team can help with the next steps.</p>}
+        lede={<p>Tell Bluepoint what you need. At the end, you’ll have an inquiry to email to our sales team.</p>}
       />
       <WholesaleRequest />
     </>

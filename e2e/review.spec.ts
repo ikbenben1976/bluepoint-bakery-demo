@@ -97,14 +97,14 @@ test("products keep separate estimates, and a blank Not sure stays blank", async
 
   await expect(page).toHaveURL(/\/wholesale\/#request-lines/);
   await expect(page.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" })).toHaveValue("2");
-  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("week");
+  await expect(page.getByRole("combobox", { name: "How often? Delivery frequency for Brioche (Dozen)" })).toHaveValue("week");
   await expect(page.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
-  await expect(page.getByRole("combobox", { name: 'Estimate basis for Brioche Bun 4"' })).toHaveValue("unsure");
-  await page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" }).selectOption("once");
-  await page.getByRole("textbox", { name: "Delivery preferences for Brioche (Dozen)" }).fill("Holiday tray only.");
+  await expect(page.getByRole("combobox", { name: 'How often? Delivery frequency for Brioche Bun 4"' })).toHaveValue("unsure");
+  await page.getByRole("combobox", { name: "How often? Delivery frequency for Brioche (Dozen)" }).selectOption("once");
+  await page.getByRole("textbox", { name: "Product-specific notes for Brioche (Dozen)" }).fill("Holiday tray only.");
   await page.reload();
-  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("once");
-  await expect(page.getByRole("textbox", { name: "Delivery preferences for Brioche (Dozen)" })).toHaveValue("Holiday tray only.");
+  await expect(page.getByRole("combobox", { name: "How often? Delivery frequency for Brioche (Dozen)" })).toHaveValue("once");
+  await expect(page.getByRole("textbox", { name: "Product-specific notes for Brioche (Dozen)" })).toHaveValue("Holiday tray only.");
   await expect(page.getByRole("spinbutton", { name: 'Estimated quantity for Brioche Bun 4"' })).toHaveValue("");
 
   await page.getByRole("button", { name: "Business", exact: true }).click();
@@ -161,7 +161,7 @@ test("an older saved draft keeps its quantity as per delivery", async ({ page })
   });
   await page.goto("/wholesale/#request-lines");
   await expect(page.getByRole("spinbutton", { name: "Estimated quantity for Brioche (Dozen)" })).toHaveValue("4");
-  await expect(page.getByRole("combobox", { name: "Estimate basis for Brioche (Dozen)" })).toHaveValue("delivery");
+  await expect(page.getByRole("combobox", { name: "How often? Delivery frequency for Brioche (Dozen)" })).toHaveValue("delivery");
   await page.getByRole("button", { name: "Review", exact: true }).click();
   const review = page.getByTestId("inquiry-confirmation");
   await expect(review.getByText(/Brioche \(Dozen\) — 4 dozen per delivery/)).toBeVisible();
@@ -190,15 +190,15 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Select or describe at least one product.");
   await page.locator("#inquiry-products").fill("Sesame kaiser rolls");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Enter a delivery city.");
   await page.locator("#inquiry-delivery").fill("Denver");
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("does not submit your inquiry");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
-    "Nothing has been submitted or ordered.",
+    "Preview only — not submitted",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");
@@ -234,7 +234,7 @@ test("keyboard can complete the wholesale form", async ({ page }) => {
   await fillWithKeyboard("#inquiry-delivery", "Denver");
   await page.locator("#inquiry-consent").focus();
   await page.keyboard.press("Space");
-  await page.getByRole("button", { name: "Preview request" }).focus();
+  await page.getByRole("button", { name: "Continue to review" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
@@ -394,7 +394,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Interested in trying products first");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("hamburger buns");
@@ -607,7 +607,7 @@ test("wholesale preview keeps catalog selection AND additional requirements", as
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
 });
@@ -853,8 +853,7 @@ test("assortment thumbnails remain contained inside their own positioned cards",
 
 test("wholesale request uses a compact picker, not the entire catalog grid", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/wholesale/");
-  await page.getByRole("button", { name: "Products", exact: true }).click();
+  await page.goto("/wholesale/#request-lines");
   await expect(page.locator(".inquiry-catalog .product-card")).toHaveCount(0);
   await expect(page.locator("#inquiry-picker-product")).toBeVisible();
   await page.locator("#inquiry-picker-product").selectOption({ label: 'Brioche Bun 4"' });
