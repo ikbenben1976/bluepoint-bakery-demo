@@ -198,7 +198,7 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
-    "Nothing has been submitted or ordered.",
+    "Preview only — not submitted",
   );
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Sesame kaiser rolls");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("sales@bluepointbakery.com");

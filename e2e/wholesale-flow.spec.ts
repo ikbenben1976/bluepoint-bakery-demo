@@ -83,7 +83,7 @@ test("product options follow the catalog and an early date warns without blockin
   await page.getByRole("button", { name: "Preview request" }).click();
 
   const review = page.getByTestId("inquiry-confirmation");
-  await expect(review).toContainText("Nothing has been submitted or ordered.");
+  await expect(review).toContainText("Preview only — not submitted");
   await expect(review).toContainText('Vienna White — Per week, quantity not estimated; slice 5/8"');
   await expect(review).toContainText("Pumpkin Chocolate — 2 loaf per week");
   await expect(review).toContainText("Almond — Per week, quantity not estimated; undipped");
@@ -121,13 +121,16 @@ test("copy summary reads the unsent preview", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await resetRequest(page);
   await fillBusiness(page);
-  await page.locator("#inquiry-products").fill("Kaiser rolls");
+  await page.getByRole("link", { name: "describe what you’re looking for" }).click();
+  const description = page.locator("#inquiry-products");
+  await expect(description).toBeInViewport();
+  await description.fill("Kaiser rolls");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Boulder");
   await page.getByRole("checkbox", { name: /my information will not be sent automatically/i }).check();
   await page.getByRole("button", { name: "Preview request" }).click();
   await page.getByRole("button", { name: "Copy inquiry" }).click();
-  await expect(page.getByText("Summary copied.")).toBeVisible();
+  await expect(page.getByText("Inquiry copied. Paste it into your email to Bluepoint.")).toBeVisible();
   const copied = await page.evaluate(() => navigator.clipboard.readText());
   expect(copied).toContain("DEMO PREVIEW");
   expect(copied).toContain("nothing has been sent or ordered");
@@ -154,9 +157,9 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(paths.getByRole("link", { name: "(303) 298-1100" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(paths.getByRole("link", { name: "sales@bluepointbakery.com" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
   await expect(page.locator(".request-notice")).toHaveText(
-    "Demo preview: Your information is not submitted. You can review and copy your inquiry to share with Bluepoint directly.",
+    "Demo only. Your draft is saved in this browser. When you’re ready, copy your inquiry and email it to Bluepoint.",
   );
-  await expect(paths).toContainText("New to Bluepoint?");
+  await expect(paths.getByRole("heading", { name: "Already a customer?" })).toBeVisible();
 
   await page.goto("/");
   await page.locator(".customer-login summary").click();
@@ -252,17 +255,22 @@ test("request steps use the column width and leave the contact pill clear", asyn
         expect(typeSize.help, `${step} hint smaller than body at ${width}px`).toBeLessThan(typeSize.body);
       }
       await expect(page.locator(".request-progress-title")).toContainText(/Step [1-4] of 4/);
-      await page.evaluate((slug) => {
+      await page.evaluate(() => {
         const root = document.documentElement;
         const previous = root.style.scrollBehavior;
         root.style.scrollBehavior = "auto";
-        const el = document.querySelector(`[data-step="${slug}"]`);
+        const el = document.querySelector(".request-progress");
         if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY - 96;
+          const header = document.querySelector(".sticky-stack")?.getBoundingClientRect().bottom ?? 0;
+          const top = el.getBoundingClientRect().top + window.scrollY - header - 12;
           window.scrollTo(0, Math.max(0, top));
         }
         root.style.scrollBehavior = previous;
-      }, step);
+      });
+      const steps = page.getByRole("navigation", { name: "Request steps" });
+      for (const label of ["Business", "Products", "Delivery", "Review"]) {
+        await expect(steps.getByText(label, { exact: true })).toBeInViewport({ ratio: 0.9 });
+      }
       await page.screenshot({
         path: testInfo.outputPath(`flow-${step}-${width}.png`),
         animations: "disabled",

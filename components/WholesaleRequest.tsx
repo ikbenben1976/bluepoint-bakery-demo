@@ -21,7 +21,7 @@ import {
   showWrappedChoice,
   validateStep,
 } from "@/lib/requestFlow";
-import { headerClearance, scrollBehavior, scrollBelowHeader } from "@/lib/scrollPage";
+import { scrollBehavior, scrollBelowHeader } from "@/lib/scrollPage";
 import { REQUEST_CHANGE_EVENT, clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 
 const STEP_KEY = "bluepoint-demo-request-step";
@@ -38,19 +38,20 @@ function RequestProgress({ step, onGo }: { step: number; onGo: (next: number) =>
   return (
     <nav className="request-progress" aria-label="Request steps">
       <p className="request-progress-title">
-        Step {step} of 4 · {current.label}
+        Step {step} of {STEPS.length} · {current.label}
       </p>
       <ol>
         {STEPS.map((item) => {
-          const place = item.id < step ? "complete" : item.id === step ? "current" : "upcoming";
+          const isCurrent = item.id === step;
           return (
-            <li key={item.slug} data-index={item.id} className={`step-${place}`}>
+            <li key={item.slug}>
               <button
                 type="button"
-                aria-current={item.id === step ? "step" : undefined}
+                aria-current={isCurrent ? "step" : undefined}
                 onClick={() => onGo(item.id)}
               >
-                <span className="step-name">{item.label}</span>
+                <span className="step-number" aria-hidden="true">{item.id}</span>
+                <span>{item.label}</span>
               </button>
             </li>
           );
@@ -96,7 +97,7 @@ function pillLimit(): number {
   return box.height > 0 ? box.top : window.innerHeight;
 }
 
-/** Step circles and the step heading sit just under the sticky header. */
+/** Keep step navigation visible below the sticky header after moving between steps. */
 function scrollToStep(behavior: ScrollBehavior) {
   const progress = document.querySelector(".request-progress");
   if (!(progress instanceof HTMLElement)) return;
@@ -105,12 +106,6 @@ function scrollToStep(behavior: ScrollBehavior) {
   if (current instanceof HTMLElement) current.focus({ preventScroll: true });
 }
 
-/**
- * Hash landings. On a phone, #wholesale-request keeps the account intro when
- * the step heading still clears the contact button. Otherwise the circles
- * come up under the header. On a wider screen the page heading stays clear
- * of the nav and the circles remain in view.
- */
 function landHash(hash: string, behavior: ScrollBehavior) {
   if (hash === "#sample-request" || hash === "#request-lines") {
     const target = document.getElementById(hash.slice(1));
@@ -128,21 +123,8 @@ function landHash(hash: string, behavior: ScrollBehavior) {
       return;
     }
   }
-  const intro = document.getElementById("account-paths-title");
-  const visible = intro instanceof HTMLElement ? intro : anchor;
-  const heading = document.querySelector("[data-testid='wholesale-step'] h2");
   const progress = document.querySelector(".request-progress");
-  if (heading instanceof HTMLElement && progress instanceof HTMLElement) {
-    const visibleDoc = visible.getBoundingClientRect().top + window.scrollY;
-    const rough = Math.max(0, visibleDoc - 140);
-    const dest = Math.max(0, visibleDoc - headerClearance(rough));
-    const headingBottom = heading.getBoundingClientRect().bottom - (dest - window.scrollY);
-    if (headingBottom > pillLimit() - 16) {
-      scrollBelowHeader(progress, behavior, anchor);
-      return;
-    }
-  }
-  scrollBelowHeader(visible, behavior, anchor);
+  scrollBelowHeader(progress instanceof HTMLElement ? progress : anchor, behavior, anchor);
 }
 
 export function WholesaleRequest() {
@@ -390,14 +372,7 @@ export function WholesaleRequest() {
 
   return (
     <div id="wholesale-request" className="shell request-flow" data-testid="request-flow">
-      {step < 4 ? (
-        <>
-          <AccountPaths />
-          <p className="request-notice">
-            Demo preview: Your information is not submitted. You can review and copy your inquiry to share with Bluepoint directly.
-          </p>
-        </>
-      ) : null}
+      <RequestProgress step={step} onGo={goTo} />
       {step < 4 ? (
         <form
           data-testid="inquiry-form"
@@ -416,23 +391,24 @@ export function WholesaleRequest() {
           ) : null}
           {step === 1 ? (
             <section data-testid="wholesale-step" data-step="business">
-              <RequestProgress step={1} onGo={goTo} />
-              <h2>Business</h2>
-              <p className="request-help">Your progress is saved in this browser so you can return to it later.</p>
+              <h2>Business and contact details</h2>
+              <p className="request-notice">Demo only. Your draft is saved in this browser. When you’re ready, copy your inquiry and email it to Bluepoint.</p>
               <div className="request-grid">
                 <label>
                   Business name
                   <input
                     id="inquiry-business"
+                    required
                     value={draft.businessName}
                     autoComplete="organization"
                     onChange={(event) => setDraft({ ...draft, businessName: event.target.value })}
                   />
                 </label>
                 <label>
-                  Customer type
+                  Business type
                   <select
                     id="inquiry-type"
+                    required
                     value={draft.businessType}
                     onChange={(event) => setDraft({ ...draft, businessType: event.target.value })}
                   >
@@ -448,6 +424,7 @@ export function WholesaleRequest() {
                   Contact name
                   <input
                     id="inquiry-contact"
+                    required
                     value={draft.contactName}
                     autoComplete="name"
                     onChange={(event) => setDraft({ ...draft, contactName: event.target.value })}
@@ -457,6 +434,7 @@ export function WholesaleRequest() {
                   Email
                   <input
                     id="inquiry-email"
+                    required
                     type="email"
                     value={draft.contactEmail}
                     autoComplete="email"
@@ -467,6 +445,7 @@ export function WholesaleRequest() {
                   Phone
                   <input
                     id="inquiry-phone"
+                    required
                     type="tel"
                     value={draft.contactPhone}
                     autoComplete="tel"
@@ -474,17 +453,17 @@ export function WholesaleRequest() {
                   />
                 </label>
                 <label>
-                  Approximate weekly needs
+                  <span>Approximate weekly needs <span className="field-optional">(optional)</span></span>
                   <input
                     id="inquiry-quantity"
+                    placeholder="e.g. 10 dozen rolls per week"
                     value={draft.weeklyQuantity}
                     onChange={(event) => setDraft({ ...draft, weeklyQuantity: event.target.value })}
                   />
                 </label>
               </div>
-              <p className="request-help">An estimate is fine—we can discuss the details later.</p>
               <label>
-                Notes for the bakery
+                <span>Notes for the bakery <span className="field-optional">(optional)</span></span>
                 <textarea
                   id="inquiry-notes"
                   rows={3}
@@ -505,13 +484,12 @@ export function WholesaleRequest() {
 
           {step === 2 ? (
             <section data-testid="wholesale-step" data-step="products">
-              <RequestProgress step={2} onGo={goTo} />
-              <h2>Products and options</h2>
-              <p className="request-help">Available options are shown for each product.</p>
+              <h2>Products you’re interested in</h2>
+              <p className="request-help">Add at least one catalog product or <a href="#inquiry-products">describe what you’re looking for</a>.</p>
               <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
                 <h3 id="inquiry-picker-title">Add a product to your request</h3>
                 <p>
-                  Or <Link href="/breads">browse breads</Link> and <Link href="/pastries">pastries</Link>.
+                  <Link href="/breads">Browse breads</Link> or <Link href="/pastries">browse pastries</Link> to see what’s available.
                 </p>
                 <div className="inquiry-picker-controls">
                   <label htmlFor="inquiry-picker-product">Product</label>
@@ -545,7 +523,12 @@ export function WholesaleRequest() {
                 </div>
               </section>
               <div id="request-lines">
-              <p className="request-help">Enter your estimated needs for each product.</p>
+              {draft.lines.length > 0 ? (
+                <header>
+                  <h3>Products in your inquiry</h3>
+                  <p className="request-help">Choose a pack size or slice thickness where prompted. You can leave quantities blank.</p>
+                </header>
+              ) : null}
               {draft.lines.length > 0 ? (
                 <ul className="request-lines">
                   {draft.lines.map((line) => {
@@ -560,7 +543,7 @@ export function WholesaleRequest() {
                         <div className="request-line-grid">
                           <label>
                             <span>
-                              Estimated quantity
+                              Estimated quantity <span className="field-optional">(optional)</span>
                               {publishedUnit(product) ? <span className="qty-unit"> {publishedUnit(product)}</span> : null}
                             </span>
                             <input
@@ -575,9 +558,9 @@ export function WholesaleRequest() {
                             />
                           </label>
                           <label>
-                            Estimate basis
+                            How often?
                             <select
-                              aria-label={`Estimate basis for ${product.name}`}
+                              aria-label={`How often? Delivery frequency for ${product.name}`}
                               value={line.basis}
                               onChange={(event) => updateLine(product.id, { basis: event.target.value as QuantityBasis })}
                             >
@@ -589,11 +572,11 @@ export function WholesaleRequest() {
                             </select>
                           </label>
                           <label>
-                            Delivery preferences or varying needs
+                            <span>Product-specific notes <span className="field-optional">(optional)</span></span>
                             <textarea
                               rows={2}
                               maxLength={500}
-                              aria-label={`Delivery preferences for ${product.name}`}
+                              aria-label={`Product-specific notes for ${product.name}`}
                               value={line.scheduleNote}
                               onChange={(event) => updateLine(product.id, { scheduleNote: event.target.value })}
                             />
@@ -601,10 +584,11 @@ export function WholesaleRequest() {
                           {product.units.length > 1 ? (
                             <label>
                               Pack size
-                            <select
-                              id={`inquiry-unit-${product.id}`}
-                              aria-label={`Pack size for ${product.name}`}
-                              value={line.unit}
+                              <select
+                                id={`inquiry-unit-${product.id}`}
+                                required
+                                aria-label={`Pack size for ${product.name}`}
+                                value={line.unit}
                                 onChange={(event) => updateLine(product.id, { unit: event.target.value })}
                               >
                                 <option value="">Choose a published pack size</option>
@@ -621,10 +605,11 @@ export function WholesaleRequest() {
                           {slices.length > 1 ? (
                             <label>
                               Slice thickness
-                            <select
-                              id={`inquiry-slice-${product.id}`}
-                              aria-label={`Slice thickness for ${product.name}`}
-                              value={line.slice}
+                              <select
+                                id={`inquiry-slice-${product.id}`}
+                                required
+                                aria-label={`Slice thickness for ${product.name}`}
+                                value={line.slice}
                                 onChange={(event) => updateLine(product.id, { slice: event.target.value })}
                               >
                                 <option value="">Choose a published thickness</option>
@@ -689,7 +674,7 @@ export function WholesaleRequest() {
               ) : null}
               </div>
               <label>
-                Other products or requirements
+                Describe what you’re looking for
                 <textarea
                   id="inquiry-products"
                   rows={3}
@@ -697,9 +682,9 @@ export function WholesaleRequest() {
                   onChange={(event) => setDraft({ ...draft, productsText: event.target.value })}
                 />
               </label>
-              <p className="request-help">Include any additional products, special requests or questions here.</p>
+              <p className="request-help">Use this field for products you can’t find or to describe what you need in your own words.</p>
               <fieldset className="custom-interest">
-                <legend>Special requests &amp; customization</legend>
+                <legend>Customization <span className="field-optional">(optional)</span></legend>
                 <p>
                   Have a specific product, size or packaging requirement in mind? Tell us what you&apos;re looking for.
                 </p>
@@ -739,7 +724,7 @@ export function WholesaleRequest() {
                 </label>
               </fieldset>
               <fieldset className="sample-interest" id="sample-request">
-                <legend>Samples</legend>
+                <legend>Samples <span className="field-optional">(optional)</span></legend>
                 <label className="choice-label">
                   <input
                     type="checkbox"
@@ -774,14 +759,14 @@ export function WholesaleRequest() {
 
           {step === 3 ? (
             <section data-testid="wholesale-step" data-step="delivery">
-              <RequestProgress step={3} onGo={goTo} />
               <h2>Delivery preferences</h2>
               <p className="request-help">
-                Bluepoint bakes and delivers six days a week. Select your preferred timing; the bakery will confirm availability and route details.
+                Enter the city where you need delivery. Bluepoint’s sales team will confirm service to your address and available delivery days.
               </p>
               <label htmlFor="inquiry-delivery">Delivery city</label>
               <input
                 id="inquiry-delivery"
+                required
                 value={draft.deliveryCity}
                 autoComplete="off"
                 onChange={(event) => setDraft({ ...draft, deliveryCity: event.target.value })}
@@ -802,9 +787,9 @@ export function WholesaleRequest() {
                 <Link href="/delivery">See the delivery map</Link>.
               </p>
               <fieldset className="day-fieldset">
-                <legend>Preferred delivery days</legend>
+                <legend>Preferred delivery days <span className="field-optional">(optional)</span></legend>
                 <p className="request-help">
-                  Select preferred delivery days, or leave this blank if you&apos;re flexible. Final scheduling is subject to confirmation.
+                  Choose the days that work for you, or leave this blank if you’re flexible.
                 </p>
                 <div className="day-choices">
                   {DELIVERY_DAYS.map((day) => {
@@ -828,7 +813,7 @@ export function WholesaleRequest() {
                   })}
                 </div>
               </fieldset>
-              <label htmlFor="inquiry-start">When would you like to start?</label>
+              <label htmlFor="inquiry-start">Preferred start date <span className="field-optional">(optional)</span></label>
               <input
                 id="inquiry-start"
                 type="date"
@@ -841,6 +826,7 @@ export function WholesaleRequest() {
               <label className="choice-label">
                 <input
                   id="inquiry-consent"
+                  required
                   type="checkbox"
                   checked={draft.consent}
                   onChange={(event) => setDraft({ ...draft, consent: event.target.checked })}
@@ -860,20 +846,13 @@ export function WholesaleRequest() {
         </form>
       ) : (
         <section data-testid="inquiry-confirmation" data-step="review" id="inquiry-confirmation">
-          <RequestProgress step={4} onGo={goTo} />
           <article className="review-card">
             <header className="review-head">
-              <div>
-                <p className="kicker">Review your wholesale inquiry</p>
-                <h2>Your request</h2>
-              </div>
+              <h2>Review your wholesale inquiry</h2>
               <p className="demo-badge">Preview only — not submitted</p>
             </header>
             <p id="send-notice">
-              Nothing has been submitted or ordered. Copy your inquiry to share it with Bluepoint.
-            </p>
-            <p>
-              Share this summary with the bakery at <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or {PHONE_DISPLAY}.
+              Check your details, then copy your inquiry and paste it into an email to <a href={`mailto:${EMAIL}`}>{EMAIL}</a> to discuss account setup.
             </p>
             <div className="request-actions">
               <button type="button" className="btn btn-primary" onClick={copySummary}>
@@ -888,7 +867,7 @@ export function WholesaleRequest() {
             ) : null}
             {copied ? (
               <p className="request-help" role="status">
-                Summary copied.
+                Inquiry copied. Paste it into your email to Bluepoint.
               </p>
             ) : null}
             <dl className="inquiry-summary">
@@ -1012,6 +991,7 @@ export function WholesaleRequest() {
           </article>
         </section>
       )}
+      {step === 1 ? <AccountPaths /> : null}
     </div>
   );
 }
@@ -1020,20 +1000,15 @@ function AccountPaths() {
   return (
     <section className="account-paths" aria-labelledby="account-paths-title">
       <h2 id="account-paths-title">Already a customer?</h2>
-      <div className="account-path-grid">
-        <p className="account-path">
-          <strong>Existing customers</strong> order by phone at <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>, by email at{" "}
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>, or through{" "}
-          <a href={ORDER_URL} target="_blank" rel="noopener noreferrer">
-            Order online (existing customers)
-          </a>
-          {". "}
-          <a href={PAY_URL} target="_blank" rel="noopener noreferrer">Pay an invoice</a> is a separate login.
-        </p>
-        <p className="account-path">
-          <strong>New to Bluepoint?</strong> Start by preparing your wholesale inquiry below. Contact the bakery to discuss next steps.
-        </p>
-      </div>
+      <p className="account-path">
+        <a href={ORDER_URL} target="_blank" rel="noopener noreferrer">Order online (existing customers)</a>
+        {" · "}
+        <a href={PAY_URL} target="_blank" rel="noopener noreferrer">Pay an invoice</a>
+        {" · "}
+        <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
+        {" · "}
+        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </p>
     </section>
   );
 }
