@@ -11,8 +11,9 @@ import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
 import { cardFacts, categoryNotice, leadWords, specRows } from "@/lib/spec";
 import { REQUEST_CHANGE_EVENT, loadDraft, saveDraft } from "@/lib/storage";
-import { requestPricingHref } from "@/lib/requestLink";
+import { requestBarLabel, requestPricingHref } from "@/lib/requestLink";
 import { useRequestCount } from "@/components/useRequestCount";
+import { useRequestSheet } from "@/components/RequestSheet";
 
 type Props = {
   groups: readonly CatalogGroup[];
@@ -25,13 +26,12 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const [category, setCategory] = useState("all");
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
-  const [requestNote, setRequestNote] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const resultsRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
   const pathname = usePathname() || "/";
   const requestCount = useRequestCount();
-  const requestHref = "/wholesale/#request-lines";
+  const { openSheet, notifyAdded } = useRequestSheet();
   const catalogPath = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const showRequestBar = !onAdd && requestCount > 0 && (catalogPath === "/breads" || catalogPath === "/pastries");
 
@@ -57,38 +57,34 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   function add(product: Product) {
     if (onAdd) {
       onAdd(product);
-      setRequestNote(true);
-      setNote(`${product.name} added to your request.`);
+      notifyAdded();
       return;
     }
-    const next = addProductLine(loadDraft(), product);
+    const before = loadDraft();
+    const next = addProductLine(before, product);
+    if (next.lines.length === before.lines.length) return;
     saveDraft(next);
     setStoredIds(next.lines.map((line) => line.productId));
-    setRequestNote(true);
-    setNote(`${product.name} added to your request.`);
+    notifyAdded();
   }
 
   function toggleCompare(product: Product) {
     if (compareIds.includes(product.id)) {
       setCompareIds(compareIds.filter((id) => id !== product.id));
-      setRequestNote(false);
       setNote(`${product.name} removed from the comparison.`);
       return;
     }
     if (compareIds.length >= 3) {
-      setRequestNote(false);
       setNote("Compare up to 3 products.");
       return;
     }
     setCompareIds([...compareIds, product.id]);
-    setRequestNote(false);
     setNote(`${product.name} added to the comparison.`);
   }
 
   function resetFilters() {
     setQuery("");
     setCategory("all");
-    setRequestNote(false);
     setNote("Search and filters cleared.");
   }
 
@@ -166,12 +162,6 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       </div>
       <p role="status" className="mt-4 min-h-6 text-sm font-semibold text-site">
         {note}
-        {requestNote ? (
-          <>
-            {" "}
-            <Link href={requestHref}>View request</Link>
-          </>
-        ) : null}
       </p>
       {compared.length > 0 ? (
         <section className="compare-panel" aria-label="Compare products" data-testid="compare-panel">
@@ -194,7 +184,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                     Remove from comparison
                   </button>
                   {selected.has(product.id) ? (
-                    <Link className="in-request" href={requestHref}>In your request</Link>
+                    <button type="button" className="in-request" onClick={openSheet}>In your request</button>
                   ) : (
                     <button type="button" className="btn btn-primary" onClick={() => add(product)}>
                       Add to request
@@ -303,7 +293,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
                       {compareIds.includes(product.id) ? "In comparison" : "Compare"}
                     </button>
                     {selected.has(product.id) ? (
-                      <Link className="in-request" href={requestHref}>In your request</Link>
+                      <button type="button" className="in-request" onClick={openSheet}>In your request</button>
                     ) : (
                       <button type="button" className="btn btn-ghost" onClick={() => add(product)}>
                         Add to request
@@ -320,7 +310,9 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       </div>
       {showRequestBar ? (
         <div className="view-request-bar no-print">
-          <Link href={requestHref}>View request ({requestCount})</Link>
+          <button type="button" onClick={openSheet}>
+            {requestBarLabel(requestCount)}
+          </button>
         </div>
       ) : null}
     </div>

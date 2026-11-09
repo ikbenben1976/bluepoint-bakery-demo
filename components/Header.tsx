@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { LogoLockup } from "@/components/Mark";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
-import { requestPricingHref, requestPricingLabel } from "@/lib/requestLink";
+import { requestPricingHref } from "@/lib/requestLink";
 import { useRequestCount } from "@/components/useRequestCount";
 
 function normalize(path: string): string {
@@ -19,7 +19,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const requestCount = useRequestCount();
   const pricingHref = requestPricingHref(requestCount);
-  const pricingLabel = requestPricingLabel(requestCount);
+  const pricingCurrent = pathname === "/wholesale" ? "page" : undefined;
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -78,6 +78,9 @@ export function Header() {
               </Link>
             );
           })}
+          <Link href={pricingHref} className="nav-link" aria-current={pricingCurrent}>
+            Request pricing
+          </Link>
         </nav>
         <div className="util">
           <a className="util-phone" href={`tel:${PHONE_TEL}`}>
@@ -89,9 +92,6 @@ export function Header() {
             </svg>
             {PHONE_DISPLAY}
           </a>
-          <Link href={pricingHref} className="btn btn-primary header-pricing">
-            {pricingLabel}
-          </Link>
           <details className="customer-login">
             <summary>Customer login</summary>
             <div className="customer-login-panel">
@@ -123,9 +123,9 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+          <Link href={pricingHref}>Request pricing</Link>
         </nav>
         <div className="mobile-menu-actions">
-          <Link href={pricingHref} className="btn btn-primary mobile-pricing">{pricingLabel}</Link>
           <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
           <a href={ORDER_URL}>Order online (existing customers)</a>
           <a href={PAY_URL}>Pay an invoice</a>

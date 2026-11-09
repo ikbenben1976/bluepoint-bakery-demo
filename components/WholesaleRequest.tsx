@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL, HOURS, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
@@ -21,7 +21,8 @@ import {
   showWrappedChoice,
   validateStep,
 } from "@/lib/requestFlow";
-import { clearDraft, loadDraft, saveDraft } from "@/lib/storage";
+import { REQUEST_CHANGE_EVENT, clearDraft, loadDraft, saveDraft } from "@/lib/storage";
+import { useRequestSheet } from "@/components/RequestSheet";
 
 const STEP_KEY = "bluepoint-demo-request-step";
 
@@ -80,6 +81,8 @@ export function WholesaleRequest() {
   const [copied, setCopied] = useState(false);
   const [copyFallback, setCopyFallback] = useState(false);
   const [pickerId, setPickerId] = useState("");
+  const { notifyAdded } = useRequestSheet();
+  const writing = useRef(false);
 
   useEffect(() => {
     const saved = loadDraft();
@@ -97,8 +100,21 @@ export function WholesaleRequest() {
   }, []);
 
   useEffect(() => {
-    if (ready) saveDraft(draft);
+    if (!ready) return;
+    writing.current = true;
+    saveDraft(draft);
+    writing.current = false;
   }, [draft, ready]);
+
+  useEffect(() => {
+    const onChange = () => {
+      if (writing.current) return;
+      const saved = loadDraft();
+      setDraft((current) => (JSON.stringify(current) === JSON.stringify(saved) ? current : saved));
+    };
+    window.addEventListener(REQUEST_CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(REQUEST_CHANGE_EVENT, onChange);
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -173,7 +189,11 @@ export function WholesaleRequest() {
   }
 
   function addProduct(product: Product) {
-    setDraft((current) => addProductLine(current, product));
+    setDraft((current) => {
+      const next = addProductLine(current, product);
+      if (next.lines.length > current.lines.length) notifyAdded();
+      return next;
+    });
     setPickerId("");
   }
 
