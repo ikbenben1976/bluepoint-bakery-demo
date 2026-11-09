@@ -187,17 +187,26 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
               const options = optionText(line, product.units);
               const unit = publishedUnit(product);
               return (
-                <li key={line.productId} className="request-sheet-item">
-                  <div className="request-thumb">
-                    <Image src={visual.webp} alt="" width={68} height={68} />
-                    <span>Illustrative</span>
+                <li key={line.productId} className="request-line">
+                  <div className="request-thumb-col">
+                    <div className="request-thumb">
+                      <Image src={visual.webp} alt="" width={96} height={96} className="request-thumb-img" />
+                    </div>
+                    <p className="request-thumb-note">Illustrative</p>
                   </div>
-                  <div>
-                    <h3>{product.name}</h3>
-                    {options ? <p>{options}</p> : null}
-                    <label>
-                      Quantity per delivery
-                      {unit ? <span className="qty-unit"> {unit}</span> : null}
+                  <div className="request-line-copy">
+                    <div className="request-line-top">
+                      <h3>{product.name}</h3>
+                      <button type="button" className="request-remove" onClick={() => removeLine(line.productId)}>
+                        Remove
+                      </button>
+                    </div>
+                    {options ? <p className="request-line-options">{options}</p> : null}
+                    <label className="request-qty">
+                      <span>
+                        Quantity per delivery
+                        {unit ? <span className="qty-unit"> · {unit}</span> : null}
+                      </span>
                       <input
                         type="number"
                         min={1}
@@ -208,9 +217,6 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
                         onChange={(event) => updateQty(line.productId, event.target.value)}
                       />
                     </label>
-                    <button type="button" className="btn btn-ghost" onClick={() => removeLine(line.productId)}>
-                      Remove
-                    </button>
                   </div>
                 </li>
               );
