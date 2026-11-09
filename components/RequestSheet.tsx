@@ -40,41 +40,13 @@ function optionText(line: DraftLine): string {
 
 export function RequestSheetProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [toast, setToast] = useState(false);
-  const toastTimer = useRef<number | null>(null);
   const titleId = useId();
-
-  const openSheet = useCallback(() => {
-    setToast(false);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    setOpen(true);
-  }, []);
-
+  const openSheet = useCallback(() => setOpen(true), []);
   const closeSheet = useCallback(() => setOpen(false), []);
 
-  const notifyAdded = useCallback(() => {
-    setToast(true);
-    if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    toastTimer.current = window.setTimeout(() => setToast(false), 4500);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (toastTimer.current) window.clearTimeout(toastTimer.current);
-    };
-  }, []);
-
   return (
-    <RequestSheetContext.Provider value={{ openSheet, notifyAdded }}>
+    <RequestSheetContext.Provider value={{ openSheet, notifyAdded: openSheet }}>
       {children}
-      {toast && !open ? (
-        <div className="request-toast no-print" role="status">
-          <p>Added to your request</p>
-          <button type="button" onClick={openSheet}>
-            View request
-          </button>
-        </div>
-      ) : null}
       {open ? <RequestPanel titleId={titleId} onClose={closeSheet} /> : null}
     </RequestSheetContext.Provider>
   );
@@ -94,26 +66,36 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
     const y = window.scrollY;
     const body = document.body;
     const root = document.documentElement;
+    const scrollbar = window.innerWidth - root.clientWidth;
     const previous = {
       position: body.style.position,
       top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
       width: body.style.width,
       overflow: body.style.overflow,
+      paddingRight: body.style.paddingRight,
       behavior: root.style.scrollBehavior,
     };
+    root.style.scrollBehavior = "auto";
     body.classList.add("request-sheet-open");
     body.style.position = "fixed";
     body.style.top = `-${y}px`;
+    body.style.left = "0";
+    body.style.right = "0";
     body.style.width = "100%";
     body.style.overflow = "hidden";
-    root.style.scrollBehavior = "auto";
+    if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
     return () => {
       body.classList.remove("request-sheet-open");
       body.style.position = previous.position;
       body.style.top = previous.top;
+      body.style.left = previous.left;
+      body.style.right = previous.right;
       body.style.width = previous.width;
       body.style.overflow = previous.overflow;
-      window.scrollTo(0, y);
+      body.style.paddingRight = previous.paddingRight;
+      window.scrollTo({ top: y, left: 0, behavior: "auto" });
       root.style.scrollBehavior = previous.behavior;
     };
   }, []);
@@ -127,7 +109,7 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
         (el) => el.tabIndex !== -1 && !el.hasAttribute("disabled"),
       );
     };
-    focusables()[0]?.focus();
+    focusables()[0]?.focus({ preventScroll: true });
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -227,10 +209,10 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
         )}
         <div className="request-sheet-actions">
           <button type="button" className="btn btn-ghost" onClick={onClose}>
-            Keep browsing
+            Continue browsing
           </button>
           <Link className="btn btn-primary" href={requestPricingHref(count)} onClick={onClose}>
-            Continue to request
+            Go to request
           </Link>
         </div>
       </div>

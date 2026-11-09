@@ -22,7 +22,6 @@ import {
   validateStep,
 } from "@/lib/requestFlow";
 import { REQUEST_CHANGE_EVENT, clearDraft, loadDraft, saveDraft } from "@/lib/storage";
-import { useRequestSheet } from "@/components/RequestSheet";
 
 const STEP_KEY = "bluepoint-demo-request-step";
 
@@ -81,7 +80,6 @@ export function WholesaleRequest() {
   const [copied, setCopied] = useState(false);
   const [copyFallback, setCopyFallback] = useState(false);
   const [pickerId, setPickerId] = useState("");
-  const { notifyAdded } = useRequestSheet();
   const writing = useRef(false);
 
   useEffect(() => {
@@ -189,11 +187,7 @@ export function WholesaleRequest() {
   }
 
   function addProduct(product: Product) {
-    setDraft((current) => {
-      const next = addProductLine(current, product);
-      if (next.lines.length > current.lines.length) notifyAdded();
-      return next;
-    });
+    setDraft((current) => addProductLine(current, product));
     setPickerId("");
   }
 
