@@ -3862,6 +3862,7 @@ body.menu-open .site-header .heritage-lockup {
 .request-flow {
   padding-top: 1.5rem;
   padding-bottom: 6.75rem;
+  overflow-anchor: none;
   overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
@@ -5600,6 +5601,46 @@ legend,
   .product-card:focus-within {
     transform: none;
     box-shadow: none;
+  }
+}
+
+/* These hash targets used to add their own scroll-margin on top of the
+   page's scroll-padding, so fragment navigation stopped a header-height
+   too low and the step heading sat on the contact button. The request
+   flow sets the margin from the live header instead. */
+#wholesale-request,
+#request-lines,
+#sample-request {
+  scroll-margin-top: 0px;
+  scroll-margin-bottom: 0px;
+}
+
+/* Phone landing for Request pricing keeps the account note, but the two
+   cards have to be short enough that the step circles and heading sit
+   above the contact button. */
+@media (max-width: 767px) {
+  .request-flow {
+    padding-top: 0.7rem;
+  }
+  .account-paths {
+    margin-bottom: 0.5rem;
+  }
+  .account-paths h2 {
+    margin-bottom: 0.35rem;
+    font-size: 1.28rem;
+  }
+  .account-path-grid {
+    gap: 0.4rem;
+  }
+  .account-path {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+  .request-notice {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
   }
 }
 

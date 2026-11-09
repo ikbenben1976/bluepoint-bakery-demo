@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { products } from "../data/products";
 import { addProductLine, emptyDraft, lineFromProduct } from "../lib/draft";
 import { buildEmailPreview } from "../lib/emailPreview";
-import { estimatePhrase, areaSummary, dateStatus, dateWarning, extraProductNote, lineSummary, showWrappedChoice, validateStep } from "../lib/requestFlow";
+import { estimatePhrase, areaSummary, dateStatus, dateWarning, extraProductNote, firstInvalidFieldId, lineSummary, showWrappedChoice, validateStep } from "../lib/requestFlow";
 import { draftFromStored } from "../lib/storage";
 
 const afternoon = new Date("2026-11-03T15:00:00-07:00");
@@ -27,6 +27,21 @@ function readyBusiness() {
     deliveryCity: "Denver",
   };
 }
+
+test("the first invalid field follows the same order as the messages", () => {
+  assert.equal(firstInvalidFieldId(emptyDraft(), 1, afternoon), "inquiry-business");
+  const emailOnly = { ...readyBusiness(), contactEmail: "not-an-email" };
+  assert.equal(firstInvalidFieldId(emailOnly, 1, afternoon), "inquiry-email");
+  assert.equal(firstInvalidFieldId(readyBusiness(), 2, afternoon), "inquiry-picker-product");
+  const vienna = product("deli-loaves", "Vienna White");
+  assert.equal(firstInvalidFieldId(addProductLine(readyBusiness(), vienna), 2, afternoon), `inquiry-slice-${vienna.id}`);
+  const pumpkin = product("quick-breads", "Pumpkin Chocolate");
+  assert.equal(firstInvalidFieldId(addProductLine(readyBusiness(), pumpkin), 2, afternoon), `inquiry-unit-${pumpkin.id}`);
+  const needsCity = { ...readyBusiness(), productsText: "Kaiser rolls", deliveryCity: "", consent: false };
+  assert.equal(firstInvalidFieldId(needsCity, 3, afternoon), "inquiry-delivery");
+  assert.equal(firstInvalidFieldId({ ...needsCity, deliveryCity: "Denver" }, 3, afternoon), "inquiry-consent");
+  assert.equal(firstInvalidFieldId({ ...readyBusiness(), productsText: "Kaiser rolls" }, 3, afternoon), null);
+});
 
 test("core business fields are required and weekly needs are not", () => {
   const errors = validateStep(emptyDraft(), 1, afternoon);

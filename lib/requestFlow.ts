@@ -95,42 +95,54 @@ function validEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
+type FieldIssue = { fieldId: string; message: string };
+
 /** `now` is reserved for date checks that warn instead of blocking. */
-export function validateStep(draft: Draft, step: 1 | 2 | 3, now: Date): string[] {
+function issuesFor(draft: Draft, step: 1 | 2 | 3, now: Date): FieldIssue[] {
   void now;
-  const errors: string[] = [];
+  const issues: FieldIssue[] = [];
   if (step === 1) {
-    if (!draft.businessName.trim()) errors.push("Enter the business name.");
-    if (!draft.businessType) errors.push("Choose a customer type.");
-    if (!draft.contactName.trim()) errors.push("Enter a contact name.");
-    if (!validEmail(draft.contactEmail.trim())) errors.push("Enter a valid email address.");
-    if (draft.contactPhone.replace(/\D/g, "").length < 7) errors.push("Enter a phone number.");
+    if (!draft.businessName.trim()) issues.push({ fieldId: "inquiry-business", message: "Enter the business name." });
+    if (!draft.businessType) issues.push({ fieldId: "inquiry-type", message: "Choose a customer type." });
+    if (!draft.contactName.trim()) issues.push({ fieldId: "inquiry-contact", message: "Enter a contact name." });
+    if (!validEmail(draft.contactEmail.trim())) issues.push({ fieldId: "inquiry-email", message: "Enter a valid email address." });
+    if (draft.contactPhone.replace(/\D/g, "").length < 7) issues.push({ fieldId: "inquiry-phone", message: "Enter a phone number." });
   }
   if (step === 2) {
     if (draft.lines.length === 0 && !draft.productsText.trim()) {
-      errors.push("Select or describe at least one product.");
+      issues.push({ fieldId: "inquiry-picker-product", message: "Select or describe at least one product." });
     }
     for (const line of draft.lines) {
       const product = getProduct(line.productId);
       if (!product) continue;
       if (line.qty != null && (!Number.isInteger(line.qty) || line.qty < 1)) {
-        errors.push(`Enter a quantity for ${product.name}.`);
+        issues.push({ fieldId: `inquiry-qty-${product.id}`, message: `Enter a quantity for ${product.name}.` });
       }
       if (product.units.length > 1 && !line.unit) {
-        errors.push(`Choose a published pack size for ${product.name}.`);
+        issues.push({ fieldId: `inquiry-unit-${product.id}`, message: `Choose a published pack size for ${product.name}.` });
       }
       if ((product.sliceOptions?.length ?? 0) > 1 && !line.slice) {
-        errors.push(`Choose a published slice thickness for ${product.name}.`);
+        issues.push({ fieldId: `inquiry-slice-${product.id}`, message: `Choose a published slice thickness for ${product.name}.` });
       }
     }
   }
   if (step === 3) {
-    if (!draft.deliveryCity.trim()) errors.push("Enter a delivery city.");
+    if (!draft.deliveryCity.trim()) issues.push({ fieldId: "inquiry-delivery", message: "Enter a delivery city." });
     if (!draft.consent) {
-      errors.push("Confirm that this concept site does not submit the request.");
+      issues.push({ fieldId: "inquiry-consent", message: "Confirm that this concept site does not submit the request." });
     }
   }
-  return errors;
+  return issues;
+}
+
+/** `now` is reserved for date checks that warn instead of blocking. */
+export function validateStep(draft: Draft, step: 1 | 2 | 3, now: Date): string[] {
+  return issuesFor(draft, step, now).map((issue) => issue.message);
+}
+
+/** DOM id of the first control that fails `validateStep`, in the same order. */
+export function firstInvalidFieldId(draft: Draft, step: 1 | 2 | 3, now: Date): string | null {
+  return issuesFor(draft, step, now)[0]?.fieldId ?? null;
 }
 
 /** Buyer estimate only. Blank stays blank, and Not sure is not a number. */
