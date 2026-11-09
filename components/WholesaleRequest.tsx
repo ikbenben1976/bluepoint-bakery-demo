@@ -34,30 +34,29 @@ const STEPS = [
 ] as const;
 
 function RequestProgress({ step, onGo }: { step: number; onGo: (next: number) => void }) {
-  const current = STEPS[step - 1];
   return (
-    <nav className="request-progress" aria-label="Request steps">
-      <p className="request-progress-title">
-        Step {step} of {STEPS.length} · {current.label}
-      </p>
-      <ol>
-        {STEPS.map((item) => {
-          const isCurrent = item.id === step;
-          return (
+    <div className="request-progress">
+      <p className="request-progress-title" id="request-step-count">Step {step} of {STEPS.length}</p>
+      <div className="request-step-track" aria-hidden="true">
+        {STEPS.map((item) => <span key={item.slug} data-reached={item.id <= step} />)}
+      </div>
+      <nav className="request-step-nav" aria-label="Request steps">
+        <ol>
+          {STEPS.map((item) => (
             <li key={item.slug}>
               <button
                 type="button"
-                aria-current={isCurrent ? "step" : undefined}
+                aria-current={item.id === step ? "step" : undefined}
                 onClick={() => onGo(item.id)}
               >
                 <span className="step-number" aria-hidden="true">{item.id}</span>
                 <span>{item.label}</span>
               </button>
             </li>
-          );
-        })}
-      </ol>
-    </nav>
+          ))}
+        </ol>
+      </nav>
+    </div>
   );
 }
 
@@ -102,8 +101,8 @@ function scrollToStep(behavior: ScrollBehavior) {
   const progress = document.querySelector(".request-progress");
   if (!(progress instanceof HTMLElement)) return;
   scrollBelowHeader(progress, behavior);
-  const current = progress.querySelector("button[aria-current='step']");
-  if (current instanceof HTMLElement) current.focus({ preventScroll: true });
+  const heading = document.getElementById("request-step-title");
+  heading?.focus({ preventScroll: true });
 }
 
 function landHash(hash: string, behavior: ScrollBehavior) {
@@ -391,8 +390,8 @@ export function WholesaleRequest() {
           ) : null}
           {step === 1 ? (
             <section data-testid="wholesale-step" data-step="business">
-              <h2>Business and contact details</h2>
-              <p className="request-notice">Demo only. Your draft is saved in this browser. When you’re ready, copy your inquiry and email it to Bluepoint.</p>
+              <h2 id="request-step-title" tabIndex={-1} aria-describedby="request-step-count">Tell us about your business</h2>
+              <p className="request-notice">Enter your business name and the best person for Bluepoint to contact. Your draft is saved in this browser.</p>
               <div className="request-grid">
                 <label>
                   Business name
@@ -471,7 +470,7 @@ export function WholesaleRequest() {
                   onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
                 />
               </label>
-              <div className="request-actions">
+              <div className="request-actions request-step-actions">
                 <button className="btn btn-primary" type="submit">
                   Continue to products
                 </button>
@@ -484,13 +483,10 @@ export function WholesaleRequest() {
 
           {step === 2 ? (
             <section data-testid="wholesale-step" data-step="products">
-              <h2>Products you’re interested in</h2>
-              <p className="request-help">Add at least one catalog product or <a href="#inquiry-products">describe what you’re looking for</a>.</p>
+              <h2 id="request-step-title" tabIndex={-1} aria-describedby="request-step-count">What products do you need?</h2>
+              <p className="request-help">Pick a product below or tell us what you need in your own words. You can do either or both.</p>
               <section className="inquiry-catalog compact-inquiry-picker" aria-labelledby="inquiry-picker-title">
-                <h3 id="inquiry-picker-title">Add a product to your request</h3>
-                <p>
-                  <Link href="/breads">Browse breads</Link> or <Link href="/pastries">browse pastries</Link> to see what’s available.
-                </p>
+                <h3 id="inquiry-picker-title">Choose from the catalog</h3>
                 <div className="inquiry-picker-controls">
                   <label htmlFor="inquiry-picker-product">Product</label>
                   <select
@@ -511,7 +507,7 @@ export function WholesaleRequest() {
                   </select>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-ghost"
                     disabled={!pickerId}
                     onClick={() => {
                       const product = getProduct(pickerId);
@@ -521,7 +517,26 @@ export function WholesaleRequest() {
                     Add selected product
                   </button>
                 </div>
+                <p className="request-help">
+                  <Link href="/breads">Browse breads</Link> or <Link href="/pastries">browse pastries</Link>.
+                </p>
+                <div className="request-help" role="status">
+                  {draft.lines.length > 0 ? `${draft.lines.length} catalog ${draft.lines.length === 1 ? "item" : "items"} in your inquiry.` : ""}
+                </div>
               </section>
+              <div className="request-product-description">
+                <label>
+                  Describe what you need
+                  <textarea
+                    id="inquiry-products"
+                    rows={2}
+                    placeholder="e.g. Brioche buns for our lunch menu"
+                    value={draft.productsText}
+                    onChange={(event) => setDraft({ ...draft, productsText: event.target.value })}
+                  />
+                </label>
+                <p className="request-help">Include a product name, size or rough quantity if you know it.</p>
+              </div>
               <div id="request-lines">
               {draft.lines.length > 0 ? (
                 <header>
@@ -673,21 +688,8 @@ export function WholesaleRequest() {
                 </ul>
               ) : null}
               </div>
-              <label>
-                Describe what you’re looking for
-                <textarea
-                  id="inquiry-products"
-                  rows={3}
-                  value={draft.productsText}
-                  onChange={(event) => setDraft({ ...draft, productsText: event.target.value })}
-                />
-              </label>
-              <p className="request-help">Use this field for products you can’t find or to describe what you need in your own words.</p>
-              <fieldset className="custom-interest">
-                <legend>Customization <span className="field-optional">(optional)</span></legend>
-                <p>
-                  Have a specific product, size or packaging requirement in mind? Tell us what you&apos;re looking for.
-                </p>
+              <details className="custom-interest" open={Boolean(draft.customFamily || draft.customSize || draft.customPackaging)}>
+                <summary>Add customization details <span className="field-optional">(optional)</span></summary>
                 <div className="request-grid">
                   <label>
                     Product family to discuss
@@ -722,7 +724,7 @@ export function WholesaleRequest() {
                     onChange={(event) => setDraft({ ...draft, customPackaging: event.target.value })}
                   />
                 </label>
-              </fieldset>
+              </details>
               <fieldset className="sample-interest" id="sample-request">
                 <legend>Samples <span className="field-optional">(optional)</span></legend>
                 <label className="choice-label">
@@ -746,12 +748,12 @@ export function WholesaleRequest() {
                   </label>
                 ) : null}
               </fieldset>
-              <div className="request-actions sample-actions">
-                <button className="btn btn-ghost" type="button" onClick={() => goTo(1)}>
-                  Back
-                </button>
+              <div className="request-actions request-step-actions">
                 <button className="btn btn-primary" type="submit">
                   Continue to delivery
+                </button>
+                <button className="btn btn-ghost" type="button" onClick={() => goTo(1)}>
+                  Back to business
                 </button>
               </div>
             </section>
@@ -759,9 +761,9 @@ export function WholesaleRequest() {
 
           {step === 3 ? (
             <section data-testid="wholesale-step" data-step="delivery">
-              <h2>Delivery preferences</h2>
+              <h2 id="request-step-title" tabIndex={-1} aria-describedby="request-step-count">Where should we deliver?</h2>
               <p className="request-help">
-                Enter the city where you need delivery. Bluepoint’s sales team will confirm service to your address and available delivery days.
+                Enter your city. You can add preferred days or a start date, and Bluepoint will confirm what’s available.
               </p>
               <label htmlFor="inquiry-delivery">Delivery city</label>
               <input
@@ -783,7 +785,7 @@ export function WholesaleRequest() {
                 </ul>
               ) : null}
               <p role="status" data-testid="delivery-status">
-                {areaSummary(draft.deliveryCity)}{" "}
+                {draft.deliveryCity.trim() ? areaSummary(draft.deliveryCity) : "Enter a city, such as Denver or Boulder."}{" "}
                 <Link href="/delivery">See the delivery map</Link>.
               </p>
               <fieldset className="day-fieldset">
@@ -813,7 +815,7 @@ export function WholesaleRequest() {
                   })}
                 </div>
               </fieldset>
-              <label htmlFor="inquiry-start">Preferred start date <span className="field-optional">(optional)</span></label>
+              <label htmlFor="inquiry-start"><span>Preferred start date <span className="field-optional">(optional)</span></span></label>
               <input
                 id="inquiry-start"
                 type="date"
@@ -833,12 +835,12 @@ export function WholesaleRequest() {
                 />
                 I understand this is a preview and my information will not be sent automatically
               </label>
-              <div className="request-actions">
-                <button className="btn btn-ghost" type="button" onClick={() => goTo(2)}>
-                  Back
-                </button>
+              <div className="request-actions request-step-actions">
                 <button className="btn btn-primary" type="submit">
-                  Preview request
+                  Continue to review
+                </button>
+                <button className="btn btn-ghost" type="button" onClick={() => goTo(2)}>
+                  Back to products
                 </button>
               </div>
             </section>
@@ -848,19 +850,19 @@ export function WholesaleRequest() {
         <section data-testid="inquiry-confirmation" data-step="review" id="inquiry-confirmation">
           <article className="review-card">
             <header className="review-head">
-              <h2>Review your wholesale inquiry</h2>
+              <h2 id="request-step-title" tabIndex={-1} aria-describedby="request-step-count">Review and email your inquiry</h2>
               <p className="demo-badge">Preview only — not submitted</p>
             </header>
             <p id="send-notice">
-              Check your details, then copy your inquiry and paste it into an email to <a href={`mailto:${EMAIL}`}>{EMAIL}</a> to discuss account setup.
+              Check your details below. Then copy the inquiry, open your email app and paste it into a message to {EMAIL}.
             </p>
             <div className="request-actions">
               <button type="button" className="btn btn-primary" onClick={copySummary}>
                 Copy inquiry
               </button>
-              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
-                Print
-              </button>
+              <a className="btn btn-ghost" href={`mailto:${EMAIL}?subject=New%20wholesale%20account%20inquiry`}>
+                Open email app
+              </a>
             </div>
             {copyFallback ? (
               <p role="status">Clipboard is unavailable in this browser. Select the inquiry summary below and copy it.</p>
@@ -983,6 +985,9 @@ export function WholesaleRequest() {
               </button>
               <button type="button" className="btn btn-ghost" onClick={() => goTo(3)}>
                 Edit delivery
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={() => window.print()}>
+                Print
               </button>
               <button type="button" className="btn btn-ghost" onClick={clearRequest}>
                 Clear request

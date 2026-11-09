@@ -15,10 +15,11 @@ export default function WholesalePage() {
   return (
     <>
       <PageHero
+        className="wholesale-hero"
         kicker="New accounts"
         title="Request a wholesale account"
         image={categoryPhotos.croissants}
-        lede={<p>Build a wholesale inquiry in four steps. Then copy it and email it to Bluepoint’s sales team to discuss account setup.</p>}
+        lede={<p>Tell Bluepoint what you need. At the end, you’ll have an inquiry to email to our sales team.</p>}
       />
       <WholesaleRequest />
     </>

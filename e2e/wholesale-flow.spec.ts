@@ -57,6 +57,7 @@ test("product options follow the catalog and an early date warns without blockin
   await page.getByRole("combobox", { name: "Pack size for Pumpkin Chocolate" }).selectOption("loaf");
   await page.getByRole("spinbutton", { name: "Estimated quantity for Pumpkin Chocolate" }).fill("2");
   await page.getByRole("combobox", { name: "Dipped or undipped for Almond" }).selectOption("undipped");
+  await page.getByText("Add customization details").click();
   await page.locator("#inquiry-custom-family").selectOption("breads");
   await page.locator("#inquiry-custom-size").fill("a diameter to discuss");
   await page.locator("#inquiry-custom-packaging").fill("a pack to discuss");
@@ -80,7 +81,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(page.getByTestId("date-status")).toContainText("earlier than the published notice");
   await expect(page.getByTestId("date-status")).toContainText("longer notice applies");
   await page.getByRole("checkbox", { name: /my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
 
   const review = page.getByTestId("inquiry-confirmation");
   await expect(review).toContainText("Preview only — not submitted");
@@ -102,7 +103,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(page.locator("#inquiry-products")).toHaveValue("Also a seeded roll to discuss");
   await page.locator("#inquiry-products").fill("A different roll to discuss");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(review).toContainText("A different roll to discuss");
   await expect(review).toContainText("Key Cafe");
   await expect(review).not.toContainText("Also a seeded roll to discuss");
@@ -121,14 +122,11 @@ test("copy summary reads the unsent preview", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await resetRequest(page);
   await fillBusiness(page);
-  await page.getByRole("link", { name: "describe what you’re looking for" }).click();
-  const description = page.locator("#inquiry-products");
-  await expect(description).toBeInViewport();
-  await description.fill("Kaiser rolls");
+  await page.getByRole("textbox", { name: "Describe what you need" }).fill("Kaiser rolls");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Boulder");
   await page.getByRole("checkbox", { name: /my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await page.getByRole("button", { name: "Copy inquiry" }).click();
   await expect(page.getByText("Inquiry copied. Paste it into your email to Bluepoint.")).toBeVisible();
   const copied = await page.evaluate(() => navigator.clipboard.readText());
@@ -157,7 +155,7 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(paths.getByRole("link", { name: "(303) 298-1100" })).toHaveAttribute("href", "tel:+13032981100");
   await expect(paths.getByRole("link", { name: "sales@bluepointbakery.com" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
   await expect(page.locator(".request-notice")).toHaveText(
-    "Demo only. Your draft is saved in this browser. When you’re ready, copy your inquiry and email it to Bluepoint.",
+    "Enter your business name and the best person for Bluepoint to contact. Your draft is saved in this browser.",
   );
   await expect(paths.getByRole("heading", { name: "Already a customer?" })).toBeVisible();
 
@@ -183,6 +181,39 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(footer.getByRole("link", { name: "Order online (existing customers)" })).toHaveAttribute("href", ORDER_URL);
   await expect(footer.getByRole("link", { name: "Become a wholesale customer" })).toHaveAttribute("href", /\/wholesale\/?$/);
   await expect(footer).toContainText("wholesale requests are not submitted through this website.");
+});
+
+test("phone layout guides buyers from the first field through email", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await resetRequest(page);
+
+  await expect(page.getByRole("heading", { name: "Tell us about your business" })).toBeInViewport();
+  await expect(page.locator("#inquiry-business")).toBeInViewport();
+  await expect(page.getByRole("navigation", { name: "Request steps" })).toHaveCount(0);
+  await fillBusiness(page);
+
+  const productHeading = page.getByRole("heading", { name: "What products do you need?" });
+  await expect(productHeading).toBeFocused();
+  const description = page.getByRole("textbox", { name: "Describe what you need" });
+  await expect(description).toBeInViewport();
+  await description.fill("Kaiser rolls for a lunch menu");
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+
+  await expect(page.getByRole("heading", { name: "Where should we deliver?" })).toBeFocused();
+  await page.getByRole("button", { name: "Back to products" }).click();
+  await expect(description).toHaveValue("Kaiser rolls for a lunch menu");
+  await page.getByRole("button", { name: "Continue to delivery" }).click();
+  await page.locator("#inquiry-delivery").fill("Denver");
+  await page.locator("#inquiry-consent").check();
+  await page.getByRole("button", { name: "Continue to review" }).click();
+
+  await expect(page.getByRole("heading", { name: "Review and email your inquiry" })).toBeFocused();
+  await expect(page.getByRole("button", { name: "Copy inquiry" })).toBeInViewport();
+  await expect(page.getByRole("link", { name: "Open email app" })).toHaveAttribute(
+    "href",
+    /^mailto:sales@bluepointbakery\.com\?subject=/,
+  );
 });
 
 test("request steps use the column width and leave the contact pill clear", async ({ page }, testInfo) => {
@@ -268,8 +299,12 @@ test("request steps use the column width and leave the contact pill clear", asyn
         root.style.scrollBehavior = previous;
       });
       const steps = page.getByRole("navigation", { name: "Request steps" });
-      for (const label of ["Business", "Products", "Delivery", "Review"]) {
-        await expect(steps.getByText(label, { exact: true })).toBeInViewport({ ratio: 0.9 });
+      await expect(page.locator("#request-step-title")).toBeInViewport({ ratio: 0.9 });
+      if (width < 768) {
+        await expect(steps).toHaveCount(0);
+        await expect(page.locator(".request-step-track")).toBeInViewport();
+      } else {
+        await expect(steps.getByRole("button", { name: new RegExp(`^${step}$`, "i") })).toHaveAttribute("aria-current", "step");
       }
       await page.screenshot({
         path: testInfo.outputPath(`flow-${step}-${width}.png`),
@@ -289,7 +324,7 @@ test("request steps use the column width and leave the contact pill clear", asyn
     await checkFit("delivery");
     await page.locator("#inquiry-delivery").fill("Denver");
     await page.getByRole("checkbox", { name: /my information will not be sent automatically/i }).check();
-    await page.getByRole("button", { name: "Preview request" }).click();
+    await page.getByRole("button", { name: "Continue to review" }).click();
     await checkFit("review");
   }
 });

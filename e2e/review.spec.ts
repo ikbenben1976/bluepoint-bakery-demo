@@ -190,13 +190,13 @@ test("wholesale form validates, then confirms, empty and prefilled", async ({ pa
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Select or describe at least one product.");
   await page.locator("#inquiry-products").fill("Sesame kaiser rolls");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("Enter a delivery city.");
   await page.locator("#inquiry-delivery").fill("Denver");
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-form").getByRole("alert")).toContainText("does not submit your inquiry");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText(
     "Preview only — not submitted",
   );
@@ -234,7 +234,7 @@ test("keyboard can complete the wholesale form", async ({ page }) => {
   await fillWithKeyboard("#inquiry-delivery", "Denver");
   await page.locator("#inquiry-consent").focus();
   await page.keyboard.press("Space");
-  await page.getByRole("button", { name: "Preview request" }).focus();
+  await page.getByRole("button", { name: "Continue to review" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Keyboard Cafe");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Kaiser rolls");
@@ -394,7 +394,7 @@ test("wholesale details, weekly needs and sample question survive navigation and
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("40 dozen per week");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("Interested in trying products first");
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("hamburger buns");
@@ -607,7 +607,7 @@ test("wholesale preview keeps catalog selection AND additional requirements", as
   await page.getByRole("button", { name: "Continue to delivery" }).click();
   await page.locator("#inquiry-delivery").fill("Denver");
   await page.getByRole("checkbox", { name: /this is a preview and my information will not be sent automatically/i }).check();
-  await page.getByRole("button", { name: "Preview request" }).click();
+  await page.getByRole("button", { name: "Continue to review" }).click();
   await expect(page.getByTestId("inquiry-confirmation")).toContainText('Brioche Bun 4"');
   await expect(page.getByTestId("inquiry-confirmation")).toContainText("custom sandwich roll");
 });
