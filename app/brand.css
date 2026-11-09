@@ -4383,49 +4383,16 @@ body.menu-open .site-header .heritage-lockup {
   cursor: pointer;
 }
 body.menu-open .view-request-bar,
-body.request-sheet-open .view-request-bar,
-body.menu-open .request-toast {
+body.request-sheet-open .view-request-bar {
   display: none;
-}
-.request-toast {
-  position: fixed;
-  left: 0.75rem;
-  right: 0.75rem;
-  top: 7.5rem;
-  z-index: 45;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem 1rem;
-  max-width: 28rem;
-  margin-inline: auto;
-  padding: 0.75rem 0.9rem;
-  background: #0d0d25;
-  color: #f6f1e8;
-  border-radius: 12px;
-  box-shadow: 0 12px 28px rgba(13, 13, 37, 0.2);
-}
-.request-toast p {
-  margin: 0;
-  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
-  font-weight: 700;
-}
-.request-toast button {
-  border: 0;
-  background: transparent;
-  color: #fff;
-  font: inherit;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-  cursor: pointer;
-  min-height: 44px;
 }
 .request-sheet-layer {
   position: fixed;
   inset: 0;
   z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 0.65rem;
 }
 .request-sheet-backdrop {
   position: absolute;
@@ -4433,18 +4400,18 @@ body.menu-open .request-toast {
   background: rgba(13, 13, 37, 0.48);
 }
 .request-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  max-height: min(85vh, 40rem);
+  width: 100%;
+  height: calc(100dvh - 1.3rem);
+  max-height: calc(100dvh - 1.3rem);
   padding: 1rem 1rem 1.15rem;
   background: #f9f3eb;
   border-top: 6px solid #2035e8;
-  animation: request-sheet-up 0.22s ease;
+  box-shadow: 0 18px 48px rgba(13, 13, 37, 0.28);
 }
 .request-sheet-head {
   display: flex;
@@ -4454,11 +4421,11 @@ body.menu-open .request-toast {
 }
 .request-sheet-head h2 {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
 }
 .request-sheet-close {
   min-height: 44px;
-  padding: 0.35rem 0.7rem;
+  padding: 0.35rem 0.85rem;
   border: 1px solid #0d0d25;
   background: #fff;
   font: inherit;
@@ -4473,19 +4440,22 @@ body.menu-open .request-toast {
   margin: 0;
   padding: 0;
   display: grid;
+  align-content: start;
   gap: 0.7rem;
+  flex: 1;
+  min-height: 0;
   overflow: auto;
 }
 .request-sheet-list li {
   display: grid;
   gap: 0.55rem;
-  padding: 0.85rem;
+  padding: 0.9rem 1rem;
   background: #fff;
   border: 1px solid #e4d8c4;
 }
 .request-sheet-list h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
 }
 .request-sheet-list p,
 .request-sheet-list label {
@@ -4508,36 +4478,28 @@ body.menu-open .request-toast {
   justify-self: start;
 }
 .request-sheet-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 0.6rem;
 }
 .request-sheet-actions .btn {
-  min-height: 44px;
+  width: 100%;
+  min-height: 48px;
 }
 @media (min-width: 768px) {
+  .request-sheet-layer {
+    padding: 1.5rem;
+  }
   .request-sheet {
-    left: auto;
-    top: 0;
-    bottom: 0;
-    width: min(26rem, 100%);
-    max-height: none;
-    border-top: 0;
-    border-left: 6px solid #2035e8;
-    animation-name: request-sheet-in;
+    width: min(44rem, calc(100vw - 3rem));
+    height: min(78vh, 44rem);
+    max-height: calc(100dvh - 3rem);
+  }
+  .request-sheet-actions {
+    grid-template-columns: 1fr 1fr;
   }
 }
-@keyframes request-sheet-up {
-  from { transform: translateY(100%); }
-  to { transform: none; }
-}
-@keyframes request-sheet-in {
-  from { transform: translateX(100%); }
-  to { transform: none; }
-}
 @media (prefers-reduced-motion: reduce) {
-  .request-sheet,
-  .request-toast {
+  .request-sheet {
     animation: none;
     transition: none;
   }
