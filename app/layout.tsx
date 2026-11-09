@@ -49,11 +49,14 @@ export default function RootLayout({
             <a className="skip-link" href="#main">
               Skip to content
             </a>
-            <div className="sticky-stack no-print">
-              <p className="demo-ribbon">{DISCLAIMER}</p>
-              <Header />
+            {/* The bar sticks while the page scrolls and lets go at the footer. */}
+            <div className="sticky-with-content">
+              <div className="sticky-stack no-print">
+                <p className="demo-ribbon">{DISCLAIMER}</p>
+                <Header />
+              </div>
+              <main id="main">{children}</main>
             </div>
-            <main id="main">{children}</main>
             <Footer />
             <QuickActions />
             <Notice />

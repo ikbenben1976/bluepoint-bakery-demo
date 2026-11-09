@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL, HOURS, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
@@ -17,10 +17,12 @@ import {
   dateStatus,
   extraProductNote,
   isExactPublishedPlace,
+  firstInvalidFieldId,
   lineSummary,
   showWrappedChoice,
   validateStep,
 } from "@/lib/requestFlow";
+import { headerClearance, scrollBehavior, scrollBelowHeader } from "@/lib/scrollPage";
 import { REQUEST_CHANGE_EVENT, clearDraft, loadDraft, saveDraft } from "@/lib/storage";
 
 const STEP_KEY = "bluepoint-demo-request-step";
@@ -71,6 +73,79 @@ function stepForHash(hash: string): number | null {
   return null;
 }
 
+function samePath(a: string, b: string): boolean {
+  const normalize = (path: string) => (path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path);
+  return normalize(a) === normalize(b);
+}
+
+type ScrollIntent = { kind: "step" } | { kind: "hash" } | { kind: "field"; fieldId: string };
+
+function fieldAnchor(field: HTMLElement): HTMLElement {
+  const wrapped = field.closest("label");
+  if (wrapped instanceof HTMLElement) return wrapped;
+  if (field.id) {
+    const explicit = document.querySelector(`label[for="${CSS.escape(field.id)}"]`);
+    if (explicit instanceof HTMLElement) return explicit;
+  }
+  return field;
+}
+
+function pillLimit(): number {
+  const pill = document.querySelector("[data-testid='quick-actions']");
+  if (!(pill instanceof HTMLElement)) return window.innerHeight;
+  const box = pill.getBoundingClientRect();
+  return box.height > 0 ? box.top : window.innerHeight;
+}
+
+/** Step circles and the step heading sit just under the sticky header. */
+function scrollToStep(behavior: ScrollBehavior) {
+  const progress = document.querySelector(".request-progress");
+  if (!(progress instanceof HTMLElement)) return;
+  scrollBelowHeader(progress, behavior);
+  const current = progress.querySelector("button[aria-current='step']");
+  if (current instanceof HTMLElement) current.focus({ preventScroll: true });
+}
+
+/**
+ * Hash landings. On a phone, #wholesale-request keeps the account intro when
+ * the step heading still clears the contact button. Otherwise the circles
+ * come up under the header. On a wider screen the page heading stays clear
+ * of the nav and the circles remain in view.
+ */
+function landHash(hash: string, behavior: ScrollBehavior) {
+  if (hash === "#sample-request" || hash === "#request-lines") {
+    const target = document.getElementById(hash.slice(1));
+    if (target) scrollBelowHeader(target, behavior);
+    return;
+  }
+  if (hash !== "#wholesale-request") return;
+  const anchor = document.getElementById("wholesale-request");
+  if (!anchor) return;
+  const narrow = window.matchMedia("(max-width: 767px)").matches;
+  if (!narrow) {
+    const pageHeading = document.querySelector(".ticket-hero h1");
+    if (pageHeading instanceof HTMLElement && pageHeading.getBoundingClientRect().height > 0) {
+      scrollBelowHeader(pageHeading, behavior, anchor);
+      return;
+    }
+  }
+  const intro = document.getElementById("account-paths-title");
+  const visible = intro instanceof HTMLElement ? intro : anchor;
+  const heading = document.querySelector("[data-testid='wholesale-step'] h2");
+  const progress = document.querySelector(".request-progress");
+  if (heading instanceof HTMLElement && progress instanceof HTMLElement) {
+    const visibleDoc = visible.getBoundingClientRect().top + window.scrollY;
+    const rough = Math.max(0, visibleDoc - 140);
+    const dest = Math.max(0, visibleDoc - headerClearance(rough));
+    const headingBottom = heading.getBoundingClientRect().bottom - (dest - window.scrollY);
+    if (headingBottom > pillLimit() - 16) {
+      scrollBelowHeader(progress, behavior, anchor);
+      return;
+    }
+  }
+  scrollBelowHeader(visible, behavior, anchor);
+}
+
 export function WholesaleRequest() {
   const [ready, setReady] = useState(false);
   const [step, setStep] = useState(1);
@@ -81,6 +156,11 @@ export function WholesaleRequest() {
   const [copyFallback, setCopyFallback] = useState(false);
   const [pickerId, setPickerId] = useState("");
   const writing = useRef(false);
+  const intent = useRef<ScrollIntent | null>(null);
+  const openedHash = useRef(false);
+  const parkedScroll = useRef<number | null>(null);
+  const stepRef = useRef(step);
+  stepRef.current = step;
 
   useEffect(() => {
     const saved = loadDraft();
@@ -90,11 +170,81 @@ export function WholesaleRequest() {
     setStep(hashStep ?? readStep());
     setReady(true);
     const onHash = () => {
-      const next = stepForHash(window.location.hash);
-      if (next) setStep(next);
+      const hash = window.location.hash;
+      const next = stepForHash(hash);
+      if (!next) return;
+      if (next === stepRef.current) {
+        landHash(hash, scrollBehavior());
+        return;
+      }
+      intent.current = { kind: "hash" };
+      setStep(next);
+    };
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = (event.target as Element | null)?.closest?.("a");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (link.target && link.target !== "_self") return;
+      const url = new URL(link.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      if (!samePath(url.pathname, window.location.pathname)) return;
+      const next = stepForHash(url.hash);
+      if (!next) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (`${url.pathname}${url.search}${url.hash}` !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+        window.history.pushState(null, "", `${url.pathname}${url.search}${url.hash}`);
+      }
+      if (next === stepRef.current) {
+        landHash(url.hash, scrollBehavior());
+        return;
+      }
+      intent.current = { kind: "hash" };
+      setStep(next);
     };
     window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
+    window.addEventListener("click", onClick, true);
+    const correctHashLanding = () => {
+      const hash = window.location.hash;
+      const expected = stepForHash(hash);
+      if (!expected || stepRef.current !== expected) return;
+      if (parkedScroll.current != null && Math.abs(window.scrollY - parkedScroll.current) > 120) return;
+      const headerBottom = document.querySelector(".sticky-stack")?.getBoundingClientRect().bottom ?? 0;
+      if (hash === "#sample-request" || hash === "#request-lines") {
+        const target = document.getElementById(hash.slice(1));
+        const top = target?.getBoundingClientRect().top ?? 0;
+        if (target && top >= headerBottom - 4 && top < headerBottom + 40) return;
+      }
+      if (hash === "#wholesale-request") {
+        const heading = document.querySelector("[data-testid='wholesale-step'] h2");
+        const progress = document.querySelector(".request-progress");
+        if (!(heading instanceof HTMLElement) || !(progress instanceof HTMLElement)) return;
+        const headingBox = heading.getBoundingClientRect();
+        const progressBox = progress.getBoundingClientRect();
+        const limit = pillLimit();
+        const covered =
+          headingBox.top < headerBottom - 2 ||
+          headingBox.bottom > limit - 12 ||
+          progressBox.top < headerBottom - 2 ||
+          progressBox.bottom > limit - 12;
+        if (!covered) return;
+      }
+      landHash(hash, "instant");
+      parkedScroll.current = window.scrollY;
+    };
+    const scheduleCorrection = () => requestAnimationFrame(correctHashLanding);
+    document.fonts?.ready.then(scheduleCorrection);
+    const photo = document.querySelector(".ticket-hero img");
+    if (photo instanceof HTMLImageElement && !photo.complete) {
+      photo.addEventListener("load", scheduleCorrection, { once: true });
+    }
+    window.addEventListener("load", scheduleCorrection);
+    return () => {
+      window.removeEventListener("hashchange", onHash);
+      window.removeEventListener("click", onClick, true);
+      window.removeEventListener("load", scheduleCorrection);
+    };
   }, []);
 
   useEffect(() => {
@@ -117,33 +267,50 @@ export function WholesaleRequest() {
   useEffect(() => {
     if (!ready) return;
     window.sessionStorage.setItem(STEP_KEY, String(step));
-    document.body.classList.toggle("showing-preview", step === 4);
-    return () => document.body.classList.remove("showing-preview");
   }, [step, ready]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ready) return;
-    const hash = window.location.hash;
-    if (hash !== "#sample-request" && hash !== "#request-lines" && hash !== "#wholesale-request") return;
-    document.getElementById(hash.slice(1))?.scrollIntoView({ block: "start" });
-  }, [ready, step]);
+    document.body.classList.toggle("showing-preview", step === 4);
+    const pending = intent.current;
+    intent.current = null;
+    const behavior = scrollBehavior();
+    if (pending?.kind === "field") {
+      const field = document.getElementById(pending.fieldId);
+      const fallback = document.getElementById("request-errors");
+      const focusTarget = field ?? fallback;
+      if (focusTarget) {
+        scrollBelowHeader(field ? fieldAnchor(field) : focusTarget, behavior);
+        focusTarget.focus({ preventScroll: true });
+      }
+    } else if (pending?.kind === "step") {
+      scrollToStep(behavior);
+    } else if (!openedHash.current) {
+      openedHash.current = true;
+      const hash = window.location.hash;
+      if (stepForHash(hash)) {
+        landHash(hash, "instant");
+        parkedScroll.current = window.scrollY;
+      }
+    } else if (pending?.kind === "hash") {
+      landHash(window.location.hash, behavior);
+    }
+    return () => document.body.classList.remove("showing-preview");
+  }, [ready, step, errors]);
 
   const clock = now ?? new Date();
   const preview = buildEmailPreview(draft, clock);
   const extraNote = extraProductNote(draft);
   const timingNote = dateStatus(draft, clock);
 
-  function focusErrors() {
-    requestAnimationFrame(() => document.getElementById("request-errors")?.focus());
-  }
-
   function failAtFirstInvalid(steps: readonly (1 | 2 | 3)[]): boolean {
     for (const current of steps) {
       const found = validateStep(draft, current, clock);
       if (found.length > 0) {
+        const fieldId = firstInvalidFieldId(draft, current, clock) ?? "request-errors";
+        intent.current = { kind: "field", fieldId };
         setErrors(found);
         setStep(current);
-        focusErrors();
         return true;
       }
     }
@@ -155,16 +322,20 @@ export function WholesaleRequest() {
     if (failAtFirstInvalid(steps)) return;
     setErrors([]);
     setCopied(false);
+    intent.current = { kind: "step" };
     setStep(step + 1);
-    window.scrollTo(0, 0);
   }
 
   function goTo(next: number) {
     if (next === 4 && failAtFirstInvalid([1, 2, 3])) return;
     setErrors([]);
     setCopied(false);
+    intent.current = { kind: "step" };
     setStep(next);
-    window.scrollTo(0, 0);
+    if (next === stepRef.current) {
+      intent.current = null;
+      scrollToStep(scrollBehavior());
+    }
   }
 
   function clearRequest() {
@@ -175,8 +346,12 @@ export function WholesaleRequest() {
     setCopied(false);
     setCopyFallback(false);
     setPickerId("");
+    intent.current = { kind: "step" };
     setStep(1);
-    window.scrollTo(0, 0);
+    if (stepRef.current === 1) {
+      intent.current = null;
+      scrollToStep(scrollBehavior());
+    }
   }
 
   function updateLine(productId: string, patch: Partial<Draft["lines"][number]>) {
@@ -390,6 +565,7 @@ export function WholesaleRequest() {
                               {publishedUnit(product) ? <span className="qty-unit"> {publishedUnit(product)}</span> : null}
                             </span>
                             <input
+                              id={`inquiry-qty-${product.id}`}
                               aria-label={`Estimated quantity for ${product.name}`}
                               type="number"
                               min={1}
@@ -426,9 +602,10 @@ export function WholesaleRequest() {
                           {product.units.length > 1 ? (
                             <label>
                               Pack size
-                              <select
-                                aria-label={`Pack size for ${product.name}`}
-                                value={line.unit}
+                            <select
+                              id={`inquiry-unit-${product.id}`}
+                              aria-label={`Pack size for ${product.name}`}
+                              value={line.unit}
                                 onChange={(event) => updateLine(product.id, { unit: event.target.value })}
                               >
                                 <option value="">Choose a published pack size</option>
@@ -445,9 +622,10 @@ export function WholesaleRequest() {
                           {slices.length > 1 ? (
                             <label>
                               Slice thickness
-                              <select
-                                aria-label={`Slice thickness for ${product.name}`}
-                                value={line.slice}
+                            <select
+                              id={`inquiry-slice-${product.id}`}
+                              aria-label={`Slice thickness for ${product.name}`}
+                              value={line.slice}
                                 onChange={(event) => updateLine(product.id, { slice: event.target.value })}
                               >
                                 <option value="">Choose a published thickness</option>
