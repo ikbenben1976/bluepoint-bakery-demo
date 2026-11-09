@@ -118,6 +118,55 @@ test("product options follow the catalog and an early date warns without blockin
   await expect.poll(() => page.evaluate(() => (window as unknown as { printed?: boolean }).printed)).toBeTruthy();
 });
 
+test("customization panel keeps the buyer's open state when fields change", async ({ page }) => {
+  await resetRequest(page);
+  await fillBusiness(page);
+
+  const panel = page.locator("details.custom-interest");
+  const size = page.locator("#inquiry-custom-size");
+  const description = page.locator("#inquiry-products");
+  const summary = page.getByText("Add customization details");
+
+  await expect(panel).toHaveJSProperty("open", false);
+  await summary.click();
+  await expect(panel).toHaveJSProperty("open", true);
+
+  await size.fill("8 inch rounds");
+  await summary.click();
+  await expect(panel).toHaveJSProperty("open", false);
+  await description.fill("Kaiser rolls");
+  await expect(panel).toHaveJSProperty("open", false);
+
+  await summary.click();
+  await expect(size).toBeVisible();
+  await size.fill("");
+  await expect(panel).toHaveJSProperty("open", true);
+  await expect(size).toBeVisible();
+  await description.fill("Kaiser rolls for lunch");
+  await expect(panel).toHaveJSProperty("open", true);
+
+  await page.evaluate(() => {
+    const key = "bluepoint-demo-request-v1";
+    const draft = JSON.parse(window.localStorage.getItem(key) || "{}");
+    draft.customFamily = "";
+    draft.customSize = "a diameter to discuss";
+    draft.customPackaging = "";
+    window.localStorage.setItem(key, JSON.stringify(draft));
+    window.sessionStorage.setItem("bluepoint-demo-request-step", "2");
+  });
+  await page.reload();
+  await page.getByTestId("inquiry-form").waitFor();
+  await expect(panel).toHaveJSProperty("open", true);
+  await expect(size).toHaveValue("a diameter to discuss");
+  await summary.click();
+  await description.fill("A different roll");
+  await expect(panel).toHaveJSProperty("open", false);
+  await summary.click();
+  await size.fill("");
+  await expect(panel).toHaveJSProperty("open", true);
+  await expect(size).toBeVisible();
+});
+
 test("copy summary reads the unsent preview", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await resetRequest(page);

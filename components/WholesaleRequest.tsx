@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { catalog, getProduct, type Product } from "@/data/products";
 import { EMAIL, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
@@ -124,6 +124,28 @@ function landHash(hash: string, behavior: ScrollBehavior) {
   }
   const progress = document.querySelector(".request-progress");
   scrollBelowHeader(progress instanceof HTMLElement ? progress : anchor, behavior, anchor);
+}
+
+function draftHasCustomization(draft: Draft): boolean {
+  return Boolean(draft.customFamily || draft.customSize || draft.customPackaging);
+}
+
+/**
+ * Starts open only when a restored draft already has customization notes.
+ * The open state is not a React prop, so later edits cannot snap it shut or force it open.
+ */
+function CustomInterest({ initiallyOpen, children }: { initiallyOpen: boolean; children: ReactNode }) {
+  const ref = useRef<HTMLDetailsElement>(null);
+  const openOnMount = useRef(initiallyOpen);
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (node) node.open = openOnMount.current;
+  }, []);
+  return (
+    <details className="custom-interest" ref={ref}>
+      {children}
+    </details>
+  );
 }
 
 export function WholesaleRequest() {
@@ -688,7 +710,7 @@ export function WholesaleRequest() {
                 </ul>
               ) : null}
               </div>
-              <details className="custom-interest" open={Boolean(draft.customFamily || draft.customSize || draft.customPackaging)}>
+              <CustomInterest initiallyOpen={draftHasCustomization(draft)}>
                 <summary>Add customization details <span className="field-optional">(optional)</span></summary>
                 <div className="request-grid">
                   <label>
@@ -724,7 +746,7 @@ export function WholesaleRequest() {
                     onChange={(event) => setDraft({ ...draft, customPackaging: event.target.value })}
                   />
                 </label>
-              </details>
+              </CustomInterest>
               <fieldset className="sample-interest" id="sample-request">
                 <legend>Samples <span className="field-optional">(optional)</span></legend>
                 <label className="choice-label">
