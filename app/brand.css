@@ -3320,10 +3320,8 @@ legend {
   .delivery-check { min-width: 0; }
 }
 
-/* #79 / #80: on a phone or tablet the page keeps its normal gutters. Bottom
-   padding and scroll-margin let the last copy clear the Contact pill. The
-   right inset stays only where the shell is wide enough that the pill would
-   sit on the routes table (1280 and 1440). */
+/* The delivery page uses the same balanced shell as other routes.
+   No permanent 3–8rem loss of right-hand content width. */
 @media (max-width: 799px) {
   .delivery-page {
     padding-right: 0;
@@ -3332,12 +3330,6 @@ legend {
   .delivery-page :is(h1, h2, .delivery-lede, .atlas-stage, .atlas-card, .atlas-search, .route-table, .serve-list, .delivery-check) {
     scroll-margin-bottom: 5.75rem;
   }
-}
-@media (min-width: 800px) and (max-width: 1379px) {
-  .delivery-page { padding-right: 8rem; }
-}
-@media (min-width: 1380px) {
-  .delivery-page { padding-right: 3rem; }
 }
 
 .inquiry { padding-top: 2.4rem; }
@@ -5703,4 +5695,15 @@ legend,
 }
 .verified-client-well img[alt="Oskar Blues Fooderies logo"] {
   transform: scale(1.08);
+}
+
+/* Keep the persistent Contact affordance close to the sticky header on
+   tablet/desktop rather than overlaying forms and card links near the bottom.
+   The mobile header Contact button and mobile launcher rules are untouched. */
+@media (min-width: 768px) {
+  .quick-actions {
+    top: 7.25rem;
+    right: 0.75rem;
+    bottom: auto;
+  }
 }
