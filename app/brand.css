@@ -5697,13 +5697,34 @@ legend,
   transform: scale(1.08);
 }
 
-/* Keep the persistent Contact affordance close to the sticky header on
-   tablet/desktop rather than overlaying forms and card links near the bottom.
-   The mobile header Contact button and mobile launcher rules are untouched. */
+/* Desktop and tablet Contact is now a real flex item in the sticky header.
+   It never covers the full-width page grid or form fields on scroll. */
 @media (min-width: 768px) {
-  .quick-actions {
-    top: 7.25rem;
-    right: 0.75rem;
-    bottom: auto;
+  .site-header-row .quick-actions {
+    position: static;
+    inset: auto;
+    flex: 0 0 auto;
+    z-index: auto;
+    margin: 0 0.25rem 0 0;
+    align-items: center;
+    justify-content: center;
   }
+  .site-header-row .quick-toggle {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0;
+    border-radius: 999px;
+  }
+  .site-header-row .quick-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .site-header-row .quick-actions { display: none; }
 }
