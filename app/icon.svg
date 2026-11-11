@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>Bluepoint Bakery</title>
+  <rect x="1" y="1" width="62" height="62" rx="10" fill="#080c2b"/>
+  <path d="M10 9H54L32 23Z" fill="#fa6c16"/>
+  <text x="32" y="49" font-family="Arial Black,Arial,sans-serif" font-size="34" font-weight="900" text-anchor="middle" letter-spacing="-2" fill="#fff" stroke="#fff" stroke-width="0.7">BP</text>
+  <rect x="9" y="51" width="46" height="6" rx="2" fill="#f3bd4f"/>
+  <rect x="3" y="53" width="10" height="3" rx="1.5" fill="#f3bd4f"/>
+  <rect x="51" y="53" width="10" height="3" rx="1.5" fill="#f3bd4f"/>
+</svg>
