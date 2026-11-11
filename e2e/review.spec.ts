@@ -736,6 +736,8 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
     "Shown for this demo. Ask permission before using this product photo on a live site.",
   );
   await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  // Chrome lazy-loads below-fold images only when brought into view.
+  await photo.scrollIntoViewIfNeeded();
   await expect
     .poll(() => photo.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
     .toBeTruthy();
@@ -895,6 +897,8 @@ test("branded trust rail and real bakery scene photos visually fit at desktop an
     await expect(badges.nth(3).locator("img")).toHaveAttribute("src", /nmsdc-mbe\.png/);
     const photos = page.locator(".assortment-card .assortment-photo img");
     await expect(photos).toHaveCount(5);
+    // Scroll each lazy image into view before checking its decoded asset.
+    for (const img of await photos.all()) await img.scrollIntoViewIfNeeded();
     await expect.poll(() => photos.evaluateAll((imgs) => imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
     expect(await photos.evaluateAll((imgs) => imgs.every((img) => img.getAttribute("src")?.includes("/scenes/")))).toBeTruthy();
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
@@ -983,12 +987,17 @@ test("delivery labels do not overlap or clip, and the contact pill clears the de
         await page.evaluate((y) => window.scrollTo(0, y), top);
         const covered = await page.evaluate((selector) => {
           const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+          const headerBottom = document.querySelector(".sticky-stack")?.getBoundingClientRect().bottom ?? 0;
+          const docked = Boolean(document.querySelector(".site-header .quick-actions"));
           const hits: string[] = [];
           for (const el of document.querySelectorAll(selector)) {
             const rect = el.getBoundingClientRect();
             if (rect.width < 2 || rect.height < 2) continue;
+            // Scrolled content underneath a sticky header is not visually exposed.
+            const visibleTop = docked ? Math.max(rect.top, headerBottom) : rect.top;
+            if (visibleTop >= rect.bottom) continue;
             const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
-            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(visibleTop, pill.top);
             if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
           }
           return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };

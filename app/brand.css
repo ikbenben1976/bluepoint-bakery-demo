@@ -3076,7 +3076,8 @@ legend {
   line-height: 1.45;
   max-width: 36rem;
 }
-.footer-base .shell { padding-right: 8rem; }
+/* Footer columns share the same centered gutter as the main content. */
+.footer-base .shell { padding-right: 0; }
 
 .chips {
   flex-wrap: wrap;
@@ -3319,10 +3320,8 @@ legend {
   .delivery-check { min-width: 0; }
 }
 
-/* #79 / #80: on a phone or tablet the page keeps its normal gutters. Bottom
-   padding and scroll-margin let the last copy clear the Contact pill. The
-   right inset stays only where the shell is wide enough that the pill would
-   sit on the routes table (1280 and 1440). */
+/* The delivery page uses the same balanced shell as other routes.
+   No permanent 3–8rem loss of right-hand content width. */
 @media (max-width: 799px) {
   .delivery-page {
     padding-right: 0;
@@ -3331,12 +3330,6 @@ legend {
   .delivery-page :is(h1, h2, .delivery-lede, .atlas-stage, .atlas-card, .atlas-search, .route-table, .serve-list, .delivery-check) {
     scroll-margin-bottom: 5.75rem;
   }
-}
-@media (min-width: 800px) and (max-width: 1379px) {
-  .delivery-page { padding-right: 8rem; }
-}
-@media (min-width: 1380px) {
-  .delivery-page { padding-right: 3rem; }
 }
 
 .inquiry { padding-top: 2.4rem; }
@@ -3833,11 +3826,8 @@ body.menu-open .site-header .heritage-lockup {
     gap: 0.12rem;
   }
 }
-@media (min-width: 1100px) {
-  main .shell:not(.delivery-page) {
-    padding-right: 6.75rem;
-  }
-}
+/* Main sections use the centered .shell width without one-sided padding.
+   The fixed Contact launcher is a viewport overlay, not a layout gutter. */
 
 /* Wholesale request: full column, no mid-word breaks, room to clear the Contact pill. */
 .request-flow {
@@ -4164,19 +4154,8 @@ body.menu-open .site-header .heritage-lockup {
     grid-column: 1 / -1;
   }
 }
-/* Tablet: the Contact pill sits in the bottom-right. Keep fields and actions
-   out of that corner. The column itself stays full width. */
-@media (min-width: 700px) and (max-width: 1099px) {
-  .request-flow input:not([type="checkbox"]),
-  .request-flow select,
-  .request-flow textarea,
-  .request-flow .request-actions,
-  .request-flow .day-choices,
-  .request-flow .inquiry-picker-controls {
-    width: calc(100% - 8.75rem);
-    max-width: calc(100% - 8.75rem);
-  }
-}
+/* Tablet request controls now use their own grid columns; the fixed Contact
+   launcher must not subtract a permanent gutter from every field. */
 @media (max-width: 767px) {
   .wholesale-hero.ticket-hero {
     width: calc(100% - 1.5rem);
@@ -5065,21 +5044,10 @@ legend,
     padding-bottom: 0.4rem;
   }
 }
+/* On narrow screens, keep menu and sector links inside their actual column,
+   rather than reserving an obsolete 8.75rem sidebar for Contact. */
 @media (max-width: 520px) {
-  .menu-guide ul {
-    grid-template-columns: 1fr;
-  }
-  .content-page .menu-guide a {
-    max-width: calc(100% - 8.75rem);
-  }
-}
-@media (max-width: 800px) {
-  .content-page :is(.sector-products a, .hero-actions .btn) {
-    max-width: calc(100% - 8.75rem);
-  }
-  .sector-related ul {
-    max-width: calc(100% - 8.75rem);
-  }
+  .menu-guide ul { grid-template-columns: 1fr; }
 }
 
 /* Illustrative photos: fixed frame, cover crop, readable corner label. */
@@ -5651,3 +5619,112 @@ legend,
   }
 }
 
+
+/* 2026-11-11 alignment audit: keep one horizontal rhythm on every page.
+   The mobile layout remains under its own existing breakpoint rules. */
+@media (min-width: 768px) {
+  .buyer-proof-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: clamp(1.25rem, 4vw, 4rem);
+    padding-bottom: 1.05rem;
+    border-bottom: 1px solid #e4d8c4;
+  }
+  .buyer-proof-heading .btn {
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .partner-marks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    align-items: stretch;
+  }
+  .partner-marks li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 108px;
+    padding: 0.85rem;
+    border: 1px solid #e4d8c4;
+  }
+  .partner-marks img {
+    width: auto;
+    max-width: 100%;
+    height: 72px;
+    object-fit: contain;
+  }
+}
+
+/* Align standalone page heroes to the same desktop shell as their content.
+   On phones, preserve the existing compact page-hero dimensions. */
+@media (min-width: 768px) {
+  main .ticket-hero {
+    width: min(1200px, calc(100% - 2.5rem));
+  }
+  .buyer-proof-tabs {
+    gap: 0.25rem;
+    border-bottom: 1px solid #d6d5d1;
+  }
+  .buyer-proof-tabs button {
+    margin-bottom: -1px;
+    border-bottom: 3px solid transparent;
+  }
+  .buyer-proof-tabs button[aria-selected="true"] {
+    border-bottom-color: #6f4b0e;
+  }
+  .verified-client-mark { min-height: 188px; }
+}
+
+/* Equal card and image-well geometry, with preserved logo aspect ratios.
+   White wells hide incompatible baked-in white squares; ink marks keep dark. */
+.verified-client-mark {
+  padding: 0.75rem;
+  border-color: #dfd7c9;
+}
+.verified-client-well {
+  height: 132px;
+  padding: 0.4rem 0.55rem;
+  background: #fff;
+}
+.verified-client-well img,
+.verified-client-mark img {
+  max-width: min(100%, 252px);
+  max-height: 124px;
+  object-fit: contain;
+}
+.verified-client-well img[alt="Oskar Blues Fooderies logo"] {
+  transform: scale(1.08);
+}
+
+/* Desktop and tablet Contact is now a real flex item in the sticky header.
+   It never covers the full-width page grid or form fields on scroll. */
+@media (min-width: 768px) {
+  .site-header-row .quick-actions {
+    position: static;
+    inset: auto;
+    flex: 0 0 auto;
+    z-index: auto;
+    margin: 0 0.25rem 0 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .site-header-row .quick-toggle {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0;
+    border-radius: 999px;
+  }
+  .site-header-row .quick-toggle svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .site-header-row .quick-actions { display: none; }
+}

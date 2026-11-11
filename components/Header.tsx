@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useCallSheet } from "@/components/CallSheet";
 import { LogoLockup } from "@/components/Mark";
+import { QuickActions } from "@/components/QuickActions";
 import { NAV, ORDER_URL, PAY_URL, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
 import { requestPricingHref } from "@/lib/requestLink";
 import { useRequestCount } from "@/components/useRequestCount";
@@ -69,6 +70,7 @@ export function Header() {
             />
           </svg>
         </button>
+        <QuickActions />
         <Link href="/" className="brand">
           <LogoLockup inverse={open} />
         </Link>
