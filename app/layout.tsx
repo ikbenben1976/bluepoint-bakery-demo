@@ -7,7 +7,6 @@ import { JsonLd } from "@/components/JsonLd";
 import { CallSheetProvider } from "@/components/CallSheet";
 import { RequestSheetProvider } from "@/components/RequestSheet";
 import { Notice } from "@/components/Notice";
-import { QuickActions } from "@/components/QuickActions";
 import { franklin, sourceSerif } from "@/app/fonts";
 import { DISCLAIMER, DEMO_ORIGIN } from "@/data/site";
 
@@ -58,7 +57,6 @@ export default function RootLayout({
               <main id="main">{children}</main>
             </div>
             <Footer />
-            <QuickActions />
             <Notice />
             <JsonLd />
           </RequestSheetProvider>
