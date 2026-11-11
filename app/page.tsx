@@ -22,7 +22,7 @@ export default function HomePage() {
       <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
           <div className="hero-intro">
-            <p className="hero-kicker">Denver-baked. Made for your business.</p>
+            <p className="hero-kicker">Denver-baked. Denver&apos;s wholesale bakery since 1987.</p>
             <h1 id="approved-hero-title">
               Fresh, <span className="hero-keep">Scratch-Baked</span><span className="hero-balance"></span> Breads, Rolls &amp; Pastries
             </h1>
@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-head">
             <h2>Delivery across the Front Range</h2>
-            <p>We bake and deliver six days a week across the Front Range, with published service areas including Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming.</p>
+            <p>Our delivery trucks run Metro Denver to summit, plains to peaks. <Link className="keep-together" href="/delivery/">See the map</Link>.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">

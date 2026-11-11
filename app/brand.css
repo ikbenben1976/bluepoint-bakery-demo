@@ -5927,3 +5927,8 @@ legend,
     margin-top: auto;
   }
 }
+
+/* Keep the delivery-map link on one line. */
+.keep-together {
+  white-space: nowrap;
+}
