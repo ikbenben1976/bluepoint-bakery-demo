@@ -736,6 +736,8 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
     "Shown for this demo. Ask permission before using this product photo on a live site.",
   );
   await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  // Chrome lazy-loads below-fold images only when brought into view.
+  await photo.scrollIntoViewIfNeeded();
   await expect
     .poll(() => photo.evaluate((el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0))
     .toBeTruthy();
@@ -895,6 +897,8 @@ test("branded trust rail and real bakery scene photos visually fit at desktop an
     await expect(badges.nth(3).locator("img")).toHaveAttribute("src", /nmsdc-mbe\.png/);
     const photos = page.locator(".assortment-card .assortment-photo img");
     await expect(photos).toHaveCount(5);
+    // Scroll each lazy image into view before checking its decoded asset.
+    for (const img of await photos.all()) await img.scrollIntoViewIfNeeded();
     await expect.poll(() => photos.evaluateAll((imgs) => imgs.every((img) => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)), { timeout: 18000 }).toBeTruthy();
     expect(await photos.evaluateAll((imgs) => imgs.every((img) => img.getAttribute("src")?.includes("/scenes/")))).toBeTruthy();
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
