@@ -5928,7 +5928,7 @@ legend,
   }
 }
 
-/* Keep two-word city names on one line in the home delivery sentence. */
+/* Keep the delivery-map link on one line. */
 .keep-together {
   white-space: nowrap;
 }

@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-head">
             <h2>Delivery across the Front Range</h2>
-            <p>Daily metro delivery, with routes reaching <span className="keep-together">Fort Collins</span>, Greeley, <span className="keep-together">Colorado Springs</span>, Breckenridge, <span className="keep-together">Black Hawk</span>, and Cheyenne. <Link href="/delivery/">See the map</Link>.</p>
+            <p>Our delivery trucks run Metro Denver to summit, plains to peaks. <Link className="keep-together" href="/delivery/">See the map</Link>.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">
