@@ -20,13 +20,12 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageHero kicker="Our story" title="Baking for Colorado since 1987" lede={<p>Fresh from Denver, serving the Front Range.</p>} contained />
+      <PageHero kicker="Our story" title="Baking for Colorado since 1987" lede={<p>Fresh from Denver, serving Metro Denver and beyond.</p>} contained />
       <article className="shell about-page">
         <div className="about-story">
           <div className="about-copy">
             <div className="willie-story">
               <div className="willie-copy">
-                <p className="eyebrow">Our story</p>
                 <h2>
                   From the bakery floor to business ownership: <span className="story-name">Willie Ramirez</span>
                 </h2>
