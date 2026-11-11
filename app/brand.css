@@ -5728,3 +5728,24 @@ legend,
 @media (max-width: 767px) {
   .site-header-row .quick-actions { display: none; }
 }
+
+/* Homepage vertical rhythm: the assortment and menu-application sections
+   have nearly identical backgrounds and should read as one continuous
+   discovery journey. Two generic .block paddings previously added 104px
+   of blank space between the assortment buttons and the next heading. */
+@media (min-width: 768px) {
+  main > .assortment-section {
+    padding-bottom: 1.5rem;
+  }
+  main > .application-block {
+    padding-top: 1.75rem;
+  }
+}
+@media (max-width: 767px) {
+  main > .assortment-section {
+    padding-bottom: 1.125rem;
+  }
+  main > .application-block {
+    padding-top: 1.125rem;
+  }
+}
