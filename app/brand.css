@@ -5825,3 +5825,20 @@ legend,
     height: 54px !important;
   }
 }
+
+/* Menu-application tiles: each two-column row has a shared baseline for its
+   "Explore recommended products" action, even when descriptions wrap to
+   different numbers of lines. The single-column phone layout is unchanged. */
+@media (min-width: 651px) {
+  .application-section.making .making-visual-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .application-section.making .making-description {
+    flex: 1 1 auto;
+  }
+  .application-section.making .making-explore {
+    margin-top: auto;
+  }
+}
