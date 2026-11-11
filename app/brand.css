@@ -3076,7 +3076,8 @@ legend {
   line-height: 1.45;
   max-width: 36rem;
 }
-.footer-base .shell { padding-right: 8rem; }
+/* Footer columns share the same centered gutter as the main content. */
+.footer-base .shell { padding-right: 0; }
 
 .chips {
   flex-wrap: wrap;
@@ -3833,11 +3834,8 @@ body.menu-open .site-header .heritage-lockup {
     gap: 0.12rem;
   }
 }
-@media (min-width: 1100px) {
-  main .shell:not(.delivery-page) {
-    padding-right: 6.75rem;
-  }
-}
+/* Main sections use the centered .shell width without one-sided padding.
+   The fixed Contact launcher is a viewport overlay, not a layout gutter. */
 
 /* Wholesale request: full column, no mid-word breaks, room to clear the Contact pill. */
 .request-flow {
@@ -4164,19 +4162,8 @@ body.menu-open .site-header .heritage-lockup {
     grid-column: 1 / -1;
   }
 }
-/* Tablet: the Contact pill sits in the bottom-right. Keep fields and actions
-   out of that corner. The column itself stays full width. */
-@media (min-width: 700px) and (max-width: 1099px) {
-  .request-flow input:not([type="checkbox"]),
-  .request-flow select,
-  .request-flow textarea,
-  .request-flow .request-actions,
-  .request-flow .day-choices,
-  .request-flow .inquiry-picker-controls {
-    width: calc(100% - 8.75rem);
-    max-width: calc(100% - 8.75rem);
-  }
-}
+/* Tablet request controls now use their own grid columns; the fixed Contact
+   launcher must not subtract a permanent gutter from every field. */
 @media (max-width: 767px) {
   .wholesale-hero.ticket-hero {
     width: calc(100% - 1.5rem);
@@ -5065,21 +5052,10 @@ legend,
     padding-bottom: 0.4rem;
   }
 }
+/* On narrow screens, keep menu and sector links inside their actual column,
+   rather than reserving an obsolete 8.75rem sidebar for Contact. */
 @media (max-width: 520px) {
-  .menu-guide ul {
-    grid-template-columns: 1fr;
-  }
-  .content-page .menu-guide a {
-    max-width: calc(100% - 8.75rem);
-  }
-}
-@media (max-width: 800px) {
-  .content-page :is(.sector-products a, .hero-actions .btn) {
-    max-width: calc(100% - 8.75rem);
-  }
-  .sector-related ul {
-    max-width: calc(100% - 8.75rem);
-  }
+  .menu-guide ul { grid-template-columns: 1fr; }
 }
 
 /* Illustrative photos: fixed frame, cover crop, readable corner label. */
@@ -5651,3 +5627,75 @@ legend,
   }
 }
 
+
+/* 2026-11-11 alignment audit: keep one horizontal rhythm on every page.
+   The mobile layout remains under its own existing breakpoint rules. */
+@media (min-width: 768px) {
+  .buyer-proof-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: clamp(1.25rem, 4vw, 4rem);
+    padding-bottom: 1.05rem;
+    border-bottom: 1px solid #e4d8c4;
+  }
+  .buyer-proof-heading .btn {
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .partner-marks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    align-items: stretch;
+  }
+  .partner-marks li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 108px;
+    padding: 0.85rem;
+    border: 1px solid #e4d8c4;
+  }
+  .partner-marks img {
+    width: auto;
+    max-width: 100%;
+    height: 72px;
+    object-fit: contain;
+  }
+}
+
+/* The active tab belongs to the panel rather than floating above a heavy
+   double line. Preserve the 2-column mobile tab arrangement. */
+.buyer-proof-tabs {
+  gap: 0.25rem;
+  border-bottom: 1px solid #d6d5d1;
+}
+.buyer-proof-tabs button {
+  margin-bottom: -1px;
+  border-bottom: 3px solid transparent;
+}
+.buyer-proof-tabs button[aria-selected="true"] {
+  border-bottom-color: #6f4b0e;
+}
+
+/* Equal card and image-well geometry, with preserved logo aspect ratios.
+   White wells hide incompatible baked-in white squares; ink marks keep dark. */
+.verified-client-mark {
+  min-height: 188px;
+  padding: 0.75rem;
+  border-color: #dfd7c9;
+}
+.verified-client-well {
+  height: 132px;
+  padding: 0.4rem 0.55rem;
+  background: #fff;
+}
+.verified-client-well img,
+.verified-client-mark img {
+  max-width: min(100%, 252px);
+  max-height: 124px;
+  object-fit: contain;
+}
+.verified-client-well img[alt="Oskar Blues Fooderies logo"] {
+  transform: scale(1.08);
+}
