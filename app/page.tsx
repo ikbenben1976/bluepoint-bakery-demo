@@ -181,7 +181,7 @@ export default function HomePage() {
         <div className="shell">
           <div className="section-head">
             <h2>Delivery across the Front Range</h2>
-            <p>We bake and deliver six days a week across the Front Range, with published service areas including Denver, Colorado Springs, Fort Collins, Greeley, Loveland, Summit County, Black Hawk and Cheyenne, Wyoming.</p>
+            <p>Daily metro delivery, with routes reaching <span className="keep-together">Fort Collins</span>, Greeley, <span className="keep-together">Colorado Springs</span>, Breckenridge, <span className="keep-together">Black Hawk</span>, and Cheyenne. <Link href="/delivery/">See the map</Link>.</p>
           </div>
           <RouteMap preview />
           <div className="home-delivery-check">
