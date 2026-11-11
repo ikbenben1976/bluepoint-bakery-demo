@@ -5664,24 +5664,29 @@ legend,
   }
 }
 
-/* The active tab belongs to the panel rather than floating above a heavy
-   double line. Preserve the 2-column mobile tab arrangement. */
-.buyer-proof-tabs {
-  gap: 0.25rem;
-  border-bottom: 1px solid #d6d5d1;
-}
-.buyer-proof-tabs button {
-  margin-bottom: -1px;
-  border-bottom: 3px solid transparent;
-}
-.buyer-proof-tabs button[aria-selected="true"] {
-  border-bottom-color: #6f4b0e;
+/* Align standalone page heroes to the same desktop shell as their content.
+   On phones, preserve the existing compact page-hero dimensions. */
+@media (min-width: 768px) {
+  main .ticket-hero {
+    width: min(1200px, calc(100% - 2.5rem));
+  }
+  .buyer-proof-tabs {
+    gap: 0.25rem;
+    border-bottom: 1px solid #d6d5d1;
+  }
+  .buyer-proof-tabs button {
+    margin-bottom: -1px;
+    border-bottom: 3px solid transparent;
+  }
+  .buyer-proof-tabs button[aria-selected="true"] {
+    border-bottom-color: #6f4b0e;
+  }
+  .verified-client-mark { min-height: 188px; }
 }
 
 /* Equal card and image-well geometry, with preserved logo aspect ratios.
    White wells hide incompatible baked-in white squares; ink marks keep dark. */
 .verified-client-mark {
-  min-height: 188px;
   padding: 0.75rem;
   border-color: #dfd7c9;
 }
