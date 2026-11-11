@@ -5790,12 +5790,12 @@ legend,
   }
   .site-header .desk-nav {
     order: 1;
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: flex-end;
-    margin: 0 0 0 auto;
+    justify-content: center;
+    margin: 0;
     gap: clamp(0.05rem, 0.35vw, 0.45rem);
     min-width: 0;
   }
