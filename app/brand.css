@@ -5932,3 +5932,24 @@ legend,
 .keep-together {
   white-space: nowrap;
 }
+
+/* Phones show the first six logos when a tab has more. The attribute is in the
+   static HTML, and only this breakpoint hides the rest, so wider layouts keep
+   the full grid with no control and no hydration flash. */
+.logo-reveal {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .logo-reveal {
+    display: flex;
+    width: 100%;
+    margin: 0 0 1.5rem;
+  }
+  .verified-client-strip[data-collapsed] > :nth-child(n + 7) {
+    display: none;
+  }
+  .verified-client-strip:has(+ .logo-reveal) {
+    margin-bottom: 0.85rem;
+  }
+}
