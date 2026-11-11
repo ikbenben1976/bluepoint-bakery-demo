@@ -22,7 +22,7 @@ export default function HomePage() {
       <section className="hero approved-hero seamless-hero" aria-labelledby="approved-hero-title">
         <div className="hero-copy">
           <div className="hero-intro">
-            <p className="hero-kicker">Denver-baked. Made for your business.</p>
+            <p className="hero-kicker">Denver-baked. Denver&apos;s wholesale bakery since 1987.</p>
             <h1 id="approved-hero-title">
               Fresh, <span className="hero-keep">Scratch-Baked</span><span className="hero-balance"></span> Breads, Rolls &amp; Pastries
             </h1>
