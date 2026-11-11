@@ -18,7 +18,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(DEMO_ORIGIN),
-  icons: { icon: [{ url: "/icon.png", type: "image/png", sizes: "48x48" }], shortcut: "/icon.png" },
+  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "any" }], shortcut: "/icon.svg" },
   title: {
     default: "Bluepoint Bakery",
     template: "%s | Bluepoint Bakery",

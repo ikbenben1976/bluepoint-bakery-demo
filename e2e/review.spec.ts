@@ -588,8 +588,9 @@ test("approved refreshed hero shows recognizable brand, value propositions and f
     expect(await overflow(page), String(width)).toBeLessThanOrEqual(1);
   }
   await page.goto("/");
-  const icon = await page.locator('link[rel="icon"][href*="icon.png"]').count();
+  const icon = await page.locator('link[rel="icon"][href*="icon.svg"]').count();
   expect(icon).toBeGreaterThan(0);
+  expect(await page.locator('link[rel="icon"][href*="icon.png"]').count()).toBe(0);
 });
 
 test("wholesale preview keeps catalog selection AND additional requirements", async ({ page }) => {
