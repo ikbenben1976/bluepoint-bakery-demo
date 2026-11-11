@@ -44,39 +44,77 @@ test("favicon uses SVG with transparent rounded corners, not old opaque PNG", as
   expect(content).not.toContain("rect fill=\"#fff\"");
 });
 
-test("desktop Bluepoint wordmark gets primary visual emphasis with balanced navigation", async ({ page }, testInfo) => {
-  for (const width of [1100, 1180, 1280, 1440, 1675]) {
+test("wide desktop header is one balanced row with a prominent logo", async ({ page }, testInfo) => {
+  for (const width of [1220, 1280, 1440, 1675, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
-    const dimensions = await page.evaluate(() => {
-      const brand = document.querySelector<HTMLElement>(".site-header .brand")!.getBoundingClientRect();
-      const logo = document.querySelector<HTMLElement>(".site-header .heritage-logo")!.getBoundingClientRect();
-      const nav = document.querySelector<HTMLElement>(".site-header .desk-nav")!.getBoundingClientRect();
-      const quick = document.querySelector<HTMLElement>(".site-header .quick-actions")!.getBoundingClientRect();
-      const header = document.querySelector<HTMLElement>(".site-header")!.getBoundingClientRect();
-      return {
-        brandRight: brand.right, navLeft: nav.left, navRight: nav.right,
-        logoHeight: logo.height, logoWidth: logo.width,
-        headerLeft: header.left, headerRight: header.right,
-        quickWidth: quick.width,
-        horizontalOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      };
+    await page.evaluate(() => document.fonts.ready);
+    const d = await page.evaluate(() => {
+      const rect = (sel: string) => document.querySelector<HTMLElement>(sel)!.getBoundingClientRect();
+      const box = (r: DOMRect) => ({ left: r.left, right: r.right, top: r.top, bottom: r.bottom, midY: (r.top + r.bottom)/2, height: r.height });
+      const logo = box(rect(".site-header .heritage-logo"));
+      const brand = box(rect(".site-header .brand"));
+      const nav = box(rect(".site-header .desk-nav"));
+      const contact = box(rect(".site-header-row .quick-toggle"));
+      const account = box(rect(".site-header .customer-login"));
+      const links = [...document.querySelectorAll<HTMLElement>(".site-header .desk-nav .nav-link")].map(el => box(el.getBoundingClientRect()));
+      return { logo, brand, nav, contact, account, links,
+        menuDisplay: getComputedStyle(document.querySelector(".site-header .menu-toggle")!).display,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
     });
-    expect(dimensions.logoHeight, `logo height at ${width}px`).toBeGreaterThanOrEqual(84);
-    expect(dimensions.logoWidth, `logo width at ${width}px`).toBeGreaterThanOrEqual(205);
-    expect(dimensions.navLeft, `brand / nav separation at ${width}px`).toBeGreaterThanOrEqual(dimensions.brandRight + 2);
-    expect(dimensions.navRight, `nav within viewport at ${width}px`).toBeLessThanOrEqual(dimensions.headerRight + 1);
-    expect(dimensions.quickWidth).toBeGreaterThanOrEqual(44);
-    expect(dimensions.horizontalOverflow, `page overflow at ${width}px`).toBeLessThanOrEqual(1);
-    if (width === 1675) {
-      await page.screenshot({ path: testInfo.outputPath("desktop-brand-header-1675.png"), animations: "disabled" });
+    expect(d.logo.height, `wordmark remains prominent at ${width}px`).toBeGreaterThanOrEqual(78);
+    expect(d.links, `all primary links at ${width}px`).toHaveLength(8);
+    expect(d.nav.left, `nav clears logo at ${width}px`).toBeGreaterThanOrEqual(d.brand.right + 4);
+    expect(d.contact.left, `contact follows nav at ${width}px`).toBeGreaterThanOrEqual(d.nav.right + 2);
+    expect(d.account.left, `account follows contact at ${width}px`).toBeGreaterThanOrEqual(d.contact.right + 2);
+    for (const link of d.links) {
+      expect(Math.abs(link.midY - d.nav.midY), `nav link shares a row at ${width}px`).toBeLessThanOrEqual(2);
+      expect(Math.abs(link.midY - d.logo.midY), `nav aligned with logo at ${width}px`).toBeLessThanOrEqual(14);
+    }
+    expect(d.menuDisplay).toBe("none");
+    expect(d.overflow, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(1);
+    if (width === 1440 || width === 1675) {
+      await page.locator(".sticky-stack").screenshot({
+        path: testInfo.outputPath(`desktop-header-single-row-${width}.png`), animations: "disabled"
+      });
     }
   }
+});
 
+test("compact tablet and laptop widths use the accessible menu without cramming links", async ({ page }, testInfo) => {
+  for (const width of [768, 1024, 1100, 1199]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const toggle = page.locator(".site-header .menu-toggle");
+    await expect(toggle).toBeVisible();
+    await expect(page.locator(".site-header .desk-nav")).toBeHidden();
+    await expect(page.locator(".site-header .heritage-logo")).toBeVisible();
+    const d = await page.evaluate(() => {
+      const logo = document.querySelector<HTMLElement>(".site-header .heritage-logo")!.getBoundingClientRect();
+      const menu = document.querySelector<HTMLElement>(".site-header .menu-toggle")!.getBoundingClientRect();
+      const contact = document.querySelector<HTMLElement>(".site-header-row .quick-toggle")!.getBoundingClientRect();
+      return { logoRight: logo.right, contactLeft: contact.left, menuLeft: menu.left,
+        logoHeight: logo.height, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+    });
+    expect(d.contactLeft, `contact does not overlap logo at ${width}px`).toBeGreaterThan(d.logoRight + 5);
+    expect(d.menuLeft, `menu follows Contact at ${width}px`).toBeGreaterThan(d.contactLeft + 40);
+    expect(d.logoHeight).toBeGreaterThanOrEqual(68);
+    expect(d.overflow).toBeLessThanOrEqual(1);
+    await toggle.click();
+    await expect(page.locator("#mobile-menu")).toBeVisible();
+    await expect(page.locator("#mobile-menu").getByRole("link", { name: "Request a quote" })).toBeVisible();
+    await toggle.click();
+    await expect(page.locator("#mobile-menu")).toBeHidden();
+    if (width === 1199) {
+      await page.locator(".sticky-stack").screenshot({
+        path: testInfo.outputPath("compact-laptop-header-1199.png"), animations: "disabled"
+      });
+    }
+  }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await expect(page.locator(".site-header .heritage-logo")).toBeVisible();
-  const mobileWidth = await page.locator(".site-header .heritage-logo").evaluate(el => el.getBoundingClientRect().width);
-  expect(mobileWidth).toBeGreaterThan(0);
-  await page.screenshot({ path: testInfo.outputPath("mobile-brand-header-390.png"), animations: "disabled" });
+  await page.locator(".sticky-stack").screenshot({
+    path: testInfo.outputPath("mobile-header-390-unchanged.png"), animations: "disabled"
+  });
 });
