@@ -66,6 +66,9 @@ test("wide desktop header is one balanced row with a prominent logo", async ({ p
     expect(d.links, `all primary links at ${width}px`).toHaveLength(8);
     expect(d.nav.left, `nav clears logo at ${width}px`).toBeGreaterThanOrEqual(d.brand.right + 4);
     expect(d.contact.left, `contact follows nav at ${width}px`).toBeGreaterThanOrEqual(d.nav.right + 2);
+    const linkGroupCenter = (d.links[0].left + d.links[d.links.length - 1].right) / 2;
+    const contentAreaCenter = (d.brand.right + d.contact.left) / 2;
+    expect(Math.abs(linkGroupCenter - contentAreaCenter), `navigation is centered between brand and actions at ${width}px`).toBeLessThanOrEqual(25);
     expect(d.account.left, `account follows contact at ${width}px`).toBeGreaterThanOrEqual(d.contact.right + 2);
     for (const link of d.links) {
       expect(Math.abs(link.midY - d.nav.midY), `nav link shares a row at ${width}px`).toBeLessThanOrEqual(2);
