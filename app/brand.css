@@ -5763,67 +5763,152 @@ legend,
   }
 }
 
-/* Give the official rolling-pin logo a clear visual anchor on desktop.
-   Two shallow utility/navigation rows make room for the mark without
-   shrinking or crowding the existing eight navigation links. */
-@media (min-width: 1100px) {
-  .site-header-row {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) auto;
-    grid-template-rows: 35px 48px;
-    column-gap: 1rem;
-    row-gap: 0.1rem;
-    width: min(1400px, calc(100% - 2.5rem));
-    padding: 0.35rem 0 0.45rem;
+/* A single, balanced header. The logo is the anchor, the navigation lives
+   on one baseline, and small utility controls sit at the far right. At narrower
+   desktop widths, switch to the existing accessible menu rather than
+   compressing or stacking the navigation into a second row. */
+@media (min-width: 1220px) {
+  .site-header-row,
+  .site-header.is-condensed .site-header-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: min(1480px, calc(100% - 3rem));
+    min-height: 96px;
+    padding: 0.45rem 0;
+    gap: clamp(0.45rem, 1vw, 1.25rem);
   }
   .site-header .brand {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    justify-self: start;
+    order: 0;
+    flex: 0 0 auto;
     margin: 0;
   }
   .site-header .heritage-logo {
+    height: 82px !important;
     width: auto !important;
-    height: 88px !important;
-    max-width: 240px;
+    max-width: 225px;
+  }
+  .site-header .desk-nav {
+    order: 1;
+    flex: 0 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 0 0 auto;
+    gap: clamp(0.05rem, 0.35vw, 0.45rem);
+    min-width: 0;
+  }
+  .site-header .nav-link {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    padding: 0.55rem clamp(0.2rem, 0.35vw, 0.45rem);
+    white-space: nowrap;
+    min-height: 44px;
+  }
+  .site-header .desk-nav .nav-link:last-child {
+    padding: 0.65rem 0.75rem;
+    border-radius: 5px;
+    background: #172e55;
+    color: #fff;
+    box-shadow: none;
+  }
+  .site-header .desk-nav .nav-link:last-child:hover,
+  .site-header .desk-nav .nav-link:last-child:focus-visible {
+    background: #254879;
+    color: #fff;
   }
   .site-header-row .quick-actions {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
+    order: 2;
+    flex: 0 0 auto;
     margin: 0;
   }
   .site-header .util {
-    grid-column: 3;
-    grid-row: 1;
+    order: 3;
+    flex: 0 0 auto;
+    margin: 0;
+    padding-left: 0.65rem;
+    border-left: 1px solid #e4d8c4;
+    gap: 0.5rem;
+  }
+  .site-header .util-phone {
+    display: none !important; /* The adjacent Contact action already opens the phone options. */
+  }
+  .site-header .menu-toggle {
+    display: none;
+  }
+  .site-header.is-condensed .site-header-row {
+    min-height: 78px;
+    padding-block: 0.25rem;
+  }
+  .site-header.is-condensed .heritage-logo {
+    height: 65px !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1219px) {
+  .site-header-row,
+  .site-header.is-condensed .site-header-row {
+    display: flex;
+    width: min(1160px, calc(100% - 2rem));
+    min-height: 82px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.3rem 0;
+  }
+  .site-header .brand {
+    order: 0;
+    flex: 0 0 auto;
+    margin: 0;
+  }
+  .site-header .heritage-logo {
+    height: 72px !important;
+    max-width: 205px;
+  }
+  .site-header .desk-nav {
+    display: none;
+  }
+  .site-header-row .quick-actions {
+    order: 1;
+    margin-left: auto;
+  }
+  .site-header .util {
+    order: 2;
     margin: 0;
     padding: 0;
     border: 0;
-    gap: 0.7rem;
+    gap: 0.75rem;
   }
-  .site-header .desk-nav {
-    grid-column: 2 / 4;
-    grid-row: 2;
-    justify-self: end;
-    gap: 0.2rem 0.5rem;
-    margin: 0;
+  .site-header .util-phone {
+    display: none !important;
+  }
+  .site-header .menu-toggle {
+    display: inline-flex;
+    min-height: 44px;
+    padding: 0.45rem 0.85rem;
+    border-radius: 5px;
   }
   .site-header.is-condensed .site-header-row {
-    grid-template-rows: 28px 39px;
-    padding-block: 0.2rem;
+    min-height: 70px;
   }
   .site-header.is-condensed .heritage-logo {
-    height: 70px !important;
+    height: 58px !important;
+  }
+  .mobile-menu {
+    padding-top: 7.2rem;
+  }
+  .mobile-menu nav {
+    max-width: 40rem;
+    margin: 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 1.5rem;
+  }
+  .mobile-menu-actions {
+    max-width: 40rem;
+    margin-inline: auto;
   }
 }
-@media (min-width: 768px) and (max-width: 1099px) {
-  .site-header .heritage-logo {
-    height: 68px !important;
-    max-width: 210px;
-  }
-  .site-header.is-condensed .heritage-logo {
-    height: 54px !important;
-  }
+@media (min-width: 768px) and (max-width: 949px) {
+  .site-header .customer-login { display: none; }
 }
 
 /* Menu-application tiles: each two-column row has a shared baseline for its
