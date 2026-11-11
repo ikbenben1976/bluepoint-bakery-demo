@@ -26,6 +26,14 @@ test("homepage discovery sections have intentional desktop and mobile spacing", 
     expect(report.gap, `space between assortment and menu at ${width}px`).toBeLessThanOrEqual(expected.max);
     expect(report.overflow, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(1);
 
+    if (width === 1440) {
+      await page.screenshot({
+        path: testInfo.outputPath("home-full-desktop.png"),
+        fullPage: true,
+        animations: "disabled",
+      });
+    }
+
     if (width === 1440 || width === 390) {
       await page.evaluate((y) => {
         document.documentElement.style.scrollBehavior = "auto";
