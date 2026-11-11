@@ -987,12 +987,17 @@ test("delivery labels do not overlap or clip, and the contact pill clears the de
         await page.evaluate((y) => window.scrollTo(0, y), top);
         const covered = await page.evaluate((selector) => {
           const pill = document.querySelector("[data-testid='quick-actions']")!.getBoundingClientRect();
+          const headerBottom = document.querySelector(".sticky-stack")?.getBoundingClientRect().bottom ?? 0;
+          const docked = Boolean(document.querySelector(".site-header .quick-actions"));
           const hits: string[] = [];
           for (const el of document.querySelectorAll(selector)) {
             const rect = el.getBoundingClientRect();
             if (rect.width < 2 || rect.height < 2) continue;
+            // Scrolled content underneath a sticky header is not visually exposed.
+            const visibleTop = docked ? Math.max(rect.top, headerBottom) : rect.top;
+            if (visibleTop >= rect.bottom) continue;
             const overlapX = Math.min(rect.right, pill.right) - Math.max(rect.left, pill.left);
-            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(rect.top, pill.top);
+            const overlapY = Math.min(rect.bottom, pill.bottom) - Math.max(visibleTop, pill.top);
             if (overlapX > 1 && overlapY > 1) hits.push(el.className?.toString() || el.tagName);
           }
           return { hits, pillVisible: pill.width > 40 && pill.bottom <= window.innerHeight + 1 && pill.top >= 0 };
