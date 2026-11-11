@@ -103,3 +103,32 @@ test("mobile layouts retain full-width navigation, cards and no overflow", async
     });
   }
 });
+
+
+test("desktop Contact launcher stays inside the sticky header, not over page content", async ({ page }) => {
+  for (const width of [768, 1024, 1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/wholesale/");
+    const launcher = page.locator(".site-header-row .quick-actions");
+    await expect(launcher).toBeVisible();
+    const geometry = await page.evaluate(() => {
+      const header = document.querySelector(".site-header")!.getBoundingClientRect();
+      const button = document.querySelector<HTMLElement>(".site-header-row .quick-toggle")!;
+      const rect = button.getBoundingClientRect();
+      return {
+        position: getComputedStyle(button.closest(".quick-actions")!).position,
+        left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
+        headerLeft: header.left, headerRight: header.right,
+        headerTop: header.top, headerBottom: header.bottom,
+        width: rect.width, height: rect.height,
+      };
+    });
+    expect(geometry.position, `Contact is in flow at ${width}px`).not.toBe("fixed");
+    expect(geometry.left, `Contact inside header at ${width}px`).toBeGreaterThanOrEqual(geometry.headerLeft);
+    expect(geometry.right, `Contact inside header at ${width}px`).toBeLessThanOrEqual(geometry.headerRight + 1);
+    expect(geometry.top, `Contact inside header at ${width}px`).toBeGreaterThanOrEqual(geometry.headerTop - 1);
+    expect(geometry.bottom, `Contact inside header at ${width}px`).toBeLessThanOrEqual(geometry.headerBottom + 1);
+    expect(geometry.width).toBeGreaterThanOrEqual(44);
+    expect(geometry.height).toBeGreaterThanOrEqual(44);
+  }
+});
