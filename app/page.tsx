@@ -8,13 +8,24 @@ import { HeroBenefits } from "@/components/HeroBenefits";
 import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { heroDesktop, heroMobile } from "@/data/illustrative";
-import { categoryPhotos } from "@/data/photos";
+import { homeCommunityTiles } from "@/data/homeCommunity";
 import { COLORADO_PROUD, ORDER_URL } from "@/data/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
   robots: { index: false, follow: false },
 };
+
+function CommunityCaption({ caption }: { caption: string }) {
+  const split = caption.indexOf(": ");
+  if (split === -1) return caption;
+  return (
+    <>
+      {caption.slice(0, split + 1)}
+      <br className="home-charity-narrow-break" /> {caption.slice(split + 2)}
+    </>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -195,24 +206,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block home-community">
-        <div className="shell split">
-          <div>
-            <h2>Community</h2>
-            <p className="pull-text">In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.</p>
-            <Link href="/community" className="btn btn-primary">
-              Community partners
-            </Link>
-          </div>
-          <div className="split-photo">
-            <Image
-              src={categoryPhotos.pies.src}
-              alt={categoryPhotos.pies.alt}
-              width={categoryPhotos.pies.width}
-              height={categoryPhotos.pies.height}
-              loading="eager"
-            />
-          </div>
+      <section className="block home-community" aria-labelledby="home-community-heading">
+        <div className="shell">
+          <h2 id="home-community-heading">Giving back to the communities we serve</h2>
+          <p className="home-community-lede">Our commitment to Colorado goes beyond the bakery. We&apos;re proud to support organizations that make a difference in our communities.</p>
+          <ul className="home-charity-grid">
+            {homeCommunityTiles.map((tile) => (
+              <li key={tile.caption}>
+                <figure className="home-charity-tile">
+                  <div className="home-charity-media">
+                    {tile.image ? (
+                      <Image
+                        src={tile.image.src}
+                        alt={tile.image.alt}
+                        width={tile.image.width}
+                        height={tile.image.height}
+                      />
+                    ) : (
+                      <div className="home-charity-placeholder">Photo needed</div>
+                    )}
+                  </div>
+                  <figcaption>
+                    <CommunityCaption caption={tile.caption} />
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+          <Link href="/community" className="btn btn-primary">
+            Community partners
+          </Link>
         </div>
       </section>
     </>
