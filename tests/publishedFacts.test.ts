@@ -11,11 +11,15 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   const home = read("app/page.tsx");
   const community = read("app/community/page.tsx");
   const site = read("data/site.ts");
+  const approvedGiving =
+    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.";
+  const rendered = (source: string) => source.replaceAll("&apos;", "'").replaceAll("&amp;", "&");
   assert.match(community, /id="recognition"/);
-  assert.match(
-    community,
-    /In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business.*Since 2009/,
-  );
+  assert.ok(rendered(community).includes(approvedGiving));
+  assert.ok(rendered(home).includes(approvedGiving));
+  assert.doesNotMatch(rendered(community), /Community involvement has long been part/);
+  assert.doesNotMatch(rendered(home), /prepared and donated all the pies/);
+  assert.doesNotMatch(rendered(home), /Community involvement has long been part/);
   assert.match(about, /Recognized for giving back — see our community work/);
   assert.match(about, /href="\/community#recognition"/);
   assert.doesNotMatch(about, /Outstanding Small Business/);
@@ -23,11 +27,11 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   assert.match(community, /Outstanding Small Business/);
   assert.doesNotMatch(community, /AFP Colorado/);
   assert.doesNotMatch(community, /Philanthropist of the Year/);
-  for (const source of [home, site]) {
-    assert.doesNotMatch(source, /Outstanding Small Business/);
-    assert.doesNotMatch(source, /AFP Colorado/);
-    assert.doesNotMatch(source, /Philanthropist of the Year/);
-  }
+  assert.doesNotMatch(site, /Outstanding Small Business/);
+  assert.doesNotMatch(site, /AFP Colorado/);
+  assert.doesNotMatch(site, /Philanthropist of the Year/);
+  assert.doesNotMatch(home, /AFP Colorado/);
+  assert.doesNotMatch(home, /Philanthropist of the Year/);
 });
 
 test("About uses the approved Willie story and keeps his portrait", () => {

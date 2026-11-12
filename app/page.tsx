@@ -199,7 +199,7 @@ export default function HomePage() {
         <div className="shell split">
           <div>
             <h2>Community</h2>
-            <p className="pull-text">Since 2009, Bluepoint has prepared and donated all the pies for Project Angel Heart&apos;s Pie in the Sky.</p>
+            <p className="pull-text">In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.</p>
             <Link href="/community" className="btn btn-primary">
               Community partners
             </Link>

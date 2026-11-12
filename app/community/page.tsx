@@ -30,7 +30,7 @@ export default function CommunityPage() {
         <section className="recognition" id="recognition" aria-labelledby="recognition-heading">
           <h2 id="recognition-heading">Recognized for community giving</h2>
           <p>
-            In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. Community involvement has long been part of Bluepoint&apos;s story. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.
+            In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we&apos;ve baked and donated every pie for Project Angel Heart&apos;s Pie in the Sky, and we support CASA of Adams &amp; Broomfield Counties, The GrowHaus and Soup for the Soul.
           </p>
         </section>
         <ul className="partner-marks" aria-label="Community partners">
