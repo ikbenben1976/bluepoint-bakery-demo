@@ -1263,9 +1263,26 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".brand-trust")).not.toContainText("not a certification");
   await expect(page.locator(".brand-trust")).not.toContainText("Outstanding Small Business");
   await expect(page.locator(".brand-trust")).not.toContainText("AFP");
-  await expect(page.locator(".home-community")).toContainText(approvedGiving);
+  await expect(page.getByRole("heading", { name: "Giving back to the communities we serve" })).toHaveCount(1);
+  await expect(page.locator(".home-community")).toContainText(
+    "Our commitment to Colorado goes beyond the bakery. We're proud to support organizations that make a difference in our communities.",
+  );
+  await expect(page.locator(".home-community")).not.toContainText("Association of Fundraising Professionals");
+  await expect(page.locator("main")).not.toContainText("Association of Fundraising Professionals");
   await expect(page.locator(".home-community")).not.toContainText("prepared and donated all the pies");
   await expect(page.locator("main")).not.toContainText("Community involvement has long been part");
+  const tiles = page.locator(".home-charity-tile");
+  await expect(tiles).toHaveCount(4);
+  await expect(tiles.nth(0).locator("img")).toHaveAttribute("src", /pie-filling\.webp/);
+  await expect(tiles.nth(0)).toContainText("Project Angel Heart: Pie in the Sky");
+  await expect(tiles.nth(1)).toContainText("CASA of Adams & Broomfield Counties");
+  await expect(tiles.nth(1).locator(".home-charity-placeholder")).toHaveText("Photo needed");
+  await expect(tiles.nth(2)).toContainText("The GrowHaus");
+  await expect(tiles.nth(2).locator(".home-charity-placeholder")).toHaveText("Photo needed");
+  await expect(tiles.nth(3)).toContainText("Soup for the Soul");
+  await expect(tiles.nth(3).locator(".home-charity-placeholder")).toHaveText("Photo needed");
+  await expect(page.locator(".home-community .btn")).toHaveText("Community partners");
+  await expect(page.locator(".home-community .btn")).toHaveAttribute("href", /\/community\/?$/);
   const proof = page.locator("#customers");
   await expect(proof).toContainText("The Cherry Cricket");
   await expect(proof).toContainText("Mountain Sun");

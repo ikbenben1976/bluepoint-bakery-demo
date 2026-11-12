@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
+import { homeCommunityTiles } from "../data/homeCommunity";
 import { communityMarks, customerMarks } from "../data/photos";
 import { communityPartners, customerComments } from "../data/site";
 
@@ -16,7 +17,18 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   const rendered = (source: string) => source.replaceAll("&apos;", "'").replaceAll("&amp;", "&");
   assert.match(community, /id="recognition"/);
   assert.ok(rendered(community).includes(approvedGiving));
-  assert.ok(rendered(home).includes(approvedGiving));
+  assert.ok(!rendered(home).includes(approvedGiving));
+  assert.doesNotMatch(rendered(home), /Association of Fundraising Professionals/);
+  assert.equal(
+    rendered(home).match(/Giving back to the communities we serve/g)?.length,
+    1,
+  );
+  assert.equal(
+    rendered(home).match(
+      /Our commitment to Colorado goes beyond the bakery\. We're proud to support organizations that make a difference in our communities\./g,
+    )?.length,
+    1,
+  );
   assert.doesNotMatch(rendered(community), /Community involvement has long been part/);
   assert.doesNotMatch(rendered(home), /prepared and donated all the pies/);
   assert.doesNotMatch(rendered(home), /Community involvement has long been part/);
@@ -32,6 +44,29 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   assert.doesNotMatch(site, /Philanthropist of the Year/);
   assert.doesNotMatch(home, /AFP Colorado/);
   assert.doesNotMatch(home, /Philanthropist of the Year/);
+});
+
+test("home community tiles use the pie photo and three photo-needed slots", () => {
+  assert.deepEqual(
+    homeCommunityTiles.map((tile) => tile.caption),
+    [
+      "Project Angel Heart: Pie in the Sky",
+      "CASA of Adams & Broomfield Counties",
+      "The GrowHaus",
+      "Soup for the Soul",
+    ],
+  );
+  assert.equal(homeCommunityTiles[0].image?.src, "/images/scenes/pie-filling.webp");
+  assert.deepEqual(
+    homeCommunityTiles.slice(1).map((tile) => tile.image),
+    [null, null, null],
+  );
+  const home = read("app/page.tsx");
+  const grid = home.indexOf("home-charity-grid");
+  const button = home.indexOf("Community partners");
+  assert.ok(grid > 0 && button > grid);
+  assert.match(home, /home-charity-placeholder">Photo needed/);
+  assert.doesNotMatch(home, /split-photo/);
 });
 
 test("About uses the approved Willie story and keeps his portrait", () => {
