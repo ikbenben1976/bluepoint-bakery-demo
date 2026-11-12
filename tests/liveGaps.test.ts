@@ -30,7 +30,7 @@ test("homepage food service leads into delivery and community, without the story
   assert.match(home, /From first conversation to first order/);
   assert.doesNotMatch(home, /From your menu to the right order/);
   const food = home.indexOf("buyer-proof-block");
-  const deliver = home.indexOf("Delivery across the Front Range");
+  const deliver = home.indexOf("Where we deliver");
   const community = home.indexOf("home-community");
   assert.ok(food > 0 && deliver > food && community > deliver);
   assert.doesNotMatch(home, /sports venues/);

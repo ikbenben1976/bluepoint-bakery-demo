@@ -180,7 +180,7 @@ export default function HomePage() {
       <section className="block">
         <div className="shell">
           <div className="section-head">
-            <h2>Delivery across the Front Range</h2>
+            <h2>Where we deliver</h2>
             <p>Our delivery trucks run Metro Denver to summit, plains to peaks. <Link className="keep-together" href="/delivery/">See the map</Link>.</p>
           </div>
           <RouteMap preview />
