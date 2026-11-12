@@ -1230,9 +1230,10 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".community-page")).not.toContainText("Mountain Sun");
   await expect(page.locator(".community-page")).not.toContainText("Oskar Blues");
   await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
-  await expect(page.locator("#recognition")).toContainText(
-    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. Community involvement has long been part of Bluepoint's story. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.",
-  );
+  const approvedGiving =
+    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.";
+  await expect(page.locator("#recognition")).toContainText(approvedGiving);
+  await expect(page.locator("#recognition")).not.toContainText("Community involvement has long been part");
   await expect(page.locator(".community-page")).toContainText("Outstanding Small Business");
   await expect(page.locator(".community-page")).not.toContainText("AFP");
   await expect(page.locator(".community-page")).toContainText("holiday sugar cookies");
@@ -1262,7 +1263,9 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator(".brand-trust")).not.toContainText("not a certification");
   await expect(page.locator(".brand-trust")).not.toContainText("Outstanding Small Business");
   await expect(page.locator(".brand-trust")).not.toContainText("AFP");
-  await expect(page.locator("main")).not.toContainText("Outstanding Small Business");
+  await expect(page.locator(".home-community")).toContainText(approvedGiving);
+  await expect(page.locator(".home-community")).not.toContainText("prepared and donated all the pies");
+  await expect(page.locator("main")).not.toContainText("Community involvement has long been part");
   const proof = page.locator("#customers");
   await expect(proof).toContainText("The Cherry Cricket");
   await expect(proof).toContainText("Mountain Sun");
