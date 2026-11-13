@@ -111,7 +111,7 @@
 .methodDetails h2 a {
   color: inherit;
   text-decoration: none;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .methodDetails h2 a:hover {
@@ -388,6 +388,6 @@
   }
 
   .methodDetails h2 a {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 }
