@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState, type MouseEvent } from "react";
+import mapStyles from "./routeMap.module.css";
 import { BASEMAP } from "@/data/basemap";
 import {
   BAKERY,
@@ -46,7 +47,10 @@ function labelOf(city: RouteCity): string {
 export function RouteMap({ preview = false }: { preview?: boolean }) {
   const [query, setQuery] = useState("");
   const [activeName, setActiveName] = useState("Denver");
+  const [hoveredName, setHoveredName] = useState<string | null>(null);
   const active = findRouteCity(activeName) ?? ROUTE_CITIES.find((city) => city.name === "Denver")!;
+  const hovered = hoveredName ? findRouteCity(hoveredName) : undefined;
+  const hoverPoint = hovered ? project(hovered.lon, hovered.lat) : undefined;
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
@@ -79,6 +83,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
         best = city;
       }
     }
+    setHoveredName(best?.name ?? null);
     if (best) setActiveName(best.name);
   }
 
@@ -134,6 +139,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
               return (
                 <g key={city.name}>
                   <circle
+                    data-city={city.name}
                     cx={pt.x}
                     cy={pt.y}
                     r={on ? 16 : 11}
@@ -158,7 +164,27 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
             </g>
             </g>
           </svg>
-          <div className="map-pointer" onMouseMove={pickFromMap} onClick={pickFromMap} />
+          <div
+            className="map-pointer"
+            aria-label="Explore delivery cities on the map with a pointer or tap"
+            onMouseMove={pickFromMap}
+            onClick={pickFromMap}
+            onMouseLeave={() => setHoveredName(null)}
+          />
+          {hovered && hoverPoint ? (
+            <div
+              className={`${mapStyles.tooltip} ${hoverPoint.y < BASEMAP.height * 0.15 ? mapStyles.below : ""}`}
+              style={{
+                left: `${Math.min(72, Math.max(28, (hoverPoint.x / BASEMAP.width) * 100))}%`,
+                top: `${(hoverPoint.y / BASEMAP.height) * 100}%`,
+              }}
+              aria-hidden="true"
+              data-testid="map-hover-tooltip"
+            >
+              <strong>{hovered.name}</strong>
+              <span>{DAY_TEXT[hovered.days].replaceAll(", ", " · ")}</span>
+            </div>
+          ) : null
         </div>
       </div>
       <ul className="map-legend map-legend-card">
