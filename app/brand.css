@@ -6112,12 +6112,10 @@ legend,
   padding-bottom: 4.5rem;
 }
 
-/* A homepage assortment deep link identifies which products are in view. */
+/* A homepage assortment or menu deep link identifies which products are in view.
+   The sentence stays inline; the reset control sits on the next line. */
 .catalog-assortment-note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 1.1rem;
+  display: block;
   margin: 0 0 1rem;
   padding: 0.85rem 1rem;
   border-left: 3px solid #2035e8;
@@ -6126,6 +6124,9 @@ legend,
   font: 600 0.95rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
 }
 .catalog-assortment-note button {
+  display: block;
+  width: fit-content;
+  margin-top: 0.15rem;
   padding: 0.35rem 0;
   border: 0;
   background: transparent;

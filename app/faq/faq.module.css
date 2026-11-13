@@ -46,7 +46,8 @@
   text-wrap: balance;
 }
 
-.intro {
+.page .hero .intro {
+  display: block;
   margin-top: 0;
   margin-bottom: 0;
   color: #333341;
