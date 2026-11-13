@@ -11,10 +11,6 @@ const PAGES = [
   ["/community/", "Community"],
   ["/faq/", "FAQ"],
   ["/contact/", "Contact"],
-  ["/making/burgers/", "Burgers & Sliders"],
-  ["/making/sandwiches/", "Sandwiches & Subs"],
-  ["/making/breakfast/", "Coffee & Breakfast"],
-  ["/making/dinner/", "Dinner & Catering"],
   ["/sectors/restaurants/", "Restaurants and pubs"],
   ["/sectors/cafes/", "Cafés and coffee shops"],
   ["/sectors/hotels/", "Hotels and catering"],
@@ -259,10 +255,12 @@ for (const width of [375, 390]) {
 test("what are you making filters the catalog and the spec card uses published fields", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: /Burgers & Sliders/ }).click();
-  await expect(page.getByRole("heading", { name: 'Brioche Bun 4"' })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
-  await expect(page.getByText(/Available bun sizes include/)).toBeVisible();
+  await expect(page).toHaveURL(/\/breads\/\?making=burgers#catalog$/);
+  await expect(page.getByTestId("assortment-filter")).toContainText("Showing Burgers & Sliders products");
+  await expect(page.getByTestId("assortment-filter").getByRole("button", { name: "View all breads & rolls" })).toBeVisible();
   const card = page.locator(".product-card", { hasText: 'Brioche Bun 4"' });
+  await expect(card).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
   await expect(card.locator("summary")).toHaveCount(0);
   await expect(card.getByText("Not marked")).toHaveCount(0);
   await expect(card.getByText("Published size")).toHaveCount(0);
@@ -351,7 +349,7 @@ test("buyer-first homepage has photographed application links and sourced segmen
   const cards = page.locator(".making-visual-link");
   await expect(cards).toHaveCount(4);
   for (const path of ["burgers", "sandwiches", "breakfast", "dinner"]) {
-    await expect(page.locator(`.making-visual-link[href^="/making/${path}"] img`)).toBeVisible();
+    await expect(page.locator(`.making-visual-link[href*="making=${path}"] img`)).toBeVisible();
   }
 
   await expect(page.getByRole("tab", { name: "Restaurants & pubs" })).toHaveAttribute("aria-selected", "true");
@@ -651,10 +649,10 @@ test("homepage separates illustrative menu applications from actual bakery produ
   expect(assortmentBounds!.y).toBeLessThan(applicationsBounds!.y);
   await expect(applications.locator(".making-visual-link")).toHaveCount(4);
   await expect(assortment.locator(".assortment-card")).toHaveCount(5);
-  const burgers = applications.locator('.making-visual-link[href^="/making/burgers"]');
-  const sandwiches = applications.locator('.making-visual-link[href^="/making/sandwiches"]');
-  const breakfast = applications.locator('.making-visual-link[href^="/making/breakfast"]');
-  const dinner = applications.locator('.making-visual-link[href^="/making/dinner"]');
+  const burgers = applications.locator('.making-visual-link[href*="making=burgers"]');
+  const sandwiches = applications.locator('.making-visual-link[href*="making=sandwiches"]');
+  const breakfast = applications.locator('.making-visual-link[href*="making=breakfast"]');
+  const dinner = applications.locator('.making-visual-link[href*="making=dinner"]');
   await expect(burgers.locator("img")).toHaveAttribute("src", /\/images\/use\/west-main-burger\.jpg/);
   await expect(sandwiches.locator("img")).toHaveAttribute("src", /\/images\/use\/cafe-180-sandwiches\.jpg/);
   await expect(breakfast.locator("img")).toHaveAttribute("src", /\/images\/use\/stuffed-french-toast\.webp/);
@@ -675,7 +673,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(applications.locator(".making-footnote")).toContainText("do not identify specific Bluepoint products");
   await expect(applications.locator(".making-footnote")).not.toContainText("Illustrative images, not photographs of Bluepoint products.");
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
-  await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /making\/burgers/);
+  await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /\/breads\/\?making=burgers#catalog$/);
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
   await page.goto("/breads/");
   await expect(page.locator(".featured-spec")).toBeVisible();
@@ -731,7 +729,7 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
   await expect(page.getByTestId("request-flow")).toBeVisible();
 
   await page.goto("/");
-  const breakfast = page.locator('.making-visual-link[href^="/making/breakfast"]');
+  const breakfast = page.locator('.making-visual-link[href*="making=breakfast"]');
   const photo = breakfast.locator("img");
   await expect(photo).toHaveAttribute("src", /stuffed-french-toast\.webp/);
   await expect(photo).toHaveAttribute("alt", "Plated stuffed French toast with berries and custard");
@@ -1537,10 +1535,10 @@ const CONTENT_PAGES = [
   ["/delivery/", "delivery"],
   ["/contact/", "contact"],
   ["/community/", "community"],
-  ["/making/burgers/", "burgers"],
-  ["/making/sandwiches/", "sandwiches"],
-  ["/making/breakfast/", "breakfast"],
-  ["/making/dinner/", "dinner"],
+  ["/breads/?making=burgers#catalog", "burgers"],
+  ["/breads/?making=sandwiches#catalog", "sandwiches"],
+  ["/pastries/?making=breakfast#catalog", "breakfast"],
+  ["/breads/?making=dinner#catalog", "dinner"],
   ["/sectors/restaurants/", "restaurants"],
   ["/sectors/cafes/", "cafes"],
   ["/sectors/hotels/", "hotels"],
@@ -1743,13 +1741,61 @@ test("contact page keeps its links and card layout at phone, tablet, and desktop
   }
 });
 
-test("inner pages have a consistent linked Home breadcrumb", async ({ page }) => {
-  for (const path of ["/breads/", "/pastries/", "/delivery/", "/about/", "/community/", "/contact/", "/faq/", "/wholesale/"]) {
-    await page.goto(path);
-    const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
-    await expect(crumbs).toBeVisible();
-    await expect(crumbs.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
-    await expect(crumbs.locator('[aria-current="page"]')).toBeVisible();
+test("faq title, intro, questions, and lead times share one centered column", async ({ page }) => {
+  for (const width of [390, 768, 1280, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/faq/");
+    const report = await page.evaluate(() => {
+      const nodes = [
+        document.querySelector("main h1"),
+        document.querySelector("main header p"),
+        ...document.querySelectorAll("main details"),
+        document.querySelector("main section"),
+      ].filter((node): node is HTMLElement => node instanceof HTMLElement);
+      const viewport = document.documentElement.clientWidth;
+      return nodes.map((node) => {
+        const box = node.getBoundingClientRect();
+        return {
+          name: node.tagName.toLowerCase() + (node.id ? `#${node.id}` : ""),
+          left: box.left,
+          right: box.right,
+          center: (box.left + box.right) / 2,
+          viewport,
+        };
+      });
+    });
+    expect(report.length, `faq pieces at ${width}`).toBeGreaterThanOrEqual(8);
+    const left = report[0].left;
+    const right = report[0].right;
+    const mid = report[0].viewport / 2;
+    console.log(
+      `faq-column ${width}px left=${left.toFixed(2)} right=${right.toFixed(2)} width=${(right - left).toFixed(2)} center=${((left + right) / 2).toFixed(2)} viewportMid=${mid.toFixed(2)} n=${report.length}`,
+    );
+    for (const edge of report) {
+      expect(Math.abs(edge.left - left), `${edge.name} left at ${width}`).toBeLessThanOrEqual(1);
+      expect(Math.abs(edge.right - right), `${edge.name} right at ${width}`).toBeLessThanOrEqual(1);
+      expect(Math.abs(edge.center - mid), `${edge.name} center at ${width}`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
+test("inner pages drop breadcrumbs and share one title offset", async ({ page }) => {
+  const paths = ["/breads/", "/pastries/", "/delivery/", "/about/", "/community/", "/contact/", "/faq/", "/wholesale/", "/sectors/restaurants/", "/404.html"];
+  for (const width of [390, 768, 1280, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const tops: number[] = [];
+    for (const path of paths) {
+      await page.goto(path);
+      await expect(page.getByRole("navigation", { name: "Breadcrumb" }), path).toHaveCount(0);
+      const top = await page.evaluate(() => {
+        const header = document.querySelector(".sticky-stack")!.getBoundingClientRect().bottom;
+        const title = document.querySelector("main h1")!.getBoundingClientRect().top;
+        return title - header;
+      });
+      tops.push(top);
+    }
+    const spread = Math.max(...tops) - Math.min(...tops);
+    expect(spread, `title offset spread ${spread.toFixed(1)}px at ${width}px (${tops.map((top) => top.toFixed(1)).join(", ")})`).toBeLessThanOrEqual(4);
   }
   await page.goto("/");
   await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toHaveCount(0);
@@ -1892,22 +1938,35 @@ test("pages keep noindex and a demo canonical", async ({ page }) => {
 
 test("making pathways and sector links reach catalog choices", async ({ page }) => {
   await page.goto("/");
-  for (const [name, path] of [
-    ["Burgers & Sliders", "/making/burgers/"],
-    ["Sandwiches & Subs", "/making/sandwiches/"],
-    ["Coffee & Breakfast", "/making/breakfast/"],
-    ["Dinner & Catering", "/making/dinner/"],
+  for (const [name, path, bar] of [
+    ["Burgers & Sliders", /\/breads\/\?making=burgers#catalog$/, "Burgers & Sliders"],
+    ["Sandwiches & Subs", /\/breads\/\?making=sandwiches#catalog$/, "Sandwiches & Subs"],
+    ["Coffee & Breakfast", /\/pastries\/\?making=breakfast#catalog$/, "Coffee & Breakfast"],
+    ["Dinner & Catering", /\/breads\/\?making=dinner#catalog$/, "Dinner & Catering"],
   ] as const) {
     await page.goto("/");
     await page.getByRole("link", { name: new RegExp(name) }).click();
-    await expect(page).toHaveURL(new RegExp(path));
-    await expect(page.locator(".menu-guide a").first()).toBeVisible();
+    await expect(page).toHaveURL(path);
+    await expect(page.getByTestId("assortment-filter")).toContainText(`Showing ${bar} products`);
   }
-  await page.goto("/making/burgers/");
-  await expect(page.locator(".menu-guide").getByRole("link", { name: /Brioche Bun 4/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
+  await page.goto("/breads/?making=burgers#catalog");
+  await expect(page.getByTestId("assortment-filter")).toContainText("Burgers & Sliders");
+  await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Breads" }).click();
+  await expect(page).not.toHaveURL(/making=/);
+  await expect(page.getByTestId("assortment-filter")).toHaveCount(0);
+  await expect(page.locator(".product-card", { hasText: "Brioche (Dozen)" })).toBeVisible();
+  await page.goto("/breads/?making=burgers#catalog");
+  await expect(page.locator(".product-card", { hasText: 'Brioche Bun 4"' })).toBeVisible();
+  await expect(page.locator(".product-card", { hasText: "6x5 Slider Buns (30 count)" })).toBeVisible();
+  await expect(page.locator(".product-card", { hasText: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
+  await expect(page.locator(".product-card", { hasText: "Brioche (Dozen)" })).toHaveCount(0);
+  await page.getByTestId("assortment-filter").getByRole("button", { name: "View all breads & rolls" }).click();
+  await expect(page.getByTestId("assortment-filter")).toHaveCount(0);
+  await expect(page).not.toHaveURL(/making=/);
+  await expect(page.locator(".product-card", { hasText: "Brioche (Dozen)" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Buns and Kaiser Rolls" })).toBeVisible();
   await page.goto("/sectors/hotels/");
-  await expect(page.getByRole("link", { name: "Dinner and catering" })).toHaveAttribute("href", /\/making\/dinner\/?$/);
+  await expect(page.getByRole("link", { name: "Dinner and catering" })).toHaveAttribute("href", /\/breads\/\?making=dinner#catalog$/);
   await expect(page.getByText("not named publicly")).toHaveCount(0);
   await expect(page.getByText("does not name")).toHaveCount(0);
 });

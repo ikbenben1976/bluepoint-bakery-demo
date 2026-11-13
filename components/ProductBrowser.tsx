@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
 import { findAssortment } from "@/data/homeAssortment";
+import { catalogViewAllLabel, findMaking, type MakingUse } from "@/data/making";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
 import { categoryNotice, specChips, specRows } from "@/lib/spec";
@@ -20,22 +21,58 @@ type Props = {
   groups: readonly CatalogGroup[];
   onAdd?: (product: Product) => void;
   selectedIds?: readonly string[];
+  assortmentParam?: string | null;
+  makingParam?: string | null;
 };
 
-export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
+export function ProductBrowser(props: Props) {
+  if (props.onAdd) return <ProductBrowserInner {...props} />;
+  return (
+    <Suspense fallback={<ProductBrowserInner {...props} />}>
+      <ProductBrowserFromUrl {...props} />
+    </Suspense>
+  );
+}
+
+function ProductBrowserFromUrl(props: Props) {
+  const searchParams = useSearchParams();
+  return (
+    <ProductBrowserInner
+      {...props}
+      assortmentParam={searchParams.get("assortment")}
+      makingParam={searchParams.get("making")}
+    />
+  );
+}
+
+function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = null, makingParam = null }: Props) {
+  const family = groups[0]?.family ?? null;
+  const urlAssortment = onAdd ? null : (findAssortment(assortmentParam ?? null, family)?.id ?? null);
+  const urlMaking = onAdd ? null : (findMaking(makingParam ?? null, family)?.slug ?? null);
+  const urlKey = `${urlAssortment ?? ""}\n${urlMaking ?? ""}`;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [assortmentId, setAssortmentId] = useState<string | null>(null);
+  const [trackedKey, setTrackedKey] = useState(urlKey);
+  const [clearedKey, setClearedKey] = useState<string | null>(null);
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const resultsRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
   const pathname = usePathname() || "/";
+  const router = useRouter();
   const requestCount = useRequestCount();
   const { openSheet, notifyAdded } = useRequestSheet();
   const catalogPath = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const showRequestBar = !onAdd && requestCount > 0 && (catalogPath === "/breads" || catalogPath === "/pastries");
+  if (trackedKey !== urlKey) {
+    setTrackedKey(urlKey);
+    setClearedKey(null);
+    setCategory("all");
+    setQuery("");
+  }
+  const assortmentId = clearedKey === urlKey ? null : urlAssortment;
+  const makingSlug = clearedKey === urlKey ? null : urlMaking;
 
   useEffect(() => {
     if (onAdd) return;
@@ -44,22 +81,6 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     window.addEventListener(REQUEST_CHANGE_EVENT, read);
     return () => window.removeEventListener(REQUEST_CHANGE_EVENT, read);
   }, [onAdd]);
-
-  useEffect(() => {
-    if (onAdd) return;
-    // Static catalog pages can be linked to from five different homepage
-    // collections. Resolve the URL in the browser, after hydration.
-    const syncFromUrl = () => {
-      const selected = new URLSearchParams(window.location.search).get("assortment");
-      const match = findAssortment(selected, groups[0]?.family ?? null);
-      setAssortmentId(match?.id ?? null);
-      setCategory("all");
-      setQuery("");
-    };
-    syncFromUrl();
-    window.addEventListener("popstate", syncFromUrl);
-    return () => window.removeEventListener("popstate", syncFromUrl);
-  }, [groups, onAdd]);
 
   useEffect(() => {
     if (!mounted.current) {
@@ -103,12 +124,14 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   function resetFilters() {
     setQuery("");
     setCategory("all");
-    setAssortmentId(null);
+    setClearedKey(urlKey);
     if (!onAdd && typeof window !== "undefined") {
       const url = new URL(window.location.href);
-      if (url.searchParams.has("assortment")) {
-        url.searchParams.delete("assortment");
-        window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+      const hadFilter = url.searchParams.has("assortment") || url.searchParams.has("making");
+      url.searchParams.delete("assortment");
+      url.searchParams.delete("making");
+      if (hadFilter) {
+        router.replace(url.pathname + url.search + url.hash, { scroll: false });
       }
     }
     setNote("Search and filters cleared.");
@@ -121,12 +144,22 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       : families.size === 1 && families.has("breads")
         ? "Search breads"
         : "Search products";
-  const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, groups[0]?.family ?? null);
-  const scopedGroups = activeAssortment
-    ? activeAssortment.groupIds
-        .map((id) => groups.find((group) => group.id === id))
-        .filter((group): group is CatalogGroup => group !== undefined)
+  const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, family);
+  const activeMaking = onAdd ? undefined : findMaking(makingSlug, family);
+  const makingGroups = activeMaking
+    ? groups
+        .map((group) => ({
+          ...group,
+          items: group.items.filter((item) => item.making.some((tag) => tag === activeMaking.slug)),
+        }))
+        .filter((group) => group.items.length > 0)
     : groups;
+  const scopedGroups =
+    activeAssortment && !activeMaking
+      ? activeAssortment.groupIds
+          .map((id) => groups.find((group) => group.id === id))
+          .filter((group): group is CatalogGroup => group !== undefined)
+      : makingGroups;
   const catalog = groups.flatMap((group) => group.items);
   const compared = compareIds
     .map((id) => catalog.find((product) => product.id === id))
@@ -145,11 +178,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
 
   return (
     <div>
-      {activeAssortment ? (
+      {activeMaking ? (
+        <ShowingBar use={activeMaking} onViewAll={resetFilters} />
+      ) : activeAssortment ? (
         <p className="catalog-assortment-note" data-testid="assortment-filter" role="status">
           Showing <strong>{activeAssortment.name}</strong> products
           <button type="button" onClick={resetFilters}>
-            View all {activeAssortment.family === "breads" ? "breads & rolls" : "pastries"}
+            View all {catalogViewAllLabel(activeAssortment.family)}
           </button>
         </p>
       ) : null}
@@ -349,5 +384,16 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         </div>
       ) : null}
     </div>
+  );
+}
+
+function ShowingBar({ use, onViewAll }: { use: MakingUse; onViewAll: () => void }) {
+  return (
+    <p className="catalog-assortment-note" data-testid="assortment-filter" role="status">
+      Showing <strong>{use.title}</strong> products
+      <button type="button" onClick={onViewAll}>
+        View all {catalogViewAllLabel(use.family)}
+      </button>
+    </p>
   );
 }

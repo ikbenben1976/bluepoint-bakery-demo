@@ -16,7 +16,8 @@
   border-bottom: 1px solid #e4d8c4;
 }
 .introInner {
-  padding-block: var(--section-pad);
+  padding-top: calc(var(--inner-title-top) - 1.65rem);
+  padding-bottom: var(--section-pad);
 }
 .introTitle {
   max-width: none;

@@ -1,3 +1,5 @@
+import { makingHref } from "@/data/making";
+
 export type Sector = {
   slug: string;
   title: string;
@@ -16,8 +18,8 @@ export const sectors: readonly Sector[] = [
       "Build your menu with hamburger buns, sandwich breads and specialty rolls suited to restaurants, delis, pubs and sandwich shops.",
     ],
     links: [
-      { href: "/making/burgers", label: "Burgers and sliders" },
-      { href: "/making/sandwiches", label: "Sandwiches and subs" },
+      { href: makingHref("burgers"), label: "Burgers and sliders" },
+      { href: makingHref("sandwiches"), label: "Sandwiches and subs" },
       { href: "/breads", label: "All breads" },
     ],
   },
@@ -31,7 +33,7 @@ export const sectors: readonly Sector[] = [
       "Explore our breakfast pastry selection. Please allow at least 48 hours' notice for pastry orders.",
     ],
     links: [
-      { href: "/making/breakfast", label: "Coffee and breakfast" },
+      { href: makingHref("breakfast"), label: "Coffee and breakfast" },
       { href: "/pastries", label: "All pastries" },
     ],
   },
@@ -45,8 +47,8 @@ export const sectors: readonly Sector[] = [
       "Explore dinner rolls, rustic breads, breakfast pastries and pies for your next menu.",
     ],
     links: [
-      { href: "/making/dinner", label: "Dinner and catering" },
-      { href: "/making/breakfast", label: "Breakfast pastries" },
+      { href: makingHref("dinner"), label: "Dinner and catering" },
+      { href: makingHref("breakfast"), label: "Breakfast pastries" },
       { href: "/pastries", label: "Pies and pastries" },
     ],
   },
@@ -61,7 +63,7 @@ export const sectors: readonly Sector[] = [
     ],
     links: [
       { href: "/breads", label: "Breads" },
-      { href: "/making/sandwiches", label: "Sandwich breads" },
+      { href: makingHref("sandwiches"), label: "Sandwich breads" },
       { href: "/pastries", label: "Pastries" },
     ],
   },

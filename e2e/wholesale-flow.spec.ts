@@ -101,8 +101,12 @@ test("product options follow the catalog and an early date warns without blockin
 
   const editProducts = page.getByRole("button", { name: "Edit products" });
   await editProducts.evaluate((button) => {
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
     const top = button.getBoundingClientRect().top + window.scrollY;
     window.scrollTo(0, Math.max(0, top - 240));
+    root.style.scrollBehavior = previous;
   });
   await editProducts.click();
   await expect(page.locator("#inquiry-products")).toHaveValue("Also a seeded roll to discuss");
@@ -219,8 +223,12 @@ test("new accounts and existing customers stay on different paths", async ({ pag
   await expect(page.getByRole("link", { name: "Request a Wholesale Account" })).toHaveAttribute("href", /\/wholesale\/?$/);
 
   await page.goto("/faq/");
-  await expect(page.getByRole("link", { name: "existing customer login" })).toHaveAttribute("href", ORDER_URL);
-  await expect(page.getByText(/guide you through the account setup process/)).toBeVisible();
+  const ordering = page.locator("details").filter({ hasText: "How do I order from Bluepoint Bakery?" });
+  await ordering.locator("summary").click();
+  await expect(ordering.getByRole("link", { name: "existing customer login" })).toHaveAttribute("href", ORDER_URL);
+  const becoming = page.locator("details").filter({ hasText: "How do I become a customer?" });
+  await becoming.locator("summary").click();
+  await expect(becoming.getByText(/guide you through the account setup process/)).toBeVisible();
   await expect(page.getByRole("link", { name: "prepare a wholesale request" })).toHaveCount(0);
 
   await page.setViewportSize({ width: 390, height: 844 });

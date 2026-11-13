@@ -80,5 +80,5 @@ test("sitemap uses the demo origin and keeps every public path", () => {
   assert.equal(urls[0], `${DEMO_ORIGIN}/`);
   assert.ok(urls.includes(`${DEMO_ORIGIN}/contact/`));
   assert.ok(urls.includes(`${DEMO_ORIGIN}/breads/`));
-  assert.equal(urls.length, 17);
+  assert.equal(urls.length, 13);
 });
