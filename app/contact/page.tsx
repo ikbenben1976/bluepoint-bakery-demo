@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import {
   EMAIL,
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 type IconName = "phone" | "mail" | "store" | "package" | "truck" | "pin" | "clock";
 
 function ContactIcon({ name }: { name: IconName }) {
-  const paths: Record<IconName, React.ReactNode> = {
+  const paths: Record<IconName, ReactNode> = {
     phone: (
       <path d="M7 3h3l1.5 4-2.1 1.3a13 13 0 0 0 6.3 6.3L16 12.5l5 1.5v3a3 3 0 0 1-3.2 3A16 16 0 0 1 4 6.2 3 3 0 0 1 7 3Z" />
     ),
