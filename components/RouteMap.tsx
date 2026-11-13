@@ -166,7 +166,6 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
           </svg>
           <div
             className="map-pointer"
-            aria-label="Explore delivery cities on the map with a pointer or tap"
             onMouseMove={pickFromMap}
             onClick={pickFromMap}
             onMouseLeave={() => setHoveredName(null)}
