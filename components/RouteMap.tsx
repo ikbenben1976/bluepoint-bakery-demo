@@ -184,7 +184,7 @@ export function RouteMap({ preview = false }: { preview?: boolean }) {
               <strong>{hovered.name}</strong>
               <span>{DAY_TEXT[hovered.days].replaceAll(", ", " · ")}</span>
             </div>
-          ) : null
+          ) : null}
         </div>
       </div>
       <ul className="map-legend map-legend-card">
