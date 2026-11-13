@@ -1606,31 +1606,45 @@ test("changed pages use the column, keep labels readable, and leave the contact 
   }
 });
 
-test("contact page keeps its editorial columns readable across desktop widths", async ({ page }) => {
+test("contact page keeps the intro beside the phone and email cards on desktop", async ({ page }) => {
   for (const width of [1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/contact/");
+    await page.evaluate(() => document.fonts.ready);
     const fit = await page.evaluate(() => {
       const intro = document.querySelector("main h1")!.getBoundingClientRect();
       const methods = document.querySelector('main section[aria-label="Contact our Denver team"]')!.getBoundingClientRect();
-      const help = document.querySelector('main h2[id="contact-help-heading"]')!.getBoundingClientRect();
+      const help = document.querySelector("#contact-help-heading")!.getBoundingClientRect();
+      const helpGrid = document.querySelector('main [class*="helpGrid"]')!.getBoundingClientRect();
+      const cards = [...document.querySelectorAll('main article[class*="helpCard"]')].map((el) => el.getBoundingClientRect());
+      const locationCols = [...document.querySelectorAll('main [class*="locationCol"]')].map((el) => el.getBoundingClientRect());
       return {
-        introLeft: intro.left,
-        methodsRight: methods.right,
-        helpLeft: help.left,
+        introRight: intro.right,
+        methodsLeft: methods.left,
+        helpCenter: help.left + help.width / 2,
+        gridCenter: helpGrid.left + helpGrid.width / 2,
+        cardTops: cards.map((rect) => rect.top),
+        cardHeights: cards.map((rect) => rect.height),
+        locationTops: locationCols.map((rect) => rect.top),
+        locationLefts: locationCols.map((rect) => rect.left),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
-    expect(fit.methodsRight, `contacts alongside intro at ${width}`).toBeGreaterThan(fit.introLeft);
-    expect(Math.abs(fit.introLeft - fit.helpLeft), `column alignment at ${width}`).toBeLessThanOrEqual(1);
+    expect(fit.methodsLeft, `phone and email cards sit right of the intro at ${width}`).toBeGreaterThan(fit.introRight - 8);
+    expect(Math.abs(fit.helpCenter - fit.gridCenter), `help heading centered over the cards at ${width}`).toBeLessThanOrEqual(8);
+    expect(Math.max(...fit.cardTops) - Math.min(...fit.cardTops), `help cards share a row at ${width}`).toBeLessThanOrEqual(2);
+    expect(Math.max(...fit.cardHeights) - Math.min(...fit.cardHeights), `help cards match height at ${width}`).toBeLessThanOrEqual(2);
+    expect(fit.locationLefts[1], `find-us card splits into two columns at ${width}`).toBeGreaterThan(fit.locationLefts[0]);
+    expect(Math.abs(fit.locationTops[0] - fit.locationTops[1]), `find-us columns align at ${width}`).toBeLessThanOrEqual(2);
     expect(fit.overflow).toBeLessThanOrEqual(1);
   }
 });
 
-test("contact page is usable without cards or forms at phone, tablet, desktop widths", async ({ page }) => {
+test("contact page keeps its links and card layout at phone, tablet, and desktop widths", async ({ page }) => {
   for (const width of [375, 390, 430, 768, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/contact/");
+    await page.evaluate(() => document.fonts.ready);
     await expect(page.getByRole("heading", { level: 1, name: "Let's talk bakery." })).toBeVisible();
     await expect(page.getByRole("heading", { name: "How can we help?" })).toBeVisible();
     await expect(page.locator('main a[href="tel:+13032981100"]')).toHaveCount(1);
@@ -1641,12 +1655,71 @@ test("contact page is usable without cards or forms at phone, tablet, desktop wi
     await expect(page.getByRole("link", { name: /Get directions/ })).toHaveAttribute("href", /google\.com\/maps/);
     await expect(page.getByRole("link", { name: /Explore delivery areas/ })).toHaveAttribute("href", "/delivery/");
     await expect(page.locator('main form, main [data-testid="contact-message-form"], main .map-frame')).toHaveCount(0);
-    const fit = await page.evaluate(() => ({
-      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      rows: document.querySelectorAll('main article[class*="helpCard"]').length,
-    }));
+    const fit = await page.evaluate(() => {
+      const helpCards = [...document.querySelectorAll('main article[class*="helpCard"]')];
+      const helpBoxes = helpCards.map((el) => el.getBoundingClientRect());
+      const methods = [...document.querySelectorAll('main a[href^="tel:"], main a[href^="mailto:"]')].map((el) => el.getBoundingClientRect());
+      const intro = document.querySelector("main h1")!.getBoundingClientRect();
+      const shell = document.querySelector("main .shell")!.getBoundingClientRect();
+      const locationCols = [...document.querySelectorAll('main [class*="locationCol"]')].map((el) => el.getBoundingClientRect());
+      const delivery = helpCards[2];
+      const deliveryButton = delivery.querySelector("a")!.getBoundingClientRect();
+      const deliveryNote = delivery.querySelector('[class*="finePrint"]')!.getBoundingClientRect();
+      const body = helpCards[0].querySelector("p")!;
+      const headings = [...document.querySelectorAll("main h1, main h2, main h3, main [class*='eyebrow'], main [class*='smallLabel'], main [class*='methodLabel']")].map((el) => getComputedStyle(el).textAlign);
+      return {
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        rows: helpCards.length,
+        helpTops: helpBoxes.map((rect) => rect.top),
+        helpHeights: helpBoxes.map((rect) => rect.height),
+        methodTops: methods.map((rect) => rect.top),
+        methodWidths: methods.map((rect) => rect.width),
+        methodLefts: methods.map((rect) => rect.left),
+        introBottom: intro.bottom,
+        introRight: intro.right,
+        shellWidth: shell.width,
+        locationTops: locationCols.map((rect) => rect.top),
+        noteBelowButton: deliveryNote.top >= deliveryButton.bottom - 1,
+        bodySize: parseFloat(getComputedStyle(body).fontSize),
+        headings,
+        telIcon: !!document.querySelector('main a[href^="tel:"] svg'),
+        mailIcon: !!document.querySelector('main a[href^="mailto:"] svg'),
+        telArrow: (document.querySelector('main a[href^="tel:"]')!.textContent || "").includes("↗"),
+        mailArrow: (document.querySelector('main a[href^="mailto:"]')!.textContent || "").includes("↗"),
+        orderIcon: !!document.querySelector('main a[href*="bakery.software"] svg'),
+        payIcon: !!document.querySelector('main a[href*="paywholesail"] svg'),
+        directionsIcon: !!document.querySelector('main a[href*="google.com/maps"] svg'),
+        wholesaleIcon: !!document.querySelector('main a[href="/wholesale/"] svg'),
+      };
+    });
     expect(fit.overflow, `overflow at ${width}`).toBeLessThanOrEqual(1);
     expect(fit.rows).toBe(3);
+    expect(fit.telIcon, `phone icon at ${width}`).toBeTruthy();
+    expect(fit.mailIcon, `email icon at ${width}`).toBeTruthy();
+    expect(fit.telArrow, `phone card drops the external arrow at ${width}`).toBeFalsy();
+    expect(fit.mailArrow, `email card drops the external arrow at ${width}`).toBeFalsy();
+    expect(fit.orderIcon && fit.payIcon && fit.directionsIcon, `external links keep an icon at ${width}`).toBeTruthy();
+    expect(fit.wholesaleIcon, `internal inquiry link stays on-site at ${width}`).toBeFalsy();
+    expect(fit.noteBelowButton, `delivery note sits under its button at ${width}`).toBeTruthy();
+    if (width >= 1280) {
+      expect(fit.methodLefts[0], `call card is right of the intro at ${width}`).toBeGreaterThan(fit.introRight - 8);
+      expect(Math.max(...fit.helpTops) - Math.min(...fit.helpTops), `three help cards in a row at ${width}`).toBeLessThanOrEqual(2);
+      expect(Math.max(...fit.helpHeights) - Math.min(...fit.helpHeights), `equal help cards at ${width}`).toBeLessThanOrEqual(2);
+      expect(fit.bodySize, `desktop body size at ${width}`).toBeGreaterThanOrEqual(18);
+      expect(Math.abs(fit.locationTops[0] - fit.locationTops[1]), `find-us columns at ${width}`).toBeLessThanOrEqual(2);
+    }
+    if (width <= 430) {
+      expect(fit.headings.every((align) => align === "center"), `phone headings and eyebrows centered at ${width}`).toBeTruthy();
+      expect(fit.methodTops[0], `call card follows the intro at ${width}`).toBeGreaterThan(fit.introBottom - 1);
+      expect(fit.methodTops[1], `email card stacks under the call card at ${width}`).toBeGreaterThan(fit.methodTops[0]);
+      expect(fit.methodWidths[0], `call card is full width at ${width}`).toBeGreaterThan(fit.shellWidth * 0.9);
+      expect(fit.helpTops[1], `help cards stack at ${width}`).toBeGreaterThan(fit.helpTops[0]);
+      expect(fit.locationTops[1], `find-us card stacks at ${width}`).toBeGreaterThan(fit.locationTops[0]);
+    }
+    if (width === 768) {
+      expect(fit.helpTops[1], `help cards use one column at ${width}`).toBeGreaterThan(fit.helpTops[0]);
+      expect(Math.abs(fit.locationTops[0] - fit.locationTops[1]), `find-us stays two columns at ${width}`).toBeLessThanOrEqual(2);
+    }
   }
 });
 
