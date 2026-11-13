@@ -108,24 +108,19 @@ test("community partners use the approved rewrites, links, and banned omissions"
   assert.doesNotMatch(page, /Philanthropist of the Year|birthday cake|\$1 million/);
 });
 
-test("contact message form is client-side only and does not send mail", () => {
+test("contact is a service hub with real working links, not a dead-end message preview", () => {
   const page = read("app/contact/page.tsx");
-  const form = read("components/ContactMessage.tsx");
-  assert.match(page, /ContactMessage/);
+  assert.match(page, /Let&apos;s talk bakery/);
+  assert.match(page, /Start a wholesale inquiry/);
+  assert.match(page, /New wholesale customers/);
+  assert.match(page, /Existing customers/);
+  assert.match(page, /Questions about delivery/);
+  assert.match(page, /Find our Denver bakery/);
+  assert.match(page, /PHONE_TEL/);
+  assert.match(page, /EMAIL/);
   assert.match(page, /ORDER_URL/);
   assert.match(page, /PAY_URL/);
-  assert.match(page, /FACEBOOK/);
-  assert.match(page, /INSTAGRAM/);
   assert.match(page, /HOURS/);
-  assert.match(form, /This demo prepares your message but does not send it/);
-  assert.match(form, /contact-message-form/);
-  assert.match(form, /contact-message-confirmation/);
-  assert.match(form, /First name/);
-  assert.match(form, /Last name/);
-  assert.match(form, /type="email"/);
-  assert.match(form, /type="tel"/);
-  assert.match(form, /Message/);
-  assert.doesNotMatch(form, /fetch\(|XMLHttpRequest|action=|smtp|sendMail|nodemailer/i);
-  assert.match(form, /sales@bluepointbakery\.com|EMAIL/);
-  assert.match(form, /PHONE_DISPLAY|303\) 298-1100/);
+  assert.match(page, /MAPS_SEARCH_URL/);
+  assert.doesNotMatch(page, /ContactMessage|Preview message|contact-message-form|cookStreetMap/);
 });
