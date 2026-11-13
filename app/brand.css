@@ -5887,9 +5887,10 @@ legend,
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
+    /* Use the full space between the original logo and utility actions. */
+    justify-content: space-between;
     margin: 0;
-    gap: clamp(0.05rem, 0.35vw, 0.45rem);
+    gap: clamp(0.15rem, 0.5vw, 0.65rem);
     min-width: 0;
   }
   .site-header .nav-link {
