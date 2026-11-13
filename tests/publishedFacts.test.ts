@@ -26,7 +26,7 @@ test("2016 AFP award is on Community with a link from About", () => {
   assert.doesNotMatch(home, /Association of Fundraising Professionals/);
   assert.doesNotMatch(community, /Philanthropist of the Year|AFP Colorado/);
   assert.match(about, /Recognized for giving back — see our community work/);
-  assert.match(about, /href="\\/community#recognition"/);
+  assert.ok(about.includes('href="/community#recognition"'));
   assert.doesNotMatch(about, /Outstanding Small Business|AFP Colorado/);
   assert.doesNotMatch(site, /Outstanding Small Business|AFP Colorado|Philanthropist of the Year/);
 });
