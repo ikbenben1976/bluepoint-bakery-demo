@@ -16,8 +16,9 @@ test("the call sheet stays closed until Contact opens it", async ({ page }) => {
   await expect(dialog.getByRole("link", { name: "Email sales" })).toHaveAttribute("href", "mailto:sales@bluepointbakery.com");
   await expect(dialog.getByRole("link", { name: "Request a quote" })).toHaveAttribute("href", /\/wholesale\/#wholesale-request$/);
 
+  await expect(dialog.getByRole("link", { name: "Address & office hours" })).toHaveAttribute("href", "/contact/");
   await page.keyboard.press("Shift+Tab");
-  await expect(dialog.getByRole("link", { name: "Email sales" })).toBeFocused();
+  await expect(dialog.getByRole("link", { name: "Address & office hours" })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
   await page.keyboard.press("Escape");
