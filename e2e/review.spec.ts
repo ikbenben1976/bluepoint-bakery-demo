@@ -515,11 +515,12 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(page.locator(".verified-client-strip img")).toHaveCount(3);
 
   await page.goto("/community/");
-  await expect(page.locator(".community-page")).toContainText("The GrowHaus");
-  await expect(page.locator(".community-page")).toContainText("food-box program");
-  await expect(page.locator(".community-page")).not.toContainText("CSA-style");
-  await expect(page.locator(".community-page")).toContainText("FIRE Foundation");
-  await expect(page.locator(".community-mention img")).toHaveAttribute("alt", "FIRE Foundation of Denver");
+  const community = page.locator("main > article");
+  await expect(community).toContainText("The GrowHaus");
+  await expect(community).toContainText("food-box");
+  await expect(community).not.toContainText("CSA-style");
+  await expect(community).toContainText("FIRE Foundation");
+  await expect(community.locator('img[src*="fire-foundation.png"]')).toHaveCount(1);
 
   for (const width of [390, 768, 1280, 1440]) {
     await page.setViewportSize({ width, height: width === 390 ? 900 : 1100 });
@@ -1223,35 +1224,30 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.getByRole("heading", { name: "From the bakery floor to business ownership: Willie Ramirez" })).toBeVisible();
 
   await page.goto("/community/");
-  await expect(page.locator(".community-page")).toContainText("Project Angel Heart");
-  await expect(page.locator(".community-page")).toContainText("CASA of Adams");
-  await expect(page.locator(".community-page")).toContainText("GrowHaus");
-  await expect(page.locator(".community-page")).toContainText("Soup for the Soul");
-  await expect(page.locator(".community-page")).not.toContainText("Mountain Sun");
-  await expect(page.locator(".community-page")).not.toContainText("Oskar Blues");
-  await expect(page.locator(".community-page")).not.toContainText("Cherry Cricket");
-  const approvedGiving =
-    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.";
-  await expect(page.locator("#recognition")).toContainText(approvedGiving);
-  await expect(page.locator("#recognition")).not.toContainText("Community involvement has long been part");
-  await expect(page.locator(".community-page")).toContainText("Outstanding Small Business");
-  await expect(page.locator(".community-page")).not.toContainText("AFP");
-  await expect(page.locator(".community-page")).toContainText("holiday sugar cookies");
-  await expect(page.locator(".community-page")).toContainText("raised over $15,000");
-  await expect(page.locator(".community-page")).toContainText("food-box program");
-  await expect(page.locator(".community-page")).toContainText("silent auction");
-  await expect(page.locator(".community-page")).not.toContainText("birthday cake");
-  await expect(page.locator(".community-page")).not.toContainText("$1 million");
-  await expect(page.locator(".community-page")).not.toContainText("Philanthropist of the Year");
-  await expect(page.locator(".community-page")).not.toContainText("sports venues");
-  await expect(page.getByRole("link", { name: "Pie in the Sky" })).toHaveAttribute("href", "http://www.pieintheskycolorado.org/");
-  await expect(page.getByRole("link", { name: "CASA Cookie Campaign" })).toHaveAttribute("href", "http://casa17th.org/menus/cookies-count.html");
-  await expect(page.getByRole("link", { name: "Mercado Lado" })).toHaveAttribute("href", "http://www.mercadolado.com");
-  await expect(page.getByRole("link", { name: "The Butterfly Program" })).toHaveAttribute(
-    "href",
-    "http://www.centurahealthathome.org/CHH/Our-Specialties/The-Butterfly-Program/",
-  );
-  await expect(page.locator(".partner-marks img")).toHaveCount(4);
+  const community = page.locator("main > article");
+  await expect(community).toContainText("Project Angel Heart");
+  await expect(community).toContainText("CASA of Adams");
+  await expect(community).toContainText("The GrowHaus");
+  await expect(community).toContainText("Soup for the Soul");
+  await expect(community).toContainText("FIRE Foundation");
+  await expect(community).not.toContainText("Mountain Sun");
+  await expect(community).not.toContainText("Oskar Blues");
+  await expect(community).not.toContainText("Cherry Cricket");
+  await expect(page.locator("#recognition")).toContainText("2016 Outstanding Small Business");
+  await expect(page.locator("#recognition")).toContainText("National Philanthropy Day");
+  await expect(community).toContainText("holiday sugar cookies");
+  await expect(community).toContainText("more than $15,000");
+  await expect(community).toContainText("food-box");
+  await expect(community).toContainText("charity auction");
+  await expect(community).toContainText("birthday cakes");
+  await expect(community).toContainText("$1M+");
+  await expect(community).not.toContainText("Philanthropist of the Year");
+  await expect(community).not.toContainText("sports venues");
+  await expect(page.getByRole("link", { name: "Learn more about Project Angel Heart" })).toHaveAttribute("href", "https://www.projectangelheart.org/");
+  await expect(page.getByRole("link", { name: "Visit CASA" })).toHaveAttribute("href", "https://casa17th.org/");
+  await expect(page.getByRole("link", { name: "Visit The GrowHaus" })).toHaveAttribute("href", "https://www.thegrowhaus.org/");
+  await expect(page.getByRole("link", { name: "Visit FIRE Foundation" })).toHaveAttribute("href", "https://firefoundationdenver.org/");
+  await expect(community.locator('img[src*="community-logos/"]')).toHaveCount(4);
 
   await page.goto("/");
   await expect(page.locator(".brand-trust")).toContainText("Colorado Proud");
@@ -1273,14 +1269,19 @@ test("about story, community partners, and homepage proof use published facts on
   await expect(page.locator("main")).not.toContainText("Community involvement has long been part");
   const tiles = page.locator(".home-charity-tile");
   await expect(tiles).toHaveCount(4);
-  await expect(tiles.nth(0).locator("img")).toHaveAttribute("src", /pie-filling\.webp/);
-  await expect(tiles.nth(0)).toContainText("Project Angel Heart: Pie in the Sky");
-  await expect(tiles.nth(1)).toContainText("CASA of Adams & Broomfield Counties");
-  await expect(tiles.nth(1).locator(".home-charity-placeholder")).toHaveText("Photo needed");
-  await expect(tiles.nth(2)).toContainText("The GrowHaus");
-  await expect(tiles.nth(2).locator(".home-charity-placeholder")).toHaveText("Photo needed");
-  await expect(tiles.nth(3)).toContainText("Soup for the Soul");
-  await expect(tiles.nth(3).locator(".home-charity-placeholder")).toHaveText("Photo needed");
+  const logos = [
+    ["community-logos/project-angel-heart.png", "Project Angel Heart logo", "Project Angel Heart: Pie in the Sky"],
+    ["community-logos/casa.png", "CASA of Adams & Broomfield Counties logo", "CASA of Adams & Broomfield Counties"],
+    ["community-logos/growhaus.png", "The GrowHaus logo", "The GrowHaus"],
+    ["community-logos/soup-for-the-soul.png", "Soup for the Soul logo", "Soup for the Soul"],
+  ] as const;
+  for (const [index, [src, alt, caption]] of logos.entries()) {
+    await expect(tiles.nth(index).locator("img")).toHaveAttribute("src", new RegExp(src.replace("/", "\\/")));
+    await expect(tiles.nth(index).locator("img")).toHaveAttribute("alt", alt);
+    await expect(tiles.nth(index)).toContainText(caption);
+  }
+  await expect(page.locator(".home-community .home-charity-placeholder")).toHaveCount(0);
+  await expect(page.locator(".home-community .illustrative-label")).toHaveCount(0);
   await expect(page.locator(".home-community .btn")).toHaveText("Community partners");
   await expect(page.locator(".home-community .btn")).toHaveAttribute("href", /\/community\/?$/);
   const proof = page.locator("#customers");
@@ -1309,9 +1310,9 @@ test("about, community, trust, and customer proof fill the column without clippe
     },
     {
       path: "/community/",
-      root: ".community-page",
-      heading: ".ticket-hero h1",
-      body: ".community-intro",
+      root: "main > article > header > .shell",
+      heading: "main > article h1",
+      body: "main > article > header > .shell > p:last-child",
     },
     {
       path: "/",
