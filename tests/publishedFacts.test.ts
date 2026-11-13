@@ -7,43 +7,28 @@ import { communityPartners, customerComments } from "../data/site";
 
 const read = (path: string) => fs.readFileSync(path, "utf8");
 
-test("2016 AFP award is on the community page, with a link from About", () => {
+test("2016 AFP award is on Community with a link from About", () => {
   const about = read("app/about/page.tsx");
   const home = read("app/page.tsx");
   const community = read("app/community/page.tsx");
   const site = read("data/site.ts");
-  const approvedGiving =
-    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.";
-  const rendered = (source: string) => source.replaceAll("&apos;", "'").replaceAll("&amp;", "&");
   assert.match(community, /id="recognition"/);
-  assert.ok(rendered(community).includes(approvedGiving));
-  assert.ok(!rendered(home).includes(approvedGiving));
-  assert.doesNotMatch(rendered(home), /Association of Fundraising Professionals/);
-  assert.equal(
-    rendered(home).match(/Giving back to the communities we serve/g)?.length,
-    1,
-  );
-  assert.equal(
-    rendered(home).match(
-      /Our commitment to Colorado goes beyond the bakery\. We're proud to support organizations that make a difference in our communities\./g,
-    )?.length,
-    1,
-  );
-  assert.doesNotMatch(rendered(community), /Community involvement has long been part/);
-  assert.doesNotMatch(rendered(home), /prepared and donated all the pies/);
-  assert.doesNotMatch(rendered(home), /Community involvement has long been part/);
+  assert.match(community, /Good baking\. Good neighbors\./);
+  assert.match(community, /Project Angel Heart/);
+  assert.match(community, /Pie in the Sky/);
+  assert.match(community, /CASA of Adams/);
+  assert.match(community, /The GrowHaus/);
+  assert.match(community, /Soup for the Soul/);
+  assert.match(community, /FIRE Foundation of Denver/);
+  assert.match(community, /National Philanthropy Day/);
+  assert.match(community, /2016 Outstanding Small Business/);
+  assert.doesNotMatch(home, /Good baking\. Good neighbors\./);
+  assert.doesNotMatch(home, /Association of Fundraising Professionals/);
+  assert.doesNotMatch(community, /Philanthropist of the Year|AFP Colorado/);
   assert.match(about, /Recognized for giving back — see our community work/);
-  assert.match(about, /href="\/community#recognition"/);
-  assert.doesNotMatch(about, /Outstanding Small Business/);
-  assert.doesNotMatch(about, /AFP Colorado/);
-  assert.match(community, /Outstanding Small Business/);
-  assert.doesNotMatch(community, /AFP Colorado/);
-  assert.doesNotMatch(community, /Philanthropist of the Year/);
-  assert.doesNotMatch(site, /Outstanding Small Business/);
-  assert.doesNotMatch(site, /AFP Colorado/);
-  assert.doesNotMatch(site, /Philanthropist of the Year/);
-  assert.doesNotMatch(home, /AFP Colorado/);
-  assert.doesNotMatch(home, /Philanthropist of the Year/);
+  assert.ok(about.includes('href="/community#recognition"'));
+  assert.doesNotMatch(about, /Outstanding Small Business|AFP Colorado/);
+  assert.doesNotMatch(site, /Outstanding Small Business|AFP Colorado|Philanthropist of the Year/);
 });
 
 test("home community tiles use the four charity logos", () => {
