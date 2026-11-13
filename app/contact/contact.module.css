@@ -1,7 +1,7 @@
 /* Contact layout: intro beside clickable phone and email cards, then equal help cards and one split address card. */
 .page {
   color: #0d0d25;
-  background: #fff;
+  background: #f6f1e8;
 }
 
 .page :is(h1, h2, h3) {
@@ -33,7 +33,6 @@
 
 .hero {
   background: #f6f1e8;
-  border-bottom: 1px solid #e4d8c4;
 }
 
 .heroGrid {
@@ -265,7 +264,6 @@
 
 .locationBand {
   background: #f6f1e8;
-  border-top: 1px solid #e4d8c4;
 }
 
 .locationSection {
