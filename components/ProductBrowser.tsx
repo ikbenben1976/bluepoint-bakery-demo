@@ -123,7 +123,9 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         : "Search products";
   const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, groups[0]?.family ?? null);
   const scopedGroups = activeAssortment
-    ? groups.filter((group) => activeAssortment.groupIds.includes(group.id))
+    ? activeAssortment.groupIds
+        .map((id) => groups.find((group) => group.id === id))
+        .filter((group): group is CatalogGroup => group !== undefined)
     : groups;
   const catalog = groups.flatMap((group) => group.items);
   const compared = compareIds
