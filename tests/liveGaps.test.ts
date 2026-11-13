@@ -104,8 +104,13 @@ test("community partners use the approved rewrites, links, and banned omissions"
   assert.match(all, /\$15,000/);
 
   const page = read("app/community/page.tsx");
-  assert.match(page, /partner\.links/);
-  assert.doesNotMatch(page, /Philanthropist of the Year|birthday cake|\$1 million/);
+  assert.match(page, /communityMarks/);
+  assert.match(page, /categoryPhotos\.pies/);
+  assert.match(page, /partners\.map/);
+  assert.match(page, /birthday cakes/);
+  assert.match(page, /Project Angel Heart/);
+  assert.match(page, /FIRE Foundation of Denver/);
+  assert.doesNotMatch(page, /Philanthropist of the Year/);
 });
 
 test("contact is a service hub with real working links, not a dead-end message preview", () => {
