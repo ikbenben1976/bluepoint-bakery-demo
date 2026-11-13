@@ -113,7 +113,7 @@ export default function CommunityPage() {
               alt={piePhoto.alt}
               width={piePhoto.width}
               height={piePhoto.height}
-              sizes="(max-width: 850px) min(100vw - 40px, 390px), 440px"
+              sizes="(max-width: 850px) min(100vw - 40px, 260px), 260px"
             />
             <figcaption>Pies being filled at Bluepoint Bakery.</figcaption>
           </figure>
@@ -190,11 +190,12 @@ export default function CommunityPage() {
                       alt=""
                       width={partner.logo.width}
                       height={partner.logo.height}
-                      sizes="230px"
+                      sizes="170px"
                     />
                   </div>
-                  <p className={styles.partnerCategory}>{partner.category}</p>
-                  <h3>{partner.name}</h3>
+                  <div className={styles.partnerBody}>
+                    <p className={styles.partnerCategory}>{partner.category}</p>
+                    <h3>{partner.name}</h3>
                   {partner.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
                   {partner.href && partner.linkText ? (
                     <a
@@ -209,6 +210,7 @@ export default function CommunityPage() {
                   {partner.historical ? (
                     <p className={styles.historicalNote}>Historical community partnership</p>
                   ) : null}
+                  </div>
                 </article>
               </li>
             ))}
