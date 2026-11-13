@@ -6105,3 +6105,32 @@ legend,
     font-size: 0.86rem;
   }
 }
+
+/* A homepage assortment deep link identifies which products are in view. */
+.catalog-assortment-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.1rem;
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid #2035e8;
+  background: #f6f1e8;
+  color: #0b2b51;
+  font: 600 0.95rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.catalog-assortment-note button {
+  padding: 0.35rem 0;
+  border: 0;
+  background: transparent;
+  color: #2035e8;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.catalog-assortment-note button:focus-visible {
+  outline: 3px solid #2035e8;
+  outline-offset: 3px;
+}
+#catalog { scroll-margin-top: 6.5rem; }
