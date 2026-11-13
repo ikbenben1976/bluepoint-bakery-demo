@@ -6216,6 +6216,7 @@ legend,
   max-height: none;
   object-fit: fill;
   object-position: center;
+  opacity: 1;
 }
 .delivery-page .atlas-side {
   position: static;
