@@ -49,21 +49,39 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
 
   useEffect(() => {
     if (onAdd) return;
-    // Static catalog pages can be linked to from five different homepage
-    // collections. Resolve the URL in the browser, after hydration.
+    // Catalog filters live in the query string. Next.js <Link> updates the URL
+    // with pushState and does not remount this page, so popstate alone leaves
+    // the previous subset on screen.
+    const applied = { key: "" };
     const syncFromUrl = () => {
       const params = new URLSearchParams(window.location.search);
       const family = groups[0]?.family ?? null;
-      const selected = params.get("assortment");
-      const match = findAssortment(selected, family);
-      setAssortmentId(match?.id ?? null);
-      setMakingSlug(findMaking(params.get("making"), family)?.slug ?? null);
+      const nextAssortment = findAssortment(params.get("assortment"), family)?.id ?? null;
+      const nextMaking = findMaking(params.get("making"), family)?.slug ?? null;
+      const key = `${nextAssortment ?? ""}\n${nextMaking ?? ""}`;
+      if (applied.key === key) return;
+      applied.key = key;
+      setAssortmentId(nextAssortment);
+      setMakingSlug(nextMaking);
       setCategory("all");
       setQuery("");
     };
     syncFromUrl();
+    const { pushState, replaceState } = window.history;
+    window.history.pushState = (...args) => {
+      pushState.apply(window.history, args);
+      syncFromUrl();
+    };
+    window.history.replaceState = (...args) => {
+      replaceState.apply(window.history, args);
+      syncFromUrl();
+    };
     window.addEventListener("popstate", syncFromUrl);
-    return () => window.removeEventListener("popstate", syncFromUrl);
+    return () => {
+      window.history.pushState = pushState;
+      window.history.replaceState = replaceState;
+      window.removeEventListener("popstate", syncFromUrl);
+    };
   }, [groups, onAdd]);
 
   useEffect(() => {

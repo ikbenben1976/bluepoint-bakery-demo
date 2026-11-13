@@ -1881,6 +1881,12 @@ test("making pathways and sector links reach catalog choices", async ({ page }) 
     await expect(page.getByTestId("assortment-filter")).toContainText(`Showing ${bar} products`);
   }
   await page.goto("/breads/?making=burgers#catalog");
+  await expect(page.getByTestId("assortment-filter")).toContainText("Burgers & Sliders");
+  await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Breads" }).click();
+  await expect(page).not.toHaveURL(/making=/);
+  await expect(page.getByTestId("assortment-filter")).toHaveCount(0);
+  await expect(page.locator(".product-card", { hasText: "Brioche (Dozen)" })).toBeVisible();
+  await page.goto("/breads/?making=burgers#catalog");
   await expect(page.locator(".product-card", { hasText: 'Brioche Bun 4"' })).toBeVisible();
   await expect(page.locator(".product-card", { hasText: "6x5 Slider Buns (30 count)" })).toBeVisible();
   await expect(page.locator(".product-card", { hasText: "Curved Butter Croissant 3 oz" })).toHaveCount(0);
