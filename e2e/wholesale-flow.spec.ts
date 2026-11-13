@@ -99,7 +99,12 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(review).not.toContainText("$");
   await expect(review.getByRole("button", { name: /send|submit/i })).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Edit products" }).click();
+  const editProducts = page.getByRole("button", { name: "Edit products" });
+  await editProducts.evaluate((button) => {
+    const top = button.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, Math.max(0, top - 240));
+  });
+  await editProducts.click();
   await expect(page.locator("#inquiry-products")).toHaveValue("Also a seeded roll to discuss");
   await page.locator("#inquiry-products").fill("A different roll to discuss");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
