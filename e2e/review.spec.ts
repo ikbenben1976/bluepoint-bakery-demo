@@ -1812,6 +1812,16 @@ test("delivery city search highlights the map and shows published delivery infor
   await input.fill("Atlantis");
   await expect(status).toContainText("Contact Bluepoint to check availability");
   await expect(panel).not.toHaveText("Atlantis");
+
+  await input.fill("Denver");
+  const boulder = page.locator('circle[data-city="Boulder"]');
+  await boulder.scrollIntoViewIfNeeded();
+  const box = await boulder.boundingBox();
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await expect(page.getByTestId("map-hover-tooltip")).toContainText("Boulder");
+  await expect(input).toHaveValue("Denver");
+  await expect(status).toContainText("Denver Metro Area");
 });
 
 test("delivery map shows the weekday overview and does not draw a route line", async ({ page }) => {

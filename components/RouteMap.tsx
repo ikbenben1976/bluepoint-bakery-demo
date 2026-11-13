@@ -77,9 +77,9 @@ export function RouteMap() {
     if (city) setActiveName(city.name);
   }
 
-  function pickFromMap(event: MouseEvent<HTMLDivElement>) {
+  function nearestCity(event: MouseEvent<HTMLDivElement>): RouteCity | null {
     const rect = event.currentTarget.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
+    if (rect.width === 0 || rect.height === 0) return null;
     const x = ((event.clientX - rect.left) / rect.width) * BASEMAP.width;
     const y = ((event.clientY - rect.top) / rect.height) * BASEMAP.height;
     let best: RouteCity | null = null;
@@ -92,6 +92,17 @@ export function RouteMap() {
         best = city;
       }
     }
+    return best;
+  }
+
+  function hoverFromMap(event: MouseEvent<HTMLDivElement>) {
+    const best = nearestCity(event);
+    setHoveredName(best?.name ?? null);
+    if (best) setActiveName(best.name);
+  }
+
+  function clickFromMap(event: MouseEvent<HTMLDivElement>) {
+    const best = nearestCity(event);
     setHoveredName(best?.name ?? null);
     if (best) {
       setActiveName(best.name);
@@ -168,7 +179,12 @@ export function RouteMap() {
                 </g>
               </g>
             </svg>
-            <div className="map-pointer" onMouseMove={pickFromMap} onClick={pickFromMap} onMouseLeave={() => setHoveredName(null)} />
+            <div
+              className="map-pointer"
+              onMouseMove={hoverFromMap}
+              onClick={clickFromMap}
+              onMouseLeave={() => setHoveredName(null)}
+            />
             {hovered && hoverPoint ? (
               <div
                 className={`${mapStyles.tooltip} ${hoverPoint.y < BASEMAP.height * 0.15 ? mapStyles.below : ""}`}
