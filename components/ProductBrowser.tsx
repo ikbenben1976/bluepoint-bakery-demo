@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
@@ -21,9 +21,31 @@ type Props = {
   groups: readonly CatalogGroup[];
   onAdd?: (product: Product) => void;
   selectedIds?: readonly string[];
+  assortmentParam?: string | null;
+  makingParam?: string | null;
 };
 
-export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
+export function ProductBrowser(props: Props) {
+  if (props.onAdd) return <ProductBrowserInner {...props} />;
+  return (
+    <Suspense fallback={<ProductBrowserInner {...props} />}>
+      <ProductBrowserFromUrl {...props} />
+    </Suspense>
+  );
+}
+
+function ProductBrowserFromUrl(props: Props) {
+  const searchParams = useSearchParams();
+  return (
+    <ProductBrowserInner
+      {...props}
+      assortmentParam={searchParams.get("assortment")}
+      makingParam={searchParams.get("making")}
+    />
+  );
+}
+
+function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = null, makingParam = null }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [assortmentId, setAssortmentId] = useState<string | null>(null);
@@ -34,6 +56,8 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const resultsRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
   const pathname = usePathname() || "/";
+  const router = useRouter();
+  const appliedFilter = useRef<string | null>(null);
   const requestCount = useRequestCount();
   const { openSheet, notifyAdded } = useRequestSheet();
   const catalogPath = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
@@ -49,40 +73,18 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
 
   useEffect(() => {
     if (onAdd) return;
-    // Catalog filters live in the query string. Next.js <Link> updates the URL
-    // with pushState and does not remount this page, so popstate alone leaves
-    // the previous subset on screen.
-    const applied = { key: "" };
-    const syncFromUrl = () => {
-      const params = new URLSearchParams(window.location.search);
-      const family = groups[0]?.family ?? null;
-      const nextAssortment = findAssortment(params.get("assortment"), family)?.id ?? null;
-      const nextMaking = findMaking(params.get("making"), family)?.slug ?? null;
-      const key = `${nextAssortment ?? ""}\n${nextMaking ?? ""}`;
-      if (applied.key === key) return;
-      applied.key = key;
-      setAssortmentId(nextAssortment);
-      setMakingSlug(nextMaking);
+    const family = groups[0]?.family ?? null;
+    const nextAssortment = findAssortment(assortmentParam ?? null, family)?.id ?? null;
+    const nextMaking = findMaking(makingParam ?? null, family)?.slug ?? null;
+    const key = `${nextAssortment ?? ""}\n${nextMaking ?? ""}`;
+    if (appliedFilter.current !== null && appliedFilter.current !== key) {
       setCategory("all");
       setQuery("");
-    };
-    syncFromUrl();
-    const { pushState, replaceState } = window.history;
-    window.history.pushState = (...args) => {
-      pushState.apply(window.history, args);
-      syncFromUrl();
-    };
-    window.history.replaceState = (...args) => {
-      replaceState.apply(window.history, args);
-      syncFromUrl();
-    };
-    window.addEventListener("popstate", syncFromUrl);
-    return () => {
-      window.history.pushState = pushState;
-      window.history.replaceState = replaceState;
-      window.removeEventListener("popstate", syncFromUrl);
-    };
-  }, [groups, onAdd]);
+    }
+    appliedFilter.current = key;
+    setAssortmentId(nextAssortment);
+    setMakingSlug(nextMaking);
+  }, [groups, onAdd, assortmentParam, makingParam]);
 
   useEffect(() => {
     if (!mounted.current) {
@@ -134,7 +136,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       url.searchParams.delete("assortment");
       url.searchParams.delete("making");
       if (hadFilter) {
-        window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+        router.replace(url.pathname + url.search + url.hash, { scroll: false });
       }
     }
     setNote("Search and filters cleared.");
