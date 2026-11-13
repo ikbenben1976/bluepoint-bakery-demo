@@ -1610,57 +1610,60 @@ test("changed pages use the column, keep labels readable, and leave the contact 
   }
 });
 
-test("contact hub keeps headline and service actions aligned on desktop", async ({ page }) => {
+test("contact page keeps its editorial columns readable across desktop widths", async ({ page }) => {
   for (const width of [1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/contact/");
-    const positions = await page.evaluate(() => {
-      const heading = document.querySelector('main h1')!.getBoundingClientRect();
-      const contactCard = document.querySelector('main section[aria-label="Contact our Denver team"]')!.getBoundingClientRect();
-      const helpTitle = document.querySelector('main h2[id="contact-help-heading"]')!.getBoundingClientRect();
-      const delivery = document.querySelector('main section[aria-labelledby="contact-delivery-heading"]')!;
+    const fit = await page.evaluate(() => {
+      const intro = document.querySelector("main h1")!.getBoundingClientRect();
+      const methods = document.querySelector('main section[aria-label="Contact our Denver team"]')!.getBoundingClientRect();
+      const help = document.querySelector('main h2[id="contact-help-heading"]')!.getBoundingClientRect();
       return {
-        headingLeft: heading.left,
-        contactLeft: contactCard.left,
-        helpLeft: helpTitle.left,
-        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        deliveryHeading: delivery.querySelector("h2")?.textContent,
+        introLeft: intro.left,
+        methodsRight: methods.right,
+        helpLeft: help.left,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
-    expect(Math.abs(positions.headingLeft - positions.contactLeft), `contact panel alignment at ${width}px`).toBeLessThanOrEqual(1);
-    expect(Math.abs(positions.headingLeft - positions.helpLeft), `section alignment at ${width}px`).toBeLessThanOrEqual(1);
-    expect(positions.pageOverflow).toBeLessThanOrEqual(1);
-    expect(positions.deliveryHeading).toContain("Questions about delivery?");
+    expect(fit.methodsRight, `contacts alongside intro at ${width}`).toBeGreaterThan(fit.introLeft);
+    expect(Math.abs(fit.introLeft - fit.helpLeft), `column alignment at ${width}`).toBeLessThanOrEqual(1);
+    expect(fit.overflow).toBeLessThanOrEqual(1);
   }
 });
 
-test("contact hub keeps links functional and cards readable on mobile", async ({ page }) => {
+test("contact page is usable without cards or forms at phone, tablet, desktop widths", async ({ page }) => {
   for (const width of [375, 390, 430, 768, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/contact/");
     await expect(page.getByRole("heading", { level: 1, name: "Let's talk bakery." })).toBeVisible();
     await expect(page.getByRole("heading", { name: "How can we help?" })).toBeVisible();
-    await expect(page.locator('main a[href="tel:+13032981100"]')).toHaveCount(2);
-    await expect(page.locator('main a[href="mailto:sales@bluepointbakery.com"]')).toHaveCount(2);
-    await expect(page.getByRole("link", { name: /Start a wholesale inquiry/ })).toHaveAttribute("href", "/wholesale/");
+    await expect(page.locator('main a[href="tel:+13032981100"]')).toHaveCount(1);
+    await expect(page.locator('main a[href="mailto:sales@bluepointbakery.com"]')).toHaveCount(1);
+    await expect(page.locator("main").getByRole("link", { name: /Start a wholesale inquiry/ })).toHaveAttribute("href", "/wholesale/");
     await expect(page.locator("main").getByRole("link", { name: /Order online/ })).toHaveAttribute("href", /bakery\.software/);
     await expect(page.locator("main").getByRole("link", { name: /Pay an invoice/ })).toHaveAttribute("href", /paywholesail/);
     await expect(page.getByRole("link", { name: /Get directions/ })).toHaveAttribute("href", /google\.com\/maps/);
     await expect(page.getByRole("link", { name: /Explore delivery areas/ })).toHaveAttribute("href", "/delivery/");
     await expect(page.locator('main form, main [data-testid="contact-message-form"], main .map-frame')).toHaveCount(0);
-    const fit = await page.evaluate(() => {
-      const cards = [...document.querySelectorAll('main article[class*="helpCard"]')];
-      const sideBySide = cards[0]!.getBoundingClientRect().top === cards[1]!.getBoundingClientRect().top;
-      return {
-        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        twoCards: cards.length,
-        sideBySide,
-      };
-    });
-    expect(fit.pageOverflow, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(1);
-    expect(fit.twoCards).toBe(2);
-    expect(fit.sideBySide).toBe(width > 700);
+    const fit = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      rows: document.querySelectorAll('main article[class*="helpCard"]').length,
+    }));
+    expect(fit.overflow, `overflow at ${width}`).toBeLessThanOrEqual(1);
+    expect(fit.rows).toBe(3);
   }
+});
+
+test("inner pages have a consistent linked Home breadcrumb", async ({ page }) => {
+  for (const path of ["/breads/", "/pastries/", "/delivery/", "/about/", "/community/", "/contact/", "/faq/", "/wholesale/"]) {
+    await page.goto(path);
+    const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
+    await expect(crumbs).toBeVisible();
+    await expect(crumbs.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    await expect(crumbs.locator('[aria-current="page"]')).toBeVisible();
+  }
+  await page.goto("/");
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toHaveCount(0);
 });
 
 test("catalog search combines with a category filter and can be reset", async ({ page }) => {
