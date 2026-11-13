@@ -14,6 +14,13 @@ async function fillBusiness(page: Page) {
 }
 
 async function resetRequest(page: Page) {
+  await page.addInitScript(() => {
+    const lockScroll = () => {
+      document.documentElement.style.scrollBehavior = "auto";
+    };
+    lockScroll();
+    document.addEventListener("DOMContentLoaded", lockScroll);
+  });
   await page.goto("/wholesale/");
   await page.locator(".request-flow").waitFor();
   await page.evaluate(() => {
@@ -22,6 +29,15 @@ async function resetRequest(page: Page) {
   });
   await page.reload();
   await page.getByTestId("inquiry-form").waitFor();
+}
+
+async function clickSettled(page: Page, name: string) {
+  const button = page.getByRole("button", { name, exact: true });
+  await button.evaluate((element) => {
+    document.documentElement.style.scrollBehavior = "auto";
+    element.scrollIntoView({ block: "center", behavior: "auto" });
+  });
+  await button.click();
 }
 
 test("product options follow the catalog and an early date warns without blocking", async ({ page }) => {
@@ -99,7 +115,7 @@ test("product options follow the catalog and an early date warns without blockin
   await expect(review).not.toContainText("$");
   await expect(review.getByRole("button", { name: /send|submit/i })).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Edit products" }).click();
+  await clickSettled(page, "Edit products");
   await expect(page.locator("#inquiry-products")).toHaveValue("Also a seeded roll to discuss");
   await page.locator("#inquiry-products").fill("A different roll to discuss");
   await page.getByRole("button", { name: "Continue to delivery" }).click();
