@@ -394,14 +394,17 @@
   .page .signature {
     text-align: center;
   }
-  .featurePhoto { min-height: 0; }
+  .featurePhoto {
+    width: min(100%, 20rem);
+    min-height: 0;
+    margin-inline: auto;
+  }
   .featurePhoto img {
     width: 100%;
     max-width: 100%;
     height: auto;
-    max-height: 320px;
-    object-fit: cover;
-    object-position: center;
+    max-height: none;
+    object-fit: contain;
   }
   .featureMark {
     flex-direction: column;

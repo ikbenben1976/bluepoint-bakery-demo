@@ -20,6 +20,8 @@ test("Community layout is balanced, readable, and fits desktop, tablet, and phon
       const wellHeights = wells.map((well) => Math.round(well.getBoundingClientRect().height));
       const link = document.querySelector<HTMLElement>('a[class*="community_externalLink"]')!;
       const linkStyle = getComputedStyle(link);
+      const photo = document.querySelector<HTMLImageElement>('figure[class*="community_featurePhoto"] img')!;
+      const photoBox = photo.getBoundingClientRect();
       const body = document.querySelector<HTMLElement>('[class*="community_partnerBody"] p:not([class])')!;
       const bodyStyle = getComputedStyle(body);
       const headings = [...document.querySelectorAll<HTMLElement>("main h1, main h2, main h3, [class*='community_eyebrow'], [class*='community_partnerCategory']")];
@@ -31,6 +33,8 @@ test("Community layout is balanced, readable, and fits desktop, tablet, and phon
         linkBg: linkStyle.backgroundColor,
         linkDecoration: linkStyle.textDecorationLine,
         linkHeight: link.getBoundingClientRect().height,
+        photoRatio: photoBox.width > 0 ? photoBox.height / photoBox.width : 0,
+        naturalRatio: photo.naturalWidth > 0 ? photo.naturalHeight / photo.naturalWidth : 0,
         bodySize: parseFloat(bodyStyle.fontSize),
         bodyLine: parseFloat(bodyStyle.lineHeight),
         headingAlign,
@@ -44,6 +48,11 @@ test("Community layout is balanced, readable, and fits desktop, tablet, and phon
     expect(metrics.linkDecoration, `button links at ${width}px`).toBe("none");
     expect(metrics.linkBg, `button fill at ${width}px`).toBe("rgb(32, 53, 232)");
     expect(metrics.linkHeight, `button hit area at ${width}px`).toBeGreaterThanOrEqual(44);
+    expect(metrics.naturalRatio, `pie photo loaded at ${width}px`).toBeGreaterThan(0);
+    expect(
+      Math.abs(metrics.photoRatio - metrics.naturalRatio) / metrics.naturalRatio,
+      `full pie photo at ${width}px`,
+    ).toBeLessThan(0.08);
     expect(metrics.bodySize, `body size at ${width}px`).toBeGreaterThanOrEqual(18);
     expect(metrics.bodyLine / metrics.bodySize, `body leading at ${width}px`).toBeGreaterThanOrEqual(1.6);
     if (width <= 430) {
