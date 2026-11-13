@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { communityMarks, categoryPhotos, type Photo } from "@/data/photos";
+import { homeCommunityTiles } from "@/data/homeCommunity";
 import styles from "./community.module.css";
 
 export const metadata: Metadata = {
@@ -22,10 +23,14 @@ type CommunityPartner = {
   tallLogo?: boolean;
 };
 
-const [angelLogo, casaLogo, growHausLogo, soupLogo] = communityMarks;
+const angelLogo = homeCommunityTiles[0]?.image ?? communityMarks[0];
+const casaLogo = homeCommunityTiles[1]?.image ?? communityMarks[1];
+const growHausLogo = homeCommunityTiles[2]?.image ?? communityMarks[2];
+const soupLogo = homeCommunityTiles[3]?.image ?? communityMarks[3];
 
-// The established marks are shared with the rest of the site. Keeping this page's
-// copy local lets the homepage evolve independently while preserving the same logos.
+// Prefer the homepage's freshly updated nonprofit logos. Fall back to the original
+// Bluepoint marks so this page also renders on branches without the new assets.
+// Keep copy local so homepage edits don't change Community page content.
 const partners: readonly CommunityPartner[] = [
   {
     name: "CASA of Adams & Broomfield Counties",
