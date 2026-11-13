@@ -3,7 +3,8 @@ import { expect, test } from "@playwright/test";
 const pages = [
   "/", "/about/", "/breads/", "/pastries/", "/wholesale/", "/delivery/",
   "/community/", "/faq/", "/contact/",
-  "/making/burgers/", "/making/sandwiches/", "/making/breakfast/", "/making/dinner/",
+  "/breads/?making=burgers#catalog", "/breads/?making=sandwiches#catalog",
+  "/pastries/?making=breakfast#catalog", "/breads/?making=dinner#catalog",
   "/sectors/restaurants/", "/sectors/cafes/", "/sectors/hotels/", "/sectors/institutions/",
 ];
 

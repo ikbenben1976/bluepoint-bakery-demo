@@ -1608,7 +1608,7 @@ legend {
 }
 
 .delivery-page {
-  padding: 1.25rem 0 2rem;
+  padding: calc(var(--inner-title-top) - var(--inner-kicker-block)) 0 2rem;
 }
 
 .delivery-page h1 {
@@ -1657,7 +1657,7 @@ legend {
   .delivery-intro {
     grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
     gap: 1.25rem 1.75rem;
-    align-items: center;
+    align-items: start;
   }
 
   .delivery-truck img,

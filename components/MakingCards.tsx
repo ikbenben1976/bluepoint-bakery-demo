@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FramedImage } from "@/components/FramedImage";
 import { applicationVisuals } from "@/data/illustrative";
 import { PERMISSION_NOTE, platedPhotoFor } from "@/data/usePhotos";
+import { makingHref } from "@/data/making";
 import { uses } from "@/data/uses";
 
 // Finished dishes on the home cards. Burgers, sandwiches, and breakfast use
@@ -30,7 +31,7 @@ export function MakingCards() {
           const example = applicationVisuals[use.slug as keyof typeof applicationVisuals];
           return (
             <li key={use.slug}>
-              <Link className="making-visual-link" href={`/making/${use.slug}`}>
+              <Link className="making-visual-link" href={makingHref(use.slug)}>
                 <span className="making-photo">
                   {plate ? (
                     <>

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { makingHref } from "@/data/making";
 import { customerComments } from "@/data/site";
 import { publicMentions, type PublicMention } from "@/data/customers";
 import { CafePull } from "@/components/CafePull";
@@ -137,7 +138,7 @@ export function BuyerProof() {
             <PublishedProof source="cafe" />
             <p className="proof-context">
               Explore croissants, muffins, scones and Danish pastries.{" "}
-              <Link href="/making/breakfast">Coffee and breakfast</Link>
+              <Link href={makingHref("breakfast")}>Coffee and breakfast</Link>
             </p>
           </>
         ) : null}

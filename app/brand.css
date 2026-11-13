@@ -1,5 +1,18 @@
 /* Visual system from BRAND.md. Loaded after globals.css. */
 
+/* Distance from the header to an inner page's title. Pages with a kicker
+   or eyebrow subtract that line so the h1 itself lands on this edge. */
+:root {
+  --inner-title-top: 2.75rem;
+  --inner-kicker-block: 1.46rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --inner-title-top: 3.25rem;
+  }
+}
+
 body {
   background: #f6f1e8;
   color: #0d0d25;
@@ -561,8 +574,14 @@ button:active {
 
 .ticket-hero {
   min-height: 0;
-  margin-top: 2rem;
-  align-items: center;
+  margin-top: var(--inner-title-top);
+  align-items: start;
+}
+
+/* Breadcrumbs used to stand in for these kickers. Keep them out of the
+   title stack so the h1 is what lines up across inner pages. */
+.ticket-hero > div > .kicker {
+  display: none;
 }
 
 .ticket-photo {
@@ -3231,7 +3250,7 @@ legend {
   overflow-wrap: normal;
   word-break: normal;
 }
-.ticket-hero.has-photo { align-items: center; }
+.ticket-hero.has-photo { align-items: start; }
 .ticket-photo-half {
   aspect-ratio: 4 / 3;
   min-height: 0;
@@ -4252,7 +4271,7 @@ body.menu-open .site-header .heritage-lockup {
 @media (max-width: 767px) {
   .wholesale-hero.ticket-hero {
     width: calc(100% - 1.5rem);
-    margin-top: 1rem;
+    margin-top: var(--inner-title-top);
     text-align: left;
   }
   .wholesale-hero .ticket-photo {
@@ -6060,50 +6079,11 @@ legend,
   }
 }
 
-/* Every interior page has a navigable, visually consistent breadcrumb row.
-   Independent of page hero photography and its dimensions. */
-.site-breadcrumbs {
-  width: min(1200px, calc(100% - 2.5rem));
-  margin: 0 auto;
-  padding: 1rem 0 0.15rem;
-  font: 650 0.91rem/1.45 var(--font-franklin), "Libre Franklin", sans-serif;
-}
-.site-breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.site-breadcrumbs li + li::before {
-  content: "/";
-  color: #817b75;
-  margin-right: 0.45rem;
-}
-.site-breadcrumbs a {
-  color: #2035e8;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-.site-breadcrumbs a:focus-visible {
-  outline: 3px solid #2035e8;
-  outline-offset: 3px;
-}
-.site-breadcrumbs [aria-current="page"] {
-  color: #0b2b51;
-  font-weight: 750;
-}
-/* Breadcrumb replaces the old miniature title-like kicker. */
-.site-breadcrumbs + .ticket-hero > div > .kicker { display: none; }
-.site-breadcrumbs + .ticket-hero { margin-top: 0.85rem; }
-@media (max-width: 767px) {
-  .site-breadcrumbs {
-    width: calc(100% - 1.5rem);
-    padding-top: 0.75rem;
-    font-size: 0.86rem;
-  }
+/* Inner pages that lead with a visible kicker: the h1, not the kicker, sits
+   on --inner-title-top. */
+.not-found-page {
+  padding-top: calc(var(--inner-title-top) - var(--inner-kicker-block));
+  padding-bottom: 4.5rem;
 }
 
 /* A homepage assortment deep link identifies which products are in view. */

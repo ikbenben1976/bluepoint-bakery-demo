@@ -8,6 +8,7 @@ import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
 import { findAssortment } from "@/data/homeAssortment";
+import { catalogViewAllLabel, findMaking, type MakingUse } from "@/data/making";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
 import { categoryNotice, specChips, specRows } from "@/lib/spec";
@@ -26,6 +27,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [assortmentId, setAssortmentId] = useState<string | null>(null);
+  const [makingSlug, setMakingSlug] = useState<string | null>(null);
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
   const [compareIds, setCompareIds] = useState<string[]>([]);
@@ -50,9 +52,12 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     // Static catalog pages can be linked to from five different homepage
     // collections. Resolve the URL in the browser, after hydration.
     const syncFromUrl = () => {
-      const selected = new URLSearchParams(window.location.search).get("assortment");
-      const match = findAssortment(selected, groups[0]?.family ?? null);
+      const params = new URLSearchParams(window.location.search);
+      const family = groups[0]?.family ?? null;
+      const selected = params.get("assortment");
+      const match = findAssortment(selected, family);
       setAssortmentId(match?.id ?? null);
+      setMakingSlug(findMaking(params.get("making"), family)?.slug ?? null);
       setCategory("all");
       setQuery("");
     };
@@ -104,10 +109,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     setQuery("");
     setCategory("all");
     setAssortmentId(null);
+    setMakingSlug(null);
     if (!onAdd && typeof window !== "undefined") {
       const url = new URL(window.location.href);
-      if (url.searchParams.has("assortment")) {
-        url.searchParams.delete("assortment");
+      const hadFilter = url.searchParams.has("assortment") || url.searchParams.has("making");
+      url.searchParams.delete("assortment");
+      url.searchParams.delete("making");
+      if (hadFilter) {
         window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
       }
     }
@@ -121,12 +129,23 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       : families.size === 1 && families.has("breads")
         ? "Search breads"
         : "Search products";
-  const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, groups[0]?.family ?? null);
-  const scopedGroups = activeAssortment
-    ? activeAssortment.groupIds
-        .map((id) => groups.find((group) => group.id === id))
-        .filter((group): group is CatalogGroup => group !== undefined)
+  const family = groups[0]?.family ?? null;
+  const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, family);
+  const activeMaking = onAdd ? undefined : findMaking(makingSlug, family);
+  const makingGroups = activeMaking
+    ? groups
+        .map((group) => ({
+          ...group,
+          items: group.items.filter((item) => item.making.some((tag) => tag === activeMaking.slug)),
+        }))
+        .filter((group) => group.items.length > 0)
     : groups;
+  const scopedGroups =
+    activeAssortment && !activeMaking
+      ? activeAssortment.groupIds
+          .map((id) => groups.find((group) => group.id === id))
+          .filter((group): group is CatalogGroup => group !== undefined)
+      : makingGroups;
   const catalog = groups.flatMap((group) => group.items);
   const compared = compareIds
     .map((id) => catalog.find((product) => product.id === id))
@@ -145,11 +164,13 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
 
   return (
     <div>
-      {activeAssortment ? (
+      {activeMaking ? (
+        <ShowingBar use={activeMaking} onViewAll={resetFilters} />
+      ) : activeAssortment ? (
         <p className="catalog-assortment-note" data-testid="assortment-filter" role="status">
           Showing <strong>{activeAssortment.name}</strong> products
           <button type="button" onClick={resetFilters}>
-            View all {activeAssortment.family === "breads" ? "breads & rolls" : "pastries"}
+            View all {catalogViewAllLabel(activeAssortment.family)}
           </button>
         </p>
       ) : null}
@@ -349,5 +370,16 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         </div>
       ) : null}
     </div>
+  );
+}
+
+function ShowingBar({ use, onViewAll }: { use: MakingUse; onViewAll: () => void }) {
+  return (
+    <p className="catalog-assortment-note" data-testid="assortment-filter" role="status">
+      Showing <strong>{use.title}</strong> products
+      <button type="button" onClick={onViewAll}>
+        View all {catalogViewAllLabel(use.family)}
+      </button>
+    </p>
   );
 }

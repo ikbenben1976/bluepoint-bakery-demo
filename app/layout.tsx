@@ -3,7 +3,6 @@ import "./globals.css";
 import "./brand.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/JsonLd";
 import { CallSheetProvider } from "@/components/CallSheet";
 import { RequestSheetProvider } from "@/components/RequestSheet";
@@ -55,7 +54,7 @@ export default function RootLayout({
                 <p className="demo-ribbon">{DISCLAIMER}</p>
                 <Header />
               </div>
-              <main id="main"><Breadcrumbs />{children}</main>
+              <main id="main">{children}</main>
             </div>
             <Footer />
             <Notice />

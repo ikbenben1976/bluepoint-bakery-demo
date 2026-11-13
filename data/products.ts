@@ -1,3 +1,5 @@
+import { makingSlugsFor, type MakingSlug } from "@/data/making";
+
 export type Family = "breads" | "pastries";
 export type Lead = "24h" | "48h" | "3d";
 
@@ -8,6 +10,8 @@ export type Product = {
   categoryLabel: string;
   family: Family;
   lead: Lead;
+  /** Menu uses ("What are you making?") this product is baked for. */
+  making: readonly MakingSlug[];
   individuallyWrapped: boolean;
   seasonal: boolean;
   sliceOptions?: readonly string[];
@@ -396,6 +400,7 @@ function toProduct(
     category: group.id,
     categoryLabel: group.label,
     family: group.family,
+    making: makingSlugsFor({ category: group.id, name: seed.name }),
     lead: seed.lead ?? group.lead,
     individuallyWrapped: Boolean(seed.wrapped),
     seasonal: Boolean(seed.seasonal),

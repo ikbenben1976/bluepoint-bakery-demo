@@ -1,0 +1,44 @@
+{
+  "redirects": [
+    {
+      "source": "/making/burgers",
+      "destination": "/breads/?making=burgers#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/burgers/",
+      "destination": "/breads/?making=burgers#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/sandwiches",
+      "destination": "/breads/?making=sandwiches#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/sandwiches/",
+      "destination": "/breads/?making=sandwiches#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/breakfast",
+      "destination": "/pastries/?making=breakfast#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/breakfast/",
+      "destination": "/pastries/?making=breakfast#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/dinner",
+      "destination": "/breads/?making=dinner#catalog",
+      "permanent": true
+    },
+    {
+      "source": "/making/dinner/",
+      "destination": "/breads/?making=dinner#catalog",
+      "permanent": true
+    }
+  ]
+}
