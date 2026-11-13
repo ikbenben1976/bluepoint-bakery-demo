@@ -1,0 +1,393 @@
+/* Contact hub — all layout rules are local to /contact; no shared page geometry changes. */
+.page {
+  color: #0d0d25;
+  background: #fff;
+}
+
+.page :is(h1, h2, h3) {
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+.hero {
+  background: #f6f1e8;
+  border-bottom: 1px solid #e4d8c4;
+}
+
+.heroInner {
+  padding-block: clamp(2.75rem, 5.5vw, 5.25rem) clamp(3rem, 5.5vw, 5rem);
+}
+
+.eyebrow,
+.smallLabel {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  color: #73530c;
+  font-size: 0.77rem;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0 0 1.05rem;
+  font-size: clamp(2.6rem, 6vw, 4.9rem);
+  color: #0b2b51;
+}
+
+.intro {
+  max-width: 54rem;
+  margin: 0 0 2rem;
+  color: #34343e;
+  font-size: clamp(1.08rem, 1.65vw, 1.24rem);
+  line-height: 1.6;
+}
+
+.directContact {
+  width: min(100%, 880px);
+  padding: clamp(1.15rem, 2.3vw, 1.9rem);
+  background: #fff;
+  border: 1px solid #ddd5c7;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(13, 13, 37, 0.04);
+}
+
+.smallLabel {
+  color: #58566a;
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.07em;
+}
+
+.method {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: clamp(0.65rem, 2vw, 1.35rem);
+  align-items: center;
+  padding: 1.1rem 0;
+  min-width: 0;
+}
+
+.method + .method {
+  border-top: 1px solid #e4d8c4;
+}
+
+.methodIcon,
+.locationIcon,
+.deliveryIcon,
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2035e8;
+  flex: 0 0 auto;
+}
+
+.methodIcon {
+  width: 44px;
+  height: 44px;
+}
+
+.icon {
+  display: block;
+  width: 27px;
+  height: 27px;
+}
+
+.methodDetails {
+  min-width: 0;
+}
+
+.methodDetails h2 {
+  margin: 0 0 0.25rem;
+  color: #0b2b51;
+  font-size: clamp(1.08rem, 2.2vw, 1.47rem);
+  letter-spacing: -0.02em;
+}
+
+.methodDetails h2 a {
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.methodDetails h2 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.methodDetails p {
+  margin: 0;
+  color: #555566;
+  font-size: 0.87rem;
+  line-height: 1.5;
+}
+
+.methodAction,
+.cardAction,
+.accountActions a,
+.textAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: #2035e8;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-underline-offset: 0.23em;
+}
+
+.methodAction {
+  white-space: nowrap;
+}
+
+.page a:focus-visible {
+  outline: 3px solid #2035e8;
+  outline-offset: 3px;
+}
+
+.helpSection {
+  padding-block: clamp(3.1rem, 6vw, 5.25rem);
+}
+
+.sectionIntro {
+  margin-bottom: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.sectionIntro h2,
+.locationSection > h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  color: #0b2b51;
+}
+
+.sectionIntro > p:last-child {
+  margin: 0;
+  color: #44445a;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.helpGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.6rem);
+}
+
+.helpCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(1.4rem, 3vw, 2.25rem);
+  border: 1px solid #e4d8c4;
+  background: #f8f5ef;
+  border-radius: 12px;
+}
+
+.cardIcon {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 1.25rem;
+  background: #e6ebfe;
+  border-radius: 12px;
+}
+
+.cardIcon .icon {
+  width: 30px;
+  height: 30px;
+}
+
+.helpCard h3 {
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.45rem, 2.3vw, 1.85rem);
+  color: #0b2b51;
+}
+
+.helpCard > p {
+  margin: 0 0 1.5rem;
+  color: #31313f;
+  line-height: 1.67;
+  font-size: 1rem;
+}
+
+.cardAction {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.accountActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.8rem;
+  margin-top: auto;
+}
+
+.deliveryBand {
+  padding-block: clamp(2.5rem, 5vw, 4.25rem);
+  background: #f6f1e8;
+  border-block: 1px solid #e4d8c4;
+}
+
+.deliveryInner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: start;
+}
+
+.deliveryIcon {
+  width: 68px;
+  height: 68px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.deliveryIcon .icon {
+  width: 36px;
+  height: 36px;
+}
+
+.deliveryInner h2 {
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.65rem, 3.1vw, 2.4rem);
+  color: #0b2b51;
+}
+
+.deliveryInner p {
+  max-width: 55rem;
+  margin: 0 0 0.6rem;
+  color: #31313f;
+  font-size: 1.04rem;
+  line-height: 1.64;
+}
+
+.deliveryInner .finePrint {
+  margin: 0.25rem 0 0;
+}
+
+.finePrint {
+  color: #5e5c67 !important;
+  font-size: 0.87rem !important;
+  line-height: 1.55 !important;
+}
+
+.locationSection {
+  padding-block: clamp(3rem, 6vw, 5.25rem);
+}
+
+.locationSection > h2 {
+  margin-bottom: 1.9rem;
+}
+
+.locationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.locationBlock {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 1.05rem;
+  min-width: 0;
+}
+
+.locationIcon {
+  width: 45px;
+  height: 45px;
+  color: #2035e8;
+}
+
+.locationBlock h3 {
+  margin: 0 0 0.55rem;
+  font-size: 1.27rem;
+  color: #0b2b51;
+}
+
+.locationBlock address,
+.locationBlock p {
+  margin: 0 0 0.7rem;
+  font-size: 1.04rem;
+  line-height: 1.65;
+  color: #31313f;
+  font-style: normal;
+}
+
+.closing {
+  background: #0d0d25;
+  color: #e8e7f0;
+  padding-block: clamp(2.5rem, 5vw, 4.25rem);
+}
+
+.closing h2 {
+  margin: 0 0 0.75rem;
+  color: #fff;
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+}
+
+.closing p {
+  margin: 0;
+  max-width: 54rem;
+  font-size: 1.03rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .heroInner {
+    padding-block: 2.2rem 2.75rem;
+  }
+
+  .helpGrid,
+  .locationGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .method {
+    grid-template-columns: 40px minmax(0, 1fr);
+    row-gap: 0.3rem;
+  }
+
+  .methodAction {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .deliveryInner {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .helpSection,
+  .locationSection {
+    padding-block: 2.8rem;
+  }
+
+  .locationGrid {
+    gap: 2.4rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .directContact {
+    padding: 1rem;
+  }
+
+  .method {
+    column-gap: 0.5rem;
+  }
+
+  .methodDetails h2 {
+    font-size: 1.02rem;
+  }
+
+  .methodDetails h2 a {
+    overflow-wrap: anywhere;
+  }
+}
