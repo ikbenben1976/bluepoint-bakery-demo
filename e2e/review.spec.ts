@@ -1753,29 +1753,67 @@ test("faq title, intro, questions, and lead times share one centered column", as
         document.querySelector("main section"),
       ].filter((node): node is HTMLElement => node instanceof HTMLElement);
       const viewport = document.documentElement.clientWidth;
-      return nodes.map((node) => {
-        const box = node.getBoundingClientRect();
-        return {
-          name: node.tagName.toLowerCase() + (node.id ? `#${node.id}` : ""),
-          left: box.left,
-          right: box.right,
-          center: (box.left + box.right) / 2,
-          viewport,
-        };
-      });
+      const intro = document.querySelector("main header p");
+      return {
+        introAlign: intro ? getComputedStyle(intro).textAlign : "",
+        edges: nodes.map((node) => {
+          const box = node.getBoundingClientRect();
+          return {
+            name: node.tagName.toLowerCase() + (node.id ? `#${node.id}` : ""),
+            left: box.left,
+            right: box.right,
+            center: (box.left + box.right) / 2,
+            viewport,
+          };
+        }),
+      };
     });
-    expect(report.length, `faq pieces at ${width}`).toBeGreaterThanOrEqual(8);
-    const left = report[0].left;
-    const right = report[0].right;
-    const mid = report[0].viewport / 2;
+    expect(report.edges.length, `faq pieces at ${width}`).toBeGreaterThanOrEqual(8);
+    expect(report.introAlign, `faq intro centered at ${width}`).toBe("center");
+    const left = report.edges[0].left;
+    const right = report.edges[0].right;
+    const mid = report.edges[0].viewport / 2;
     console.log(
-      `faq-column ${width}px left=${left.toFixed(2)} right=${right.toFixed(2)} width=${(right - left).toFixed(2)} center=${((left + right) / 2).toFixed(2)} viewportMid=${mid.toFixed(2)} n=${report.length}`,
+      `faq-column ${width}px left=${left.toFixed(2)} right=${right.toFixed(2)} width=${(right - left).toFixed(2)} center=${((left + right) / 2).toFixed(2)} viewportMid=${mid.toFixed(2)} n=${report.edges.length} intro=${report.introAlign}`,
     );
-    for (const edge of report) {
+    for (const edge of report.edges) {
       expect(Math.abs(edge.left - left), `${edge.name} left at ${width}`).toBeLessThanOrEqual(1);
       expect(Math.abs(edge.right - right), `${edge.name} right at ${width}`).toBeLessThanOrEqual(1);
       expect(Math.abs(edge.center - mid), `${edge.name} center at ${width}`).toBeLessThanOrEqual(1);
     }
+  }
+});
+
+test("filtered catalog bars read as one sentence with the reset on the next line", async ({ page }) => {
+  for (const [width, path, name] of [
+    [390, "/breads/?making=burgers#catalog", "Burgers & Sliders"],
+    [768, "/pastries/?assortment=desserts-treats#catalog", "Desserts & Sweet Treats"],
+    [1280, "/breads/?making=sandwiches#catalog", "Sandwiches & Subs"],
+    [1440, "/pastries/?making=breakfast#catalog", "Coffee & Breakfast"],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(path);
+    const bar = page.getByTestId("assortment-filter");
+    await expect(bar).toContainText(`Showing ${name} products`);
+    const layout = await bar.evaluate((note) => {
+      const strong = note.querySelector("strong")!;
+      const button = note.querySelector("button")!;
+      const style = getComputedStyle(note);
+      const showing = document.createRange();
+      showing.setStart(note, 0);
+      showing.setEnd(note, 1);
+      const before = showing.getBoundingClientRect();
+      return {
+        display: style.display,
+        columnGap: style.columnGap,
+        spaceBeforeName: strong.getBoundingClientRect().left - before.right,
+        buttonBelow: button.getBoundingClientRect().top >= strong.getBoundingClientRect().bottom - 1,
+      };
+    });
+    expect(layout.display, `bar is inline flow at ${width}`).toBe("block");
+    expect(layout.columnGap === "normal" || layout.columnGap === "0px", `no flex gap at ${width}`).toBeTruthy();
+    expect(layout.spaceBeforeName, `single space before the name at ${width}`).toBeLessThanOrEqual(8);
+    expect(layout.buttonBelow, `view all sits under the sentence at ${width}`).toBeTruthy();
   }
 });
 
