@@ -1,0 +1,303 @@
+/* Community: editorial storytelling, not a stack of oversized cards. */
+.page {
+  color: #0d0d25;
+}
+.eyebrow {
+  margin: 0 0 0.6rem;
+  font: 750 0.76rem/1.45 var(--font-franklin), "Libre Franklin", sans-serif;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  color: #2035e8;
+}
+.intro {
+  background: #f6f1e8;
+  border-bottom: 1px solid #e4d8c4;
+}
+.introInner {
+  padding-block: clamp(2.65rem, 5vw, 4rem);
+}
+.introTitle {
+  max-width: 22ch;
+  margin: 0 0 1rem;
+  color: #0b2b51;
+  font: 700 clamp(2.65rem, 5vw, 4.65rem)/1.08 var(--font-franklin), "Libre Franklin", sans-serif;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.introText {
+  max-width: 52rem;
+  margin: 0;
+  font-size: clamp(1.06rem, 1.45vw, 1.2rem);
+  line-height: 1.64;
+}
+.feature {
+  padding-block: clamp(2.7rem, 5vw, 4.25rem);
+}
+.featureHeading {
+  margin-bottom: 1.55rem;
+}
+.featureHeading h2,
+.partnersHeading h2 {
+  margin: 0 0 0.4rem;
+  font: 700 clamp(2rem, 3.45vw, 2.9rem)/1.14 var(--font-franklin), "Libre Franklin", sans-serif;
+  letter-spacing: -0.032em;
+  color: #0b2b51;
+}
+.featureSubhead {
+  margin: 0;
+  color: #575568;
+  font: 600 0.95rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.featureGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.4rem, 3.7vw, 3.5rem);
+}
+.featurePhoto {
+  margin: 0;
+  max-width: 260px;
+}
+.featurePhoto img {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  border-radius: 4px;
+  background: #f6f1e8;
+}
+.featurePhoto figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #65616a;
+}
+.featureCopy { min-width: 0; }
+.featureMark {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+.featureMark img {
+  display: block;
+  width: auto;
+  height: 58px;
+  max-width: 120px;
+  object-fit: contain;
+}
+.featureMark p {
+  max-width: 18rem;
+  margin: 0;
+  font: 600 0.83rem/1.45 var(--font-franklin), "Libre Franklin", sans-serif;
+  color: #575568;
+}
+.featureCopy > h3 {
+  margin: 0 0 0.65rem;
+  color: #0b2b51;
+  font: 700 clamp(1.4rem, 2.2vw, 1.85rem)/1.24 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.featureCopy > p {
+  max-width: 72ch;
+  margin: 0 0 0.85rem;
+  font-size: 1.025rem;
+  line-height: 1.65;
+}
+.humanStory {
+  margin: 1.1rem 0;
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  border-left: 2px solid #2035e8;
+}
+.humanStory .storyLabel {
+  margin: 0 0 0.35rem;
+  color: #2035e8;
+  font: 700 0.74rem/1.45 var(--font-franklin), "Libre Franklin", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.humanStory blockquote {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.09rem, 1.5vw, 1.27rem);
+  font-style: italic;
+  line-height: 1.48;
+}
+.humanStory cite {
+  display: block;
+  color: #65616a;
+  font-size: 0.8rem;
+  font-style: normal;
+  line-height: 1.4;
+}
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem 2.5rem;
+  margin: 1.25rem 0 0.75rem;
+}
+.stat {
+  max-width: 16rem;
+  min-width: 8rem;
+}
+.stat strong {
+  color: #0b2b51;
+  display: block;
+  font: 700 clamp(1.5rem, 2vw, 1.9rem)/1.15 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.stat span {
+  display: block;
+  margin-top: 0.2rem;
+  color: #565264;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  color: #2035e8;
+  font: 700 0.95rem/1.4 var(--font-franklin), "Libre Franklin", sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 0.24em;
+}
+.externalLink::after {
+  content: "↗";
+  text-decoration: none;
+}
+.externalLink:focus-visible { outline: 3px solid #2035e8; outline-offset: 3px; }
+.partners {
+  background: #fff;
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+  border-top: 1px solid #e4d8c4;
+}
+.partnersHeading { margin-bottom: 1.5rem; }
+.partnersHeading > p:last-child {
+  max-width: 47rem;
+  margin: 0.65rem 0 0;
+  font-size: 1.045rem;
+  line-height: 1.6;
+}
+.partnerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partnerCard {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.3rem, 4vw, 3.5rem);
+  padding: clamp(1.5rem, 3vw, 2.4rem) 0;
+  border-top: 1px solid #dedbd2;
+  background: none;
+}
+.partnerLogo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 0.4rem;
+}
+.partnerLogo img {
+  display: block;
+  width: auto;
+  max-width: 160px;
+  max-height: 85px;
+  height: auto;
+  object-fit: contain;
+}
+.partnerLogoTall img { max-height: 96px; }
+.partnerBody { min-width: 0; }
+.partnerCategory {
+  margin: 0 0 0.42rem;
+  color: #73530c;
+  font: 700 0.74rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.partnerBody h3 {
+  margin: 0 0 0.75rem;
+  color: #0b2b51;
+  font: 700 clamp(1.35rem, 2vw, 1.8rem)/1.22 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.partnerBody > p:not(.partnerCategory):not(.historicalNote) {
+  margin: 0 0 0.75rem;
+  max-width: 76ch;
+  font-size: 1.01rem;
+  line-height: 1.63;
+}
+.historicalNote {
+  margin: 0.45rem 0 0;
+  color: #65616a;
+  font: 600 0.82rem/1.4 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.award {
+  background: #f6f1e8;
+  color: #0d0d25;
+  border-top: 1px solid #e4d8c4;
+  scroll-margin-top: 7.5rem;
+}
+.awardInner {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding-block: clamp(2.75rem, 5vw, 4rem);
+}
+.awardIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: #73530c;
+}
+.awardIcon svg { width: 36px; height: 36px; }
+.award .awardEyebrow { color: #73530c; }
+.award h2 {
+  margin: 0 0 0.8rem;
+  color: #0b2b51;
+  font: 700 clamp(1.65rem, 2.6vw, 2.3rem)/1.2 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.award p:not(.eyebrow) {
+  max-width: 75ch;
+  margin: 0 0 0.8rem;
+  color: #333341;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+.award .externalLink { color: #2035e8; }
+.closing { background: #fff; }
+.closingInner { padding-block: clamp(2rem, 4vw, 3rem); }
+.closing h2 {
+  margin: 0 0 0.5rem;
+  color: #0b2b51;
+  font: 700 clamp(1.6rem, 2.6vw, 2.2rem)/1.25 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+.closing p { max-width: 60rem; margin: 0 0 0.8rem; font-size: 1.04rem; line-height: 1.6; }
+.closing .signature {
+  margin: 0;
+  color: #2035e8;
+  font: 700 0.86rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
+}
+@media (max-width: 850px) {
+  .featureGrid { grid-template-columns: minmax(0, 1fr); gap: 1.35rem; }
+  .featurePhoto, .featurePhoto img { max-width: 250px; }
+  .featureHeading { margin-bottom: 1.15rem; }
+}
+@media (max-width: 690px) {
+  .introTitle { max-width: none; }
+  .introText, .featureCopy > p, .partnersHeading > p:last-child { font-size: 1.015rem; }
+  .partnerCard {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .partnerLogo img { max-width: 110px; max-height: 80px; }
+  .partnerBody h3 { font-size: 1.34rem; }
+  .awardInner { grid-template-columns: 1fr; gap: 0.5rem; }
+}
+@media (max-width: 400px) {
+  .partnerCard { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+  .partnerLogo img { max-width: 145px; }
+}
