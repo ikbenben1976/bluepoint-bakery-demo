@@ -25,8 +25,8 @@ test("Community redesign is readable and fits desktop, tablet, and phone widths"
     });
 
     expect(metrics.overflow, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(1);
-    expect(metrics.columns, `partner grid columns at ${width}px`).toBe(width <= 690 ? 1 : 2);
-    expect(metrics.photoDisplayedWidth, `photo not blown up at ${width}px`).toBeLessThanOrEqual(440);
+    expect(metrics.columns, `editorial partner rows at ${width}px`).toBe(1);
+    expect(metrics.photoDisplayedWidth, `compact photo at ${width}px`).toBeLessThanOrEqual(260);
 
     if (width === 390 || width === 1440) {
       await page.screenshot({
