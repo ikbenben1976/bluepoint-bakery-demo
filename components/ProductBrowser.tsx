@@ -46,10 +46,14 @@ function ProductBrowserFromUrl(props: Props) {
 }
 
 function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = null, makingParam = null }: Props) {
+  const family = groups[0]?.family ?? null;
+  const urlAssortment = onAdd ? null : (findAssortment(assortmentParam ?? null, family)?.id ?? null);
+  const urlMaking = onAdd ? null : (findMaking(makingParam ?? null, family)?.slug ?? null);
+  const urlKey = `${urlAssortment ?? ""}\n${urlMaking ?? ""}`;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [assortmentId, setAssortmentId] = useState<string | null>(null);
-  const [makingSlug, setMakingSlug] = useState<string | null>(null);
+  const [trackedKey, setTrackedKey] = useState(urlKey);
+  const [clearedKey, setClearedKey] = useState<string | null>(null);
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
   const [compareIds, setCompareIds] = useState<string[]>([]);
@@ -57,11 +61,18 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
   const mounted = useRef(false);
   const pathname = usePathname() || "/";
   const router = useRouter();
-  const appliedFilter = useRef<string | null>(null);
   const requestCount = useRequestCount();
   const { openSheet, notifyAdded } = useRequestSheet();
   const catalogPath = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const showRequestBar = !onAdd && requestCount > 0 && (catalogPath === "/breads" || catalogPath === "/pastries");
+  if (trackedKey !== urlKey) {
+    setTrackedKey(urlKey);
+    setClearedKey(null);
+    setCategory("all");
+    setQuery("");
+  }
+  const assortmentId = clearedKey === urlKey ? null : urlAssortment;
+  const makingSlug = clearedKey === urlKey ? null : urlMaking;
 
   useEffect(() => {
     if (onAdd) return;
@@ -70,21 +81,6 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
     window.addEventListener(REQUEST_CHANGE_EVENT, read);
     return () => window.removeEventListener(REQUEST_CHANGE_EVENT, read);
   }, [onAdd]);
-
-  useEffect(() => {
-    if (onAdd) return;
-    const family = groups[0]?.family ?? null;
-    const nextAssortment = findAssortment(assortmentParam ?? null, family)?.id ?? null;
-    const nextMaking = findMaking(makingParam ?? null, family)?.slug ?? null;
-    const key = `${nextAssortment ?? ""}\n${nextMaking ?? ""}`;
-    if (appliedFilter.current !== null && appliedFilter.current !== key) {
-      setCategory("all");
-      setQuery("");
-    }
-    appliedFilter.current = key;
-    setAssortmentId(nextAssortment);
-    setMakingSlug(nextMaking);
-  }, [groups, onAdd, assortmentParam, makingParam]);
 
   useEffect(() => {
     if (!mounted.current) {
@@ -128,8 +124,7 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
   function resetFilters() {
     setQuery("");
     setCategory("all");
-    setAssortmentId(null);
-    setMakingSlug(null);
+    setClearedKey(urlKey);
     if (!onAdd && typeof window !== "undefined") {
       const url = new URL(window.location.href);
       const hadFilter = url.searchParams.has("assortment") || url.searchParams.has("making");
@@ -149,7 +144,6 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
       : families.size === 1 && families.has("breads")
         ? "Search breads"
         : "Search products";
-  const family = groups[0]?.family ?? null;
   const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, family);
   const activeMaking = onAdd ? undefined : findMaking(makingSlug, family);
   const makingGroups = activeMaking
