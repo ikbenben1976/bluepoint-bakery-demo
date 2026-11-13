@@ -27,7 +27,7 @@ export default function BreadsPage() {
           </>
         }
       />
-      <div className="shell py-12 content-page">
+      <div id="catalog" className="shell py-12 content-page">
         <ProductBrowser groups={breadGroups} />
         <div className="featured-spec-in-catalog"><FeaturedProductSpec /></div>
       </div>

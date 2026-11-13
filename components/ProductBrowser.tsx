@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
 import type { CatalogGroup, Product } from "@/data/products";
+import { findAssortment } from "@/data/homeAssortment";
 import { categoryPhotos, extraPhotos } from "@/data/photos";
 import { addProductLine } from "@/lib/draft";
 import { categoryNotice, specChips, specRows } from "@/lib/spec";
@@ -24,6 +25,7 @@ type Props = {
 export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
+  const [assortmentId, setAssortmentId] = useState<string | null>(null);
   const [storedIds, setStoredIds] = useState<string[]>([]);
   const [note, setNote] = useState("");
   const [compareIds, setCompareIds] = useState<string[]>([]);
@@ -42,6 +44,22 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
     window.addEventListener(REQUEST_CHANGE_EVENT, read);
     return () => window.removeEventListener(REQUEST_CHANGE_EVENT, read);
   }, [onAdd]);
+
+  useEffect(() => {
+    if (onAdd) return;
+    // Static catalog pages can be linked to from five different homepage
+    // collections. Resolve the URL in the browser, after hydration.
+    const syncFromUrl = () => {
+      const selected = new URLSearchParams(window.location.search).get("assortment");
+      const match = findAssortment(selected, groups[0]?.family ?? null);
+      setAssortmentId(match?.id ?? null);
+      setCategory("all");
+      setQuery("");
+    };
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, [groups, onAdd]);
 
   useEffect(() => {
     if (!mounted.current) {
@@ -85,6 +103,14 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
   function resetFilters() {
     setQuery("");
     setCategory("all");
+    setAssortmentId(null);
+    if (!onAdd && typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has("assortment")) {
+        url.searchParams.delete("assortment");
+        window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+      }
+    }
     setNote("Search and filters cleared.");
   }
 
@@ -95,13 +121,19 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
       : families.size === 1 && families.has("breads")
         ? "Search breads"
         : "Search products";
+  const activeAssortment = onAdd ? undefined : findAssortment(assortmentId, groups[0]?.family ?? null);
+  const scopedGroups = activeAssortment
+    ? activeAssortment.groupIds
+        .map((id) => groups.find((group) => group.id === id))
+        .filter((group): group is CatalogGroup => group !== undefined)
+    : groups;
   const catalog = groups.flatMap((group) => group.items);
   const compared = compareIds
     .map((id) => catalog.find((product) => product.id === id))
     .filter((product): product is Product => product != null);
   const filtersActive = needle.length > 0 || category !== "all";
 
-  const visible = groups
+  const visible = scopedGroups
     .filter((group) => category === "all" || group.id === category)
     .map((group) => ({
       group,
@@ -113,6 +145,14 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
 
   return (
     <div>
+      {activeAssortment ? (
+        <p className="catalog-assortment-note" data-testid="assortment-filter" role="status">
+          Showing <strong>{activeAssortment.name}</strong> products
+          <button type="button" onClick={resetFilters}>
+            View all {activeAssortment.family === "breads" ? "breads & rolls" : "pastries"}
+          </button>
+        </p>
+      ) : null}
       <div className="catalog-tools">
         <div className="search-field">
           <label htmlFor="product-search">Search products</label>
@@ -148,7 +188,7 @@ export function ProductBrowser({ groups, onAdd, selectedIds }: Props) {
         >
           All
         </button>
-        {groups.map((group) => (
+        {scopedGroups.map((group) => (
           <button
             key={group.id}
             type="button"

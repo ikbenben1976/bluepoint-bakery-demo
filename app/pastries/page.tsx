@@ -26,7 +26,7 @@ export default function PastriesPage() {
           </>
         }
       />
-      <div className="shell py-12 content-page">
+      <div id="catalog" className="shell py-12 content-page">
         <ProductBrowser groups={pastryGroups} />
       </div>
     </>
