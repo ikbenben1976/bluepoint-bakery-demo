@@ -1643,8 +1643,8 @@ test("contact hub keeps links functional and cards readable on mobile", async ({
     await expect(page.locator('main a[href="tel:+13032981100"]')).toHaveCount(2);
     await expect(page.locator('main a[href="mailto:sales@bluepointbakery.com"]')).toHaveCount(2);
     await expect(page.getByRole("link", { name: /Start a wholesale inquiry/ })).toHaveAttribute("href", "/wholesale/");
-    await expect(page.getByRole("link", { name: /Order online/ })).toHaveAttribute("href", /bakery\.software/);
-    await expect(page.getByRole("link", { name: /Pay an invoice/ })).toHaveAttribute("href", /paywholesail/);
+    await expect(page.locator("main").getByRole("link", { name: /Order online/ })).toHaveAttribute("href", /bakery\.software/);
+    await expect(page.locator("main").getByRole("link", { name: /Pay an invoice/ })).toHaveAttribute("href", /paywholesail/);
     await expect(page.getByRole("link", { name: /Get directions/ })).toHaveAttribute("href", /google\.com\/maps/);
     await expect(page.getByRole("link", { name: /Explore delivery areas/ })).toHaveAttribute("href", "/delivery/");
     await expect(page.locator('main form, main [data-testid="contact-message-form"], main .map-frame')).toHaveCount(0);
