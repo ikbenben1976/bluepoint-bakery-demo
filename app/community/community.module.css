@@ -1,0 +1,493 @@
+/* Community story page. Self-contained to avoid affecting the homepage or other routes. */
+.page {
+  color: #0d0d25;
+}
+
+.eyebrow {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #2035e8;
+}
+
+.intro {
+  background: #efe6d9;
+  border-bottom: 1px solid #e1d5c5;
+}
+
+.introInner {
+  padding-top: clamp(2.75rem, 6.5vw, 5.25rem);
+  padding-bottom: clamp(3rem, 6.5vw, 5.5rem);
+}
+
+.introTitle {
+  max-width: 18ch;
+  margin: 0 0 1.2rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(2.8rem, 6.2vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.06;
+  text-wrap: balance;
+  color: #0d0d25;
+}
+
+.introText {
+  max-width: 54rem;
+  margin: 0;
+  font-size: clamp(1.06rem, 1.8vw, 1.28rem);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.feature {
+  padding-top: clamp(3rem, 5.5vw, 5rem);
+  padding-bottom: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+.featureHeading {
+  margin-bottom: 2rem;
+}
+
+.featureHeading h2,
+.partnersHeading h2 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.3rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.13;
+  color: #0d0d25;
+}
+
+.featureSubhead {
+  margin: 0;
+  color: #575568;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.99rem;
+  font-weight: 600;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: start;
+}
+
+.featurePhoto {
+  margin: 0;
+}
+
+.featurePhoto img {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  border-radius: 5px;
+  background: #eee5d7;
+}
+
+.featurePhoto figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #625f68;
+}
+
+.featureCopy {
+  min-width: 0;
+}
+
+.featureMark {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.featureMark img {
+  display: block;
+  width: auto;
+  height: 88px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.featureMark p {
+  max-width: 14rem;
+  margin: 0;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.89rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #504e61;
+}
+
+.featureCopy > h3 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+  color: #0d0d25;
+}
+
+.featureCopy > p {
+  max-width: 64ch;
+  margin: 0 0 1.1rem;
+  font-size: 1.065rem;
+  line-height: 1.64;
+}
+
+.humanStory {
+  margin: 1.6rem 0 1.5rem;
+  padding: 1.15rem 1.3rem 1.3rem;
+  background: #f6f1e8;
+  border-left: 4px solid #2035e8;
+  border-radius: 0 4px 4px 0;
+}
+
+.humanStory .storyLabel {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #2035e8;
+}
+
+.humanStory blockquote {
+  margin: 0 0 0.55rem;
+  padding: 0;
+  font-size: clamp(1.18rem, 2vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.humanStory cite {
+  display: block;
+  font-size: 0.85rem;
+  font-style: normal;
+  line-height: 1.4;
+  color: #5d5b67;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 1.65rem 0 1.5rem;
+}
+
+.stat {
+  border-top: 3px solid #f66631;
+  padding-top: 0.8rem;
+}
+
+.stat strong {
+  display: block;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(1.85rem, 3.5vw, 2.55rem);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.stat span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #565264;
+}
+
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #2035e8;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.externalLink::after {
+  content: "↗";
+  font-size: 1.05em;
+  text-decoration: none;
+}
+
+.externalLink:focus-visible {
+  outline: 3px solid #2035e8;
+  outline-offset: 4px;
+}
+
+.partners {
+  background: #efe6d9;
+  border-top: 1px solid #e1d5c5;
+  border-bottom: 1px solid #e1d5c5;
+  padding: clamp(3.25rem, 6vw, 5.25rem) 0 clamp(3.75rem, 6.5vw, 5.5rem);
+}
+
+.partnersHeading {
+  max-width: 50rem;
+  margin-bottom: 2rem;
+}
+
+.partnersHeading > p:last-child {
+  margin: 0.9rem 0 0;
+  max-width: 46rem;
+  font-size: 1.075rem;
+  line-height: 1.6;
+}
+
+.partnerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.partnerCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: clamp(1.2rem, 2.4vw, 2rem);
+  background: #fff;
+  border: 1px solid #e1d8ca;
+  border-top: 5px solid #f66631;
+  border-radius: 6px;
+}
+
+.partnerLogo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 118px;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0;
+}
+
+.partnerLogo img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 230px);
+  height: auto;
+  max-height: 108px;
+  object-fit: contain;
+}
+
+.partnerLogoTall img {
+  max-height: 114px;
+}
+
+.partnerCategory {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: #2035e8;
+}
+
+.partnerCard h3 {
+  margin: 0 0 0.95rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(1.42rem, 2.4vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: #0d0d25;
+}
+
+.partnerCard > p:not(.partnerCategory):not(.historicalNote) {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.partnerCard .externalLink,
+.partnerCard .historicalNote {
+  margin-top: auto;
+}
+
+.historicalNote {
+  color: #65616a;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.award {
+  background: #0d0d25;
+  color: #fff;
+  scroll-margin-top: 7.5rem;
+}
+
+.awardInner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  padding-top: clamp(3rem, 6vw, 5.2rem);
+  padding-bottom: clamp(3rem, 6vw, 5.2rem);
+}
+
+.awardIcon {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border: 2px solid #f6a475;
+  border-radius: 50%;
+  color: #f6a475;
+}
+
+.award .awardEyebrow {
+  color: #f6a475;
+}
+
+.award h2 {
+  max-width: 25ch;
+  margin: 0 0 1.2rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.16;
+  color: #fff;
+}
+
+.award p:not(.eyebrow) {
+  max-width: 64rem;
+  margin: 0 0 1rem;
+  font-size: 1.04rem;
+  line-height: 1.65;
+  color: #e8e7f0;
+}
+
+.award .externalLink {
+  color: #ffc29e;
+}
+
+.award .externalLink:focus-visible {
+  outline-color: #ffc29e;
+}
+
+.closing {
+  background: #f6f1e8;
+}
+
+.closingInner {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(2.75rem, 5vw, 4.5rem);
+}
+
+.closing h2 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.55rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+  color: #0d0d25;
+}
+
+.closing p {
+  max-width: 55rem;
+  margin: 0 0 1rem;
+  font-size: 1.075rem;
+  line-height: 1.65;
+}
+
+.closing .signature {
+  margin: 0;
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #2035e8;
+}
+
+@media (max-width: 850px) {
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+
+  .featurePhoto img {
+    max-width: 390px;
+  }
+
+  .featureHeading {
+    margin-bottom: 1.35rem;
+  }
+}
+
+@media (max-width: 690px) {
+  .introTitle {
+    max-width: none;
+  }
+
+  .introText,
+  .featureCopy > p,
+  .partnersHeading > p:last-child {
+    font-size: 1.02rem;
+  }
+
+  .partnerGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .partnerCard {
+    padding: 1.35rem 1.2rem;
+  }
+
+  .partnerLogo {
+    height: 96px;
+  }
+
+  .partnerLogo img {
+    max-height: 90px;
+  }
+
+  .featurePhoto img {
+    max-width: 360px;
+  }
+
+  .awardInner {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .awardIcon {
+    width: 62px;
+    height: 62px;
+  }
+}
+
+@media (max-width: 390px) {
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .featureMark {
+    gap: 0.65rem;
+  }
+}
