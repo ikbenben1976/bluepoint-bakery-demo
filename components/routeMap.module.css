@@ -1,0 +1,40 @@
+/* Scoped city marker feedback for both the homepage and delivery page maps. */
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  min-width: 145px;
+  max-width: min(215px, 85%);
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  background: rgba(13, 13, 37, 0.96);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(13, 13, 37, 0.22);
+  font-family: var(--font-franklin), "Libre Franklin", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: left;
+  transform: translate(-50%, calc(-100% - 11px));
+}
+
+.below {
+  transform: translate(-50%, 13px);
+}
+
+.tooltip strong,
+.tooltip span {
+  display: block;
+}
+
+.tooltip strong {
+  font-size: 0.9rem;
+  line-height: 1.28;
+}
+
+.tooltip span {
+  color: #f2e7d4;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
