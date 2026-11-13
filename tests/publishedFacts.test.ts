@@ -23,7 +23,7 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   assert.match(rendered(community), /FIRE Foundation of Denver/);
   assert.match(rendered(community), /National Philanthropy Day/);
   assert.match(rendered(community), /2016 Outstanding Small Business/);
-  assert.ok(!rendered(home).includes(approvedGiving));
+  assert.doesNotMatch(rendered(home), /Good baking\. Good neighbors\./);
   assert.doesNotMatch(rendered(home), /Association of Fundraising Professionals/);
   assert.equal(
     rendered(home).match(/Giving back to the communities we serve/g)?.length,
