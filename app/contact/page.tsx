@@ -35,19 +35,27 @@ export default function ContactPage() {
 
           <section className={styles.directContact} aria-label="Contact our Denver team">
             <p className={styles.smallLabel}>Reach our Denver team</p>
-            <div className={styles.method}>
-              <p className={styles.methodLabel}>Call the bakery</p>
-              <a className={styles.primaryContact} href={`tel:${PHONE_TEL}`}>
-                {PHONE_DISPLAY} <span aria-hidden="true">↗</span>
+            <div className={styles.methodCards}>
+              <a className={styles.methodCard} href={`tel:${PHONE_TEL}`}>
+                <span className={styles.methodIcon} aria-hidden="true">
+                  <PhoneIcon />
+                </span>
+                <span className={styles.methodCopy}>
+                  <span className={styles.methodLabel}>Call the bakery</span>
+                  <span className={styles.primaryContact}>{PHONE_DISPLAY}</span>
+                  <span className={styles.methodDetail}>Office hours: {HOURS}</span>
+                </span>
               </a>
-              <p className={styles.methodDetail}>Office hours: {HOURS}</p>
-            </div>
-            <div className={styles.method}>
-              <p className={styles.methodLabel}>Email the bakery</p>
-              <a className={styles.primaryContact} href={`mailto:${EMAIL}`}>
-                {EMAIL} <span aria-hidden="true">↗</span>
+              <a className={styles.methodCard} href={`mailto:${EMAIL}`}>
+                <span className={styles.methodIcon} aria-hidden="true">
+                  <MailIcon />
+                </span>
+                <span className={styles.methodCopy}>
+                  <span className={styles.methodLabel}>Email the bakery</span>
+                  <span className={styles.primaryContact}>{EMAIL}</span>
+                  <span className={styles.methodDetail}>Product questions, inquiries and general correspondence</span>
+                </span>
               </a>
-              <p className={styles.methodDetail}>Product questions, inquiries and general correspondence</p>
             </div>
           </section>
         </div>
@@ -63,48 +71,46 @@ export default function ContactPage() {
         <div className={styles.helpGrid}>
           <article className={styles.helpCard}>
             <span className={styles.cardNumber} aria-hidden="true">01</span>
-            <div className={styles.cardContent}>
-              <h3>New wholesale customers</h3>
-              <p>
-                Looking for a dependable bakery partner? Tell us about your business,
-                the products you need, and where you operate. We&apos;ll help you take the next step.
-              </p>
-              <Link className={styles.textAction} href="/wholesale/">
-                Start a wholesale inquiry <span aria-hidden="true">↗</span>
+            <h3>New wholesale customers</h3>
+            <p>
+              Looking for a dependable bakery partner? Tell us about your business,
+              the products you need, and where you operate. We&apos;ll help you take the next step.
+            </p>
+            <div className={styles.cardFooter}>
+              <Link className={styles.cardButton} href="/wholesale/">
+                Start a wholesale inquiry
               </Link>
             </div>
           </article>
 
           <article className={styles.helpCard}>
             <span className={styles.cardNumber} aria-hidden="true">02</span>
-            <div className={styles.cardContent}>
-              <h3>Existing customers</h3>
-              <p>
-                Already working with Bluepoint? Access your ordering account, make a payment,
-                or contact our team with questions about an existing order.
-              </p>
-              <div className={styles.accountActions}>
-                <a className={styles.textAction} href={ORDER_URL} target="_blank" rel="noopener noreferrer">
-                  Order online <span aria-hidden="true">↗</span>
-                </a>
-                <a className={styles.textAction} href={PAY_URL} target="_blank" rel="noopener noreferrer">
-                  Pay an invoice <span aria-hidden="true">↗</span>
-                </a>
-              </div>
+            <h3>Existing customers</h3>
+            <p>
+              Already working with Bluepoint? Access your ordering account, make a payment,
+              or contact our team with questions about an existing order.
+            </p>
+            <div className={styles.cardFooter}>
+              <a className={styles.cardButton} href={ORDER_URL} target="_blank" rel="noopener noreferrer">
+                Order online <ExternalIcon />
+              </a>
+              <a className={styles.cardButton} href={PAY_URL} target="_blank" rel="noopener noreferrer">
+                Pay an invoice <ExternalIcon />
+              </a>
             </div>
           </article>
 
           <article className={styles.helpCard}>
             <span className={styles.cardNumber} aria-hidden="true">03</span>
-            <div className={styles.cardContent}>
-              <h3>Questions about delivery?</h3>
-              <p>
-                Bluepoint serves metro Denver, the Front Range, mountain communities,
-                and Cheyenne, Wyoming. Explore our published delivery areas and schedules
-                to see where we operate.
-              </p>
-              <Link href="/delivery/" className={styles.textAction}>
-                Explore delivery areas <span aria-hidden="true">↗</span>
+            <h3>Questions about delivery?</h3>
+            <p>
+              Bluepoint serves metro Denver, the Front Range, mountain communities,
+              and Cheyenne, Wyoming. Explore our published delivery areas and schedules
+              to see where we operate.
+            </p>
+            <div className={styles.cardFooter}>
+              <Link href="/delivery/" className={styles.cardButton}>
+                Explore delivery areas
               </Link>
               <p className={styles.finePrint}>
                 Our team can confirm availability for your specific business address.
@@ -120,15 +126,15 @@ export default function ContactPage() {
             <p className={styles.eyebrow}>Our Denver bakery</p>
             <h2 id="contact-location-heading">Find us.</h2>
           </div>
-          <div className={styles.locationGrid}>
-            <div className={styles.locationBlock}>
+          <div className={styles.locationCard}>
+            <div className={styles.locationCol}>
               <h3>Bluepoint Bakery</h3>
               <address>5105 Cook St.<br />Denver, CO 80216</address>
-              <a className={styles.textAction} href={MAPS_SEARCH_URL} target="_blank" rel="noopener noreferrer">
-                Get directions <span aria-hidden="true">↗</span>
+              <a className={styles.cardButton} href={MAPS_SEARCH_URL} target="_blank" rel="noopener noreferrer">
+                Get directions <ExternalIcon />
               </a>
             </div>
-            <div className={styles.locationBlock}>
+            <div className={styles.locationCol}>
               <h3>Office hours</h3>
               <p>{HOURS}</p>
               <p className={styles.finePrint}>Bakery production and deliveries operate six days a week.</p>
@@ -137,5 +143,42 @@ export default function ContactPage() {
         </div>
       </section>
     </article>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M8.2 3.6h2.1c.4 0 .7.3.8.6l.9 2.7a.9.9 0 0 1-.3.9l-1.5 1.1a12.2 12.2 0 0 0 5 5l1.1-1.5a.9.9 0 0 1 .9-.3l2.7.9c.3.1.6.4.6.8v2.1a1.6 1.6 0 0 1-1.7 1.6A16.2 16.2 0 0 1 3.5 6.3a1.6 1.6 0 0 1 1.6-1.7h3.1z"
+      />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M4 6.4A2.4 2.4 0 0 1 6.4 4h11.2A2.4 2.4 0 0 1 20 6.4v11.2a2.4 2.4 0 0 1-2.4 2.4H6.4A2.4 2.4 0 0 1 4 17.6V6.4zm1.8.2 6.2 4.4 6.2-4.4H5.8zm12.4 1.3-5.6 4a1.5 1.5 0 0 1-1.7 0l-5.7-4v9.7h13V7.9z"
+      />
+    </svg>
+  );
+}
+
+function ExternalIcon() {
+  return (
+    <svg className={styles.externalIcon} viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10"
+      />
+    </svg>
   );
 }
