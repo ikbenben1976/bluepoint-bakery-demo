@@ -1,14 +1,8 @@
-import { categoryPhotos, type Photo } from "./photos";
+import type { Photo } from "./photos";
 
 /**
  * Home page community tiles, in display order.
- *
- * Project Angel Heart uses the existing bakery pie photo (`categoryPhotos.pies`,
- * public/images/scenes/pie-filling.webp). The other three tiles have no photo:
- * `image: null` is what the home page renders as the "Photo needed" box.
- *
- * To swap in a real photo, add the file under public/images/ and replace that
- * tile's `image: null` with a Photo `{ src, width, height, alt }`.
+ * Each tile shows that charity's logo from public/images/community-logos/.
  */
 export type HomeCommunityTile = {
   caption: string;
@@ -18,18 +12,38 @@ export type HomeCommunityTile = {
 export const homeCommunityTiles: readonly HomeCommunityTile[] = [
   {
     caption: "Project Angel Heart: Pie in the Sky",
-    image: categoryPhotos.pies,
+    image: {
+      src: "/images/community-logos/project-angel-heart.png",
+      width: 1007,
+      height: 615,
+      alt: "Project Angel Heart logo",
+    },
   },
   {
     caption: "CASA of Adams & Broomfield Counties",
-    image: null,
+    image: {
+      src: "/images/community-logos/casa.png",
+      width: 880,
+      height: 521,
+      alt: "CASA of Adams & Broomfield Counties logo",
+    },
   },
   {
     caption: "The GrowHaus",
-    image: null,
+    image: {
+      src: "/images/community-logos/growhaus.png",
+      width: 1500,
+      height: 915,
+      alt: "The GrowHaus logo",
+    },
   },
   {
     caption: "Soup for the Soul",
-    image: null,
+    image: {
+      src: "/images/community-logos/soup-for-the-soul.png",
+      width: 592,
+      height: 1464,
+      alt: "Soup for the Soul logo",
+    },
   },
 ];
