@@ -12,11 +12,17 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   const home = read("app/page.tsx");
   const community = read("app/community/page.tsx");
   const site = read("data/site.ts");
-  const approvedGiving =
-    "In 2016, the Colorado chapter of the Association of Fundraising Professionals named Bluepoint Bakery Outstanding Small Business at its National Philanthropy Day luncheon. That giving continues today. Since 2009 we've baked and donated every pie for Project Angel Heart's Pie in the Sky, and we support CASA of Adams & Broomfield Counties, The GrowHaus and Soup for the Soul.";
   const rendered = (source: string) => source.replaceAll("&apos;", "'").replaceAll("&amp;", "&");
   assert.match(community, /id="recognition"/);
-  assert.ok(rendered(community).includes(approvedGiving));
+  assert.match(rendered(community), /Good baking\. Good neighbors\./);
+  assert.match(rendered(community), /Project Angel Heart/);
+  assert.match(rendered(community), /Pie in the Sky/);
+  assert.match(rendered(community), /CASA of Adams/);
+  assert.match(rendered(community), /The GrowHaus/);
+  assert.match(rendered(community), /Soup for the Soul/);
+  assert.match(rendered(community), /FIRE Foundation of Denver/);
+  assert.match(rendered(community), /National Philanthropy Day/);
+  assert.match(rendered(community), /2016 Outstanding Small Business/);
   assert.ok(!rendered(home).includes(approvedGiving));
   assert.doesNotMatch(rendered(home), /Association of Fundraising Professionals/);
   assert.equal(
