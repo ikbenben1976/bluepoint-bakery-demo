@@ -46,26 +46,34 @@ test("2016 AFP award is on the community page, with a link from About", () => {
   assert.doesNotMatch(home, /Philanthropist of the Year/);
 });
 
-test("home community tiles use the pie photo and three photo-needed slots", () => {
+test("home community tiles use the four charity logos", () => {
   assert.deepEqual(
-    homeCommunityTiles.map((tile) => tile.caption),
+    homeCommunityTiles.map((tile) => [tile.caption, tile.image?.src, tile.image?.alt]),
     [
-      "Project Angel Heart: Pie in the Sky",
-      "CASA of Adams & Broomfield Counties",
-      "The GrowHaus",
-      "Soup for the Soul",
+      [
+        "Project Angel Heart: Pie in the Sky",
+        "/images/community-logos/project-angel-heart.png",
+        "Project Angel Heart logo",
+      ],
+      [
+        "CASA of Adams & Broomfield Counties",
+        "/images/community-logos/casa.png",
+        "CASA of Adams & Broomfield Counties logo",
+      ],
+      ["The GrowHaus", "/images/community-logos/growhaus.png", "The GrowHaus logo"],
+      ["Soup for the Soul", "/images/community-logos/soup-for-the-soul.png", "Soup for the Soul logo"],
     ],
   );
-  assert.equal(homeCommunityTiles[0].image?.src, "/images/scenes/pie-filling.webp");
-  assert.deepEqual(
-    homeCommunityTiles.slice(1).map((tile) => tile.image),
-    [null, null, null],
-  );
+  for (const tile of homeCommunityTiles) {
+    assert.ok(tile.image);
+    assert.ok(tile.image.width > 0 && tile.image.height > 0);
+    assert.ok(fs.existsSync(`public${tile.image.src}`));
+  }
   const home = read("app/page.tsx");
-  const grid = home.indexOf("home-charity-grid");
-  const button = home.indexOf("Community partners");
-  assert.ok(grid > 0 && button > grid);
-  assert.match(home, /home-charity-placeholder">Photo needed/);
+  const section = home.slice(home.indexOf('className="block home-community"'));
+  assert.ok(section.includes("home-charity-grid"));
+  assert.ok(section.indexOf("Community partners") > section.indexOf("home-charity-grid"));
+  assert.doesNotMatch(section, /illustrative-label/);
   assert.doesNotMatch(home, /split-photo/);
 });
 
