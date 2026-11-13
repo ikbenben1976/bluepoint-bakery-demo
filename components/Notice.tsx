@@ -96,6 +96,7 @@ export function Notice() {
         <div className="call-notice-actions">
           <a href={`tel:${PHONE_TEL}`}>Call {PHONE_DISPLAY}</a>
           <a href={`mailto:${EMAIL}`}>Email sales</a>
+          <Link href="/contact/" onClick={dismiss}>Address &amp; office hours</Link>
         </div>
       </div>
     </div>
