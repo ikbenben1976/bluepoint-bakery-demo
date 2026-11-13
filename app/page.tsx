@@ -5,7 +5,6 @@ import { MakingCards } from "@/components/MakingCards";
 import { AssortmentCards } from "@/components/AssortmentCards";
 import { BuyerProof } from "@/components/BuyerProof";
 import { HeroBenefits } from "@/components/HeroBenefits";
-import { RouteMap } from "@/components/RouteMap";
 import { DeliveryChecker } from "@/components/DeliveryChecker";
 import { heroDesktop, heroMobile } from "@/data/illustrative";
 import { homeCommunityTiles } from "@/data/homeCommunity";
@@ -188,13 +187,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block">
+      <section className="block home-deliver">
         <div className="shell">
           <div className="section-head">
             <h2>Where we deliver</h2>
             <p>Our delivery trucks run Metro Denver to summit, plains to peaks. <Link className="keep-together" href="/delivery/">See the map</Link>.</p>
           </div>
-          <RouteMap preview />
           <div className="home-delivery-check">
             <div>
               <h3>Do we deliver to your area?</h3>

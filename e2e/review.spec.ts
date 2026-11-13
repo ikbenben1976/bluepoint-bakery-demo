@@ -365,6 +365,8 @@ test("buyer-first homepage has photographed application links and sourced segmen
 
 test("home delivery lookup qualifies city and does not promise a specific route", async ({ page }) => {
   await page.goto("/");
+  await expect(page.locator(".home-deliver .atlas, .home-deliver .map-legend, .home-deliver .atlas-card")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "See the map" })).toHaveAttribute("href", "/delivery/");
   await page.locator("#home-delivery-city").fill("Denver");
   await expect(page.getByRole("status").filter({ hasText: "Denver" }).first()).toBeVisible();
   await expect(page.locator(".home-delivery-check")).toContainText("confirm service to your address");
@@ -980,10 +982,28 @@ test("delivery labels do not overlap or clip, and the contact pill clears the de
     expect(labelReport.overlaps, `label overlap at ${width}px`).toEqual([]);
     expect(labelReport.clipped, `clipped labels at ${width}px`).toEqual([]);
     expect(labelReport.clipped, `Fountain clipped at ${width}px`).not.toContain("Fountain");
+    expect(labelReport.clipped, `Cheyenne clipped at ${width}px`).not.toContain("Cheyenne");
+
+    const placement = await page.evaluate(() => {
+      const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
+      const panel = document.querySelector(".delivery-page .atlas-side")!.getBoundingClientRect();
+      const legend = document.querySelector(".delivery-page .map-legend")!.getBoundingClientRect();
+      const attr = document.querySelector(".delivery-page .map-attr")!.getBoundingClientRect();
+      return {
+        panelBeside: panel.left >= stage.right - 8 && panel.top <= stage.top + 24,
+        panelBelow: panel.top >= stage.bottom - 4,
+        legendUnderMap: legend.top >= stage.bottom - 4 && legend.left >= stage.left - 4 && legend.right <= stage.right + 8,
+        attrUnderLegend: attr.top >= legend.bottom - 4,
+      };
+    });
+    expect(placement.legendUnderMap, `legend under the map at ${width}px`).toBeTruthy();
+    expect(placement.attrUnderLegend, `attribution under the legend at ${width}px`).toBeTruthy();
+    if (width >= 1280) expect(placement.panelBeside, `route panel beside the map at ${width}px`).toBeTruthy();
+    else expect(placement.panelBelow, `route panel below the map at ${width}px`).toBeTruthy();
 
     if (width >= 1280) {
       const content =
-        ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-table, .serve-list, .delivery-check, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
+        ".delivery-page h1, .delivery-page h2, .delivery-page p, .route-day-card, .serve-list, .atlas-card, .map-legend, .atlas-stage, .atlas-search";
       const maxScroll = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
       for (let top = 0; top <= maxScroll; top += 220) {
         await page.evaluate((y) => window.scrollTo(0, y), top);
@@ -1022,7 +1042,7 @@ test("delivery content uses the full phone and tablet width without breaking tab
       const column = document.querySelector(".delivery-layout")!.getBoundingClientRect();
       const stage = document.querySelector(".delivery-page .atlas-stage")!.getBoundingClientRect();
       const available = window.innerWidth - shell.left * 2;
-      const cells = [...document.querySelectorAll(".route-table th, .route-table td")].map((cell) => {
+      const cells = [...document.querySelectorAll(".route-day-card")].map((cell) => {
         const style = getComputedStyle(cell);
         return {
           text: (cell.textContent || "").replace(/\s+/g, " ").trim(),
@@ -1057,7 +1077,7 @@ test("delivery content uses the full phone and tablet width without breaking tab
     const broken = fit.cells.filter(
       (cell) => cell.wordBreak === "break-all" || cell.overflowWrap === "anywhere" || cell.overflows,
     );
-    expect(broken, `table cells break words at ${width}px`).toEqual([]);
+    expect(broken, `route cards break words at ${width}px`).toEqual([]);
   }
 });
 
@@ -1067,7 +1087,7 @@ test("route dots stay beside the first word of the route name", async ({ page })
     await page.goto("/delivery/");
     await page.evaluate(() => document.fonts.ready);
     const rows = await page.evaluate(() => {
-      return [...document.querySelectorAll(".route-table tbody th")].map((cell) => {
+      return [...document.querySelectorAll(".route-day-card h3")].map((cell) => {
         const dot = cell.querySelector("i")!.getBoundingClientRect();
         const lead = cell.querySelector(".route-name-lead")!;
         const textNode = [...lead.childNodes].find(
@@ -1768,12 +1788,40 @@ test("two products compare published fields and offer an inquiry", async ({ page
   await expect(brioche.getByText("Not marked")).toHaveCount(0);
 });
 
+test("delivery city search highlights the map and shows published delivery information", async ({ page }) => {
+  await page.goto("/delivery/");
+  const input = page.locator("#route-lookup");
+  const panel = page.locator(".atlas-card h3");
+  const status = page.locator(".atlas-result");
+  await expect(page.locator(".atlas-phone a")).toHaveAttribute("href", "tel:+13032981100");
+
+  await input.fill("Denver");
+  await expect(panel).toHaveText("Denver");
+  await expect(status).toContainText("Denver Metro Area");
+  await expect(status).toContainText("confirm service to your address");
+
+  await input.fill("Cheyenne");
+  await expect(panel).toHaveText("Cheyenne");
+  await expect(status).toContainText("Cheyenne, Wyoming");
+
+  await input.fill("Fountain");
+  await expect(panel).toHaveText("Fountain");
+  await expect(status).toContainText("Fountain");
+  await expect(status).toContainText("Tue, Thu, Sat");
+
+  await input.fill("Atlantis");
+  await expect(status).toContainText("Contact Bluepoint to check availability");
+  await expect(panel).not.toHaveText("Atlantis");
+});
+
 test("delivery map shows the weekday overview and does not draw a route line", async ({ page }) => {
   await page.goto("/delivery/");
   await expect(page.locator(".city-link")).toHaveCount(0);
+  await expect(page.locator(".route-table")).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Delivery routes & days" })).toBeVisible();
-  await expect(page.locator(".route-table")).toContainText("Yellow");
-  await expect(page.locator(".route-table")).toContainText("Purple");
+  await expect(page.locator(".route-day-card")).toHaveCount(5);
+  await expect(page.locator(".route-day-cards")).toContainText("Yellow");
+  await expect(page.locator(".route-day-cards")).toContainText("Purple");
   for (const days of [
     "Mon, Tue, Wed, Thu, Fri, Sat",
     "Mon, Wed, Fri, Sat",
@@ -1781,10 +1829,21 @@ test("delivery map shows the weekday overview and does not draw a route line", a
     "Tue, Sat",
     "Mon, Tue, Thu, Fri",
   ]) {
-    await expect(page.locator(".route-table")).toContainText(days);
+    await expect(page.locator(".route-day-cards")).toContainText(days);
     await expect(page.locator(".map-legend")).toContainText(days);
   }
-  await expect(page.locator(".delivery-lede")).toContainText("confirm the street address");
+  const overview = "This is an overview. Please call us to see if we service your city and to confirm the street address.";
+  await expect(page.locator(".delivery-overview")).toHaveCount(1);
+  await expect(page.locator(".delivery-overview")).toHaveText(overview);
+  const overviewCopies = await page.locator("body").evaluate((body, text) => {
+    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+    let copies = 0;
+    while (walker.nextNode()) {
+      if (walker.currentNode.textContent?.includes(text)) copies += 1;
+    }
+    return copies;
+  }, overview);
+  expect(overviewCopies).toBe(1);
   await expect(page.locator(".delivery-lede")).toContainText("We bake and deliver six days a week");
   await expect(page.getByText("kicks ass")).toHaveCount(0);
 });

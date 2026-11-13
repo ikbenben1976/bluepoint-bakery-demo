@@ -1855,19 +1855,45 @@ body {
 
 .catalog-photo-note { font-size: .8rem; color: #565462; padding: .35rem 0 .75rem; margin: 0; }
 .home-delivery-check {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr auto;
-  gap: 1.2rem;
+  width: min(100%, 42rem);
+  margin: 1.35rem auto 0;
+  padding: 1.55rem 1.45rem 1.4rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-top: 1.25rem;
-  padding: 1.4rem;
-  background: #fff;
-  border: 1px solid #e4d8c4;
+  text-align: center;
+  gap: 0.15rem;
+  background: #fffaf4;
+  border: 1px solid #e0d4bf;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(47, 32, 15, 0.055);
 }
-.home-delivery-check h3 { margin-bottom: .35rem; }
-.home-delivery-check p { font-size: .9rem; margin-bottom: 0; }
-.home-delivery-check > .text-link { font-family: var(--font-franklin), sans-serif; font-size: .88rem; font-weight: 700; }
-@media (max-width: 850px) { .home-delivery-check { grid-template-columns: 1fr; } }
+.home-delivery-check > div {
+  width: min(100%, 28rem);
+}
+.home-delivery-check h3 {
+  margin-bottom: 0.35rem;
+}
+.home-delivery-check p {
+  font-size: 0.95rem;
+  margin-bottom: 0.85rem;
+}
+.home-delivery-check label,
+.home-delivery-check h3,
+.home-delivery-check p,
+.home-delivery-check .text-link {
+  text-align: center;
+}
+.home-delivery-check input {
+  width: 100%;
+}
+.home-delivery-check > .text-link {
+  width: auto;
+  margin-top: 0.85rem;
+  font-family: var(--font-franklin), sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
 
 
 /* Put the menu proposition first, followed by the bakery's product collage,
@@ -6134,3 +6160,212 @@ legend,
   outline-offset: 3px;
 }
 #catalog { scroll-margin-top: 6.5rem; }
+
+/* Delivery page: full basemap, legend under the map, route cards. */
+.delivery-page .delivery-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  grid-template-columns: none;
+}
+.delivery-page .atlas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+.delivery-page .atlas-frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "stage"
+    "legend"
+    "attr"
+    "panel";
+  gap: 0.7rem;
+  width: 100%;
+  min-width: 0;
+  align-items: start;
+}
+.delivery-page .atlas-stage { grid-area: stage; }
+.delivery-page .map-legend { grid-area: legend; }
+.delivery-page .map-attr { grid-area: attr; }
+.delivery-page .atlas-side { grid-area: panel; }
+.delivery-page .atlas-stage {
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1400 / 2528;
+  overflow: hidden;
+  background: #c9bfae;
+}
+.delivery-page .atlas-fit {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-height: none;
+  aspect-ratio: auto;
+  transform: none;
+  background: none;
+}
+.delivery-page .atlas-fit img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: fill;
+  object-position: center;
+}
+.delivery-page .atlas-side {
+  position: static;
+  width: 100%;
+  grid-column: auto;
+  grid-row: auto;
+}
+.delivery-page .atlas-card {
+  margin: 0;
+}
+.delivery-page .map-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: 0.5rem 0.75rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+}
+.delivery-page .map-attr {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  max-width: 46rem;
+}
+.delivery-page .atlas-search {
+  margin-top: 1.15rem;
+  max-width: none;
+  padding: 1.15rem 1.2rem 1.2rem;
+  background: #fffaf4;
+  border: 1px solid #e0d4bf;
+  border-radius: 16px;
+}
+.delivery-page .atlas-search label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+.delivery-page .atlas-search input,
+.delivery-page .atlas-search .route-suggest {
+  width: min(100%, 36rem);
+}
+.delivery-page .atlas-search .route-suggest {
+  margin-top: 0.35rem;
+}
+.delivery-page .atlas-result {
+  margin: 0.75rem 0 0;
+  max-width: 44rem;
+  font-weight: 700;
+}
+.delivery-page .atlas-phone {
+  margin: 0.55rem 0 0;
+}
+.delivery-page .delivery-overview {
+  margin: 0.8rem 0 0;
+  max-width: 44rem;
+  color: #0d0d25;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.route-day-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  margin: 0.85rem 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+.route-day-card {
+  min-width: 0;
+  padding: 1rem 1.05rem 1.1rem;
+  background: #fffaf4;
+  border: 1px solid #e0d4bf;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(47, 32, 15, 0.045);
+}
+.route-day-card h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.route-day-card .route-name-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+.route-day-card i {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: none;
+  border: 1px solid #0d0d25;
+  border-radius: 3px;
+}
+.route-day-card .route-days-line {
+  margin: 0;
+}
+.route-day-card .route-towns {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.delivery-page .serve-list {
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+.delivery-page .serve-list li {
+  background: #fffaf4;
+  border: 1px solid #e0d4bf;
+  border-left: 4px solid #f66631;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+}
+@media (min-width: 700px) {
+  .route-day-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  .delivery-page .atlas-frame {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    grid-template-areas:
+      "stage panel"
+      "legend ."
+      "attr .";
+    column-gap: 1rem;
+    row-gap: 0.65rem;
+  }
+  .delivery-page .atlas-side {
+    align-self: start;
+  }
+}
+@media (min-width: 1100px) {
+  .route-day-cards {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .route-day-card {
+    grid-column: span 2;
+  }
+  .route-day-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+  .route-day-card:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+}
+@media (max-width: 767px) {
+  .home-deliver .section-head,
+  .home-deliver .section-head h2,
+  .delivery-page .delivery-intro h1 {
+    text-align: center;
+  }
+}
