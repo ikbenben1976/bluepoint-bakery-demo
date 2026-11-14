@@ -142,13 +142,13 @@ body.menu-open {
   background: #0d0d25;
 }
 
-.btn-orange {
+.btn-secondary {
   background: #f66631;
   color: #0d0d25;
   border-color: #f66631;
 }
 
-.btn-orange:hover {
+.btn-secondary:hover {
   background: #d1a751;
   border-color: #d1a751;
 }

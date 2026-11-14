@@ -12,6 +12,9 @@ test("Community layout is balanced, readable, and fits desktop, tablet, and phon
     await expect(page.locator("#recognition")).toBeVisible();
     const cards = page.locator('ul[class*="community_partnerGrid"] > li');
     await expect(cards).toHaveCount(4);
+    const pie = page.locator('figure[class*="community_featurePhoto"] img');
+    await pie.scrollIntoViewIfNeeded();
+    await expect.poll(() => pie.evaluate((img: HTMLImageElement) => (img.complete ? img.naturalWidth : 0))).toBeGreaterThan(0);
 
     const metrics = await page.evaluate(() => {
       const grid = document.querySelector<HTMLElement>('ul[class*="community_partnerGrid"]')!;

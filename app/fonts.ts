@@ -2,8 +2,6 @@ import localFont from "next/font/local";
 
 /**
  * Licensed pair (SIL Open Font License, shipped via Fontsource).
- * The later approved hero is a large navy serif, and that display choice
- * outranks the older BRAND.md note that put Libre Franklin on every headline.
  * Source Serif 4 is the display serif and the body text. Libre Franklin stays
  * on navigation, buttons, and labels.
  */
