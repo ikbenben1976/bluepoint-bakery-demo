@@ -2,7 +2,7 @@ import Image from "next/image";
 
 type Props = {
   webp: string;
-  avif: string;
+  avif?: string;
   alt: string;
   width: number;
   height: number;
@@ -16,7 +16,7 @@ export function FramedImage({ webp, avif, alt, width, height, sizes, label, prio
   return (
     <span className={className ? `framed-photo ${className}` : "framed-photo"}>
       <picture>
-        <source srcSet={avif} type="image/avif" />
+        {avif ? <source srcSet={avif} type="image/avif" /> : null}
         <Image
           src={webp}
           alt={alt}

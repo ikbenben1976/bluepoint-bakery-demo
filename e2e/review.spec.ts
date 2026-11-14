@@ -2007,3 +2007,16 @@ test("making pathways and sector links reach catalog choices", async ({ page }) 
   await expect(page.getByText("does not name")).toHaveCount(0);
 });
 
+
+
+test("rejected bun extractions are not visible in the live catalog", async ({ page }) => {
+  await page.goto("/breads/");
+  const buns = page.locator("#buns .product-card");
+  await expect(buns).toHaveCount(15);
+  for (const row of await buns.all()) {
+    const img = row.locator(".product-photo img");
+    await expect(img).toHaveCount(1);
+    await expect(img).toHaveAttribute("src", /\/images\/illustrative\/product-/);
+    await expect(row.locator(".illustrative-label")).toHaveText("Illustrative image");
+  }
+});
