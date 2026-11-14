@@ -1,0 +1,522 @@
+[
+  {
+    "productId": "deli-loaves-7-grain",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-7-grain.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-wheat-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-cracked-wheat",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-cracked-wheat.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-wheat-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-dakota",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-dakota.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-seeded-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-light-rye",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-light-rye.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rye.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-marble-rye",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-marble-rye.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "B04-marble-slice",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": true,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-potato-rosemary",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-potato-rosemary.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rosemary.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-pumpernickel",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-pumpernickel.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-pumpernickel.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-sourdough",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-sourdough.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-sourdough.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "deli-loaves-vienna-white",
+    "imageUrl": "/images/catalog/reviewed-breads/deli-loaves-vienna-white.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg",
+    "sourceObject": "public/images/illustrative/product-white-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "deli-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-6x5-slider-buns-30-count",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-6x5-slider-buns-30-count.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "public/images/illustrative/product-sliders.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-brioche-case-120",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-brioche-case-120.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "B06-front",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-brioche-dozen",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-brioche-dozen.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "B06-front",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-potato-case-120",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-potato-case-120.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "public/images/illustrative/product-dinner-rolls.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-potato-dozen",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-potato-dozen.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "public/images/illustrative/product-dinner-rolls.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "dinner-rolls-savory-dozen",
+    "imageUrl": "/images/catalog/reviewed-breads/dinner-rolls-savory-dozen.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg",
+    "sourceObject": "public/images/illustrative/product-dinner-rolls.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "dinner-rolls",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-baguette-12-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-baguette-12-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-baguette-24-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-baguette-24-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-baguette-6-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-baguette-6-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-baguette-8-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-baguette-8-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-golden-parisien-24-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-golden-parisien-24-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "B03-front",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": true,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-lt-baked-parisien-24-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-lt-baked-parisien-24-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-lt-baked-wheat-baguette-12-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-lt-baked-wheat-baguette-12-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-wheat-long.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-lt-baked-wheat-parisien-24-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-lt-baked-wheat-parisien-24-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-wheat-long.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "french-breads-lt-baked-white-baguette-12-in",
+    "imageUrl": "/images/catalog/reviewed-breads/french-breads-lt-baked-white-baguette-12-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg",
+    "sourceObject": "public/images/illustrative/product-baguette.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "french-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-cracked-wheat",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-cracked-wheat.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-wheat-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-egg-bread-brioche",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-egg-bread-brioche.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-egg-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-marble-rye",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-marble-rye.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-marble.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-sourdough",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-sourdough.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-sourdough.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-texas-toast-vienna-3-4-in",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-texas-toast-vienna-3-4-in.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-white-loaf.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "pan-loaves-vienna-white",
+    "imageUrl": "/images/catalog/reviewed-breads/pan-loaves-vienna-white.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg",
+    "sourceObject": "B05-white-slice",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": false,
+    "category": "pan-loaves",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-16x4-vienna",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-16x4-vienna.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "B07-front",
+    "kind": "original-photo-edited",
+    "exactSkuVerified": true,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-7-grain-rustic-roll",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-7-grain-rustic-roll.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rustic-roll.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-brown-bread",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-brown-bread.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-pumpernickel.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-focaccia-full-sheet-2-pack",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-focaccia-full-sheet-2-pack.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-focaccia.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-focaccia-precut-in-10-pieces",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-focaccia-precut-in-10-pieces.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-focaccia.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-french-rustic-roll",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-french-rustic-roll.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rustic-roll.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-potato-rosemary-rustic-roll",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-potato-rosemary-rustic-roll.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rosemary.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-sourdough-boule-8-oz",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-sourdough-boule-8-oz.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-sourdough.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-telera-roll",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-telera-roll.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rustic-roll.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  },
+  {
+    "productId": "specialty-breads-top-split-bun",
+    "imageUrl": "/images/catalog/reviewed-breads/specialty-breads-top-split-bun.webp",
+    "sourceUrl": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg",
+    "sourceObject": "public/images/illustrative/product-rustic-roll.webp",
+    "kind": "legacy-illustration-reframed",
+    "exactSkuVerified": false,
+    "category": "specialty-breads",
+    "size": [
+      960,
+      720
+    ]
+  }
+]
