@@ -175,6 +175,10 @@
 - **[IMG_0280 pastry trays](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_0280.jpg):** Baking trays containing many muffins or pastries. Suitable bakery-category/production scene; poor for isolated SKU imagery.
 - **[IMG_0286 pies being filled](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_0286.JPG):** Bakery production photo with fruit pies. Good category photo for pies, but use the product close-ups for individual cards.
 
+- **[Potato Rosemary Loaf](https://lirp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/opt/Potato+Rosemary+Loaf+%282%29-1920w.jpg) — newly discovered by the full homepage browser crawl:** multiple flour-dusted loaves resting on bakery baking pans. Strong first-party candidate for the `Deli Loaves / Potato Rosemary` product family; photograph proves the visible loaves, not their commercial slice thickness. **This was missed by the earlier 35-position linked-image inventory and was not present in the 48-source provenance ledger.**
+
+**Post-download de-duplication:** The eight-page browser collector found 154 source URLs; 149 downloaded, 119 unique binary hashes. A DCT perceptual-hash similarity pass grouped the 148 readable raster copies into approximately **51 visual families** (this includes logos/backgrounds and may merge or separate some near-duplicates). Therefore do not interpret 119 unique file hashes as 119 unique product photographs.
+
 ## C. User-supplied image-search screenshots — reconciliation against first-party sources
 
 | Supplied screenshot | First-party repeats already accounted for | Distinct additional candidates (not yet first-party verified) | Exclude / caution |
