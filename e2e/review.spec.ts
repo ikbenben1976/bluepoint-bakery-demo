@@ -2017,6 +2017,11 @@ test("rejected bun extractions are not visible in the live catalog", async ({ pa
     const img = row.locator(".product-photo img");
     await expect(img).toHaveCount(1);
     await expect(img).toHaveAttribute("src", /\/images\/illustrative\/product-/);
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(async () => img.evaluate((element) => {
+      const image = element as HTMLImageElement;
+      return image.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
+    }), { timeout: 10000 }).toBe(true);
     await expect(row.locator(".illustrative-label")).toHaveText("Illustrative image");
   }
 });
