@@ -94,7 +94,7 @@ export default async function SectorPage({ params }: { params: Promise<Params> }
               <li key={product.id}>
                 <Link href={`${href}#${product.id}`}>
                   {shot ? (
-                    <Image src={shot.src} alt="" width={160} height={120} />
+                    <Image src={shot.src} alt={shot.alt} width={160} height={120} />
                   ) : null}
                   <span>{product.name}</span>
                   <small>{product.categoryLabel}</small>

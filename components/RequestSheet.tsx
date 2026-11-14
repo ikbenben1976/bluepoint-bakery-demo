@@ -188,7 +188,7 @@ function RequestPanel({ titleId, onClose }: { titleId: string; onClose: () => vo
                 <li key={line.productId} className="request-line">
                   {visual ? <div className="request-thumb-col">
                     <div className="request-thumb">
-                      <Image src={visual.webp} alt="" width={96} height={96} className="request-thumb-img" />
+                      <Image src={visual.webp} alt={visual.alt} width={96} height={96} className="request-thumb-img" />
                     </div>
                     <p className="request-thumb-note">Illustrative</p>
                   </div> : null}

@@ -1,6 +1,6 @@
 # Bluepoint Bakery brand audit
 
-Nov 14, 2026. Report only. No visual fixes in this pass.
+Nov 14, 2026. The follow-up on this branch resolved three no-visual items: dead `#2035e8` / `#f66631` declarations that lose at every breakpoint, meaningful alt text on the request-sheet illustrative image and the sector thumbnails (the visible "Illustrative" note and product names stay), and the type table in `docs/BRAND-GUIDE.md` (plain `h1` and `h2` are Source Serif 4, weight 600).
 
 ## Sources
 
@@ -238,7 +238,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ## app/sectors/[slug]/page.tsx
 
-⚠️ Category thumbnails use `alt=""` (`app/sectors/[slug]/page.tsx`). The link text is the product name, so the control has a name. The photo itself is not described. ⚠️ Related links use the live `#2035e8` chip in `app/brand.css` (`.sector-related li a`).
+✅ Category thumbnails use the photo registry alt (`app/sectors/[slug]/page.tsx`). The visible product name stays in the link. ⚠️ Related links use the live `#2035e8` chip in `app/brand.css` (`.sector-related li a`).
 
 ## app/robots.ts, app/sitemap.ts, app/template.tsx
 
@@ -270,7 +270,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ## components/RequestSheet.tsx
 
-⚠️ Illustrative thumbs use `alt=""` and a sibling `request-thumb-note` that says "Illustrative", not the class `.illustrative-label`. The product name is the adjacent `h3`. Labeled, but not with the shared class.
+✅ Illustrative thumbs use `visual.alt` (it begins with "Illustrative image of"). The visible `request-thumb-note` still says "Illustrative". ⚠️ That note is not the shared `.illustrative-label` class. The product name stays in the adjacent `h3`.
 
 ## components/PageHero.tsx
 
@@ -307,7 +307,7 @@ Not in the original list. Reviewed because photography depends on it. ✅ Every 
 ## Checklist cross-check
 
 1. Color. Guide hexes are approved. ❌ live non-navy focus and the community eyebrow in the page modules. ⚠️ undocumented neutrals and live orange borders the guide still allows as heritage orange.
-2. Typography. ⚠️ Not every `h1`/`h2` is serif 600. The guide's type table still says page `h1` and `h2` are Franklin 700. Computed CSS disagrees, as `docs/BRAND.md` section 6.1 now records. `h3`, nav, buttons, kickers, and eyebrows are Franklin. Body is serif `1.125rem` / `1.65`. `font-display: swap`.
+2. Typography. ✅ The guide type table now matches computed CSS: a plain `h1` or `h2` is Source Serif 4 weight 600. `.ticket-hero h1` and the page-module titles stay Franklin. `h3`, nav, buttons, kickers, and eyebrows are Franklin. Body is serif `1.125rem` / `1.65`. `font-display: swap`.
 3. Spacing. ⚠️ Shell, section padding, and bake-grid gap match the base rules. The rendered hero does not use `calc(100vh - 6.5rem)`.
 4. Components. ✅ Navy buttons, 4px radius, square bake frame, framed photos on cream, winning focus ring. ❌ module focus rings.
 5. Nav and footer. ✅ Lockup, Franklin nav, gold active indicator, ink footer, 56×56 mark, ink mobile menu, 180ms opacity, gold focus on dark. ⚠️ Guide hover color is stale.
@@ -336,19 +336,19 @@ Accessibility first, then visual consistency, then dead code.
 1. Contact and FAQ focus rings paint `#2035e8` (`contact.module.css:16`, `faq.module.css:91`). Visual change to move them to `#0b2b51` / `#e4c27a`.
 2. Community eyebrow is `#2035e8` (`community.module.css:12`). Visual change to use `#6f4b0e`.
 3. Ordering-guide eyebrow paints `#e5e2ee` because a `p` rule beats `.eyebrow`. Contrast already passes. Changing it to `#e4c27a` is a visual change.
-4. Request-sheet illustrative image uses `alt=""` (`RequestSheet.tsx`). Adding alt text is not a visual change. Restyling the note is.
-5. Sector thumbnails use `alt=""` while the link text names the product. Adding alt text is not a visual change.
+4. Request-sheet illustrative alt text is resolved. The visible "Illustrative" note was kept.
+5. Sector thumbnail alt text is resolved. The visible product name was kept.
 6. Live `#f66631` card borders (why cards, proof quotes, community partners, delivery list). Removing them is a visual change. The guide still allows Oven Orange as heritage.
 7. `.atlas-card .kicker` stays `#2035e8`. The updated guide allows it. Recoloring it is a design decision and a visual change.
 8. Home `.hero-kicker` is `#73530c`, not `#6f4b0e`. Visual change to recolor.
-9. Dead early `#2035e8` / `#f66631` rules in `app/brand.css` and `app/globals.css`, including the unused orange `.btn-secondary` declaration and the globals `.cloth-edge`. No visual change if deleted carefully.
-10. Guide type table still says page `h1` and `h2` are Franklin 700. Computed plain headings are serif 600. Updating the guide is not a visual change.
+9. Dead early `#2035e8` / `#f66631` declarations that lose at every breakpoint were removed from `app/brand.css` and `app/globals.css`, including the globals `.kicker` color, the globals `.cloth-edge` checker, and the early orange `.btn-secondary` rules. Declarations that still win were kept.
+10. The guide type table now says plain `h1` and `h2` are Source Serif 4 weight 600.
 
 ## Next steps
 
 ### Quick fixes (no visual change)
 
-- Delete dead declarations that lose the cascade: early `a` color, early `.btn-primary` / `.btn-secondary` colors, early focus outline, early hero-kicker color, early tab color, globals `.cloth-edge`, globals `.kicker` color. Confirm each with a computed-style check before deleting.
+- The dead cascade colors listed here were removed. What remains of `#2035e8` and `#f66631` in `app/brand.css` and `app/globals.css` still wins for its selector, or is an unreferenced custom property.
 - Point the brand guide's type scale and nav-hover row at the computed CSS.
 - Give the request thumb a real `alt` and keep the visible "Illustrative" label.
 - Leave `.order-band` deleted. It has no markup.
