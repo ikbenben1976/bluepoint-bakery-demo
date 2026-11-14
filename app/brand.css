@@ -5262,7 +5262,7 @@ legend,
   text-underline-offset: 0.18em;
 }
 .call-notice :is(a, button):focus-visible {
-  outline: 3px solid #73530c;
+  outline: 3px solid #6f4b0e;
   outline-offset: 3px;
 }
 
