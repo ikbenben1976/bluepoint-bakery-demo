@@ -10,6 +10,7 @@ import { buildEmailPreview } from "@/lib/emailPreview";
 import { formatCustomerType, formatPhone, formatStartDate } from "@/lib/formatInquiry";
 import { publishedUnit } from "@/lib/spec";
 import {
+  SAMPLE_NOTE,
   SAMPLE_QUESTION,
   SAMPLE_REVIEW,
   areaSummary,
@@ -757,7 +758,7 @@ export function WholesaleRequest() {
                   />
                   {SAMPLE_QUESTION}
                 </label>
-                <p>Ask Bluepoint&apos;s sales team about sample availability and any applicable conditions.</p>
+                <p>{SAMPLE_NOTE}</p>
                 {draft.askAboutSamples ? (
                   <label>
                     Products you want to ask about

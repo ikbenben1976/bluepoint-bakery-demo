@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { faqs, ORDER_URL } from "@/data/site";
+import { SAMPLE_NOTE, SAMPLE_QUESTION } from "@/lib/requestFlow";
 import styles from "./faq.module.css";
 
 export const metadata: Metadata = {
@@ -43,6 +45,21 @@ export default function FaqPage() {
                       existing customer login
                     </a>
                     .
+                  </p>
+                ) : item.id === "pricing" ? (
+                  <p>
+                    Add products to a{" "}
+                    <Link className="text-royal underline" href="/wholesale/#wholesale-request">
+                      pricing request
+                    </Link>{" "}
+                    and we&apos;ll follow up. It&apos;s a request, not an order.
+                  </p>
+                ) : item.id === "samples" ? (
+                  <p>
+                    {SAMPLE_QUESTION}. {SAMPLE_NOTE}{" "}
+                    <Link className="text-royal underline" href="/wholesale/#sample-request">
+                      Ask about samples
+                    </Link>
                   </p>
                 ) : (
                   <p>{item.a}</p>

@@ -12,6 +12,9 @@ import {
 
 export const SAMPLE_QUESTION = "I'd like to ask about trying a product first";
 
+export const SAMPLE_NOTE =
+  "Ask Bluepoint's sales team about sample availability and any applicable conditions.";
+
 export const SAMPLE_REVIEW = "Interested in trying products first.";
 
 export function kindsInDraft(draft: Draft): LeadKind[] {
