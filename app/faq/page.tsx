@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { faqs, ORDER_URL } from "@/data/site";
-import { SAMPLE_NOTE, SAMPLE_QUESTION } from "@/lib/requestFlow";
+import { SAMPLE_NOTE } from "@/lib/requestFlow";
 import styles from "./faq.module.css";
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ export default function FaqPage() {
                   </p>
                 ) : item.id === "samples" ? (
                   <p>
-                    {SAMPLE_QUESTION}. {SAMPLE_NOTE}{" "}
+                    {SAMPLE_NOTE}{" "}
                     <Link className="text-royal underline" href="/wholesale/#sample-request">
                       Ask about samples
                     </Link>
