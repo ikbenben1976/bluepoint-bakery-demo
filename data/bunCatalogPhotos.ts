@@ -19,7 +19,6 @@ export type BunCatalogPhoto = {
   };
 };
 
-const site = "https://www.bluepointbakery.com";
 const bluepointSources = {
   variety: "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Specialty+Variety+%281%29.jpg",
   sesame: "https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1053.jpg",
@@ -80,7 +79,7 @@ export function bunCatalogPhotoFor(id: string): BunCatalogPhoto | undefined {
     label: "Illustrative image",
     alt: `Illustrative image of ${entry.description}. Not a verified Bluepoint SKU photograph.`,
     provenance: {
-      sourceUrl: `${site}/`, // site context only; original illustrated asset identified below
+      sourceUrl: `/images/illustrative/${entry.file}.webp`,
       sourceObject: `public/images/illustrative/${entry.file}.webp (existing generated illustration)`,
       treatment: "existing-illustration",
       exactSkuVerified: false,
