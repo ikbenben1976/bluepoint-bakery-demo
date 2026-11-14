@@ -163,7 +163,7 @@
   border: 1px solid #e4d0a4;
   border-radius: 8px;
   background: #fff8ef;
-  box-shadow: 0 8px 22px rgba(115, 83, 12, 0.08);
+  box-shadow: 0 8px 22px rgba(111, 75, 14, 0.08);
 }
 
 .leadHeading {
@@ -185,7 +185,7 @@
   width: 1.2rem;
   height: 1.2rem;
   flex: none;
-  color: #73530c;
+  color: #6f4b0e;
 }
 
 .rows {

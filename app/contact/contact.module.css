@@ -28,7 +28,7 @@
 
 .eyebrow {
   margin: 0 0 0.85rem;
-  color: #73530c;
+  color: #6f4b0e;
 }
 
 .hero {
@@ -123,7 +123,7 @@
 
 .methodLabel {
   margin: 0;
-  color: #73530c;
+  color: #6f4b0e;
 }
 
 .primaryContact {
@@ -189,7 +189,7 @@
 .cardNumber {
   display: block;
   margin-bottom: 0.7rem;
-  color: #73530c;
+  color: #6f4b0e;
   font-family: var(--font-franklin), "Libre Franklin", sans-serif;
   font-size: 0.8rem;
   font-weight: 800;

@@ -70,7 +70,7 @@ Other pairs: hero kicker `#6f4b0e` on `#f9f3eb` is 7.08:1 (pass). Atlas kicker `
 
 ### 1 Color
 
-⚠️ Guide colors are used, and so are many hexes the guide does not name (`#f5f0e7`, `#eae8e3`, `#f7f0e6`, `#73530c`, `#e5e2ee`, `#edeaf4`, `#102e50`, and others). Treat the unnamed warm neutrals as later section colors, not as a new palette. The only remaining `#2035e8` in this file is `.hwy-76 { stroke: #2035e8 }`, kept so I-76 stays distinct from the ink I-25 and I-70 strokes. Oven Orange is gone from this file. `.atlas-card .kicker` is `#6f4b0e`. `.why-card`, `.proof-quote`, and `.delivery-page .serve-list li` use `#e4d8c4` borders. The contact-button shadow on `.quick-toggle` is `rgba(11, 43, 81, 0.28)`.
+⚠️ Guide colors are used, and so are many hexes the guide does not name (`#f5f0e7`, `#eae8e3`, `#f7f0e6`, `#e5e2ee`, `#edeaf4`, `#102e50`, and others). Treat the unnamed warm neutrals as later section colors, not as a new palette. The only remaining `#2035e8` in this file is `.hwy-76 { stroke: #2035e8 }`, kept so I-76 stays distinct from the ink I-25 and I-70 strokes. Oven Orange is gone from this file. `.atlas-card .kicker` is `#6f4b0e`. `.why-card`, `.proof-quote`, and `.delivery-page .serve-list li` use `#e4d8c4` borders. The contact-button shadow on `.quick-toggle` is `rgba(11, 43, 81, 0.28)`.
 
 ### 2 Typography
 
@@ -174,7 +174,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 1 Color
 
-✅ `.eyebrow`, `.storyLabel`, and `.signature` are `#6f4b0e`. Story, stat, partner, and award borders are `#e4d8c4`. Partner buttons are navy `#0b2b51`, hover `#071a33`, white text. ⚠️ `#73530c` still appears as a gold-like accent the guide does not name. It was not part of the retired blue or orange set, so this pass left it.
+✅ `.eyebrow`, `.storyLabel`, `.signature`, `.partnerCategory`, and `.awardEyebrow` are `#6f4b0e`. The award icon is the same gold. Story, stat, partner, and award borders are `#e4d8c4`. Partner buttons are navy `#0b2b51`, hover `#071a33`, white text.
 
 ### 2 Typography
 
@@ -306,7 +306,7 @@ Not in the original list. Reviewed because photography depends on it. ✅ Every 
 
 ## Checklist cross-check
 
-1. Color. ✅ Guide hexes are in use for the retired blue and orange roles. Interstate 76 stays `#2035e8`. The logo SVG still contains `#f66631`. ⚠️ Undocumented neutrals remain, including `#73530c` on some community, contact, and FAQ labels.
+1. Color. ✅ Guide hexes are in use for the retired blue and orange roles. Interstate 76 stays `#2035e8`. The logo SVG still contains `#f66631`. Community, contact, and FAQ labels that used `#73530c`, and the call-notice focus ring, are `#6f4b0e`. ⚠️ Other undocumented neutrals remain.
 2. Typography. ✅ The guide type table now matches computed CSS: a plain `h1` or `h2` is Source Serif 4 weight 600. `.ticket-hero h1` and the page-module titles stay Franklin. `h3`, nav, buttons, kickers, and eyebrows are Franklin. Body is serif `1.125rem` / `1.65`. `font-display: swap`.
 3. Spacing. ⚠️ Shell, section padding, and bake-grid gap match the base rules. The rendered hero does not use `calc(100vh - 6.5rem)`.
 4. Components. ✅ Navy buttons, 4px radius, square bake frame, framed photos on cream, and navy focus rings, including the contact, FAQ, and community modules.
@@ -324,7 +324,7 @@ Counts are the marks in the file-by-file sections above. The legend and the cros
 | | Count |
 | --- | --- |
 | ✅ Pass | 51 |
-| ⚠️ Warning | 21 |
+| ⚠️ Warning | 20 |
 | ❌ Violation | 0 |
 
 The retired-blue and retired-orange violations are resolved. The remaining warnings are undocumented neutrals, the input focus offset, photography format, motion coverage, and the tooltip's unnamed cream.
@@ -349,11 +349,11 @@ The palette items below are done. What remains is outside this pass.
 ### Done in this pass
 
 - Visible `#2035e8` and `#f66631` now follow the approved roles, except Interstate 76 and the logo SVG.
+- Labels and the call-notice focus that used `#73530c` are `#6f4b0e`. The FAQ lead shadow uses the same gold at 8% opacity.
 - `docs/BRAND.md` and `docs/LIBERTIES.md` still quote the original strategy. They were not rewritten.
 
 ### Still a design decision
 
 - Decide whether page titles in `.ticket-hero` should become Source Serif 4. That is a visual change. Do not do it as a cleanup.
 - Decide whether `.btn-secondary` should ever look different from `.btn-primary`. It is navy on purpose today.
-- `#73530c` remains on some community, contact, and FAQ labels, and on `.call-notice` focus. It is not the retired blue or orange.
 - The photography guide is still unavailable. Do not restyle photos from guesswork.
