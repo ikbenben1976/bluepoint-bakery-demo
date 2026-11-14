@@ -669,9 +669,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(breakfast.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
   await expect(dinner.locator(".making-permission")).toHaveCount(0);
-  await expect(applications.locator(".making-footnote")).toContainText("Menu images illustrate serving ideas");
-  await expect(applications.locator(".making-footnote")).toContainText("do not identify specific Bluepoint products");
-  await expect(applications.locator(".making-footnote")).not.toContainText("Illustrative images, not photographs of Bluepoint products.");
+  await expect(applications.locator(".making-footnote")).toHaveCount(0);
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
   await expect(applications.getByRole("link", { name: /Burgers & Sliders/ })).toHaveAttribute("href", /\/breads\/\?making=burgers#catalog$/);
   await expect(assortment.getByRole("link", { name: /Buns & Rolls/ })).toHaveAttribute("href", /breads\/.*buns/);
