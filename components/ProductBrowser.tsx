@@ -326,7 +326,9 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
             <p className="category-notice">{categoryNotice(group.lead)}</p>
             <ul className="product-grid">
               {items.map((product) => {
-                const bunPhoto = product.category === "buns" ? bunCatalogPhotoFor(product.id) : undefined;
+                const bunPhoto = catalogPath === "/breads" && product.category === "buns"
+                  ? bunCatalogPhotoFor(product.id)
+                  : undefined;
                 const visual = bunPhoto ?? visualForProduct(product.id);
                 return (
                 <li key={product.id} id={product.id} className={`product-card${selected.has(product.id) ? " is-in-request" : ""}`}>
