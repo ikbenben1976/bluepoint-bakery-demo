@@ -76,7 +76,7 @@ export const faqs = [
   {
     id: "samples",
     q: "Can I try your products first?",
-    a: "I'd like to ask about trying a product first. Ask Bluepoint's sales team about sample availability and any applicable conditions.",
+    a: "Ask Bluepoint's sales team about sample availability and any applicable conditions.",
   },
   {
     id: "slice",

@@ -243,7 +243,7 @@ test("contact facts and portal URLs are the published ones", () => {
   assert.equal(faqs[8].a, "Add products to a pricing request and we'll follow up. It's a request, not an order.");
   assert.equal(
     faqs[9].a,
-    "I'd like to ask about trying a product first. Ask Bluepoint's sales team about sample availability and any applicable conditions.",
+    "Ask Bluepoint's sales team about sample availability and any applicable conditions.",
   );
   assert.equal(faqs[10].a, "Yes, many of our sliced breads come in different sizes and slice thicknesses.");
   assert.equal(faqs[11].a, "Monday to Friday, 7:00 AM to 3:00 PM.");
