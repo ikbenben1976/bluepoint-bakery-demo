@@ -45,8 +45,8 @@ test("all 15 bun SKUs have distinct image paths and traceable provenance", () =>
 test("defective bun crops are not routed into live product cards", () => {
   const component = fs.readFileSync("components/ProductBrowser.tsx", "utf8");
   assert.doesNotMatch(component, /bunCatalogPhotoFor/);
-  assert.match(component, /const visual = visualForProduct\(product\.id\)/);
-  assert.match(component, /label="Illustrative image"/);
+  assert.match(component, /const visual = reviewedPhoto \?\? visualForProduct\(product\.id\)/);
+  assert.match(component, /label=\{reviewedPhoto\?\.label \?\? "Illustrative image"\}/);
   const framed = fs.readFileSync("components/FramedImage.tsx", "utf8");
   assert.match(framed, /avif\?: string/);
 });
