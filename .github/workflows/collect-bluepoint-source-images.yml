@@ -1,0 +1,64 @@
+name: Collect original Bluepoint site images for inventory
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/collect-bluepoint-source-images.yml"
+      - "scripts/collect-bluepoint-source-images.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - name: Install browser dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Visit every original-site page, scroll galleries, and retrieve first-party images
+        run: node scripts/collect-bluepoint-source-images.mjs
+      - name: Read dimensions and create CSV review manifest
+        if: always()
+        run: |
+          python3 -m pip install --break-system-packages pillow
+          python3 - <<'PY'
+          import os, json, csv
+          from PIL import Image
+          base="source-photo-archive"
+          p=os.path.join(base,"download-manifest.json")
+          if not os.path.isfile(p): raise SystemExit("No manifest saved")
+          records=json.load(open(p))
+          for row in records:
+            if row.get("status")!="downloaded": continue
+            path=os.path.join(base,row["file"])
+            try:
+              with Image.open(path) as im:
+                row["width"],row["height"]=im.size
+                row["format"]=im.format
+            except Exception as e:row["inspectionError"]=str(e)
+          json.dump(records,open(p,"w"),indent=2)
+          with open(os.path.join(base,"photo-index.csv"),"w",newline="") as f:
+            columns=["file","status","width","height","bytes","sha256","url","pages","origins","labels","error"]
+            writer=csv.DictWriter(f,fieldnames=columns)
+            writer.writeheader()
+            for rec in records:
+              writer.writerow({k:"; ".join(rec.get(k,[])) if isinstance(rec.get(k),list) else rec.get(k,"") for k in columns})
+          PY
+      - name: Preserve originals and image manifest as an artifact (not public website assets)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bluepoint-original-first-party-image-archive
+          path: source-photo-archive/
+          if-no-files-found: warn
+          retention-days: 30
