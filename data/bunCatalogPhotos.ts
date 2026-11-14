@@ -1,4 +1,7 @@
-/** Buns & Kaiser Rolls: one addressable product image per SKU.
+/** REJECTED VISUAL QA — DO NOT RE-ENABLE IN LIVE CATALOG.
+ * Automatic segmentation produced broken, overlapping and poorly framed bun cutouts.
+ * Retained only as a record of the failed prototype and its sources.
+ * Buns & Kaiser Rolls: one addressable product image per SKU.
  * Unaltered bread texture comes only from the official photographs below.
  * Unverified exact-SKU identifications are openly labeled as representative.
  * Legacy generated imagery stays labeled illustrative and is never called a photo.
