@@ -114,16 +114,13 @@ p {
   font-size: 0.95rem;
 }
 
-.btn-primary:hover {
-  background: #1526b0;
-}
 
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #2035e8;
+  outline: 3px solid #0b2b51;
   outline-offset: 2px;
 }
 
@@ -135,10 +132,6 @@ button:active {
 .util-link:not(.util-pay) {
   border-bottom-color: transparent;
   color: #0d0d25;
-}
-
-.util-link:not(.util-pay):hover {
-  color: #2035e8;
 }
 
 .btn-ghost {
@@ -254,10 +247,6 @@ button:active {
   color: #0d0d25;
   text-decoration: none;
   height: 100%;
-}
-
-.bake-grid a:hover .bake-label {
-  color: #2035e8;
 }
 
 .bake-frame {
@@ -486,7 +475,6 @@ button:active {
 .steps li > span {
   font-family: var(--font-franklin), sans-serif;
   font-weight: 700;
-  color: #2035e8;
 }
 
 .story-row {
@@ -513,11 +501,6 @@ button:active {
   min-height: 0;
 }
 
-.photo-cta .kicker,
-.community-copy .kicker,
-.cta-band .kicker {
-  color: #2035e8;
-}
 
 .community-copy .section-title,
 .photo-cta h2,
@@ -637,9 +620,8 @@ button:active {
   color: #0d0d25;
 }
 
-.atlas-card .kicker,
-.route-caveat {
-  color: #2035e8;
+.atlas-card .kicker {
+  color: #6f4b0e;
 }
 
 .map-legend {
@@ -1256,10 +1238,6 @@ button:active {
   font-size: 0.95rem;
 }
 
-.making a:hover,
-.sector-grid a:hover {
-  border-color: #2035e8;
-}
 
 .service-layout {
   display: grid;
@@ -1524,12 +1502,9 @@ body.showing-preview .ticket-hero {
   color: #fff;
   padding: 0.6rem 0.95rem;
   font-weight: 600;
-  box-shadow: 0 8px 18px rgba(32, 53, 232, 0.28);
+  box-shadow: 0 8px 18px rgba(11, 43, 81, 0.28);
 }
 
-.quick-toggle:hover {
-  background: #1526b0;
-}
 
 p a {
   text-decoration: underline;
@@ -1564,7 +1539,6 @@ body {
 .hero .hero-copy { padding-block: clamp(2.5rem, 4vw, 5rem); }
 .hero .hero-kicker {
   font-family: var(--font-franklin), sans-serif;
-  color: #2035e8;
   font-weight: 700;
   font-size: .83rem;
   text-transform: uppercase;
@@ -1595,7 +1569,6 @@ body {
   padding: 1.5rem 1.25rem;
   background: #fff;
   border: 1px solid #e4d8c4;
-  border-top: 4px solid #f66631;
 }
 .value-icon {
   display: grid;
@@ -1605,7 +1578,6 @@ body {
   border-radius: 50%;
   margin-bottom: .9rem;
   background: #edf0ff;
-  color: #2035e8;
   font-size: 1.8rem;
   font-family: var(--font-franklin), sans-serif;
 }
@@ -1642,7 +1614,6 @@ body {
 }
 .making .making-visual-link:hover,
 .making .making-visual-link:focus-visible {
-  border-color: #2035e8;
   box-shadow: 0 12px 25px rgba(13,13,37,.1);
   transform: translateY(-2px);
 }
@@ -1696,7 +1667,7 @@ body {
 .proof-quote {
   margin: 0;
   padding: 1.35rem 1.2rem;
-  border-top: 4px solid #f66631;
+  border-top: 4px solid #e4d8c4;
   background: #f8f5ee;
   display: flex;
   flex-direction: column;
@@ -1974,7 +1945,7 @@ body {
 .ordering-guide { background: #0d0d25; color: #fff; padding: clamp(2.5rem, 6vw, 5rem) 0; }
 .ordering-guide h2, .ordering-guide h3 { color: #fff; }
 .ordering-guide .eyebrow { color: #f4ae82; }
-.ordering-guide .section-intro p { color: #e5e2ee; }
+.ordering-guide .section-intro p:not(.eyebrow) { color: #e5e2ee; }
 .ordering-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.1rem; list-style: none; padding: 0; margin: 1.4rem 0 1.3rem; }
 .ordering-steps li { border: 1px solid rgba(255,255,255,.3); padding: 1.3rem 1.35rem; display:flex;flex-direction:column;align-items:flex-start; }
 .ordering-steps li > span { font-family: var(--font-franklin),sans-serif; font-size: 2rem; font-weight:700; }
@@ -2184,11 +2155,11 @@ body {
 .sector-related ul { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
 .sector-related li a {
   display: inline-flex; align-items: center; gap: .7rem;
-  padding: .7rem 1rem; border-radius: 999px; border: 1px solid #2035e8;
-  color: #2035e8; background: #fff; font-weight: 700;
+  padding: .7rem 1rem; border-radius: 999px; border: 1px solid #0b2b51;
+  color: #0b2b51; background: #fff; font-weight: 700;
   font-family: var(--font-franklin), sans-serif; text-decoration: none;
 }
-.sector-related li a:hover, .sector-related li a:focus-visible { background: #2035e8; color: #fff; }
+.sector-related li a:hover, .sector-related li a:focus-visible { background: #0b2b51; color: #fff; }
 
 
 /*
@@ -2522,7 +2493,7 @@ body {
   max-width: 17ch;
 }
 .seamless-hero .hero-kicker {
-  color: #73530c;
+  color: #6f4b0e;
 }
 @media (max-width: 799px) {
   .seamless-hero.approved-hero.hero { min-height: auto; }
@@ -3236,8 +3207,6 @@ legend {
   content: "";
   width: 0.42rem;
   height: 0.42rem;
-  border-right: 2px solid #2035e8;
-  border-bottom: 2px solid #2035e8;
   transform: rotate(-45deg);
   flex: none;
 }
@@ -4091,7 +4060,7 @@ body.menu-open .site-header .heritage-lockup {
   padding: 0.95rem 1rem 1.05rem;
   background: #fff;
   border: 1px solid #e4d8c4;
-  border-top: 8px solid #f66631;
+  border-top: 8px solid #e4d8c4;
   border-radius: 12px;
 }
 .why-card h3 {
@@ -4373,7 +4342,6 @@ body.menu-open .site-header .heritage-lockup {
 .about-quote {
   margin: 0.15rem 0 0.9rem;
   padding: 0.15rem 0 0.15rem 1rem;
-  border-left: 3px solid #2035e8;
 }
 .about-quote p {
   margin: 0;
@@ -4418,7 +4386,6 @@ body.menu-open .site-header .heritage-lockup {
   margin: 0 0 1.5rem;
   padding: 1rem 1.1rem 1.15rem;
   background: #fff;
-  border-top: 6px solid #2035e8;
 }
 .recognition h2 {
   margin: 0 0 0.45rem;
@@ -4441,7 +4408,7 @@ body.menu-open .site-header .heritage-lockup {
   padding: 0.35rem 0.15rem;
   border: 0;
   background: transparent;
-  color: #2035e8;
+  color: #0b2b51;
   font: inherit;
   font-weight: 700;
   line-height: 1.2;
@@ -4788,7 +4755,6 @@ body.request-sheet-open .view-request-bar {
 .community-page .partner-card {
   background: transparent;
   padding: 0.85rem 0 0;
-  border-top: 8px solid #f66631;
   min-width: 0;
 }
 .community-page .partner-card h2 {
@@ -6132,7 +6098,7 @@ legend,
   display: block;
   margin: 0 0 1rem;
   padding: 0.85rem 1rem;
-  border-left: 3px solid #2035e8;
+  border-left: 3px solid #e4d8c4;
   background: #f6f1e8;
   color: #0b2b51;
   font: 600 0.95rem/1.5 var(--font-franklin), "Libre Franklin", sans-serif;
@@ -6144,14 +6110,14 @@ legend,
   padding: 0.35rem 0;
   border: 0;
   background: transparent;
-  color: #2035e8;
+  color: #0b2b51;
   font: inherit;
   text-decoration: underline;
   text-underline-offset: 0.2em;
   cursor: pointer;
 }
 .catalog-assortment-note button:focus-visible {
-  outline: 3px solid #2035e8;
+  outline: 3px solid #0b2b51;
   outline-offset: 3px;
 }
 #catalog { scroll-margin-top: 6.5rem; }
@@ -6321,7 +6287,7 @@ legend,
 .delivery-page .serve-list li {
   background: #fffaf4;
   border: 1px solid #e0d4bf;
-  border-left: 4px solid #f66631;
+  border-left: 4px solid #e4d8c4;
   border-radius: 999px;
   padding: 0.4rem 0.85rem;
 }
