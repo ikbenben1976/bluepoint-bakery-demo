@@ -1434,7 +1434,7 @@ test("homepage brand: serif headline, service icons, rolling-pin logo, and conta
 
     await expect(page.locator(".site-header .heritage-logo")).toHaveAttribute("src", /bluepoint-logo\.png/);
     await expect(page.locator(".hero .heritage-logo, .approved-hero-logo")).toHaveCount(0);
-    await expect(page.locator(".making-footnote")).toContainText("do not identify specific Bluepoint products");
+    await expect(page.locator(".making-footnote")).toHaveCount(0);
 
     const headerHits = await page.evaluate(() => {
       const nodes = [

@@ -17,6 +17,7 @@ export default function BreadsPage() {
   return (
     <>
       <PageHero
+        className="catalog-hero"
         kicker="Wholesale"
         title="Breads"
         image={categoryPhotos["french-breads"]}
