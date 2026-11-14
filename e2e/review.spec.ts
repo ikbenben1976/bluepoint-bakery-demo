@@ -472,7 +472,7 @@ test("public-mention logos sit inside the matching audience tabs", async ({ page
   await expect(panel.locator(".cafe-pull")).toContainText("Bluepoint Bakery, the family- and minority-owned bakery behind so many of our breads");
   await expect(panel.locator(".cafe-pull")).toContainText("created the Stuffed French Toast Brioche specifically for Urban Egg!");
   await expect(panel.locator(".cafe-pull footer")).toHaveText("Urban Egg, Meet the Makers");
-  await expect(panel.locator(".cafe-pull .illustrative-label")).toHaveText("Edges extended with AI");
+  await expect(panel.locator(".cafe-pull .illustrative-label")).toHaveCount(0);
   await expect(panel.locator(".cafe-pull .making-permission")).toContainText("Customer plate.");
   await expect(panel.locator(".cafe-pull .making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   const cafeOrder = await page.evaluate(() => {
@@ -659,7 +659,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(dinner.locator("img")).toHaveAttribute("src", /\/images\/illustrative\/app-dinner/);
   await expect(burgers.locator(".illustrative-label")).toHaveCount(0);
   await expect(sandwiches.locator(".illustrative-label")).toHaveCount(0);
-  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  await expect(breakfast.locator(".illustrative-label")).toHaveCount(0);
   await expect(dinner.locator(".illustrative-label")).toHaveText("Illustrative image");
   await expect(burgers.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
   await expect(sandwiches.locator(".making-permission")).toContainText("Ask permission before using this product photo on a live site.");
@@ -667,7 +667,7 @@ test("homepage separates illustrative menu applications from actual bakery produ
   await expect(burgers.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(sandwiches.locator(".making-permission")).not.toContainText("Illustrative image");
   await expect(breakfast.locator(".making-permission")).not.toContainText("Illustrative image");
-  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  await expect(breakfast.locator(".illustrative-label")).toHaveCount(0);
   await expect(dinner.locator(".making-permission")).toHaveCount(0);
   await expect(applications.locator(".making-footnote")).toHaveCount(0);
   await expect(assortment.locator(".assortment-card img").first()).toHaveAttribute("src", /scenes\/sesame-buns-rack\.webp/);
@@ -735,7 +735,7 @@ test("delivery truck, Willie, Why Bluepoint, and the breakfast plate render", as
   await expect(breakfast.locator(".making-permission")).toContainText(
     "Shown for this demo. Ask permission before using this product photo on a live site.",
   );
-  await expect(breakfast.locator(".illustrative-label")).toHaveText("Edges extended with AI");
+  await expect(breakfast.locator(".illustrative-label")).toHaveCount(0);
   // Chrome lazy-loads below-fold images only when brought into view.
   await photo.scrollIntoViewIfNeeded();
   await expect
