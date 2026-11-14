@@ -42,12 +42,11 @@ test("all 15 bun SKUs have distinct image paths and traceable provenance", () =>
   assert.equal(illustrative, 6);
 });
 
-test("bun photo override is scoped to the /breads product page", () => {
+test("defective bun crops are not routed into live product cards", () => {
   const component = fs.readFileSync("components/ProductBrowser.tsx", "utf8");
-  assert.match(component, /catalogPath === "\/breads" && product\.category === "buns"/);
-  assert.match(component, /const visual = bunPhoto \?\? visualForProduct\(product\.id\)/);
-  assert.match(component, /label=\{bunPhoto \? bunPhoto\.label : "Illustrative image"\}/);
+  assert.doesNotMatch(component, /bunCatalogPhotoFor/);
+  assert.match(component, /const visual = visualForProduct\(product\.id\)/);
+  assert.match(component, /label="Illustrative image"/);
   const framed = fs.readFileSync("components/FramedImage.tsx", "utf8");
   assert.match(framed, /avif\?: string/);
-  assert.match(framed, /avif \? <source/);
 });
