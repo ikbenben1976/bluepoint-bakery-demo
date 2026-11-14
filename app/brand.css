@@ -3232,6 +3232,43 @@ legend {
   color: #5c564e;
   letter-spacing: 0;
 }
+.assortment-title {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  max-width: 100%;
+  gap: 0.35rem;
+}
+.assortment-name {
+  min-width: 0;
+}
+.assortment-title .assortment-arrow {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  flex: none;
+}
+
+/* Desktop row of five: taller photos, larger type, tighter gutters. */
+@media (min-width: 1101px) {
+  .assortment-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .assortment-photo {
+    aspect-ratio: auto;
+    height: 190px;
+  }
+  .assortment-card strong {
+    font-size: 1.25rem;
+    line-height: 1.25;
+    padding: 0.7rem 0.7rem 0.85rem;
+  }
+  .assortment-card strong .assortment-line {
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+}
 
 .category-notice {
   margin: 0.35rem 0 0.85rem;
@@ -5488,6 +5525,13 @@ legend,
   .assortment-card .assortment-arrow {
     align-self: center;
     width: 100%;
+  }
+  .assortment-title {
+    justify-content: center;
+  }
+  .assortment-title .assortment-arrow {
+    width: auto;
+    align-self: baseline;
   }
   .making .making-title,
   .making .making-summary,

@@ -17,12 +17,11 @@ export function AssortmentCards() {
         {homeAssortment.map((group) => (
           <li key={group.id}>
             <Link href={assortmentHref(group)} className="assortment-card">
-              <span className="assortment-photo"><Image src={group.src} alt={group.alt} fill sizes="(max-width: 580px) 45vw, (max-width: 1000px) 30vw, 200px" /></span>
+              <span className="assortment-photo"><Image src={group.src} alt={group.alt} fill sizes="(max-width: 767px) 100vw, (max-width: 1100px) 33vw, 240px" /></span>
               <strong>
-                {group.name}
+                <span className="assortment-title"><span className="assortment-name">{group.name}</span><span className="assortment-arrow" aria-hidden="true">→</span></span>
                 <span className="assortment-line">{group.line}</span>
               </strong>
-              <span className="assortment-arrow" aria-hidden="true">→</span>
             </Link>
           </li>
         ))}
