@@ -1,6 +1,10 @@
 name: Publish approved non-bun Breads image review files
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-reviewed-breads.yml"
   workflow_dispatch:
 
 permissions:
@@ -23,7 +27,7 @@ jobs:
           python-version: '3.11'
       - name: Install Pillow for approved image compositions
         run: python -m pip install 'pillow>=11,<13'
-      - name: Reconstruct all 47 approved review assets with their recorded source assignments
+      - name: Reconstruct 40 approved review assets with their recorded source assignments
         run: python scripts/build-reviewed-breads.py
       - name: Validate exact SKU count, image dimensions and available bytes
         run: |
@@ -33,13 +37,13 @@ jobs:
           from PIL import Image
           folder = Path("public/images/catalog/reviewed-breads")
           manifest = json.loads((folder/"manifest.json").read_text())
-          assert len(manifest) == 47
-          assert len({p["productId"] for p in manifest}) == 47
+          assert len(manifest) == 40
+          assert len({p["productId"] for p in manifest}) == 40
           for p in manifest:
               f = folder/(p["productId"]+".webp")
               assert f.exists() and f.stat().st_size>1000,f
               with Image.open(f) as im: assert im.size==(960,720),(f,im.size)
-          print("Validated all 47 image paths, 960x720 resolution, source-traceable manifest")
+          print("Validated all 40 image paths, 960x720 resolution, source-traceable manifest")
           PY
       - name: Commit product-only image files to main
         run: |
@@ -47,13 +51,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/images/catalog/reviewed-breads/
           if ! git diff --cached --quiet; then
-            git commit -m "Add 47 review-approved Breads SKU image assets with provenance"
+            git commit -m "Add 40 Breads review image assets with provenance; hold Sandwich Rolls"
             git push origin HEAD:main
           fi
       - name: Keep a review artifact
         uses: actions/upload-artifact@v4
         with:
-          name: reviewed-breads-47-assets
+          name: reviewed-breads-40-assets
           path: public/images/catalog/reviewed-breads/
           if-no-files-found: error
           retention-days: 30
