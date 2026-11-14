@@ -8,34 +8,34 @@ This is **product-by-product assignment research**, not a claim that 137 accurat
 
 B01–B07 are the seven original Breads category photos; P01–P12 are the 12 original Pastries photos. Suffix A/B/C/D/E identifies one **visible object in the original photo**, not a manufactured new photo. `ALL` identifies the original group image. Annotated object sheets and unretouched crop pilots have been saved in the conversation.
 
-| Photo code | What is actually visible |
-|---|---|
-| B01 | Buns and Kaiser Rolls original five-bun assortment: A pale dusted, B smooth golden split, C deeper brown scored, D oat-topped, E golden unscored. |
-| B02 | Sandwich Rolls original three-roll assortment: A pale top-left, B pale front, C dark top-right. Filename says Philly/Pumpkin/Club but individual identities are not resolved. |
-| B03 | French Breads original photo: three similar scored long loaves; one subject family, not three different products. |
-| B04 | Deli Loaves original marble rye: A whole cut loaf, B separate swirl slice; same product. |
-| B05 | Pan Size Loaves: A seeded darker loaf, B white loaf, each with one slice. |
-| B06 | Dinner Rolls: A three brioche rolls, all same style. |
-| B07 | Specialty Breads: A three similar short scored loaves; strongest connection is named 16×4 Vienna. |
-| P01 | Croissants: A three similar curved butter croissants. |
-| P02 | Danishes: A red fruit filling, B amber fruit filling, C cream-cheese colored filling; exact flavors not printed on photo. |
-| P03 | Turnovers: A red cherry turnover, B similar pastry with filling not identifiable. |
-| P04 | Scones: A coarse crumb, B dark fruit, C red fruit, D white icing; no explicit SKU names. |
-| P05 | Quick Breads: A pumpkin-chocolate loaf; B wrapped slice with possibly obsolete label. |
-| P06 | Muffins: A dark oat/crumb, B blueberry-looking crumb, C light poppy-looking, D brown crumb; do not guess flavors as facts. |
-| P07 | Muffin Tops: A mixed-fruit, B pale speckled/poppy, C blueberry-like. |
-| P08 | Cookies: A colorful candy bits, B sugar/cinnamon, C oatmeal/raisins, D packaged pale cookie. |
-| P09 | Cinnamon Rolls: A iced full ring. |
-| P10 | Biscotti: A dipped, B undipped; flavors cannot be identified confidently. |
-| P11 | Brownies: A dark upper-left, B dark upper-right, C darker nut-studded lower-left, D pale blondie lower-right. |
-| P12 | Pies: A Dutch apple crumb-topped pie. |
-| O-SES | Official sesame bun (IMG_1053.jpg), single sesame-topped bun, limited 480×640. |
-| O-ROUND | Official unscored round bun (IMG_1070.jpg), actual product type unverified. |
-| O-PAR | Official 12-inch par-baked baguette photo (12 Par Bk Baguette), no guarantee wheat variant. |
-| O-POTATO | Official Potato Rosemary Loaf photo discovered on live homepage, flour-dusted scored loaves on baking racks. |
-| O-CHOC | Official chocolate-drizzled pastry production photo (CHOCOLATE 2), plausible chocolate croissant family but not SKU proof. |
-| O-SHEET | Official full white-chocolate raspberry brownie sheet image; flavor stated by source filename. |
-| O-CHERRY | Official cherry-pie racks and filling production shots (IMG_1067/IMG_0286), not individual plated pie. |
+| Photo code | Original Bluepoint photo | What is actually visible |
+|---|---|---|
+| B01 | [Specialty variety](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Specialty+Variety+%281%29.jpg) | Buns and Kaiser Rolls original five-bun assortment: A pale dusted, B smooth golden split, C deeper brown scored, D oat-topped, E golden unscored. |
+| B02 | [Philly, pumpkin, and club rolls](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Philly--Pump-and-Club--282-29-1920w.jpg) | Sandwich Rolls original three-roll assortment: A pale top-left, B pale front, C dark top-right. Filename says Philly/Pumpkin/Club but individual identities are not resolved. |
+| B03 | [Golden Parisien](https://irp.cdn-website.com/59a1f314/dms3rep/multi/24--+Golden+Parisien+1.jpg) | French Breads original photo: three similar scored long loaves; one subject family, not three different products. |
+| B04 | [Marble rye](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Marble+Rye+%282%29.jpg) | Deli Loaves original marble rye: A whole cut loaf, B separate swirl slice; same product. |
+| B05 | [Pan size variety](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pan+Size+Variety+%283%29.jpg) | Pan Size Loaves: A seeded darker loaf, B white loaf, each with one slice. |
+| B06 | [Brioche dinner rolls](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Brioche+Dinner+Rolls+4.jpg) | Dinner Rolls: A three brioche rolls, all same style. |
+| B07 | [16x4 loaf](https://irp.cdn-website.com/59a1f314/dms3rep/multi/16x4+Loaf+%283%29.jpg) | Specialty Breads: A three similar short scored loaves; strongest connection is named 16×4 Vienna. |
+| P01 | [3 oz croissant](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/3oz+Croissant+3.jpg) | Croissants: A three similar curved butter croissants. |
+| P02 | [Danish variety](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Variety+Danish+1.jpg) | Danishes: A red fruit filling, B amber fruit filling, C cream-cheese colored filling; exact flavors not printed on photo. |
+| P03 | [Cherry turnover](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Cherry+Turnover+%285%29.jpg) | Turnovers: A red cherry turnover, B similar pastry with filling not identifiable. |
+| P04 | [Scones](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Scones-4b4a6de9-1920w.JPG) | Scones: A coarse crumb, B dark fruit, C red fruit, D white icing; no explicit SKU names. |
+| P05 | [Pumpkin chocolate loaf and slice](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Pump+Choc-+Loaf+and+Slice+%281%29.jpg) | Quick Breads: A pumpkin-chocolate loaf; B wrapped slice with possibly obsolete label. |
+| P06 | [Muffin variety](https://irp.cdn-website.com/59a1f314/dms3rep/multi/4pk+Muffin+Variety+%281%29.jpg) | Muffins: A dark oat/crumb, B blueberry-looking crumb, C light poppy-looking, D brown crumb; do not guess flavors as facts. |
+| P07 | [Blueberry muffins](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Variety+%282%29.jpg) | Muffin Tops: A mixed-fruit, B pale speckled/poppy, C blueberry-like. |
+| P08 | [Cookies](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Variety-2-6815e947-2bae6899-1920w.jpg) | Cookies: A colorful candy bits, B sugar/cinnamon, C oatmeal/raisins, D packaged pale cookie. |
+| P09 | [Iced ring](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Iced-Ring--282-29-1920w.JPG) | Cinnamon Rolls: A iced full ring. |
+| P10 | [Dipped and undipped biscotti](https://irp.cdn-website.com/59a1f314/dms3rep/multi/Dipped+-+Undipped+%282%29.jpg) | Biscotti: A dipped, B undipped; flavors cannot be identified confidently. |
+| P11 | [Brownie and blondie 4-pack](https://irp.cdn-website.com/59a1f314/dms3rep/multi/4pk+Variety+%284%29.jpg) | Brownies: A dark upper-left, B dark upper-right, C darker nut-studded lower-left, D pale blondie lower-right. |
+| P12 | [Dutch apple pie](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Dutch-Apple-Pie-1-1920w.jpg) | Pies: A Dutch apple crumb-topped pie. |
+| O-SES | [Sesame bun](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1053.jpg) | Official sesame bun (IMG_1053.jpg), single sesame-topped bun, limited 480×640. |
+| O-ROUND | [Round bun](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1070.jpg) | Official unscored round bun (IMG_1070.jpg), actual product type unverified. |
+| O-PAR | [12 Par Bk Baguette](https://irp.cdn-website.com/59a1f314/dms3rep/multi/12--+Par+Bk+Baguette+%284%29.jpg) | Official 12-inch par-baked baguette photo (12 Par Bk Baguette), no guarantee wheat variant. |
+| O-POTATO | [Potato Rosemary Loaf](https://lirp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/opt/Potato+Rosemary+Loaf+%282%29-1920w.jpg) | Official Potato Rosemary Loaf photo discovered on live homepage, flour-dusted scored loaves on baking racks. |
+| O-CHOC | [Chocolate pastries in the bakery](https://lirp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/opt/CHOCOLATE+2-1920w.jpg) | Official chocolate-drizzled pastry production photo (CHOCOLATE 2), plausible chocolate croissant family but not SKU proof. |
+| O-SHEET | [Brownie sheet, raspberry white chocolate](https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Brownie+Full+Sht.+Raspberry+White+Chocolate+2-2880w.jpg) | Official full white-chocolate raspberry brownie sheet image; flavor stated by source filename. |
+| O-CHERRY | [IMG_1067 cherry pies](https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1067.jpg) | Official cherry-pie racks and filling production shots (IMG_1067/IMG_0286), not individual plated pie. |
 
 ## Confidence/production legend
 
