@@ -11,13 +11,13 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "public/images/catalog/buns"
-OUTPUT.mkdir(parents=True, exist_ok=True)
+OUTPUT_ROOT = ROOT / "public/images/catalog"
 CREAM = "#f6f1e8"
 SOURCES = {
     "variety": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/Specialty+Variety+%281%29.jpg",
     "sesame": "https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1053.jpg",
     "round": "https://irp-cdn.multiscreensite.com/59a1f314/dms3rep/multi/IMG_1070.jpg",
+    "sandwich": "https://irp.cdn-website.com/59a1f314/dms3rep/multi/opt/Philly--Pump-and-Club--282-29-1920w.jpg",
 }
 # Polygon coordinates are in the source photograph's natural display reference frame.
 # Individual visible objects A-E are documented in docs/PRODUCT-IMAGE-SKU-MAPPING-2026-11-14.md
@@ -29,6 +29,8 @@ OBJECTS = {
     "right": ("variety", (1245,1247), [(849,850),(871,754),(954,681),(1071,652),(1162,693),(1229,777),(1244,909),(1220,1004),(1149,1048),(1019,1065),(924,1020),(857,951)]),
     "sesame": ("sesame", (480,640), [(4,395),(37,317),(112,279),(220,267),(341,272),(432,323),(465,413),(457,512),(409,577),(308,596),(143,588),(40,536)]),
     "plain": ("round", (640,480), [(124,232),(153,170),(237,131),(360,126),(436,162),(463,228),(452,279),(394,313),(277,325),(180,300)]),
+    "club_front": ("sandwich", (1247,1247), [(89,865),(99,796),(160,732),(283,679),(431,647),(587,638),(689,651),(776,694),(813,750),(817,820),(784,889),(704,930),(579,975),(406,1010),(260,1039),(159,1028),(111,985)]),
+    "philly_back": ("sandwich", (1247,1247), [(175,574),(189,516),(245,474),(365,443),(492,430),(564,439),(598,465),(625,523),(621,585),(600,639),(527,692),(410,722),(285,738),(210,701),(177,641)]),
 }
 # A distinct destination URL for each product, with explicitly intentional
 # sharing between sizes and faithful legacy illustrations where no exact photo exists.
@@ -48,8 +50,15 @@ SKU_TO_SOURCE = {
     "buns-onion-topped-kaiser-5-in": ("illustration", "product-kaiser-onion"),
     "buns-poppy-topped-kaiser-5-in": ("illustration", "product-kaiser-poppy"),
     "buns-cornmeal-topped-kaiser-5-in": ("illustration", "product-kaiser-cornmeal"),
+    "sandwich-rolls-hot-dog-6-in": ("illustration", "product-hot-dog"),
+    "sandwich-rolls-soft-hoagie-7-in": ("illustration", "product-hoagie"),
+    "sandwich-rolls-philly-roll-6-in": ("photo", "philly_back"),
+    "sandwich-rolls-club-roll-6-in": ("photo", "club_front"),
+    "sandwich-rolls-club-roll-6-in-sliced": ("illustration", "product-club"),
+    "sandwich-rolls-club-roll-8-in": ("photo", "club_front"),
+    "sandwich-rolls-club-roll-8-in-sliced": ("illustration", "product-club"),
 }
-assert len(SKU_TO_SOURCE) == 15
+assert len(SKU_TO_SOURCE) == 22
 
 def source_image(key):
     request = Request(SOURCES[key], headers={"User-Agent":"Mozilla/5.0"})
@@ -112,7 +121,10 @@ def extract_photo(subject):
 
 authentic={k:extract_photo(k) for k in OBJECTS}
 for slug,(kind,subject) in SKU_TO_SOURCE.items():
-    target=OUTPUT / f"{slug}.webp"
+    category = "buns" if slug.startswith("buns-") else "sandwich-rolls"
+    folder = OUTPUT_ROOT / category
+    folder.mkdir(parents=True, exist_ok=True)
+    target=folder / f"{slug}.webp"
     if kind == "photo":
         authentic[subject].save(target,"WEBP",quality=86,method=6)
     else:
@@ -121,4 +133,4 @@ for slug,(kind,subject) in SKU_TO_SOURCE.items():
         shutil.copyfile(original,target)
     if target.stat().st_size < 1000: raise RuntimeError(f"Generated undersized photo: {target}")
     print(f"wrote {target.relative_to(ROOT)} ({target.stat().st_size} bytes; {kind}:{subject})")
-print(f"SUCCESS: {len(SKU_TO_SOURCE)} unique product URL paths, seven edited source-photo subjects")
+print(f"SUCCESS: {len(SKU_TO_SOURCE)} unique product URL paths across Buns and Sandwich Rolls; {len(OBJECTS)} extracted source-photo subjects")
