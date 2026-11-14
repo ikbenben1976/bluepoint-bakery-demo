@@ -2025,3 +2025,46 @@ test("rejected bun extractions are not visible in the live catalog", async ({ pa
     await expect(row.locator(".illustrative-label")).toHaveText("Illustrative image");
   }
 });
+
+
+test("40 reviewed Breads product images load and do not overwrite Buns or Sandwich Rolls", async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto("/breads/");
+  const categories = ["french-breads", "deli-loaves", "pan-loaves", "dinner-rolls", "specialty-breads"];
+  const counts = [9, 9, 6, 6, 10];
+  const outcome = await page.evaluate(async ({ categories, counts }) => {
+    const report: { id: string; category: string; source: string; label: string; decoded: boolean }[] = [];
+    for (let i = 0; i < categories.length; i++) {
+      const section = document.getElementById(categories[i]);
+      if (!section) throw new Error("Missing category " + categories[i]);
+      const rows = [...section.querySelectorAll(".product-card")];
+      if (rows.length !== counts[i]) throw new Error("Unexpected category count: " + categories[i]);
+      for (const row of rows) {
+        const node = row.querySelector(".product-photo img") as HTMLImageElement | null;
+        if (!node) throw new Error("Missing product image in " + (row.id || "unnamed product"));
+        const source = node.getAttribute("src") ?? "";
+        const label = (row.querySelector(".illustrative-label")?.textContent ?? "").trim();
+        const probe = new Image();
+        probe.src = source;
+        let decoded = true;
+        try { await probe.decode(); } catch { decoded = false; }
+        report.push({ id: row.id, category: categories[i], source: decodeURIComponent(source), label, decoded });
+      }
+    }
+    return report;
+  }, { categories, counts });
+  expect(outcome).toHaveLength(40);
+  expect(new Set(outcome.map((item) => item.source)).size).toBe(40);
+  for (const item of outcome) {
+    expect(item.source, item.id).toContain("/images/catalog/reviewed-breads/" + item.id + ".webp");
+    expect(item.decoded, "Image failed to decode: " + item.id).toBe(true);
+    expect(["Photo edited", "Illustrative image"]).toContain(item.label);
+  }
+  for (const category of ["buns", "sandwich-rolls"]) {
+    const urls = await page.locator("#" + category + " .product-photo img").evaluateAll(
+      (nodes) => nodes.map((img) => (img as HTMLImageElement).getAttribute("src") ?? ""),
+    );
+    expect(urls.length).toBeGreaterThan(0);
+    expect(urls.every((url) => !url.includes("/reviewed-breads/"))).toBe(true);
+  }
+});
