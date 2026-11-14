@@ -6118,6 +6118,41 @@ legend,
   white-space: nowrap;
 }
 
+/* Breads and pastries: a short header so search, filters, and the first
+   group start on the first screen. The photo shares the catalog column. */
+@media (max-width: 767px) {
+  .catalog-hero .ticket-photo {
+    display: none;
+  }
+  .catalog-hero + .shell {
+    padding-top: 0.85rem;
+  }
+}
+@media (min-width: 768px) {
+  .catalog-hero.has-photo {
+    width: min(1200px, calc(100% - 2.5rem));
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: 1rem 1.35rem;
+  }
+  .catalog-hero .ticket-photo-half {
+    width: 100%;
+    height: 200px;
+    min-height: 0;
+    max-height: 200px;
+    aspect-ratio: auto;
+    justify-self: stretch;
+    align-self: center;
+  }
+  .catalog-hero .ticket-photo img {
+    object-fit: cover;
+    object-position: center;
+  }
+  .catalog-hero + .shell {
+    padding-top: 1rem;
+  }
+}
+
 /* Phones show the first six logos when a tab has more. The attribute is in the
    static HTML, and only this breakpoint hides the rest, so wider layouts keep
    the full grid with no control and no hydration flash. */

@@ -16,6 +16,7 @@ export default function PastriesPage() {
   return (
     <>
       <PageHero
+        className="catalog-hero"
         kicker="Wholesale"
         title="Pastries"
         image={categoryPhotos.croissants}
