@@ -102,7 +102,6 @@ h3 {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: #2035e8;
 }
 
 p {
@@ -145,13 +144,13 @@ button:active {
   filter: brightness(0.92);
 }
 
-.btn-orange {
+.btn-secondary {
   background: #f66631;
   border-color: #f66631;
   color: #0d0d25;
 }
 
-.btn-orange:hover {
+.btn-secondary:hover {
   background: #d8521f;
   border-color: #d8521f;
   color: #0d0d25;
@@ -466,28 +465,6 @@ button:active {
   display: block;
   width: 100%;
   height: auto;
-}
-
-.order-band {
-  background: #2035e8;
-  color: #f6f1e8;
-  padding: 4rem 0;
-}
-
-.order-band h2,
-.order-band h3,
-.order-band p {
-  color: #f6f1e8;
-}
-
-.order-band .steps li {
-  background: transparent;
-  border-top: 1px solid rgba(246, 241, 232, 0.4);
-  padding: 1.1rem 0 0;
-}
-
-.order-band .steps li > span {
-  color: #f6f1e8;
 }
 
 .quote-grid {
@@ -828,11 +805,6 @@ button:active {
   font-family: var(--font-franklin), sans-serif;
   font-size: 0.85rem;
   font-weight: 600;
-}
-
-.cloth-edge {
-  height: 10px;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #fff 0% 50%) 0 0 / 10px 10px;
 }
 
 .mobile-menu {
@@ -3188,11 +3160,6 @@ legend {
 .site-header .lockup-bakery { font-size: 0.58rem; color: #3c4ba6; }
 .site-header .header-pricing { padding: 0.45rem 0.7rem; font-size: 0.82rem; white-space: nowrap; }
 
-.cloth-edge {
-  height: 6px;
-  background: #f66631;
-}
-
 .site-footer .kicker,
 .site-footer a,
 .site-footer p,
@@ -3791,7 +3758,7 @@ a {
   color: #0b2b51;
 }
 .btn-primary,
-.btn-orange,
+.btn-secondary,
 .quick-toggle,
 .seamless-hero .hero-actions .approved-hero-primary,
 .seamless-hero .hero-actions .approved-hero-primary:hover,
@@ -3800,7 +3767,7 @@ a {
   border-color: #0b2b51;
   color: #fff;
 }
-.btn-orange:hover {
+.btn-secondary:hover {
   background: #071a33;
   border-color: #071a33;
   color: #fff;

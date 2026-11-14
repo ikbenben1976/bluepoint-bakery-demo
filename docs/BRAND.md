@@ -76,7 +76,9 @@ Personality: **a steady, warm, plain-spoken head baker.** Proud, but not loud.
 ## 6. Visual direction
 
 **6.1 Type: two classic families, nothing else**
-- **Headlines, nav and labels: Libre Franklin** (a revival of Franklin Gothic, the American workhorse since 1902). It's bold and honest, it sits next to the logo's capital-letter wordmark, and it reads like a delivery truck or a bread bag. Use Bold or Black, in caps only for short labels.
+- **Display headings that resolve to Source Serif 4, weight 600.** The home hero headline is Source Serif 4 at weight 600. So are plain `h2` section headings, and any plain `h1` that is not also matched by a more specific rule (the delivery page title is one). This is the approved direction for those headings. It gives the page warmth and a heritage voice that Franklin alone lacks.
+- **Page titles that still render in Libre Franklin.** A plain `h1` is not Franklin. The later `h1, h2` rule sets Source Serif 4, weight 600, and it wins for the hero and for plain headings. These titles stay Franklin because a more specific selector outranks that element rule: About, Breads, Pastries, and Wholesale titles are `.ticket-hero h1` (Libre Franklin, weight 700). The FAQ title, the contact headings, and the community title are Libre Franklin, weight 700, from their page styles. Catalog group titles (`.group-photo h2` and `.group-type h2`) are Libre Franklin, weight 800.
+- **Utility headings (h3), nav, buttons, kickers, eyebrows, and labels: Libre Franklin.** Franklin stays on everything you scan: navigation links, button text, kickers, eyebrows, card titles, and h3 subheadings.
 - **Body and story: Source Serif 4.** It's a calm, readable classic serif that brings warmth and the heritage note without looking fussy.
 - Drop DM Sans, Source Sans, Montserrat and Big Shoulders.
 - Rule: one size scale, about 5 sizes total. Serif for sentences, sans for things you scan.
@@ -86,7 +88,8 @@ Personality: **a steady, warm, plain-spoken head baker.** Proud, but not loud.
 | Role | Color | Use | Never |
 |---|---|---|---|
 | Ink | #0D0D25 | Body text, footer, dark sections | — |
-| Bluepoint Blue | #2035E8 | The brand color: header and nav, links, primary buttons, map routes | Large text blocks on blue |
+| Bluepoint Blue | #2035E8 | Header and nav, links, and map routes in the original strategy | Kickers, eyebrows, and labels (those use Dark Gold). Large text blocks on blue |
+| Dark Gold | #6f4b0e | Kickers, eyebrows, labels, active tab indicators | — |
 | Oven Orange | #F66631 | ONE accent per screen: the "Order" button, the triangle mark | Body text, backgrounds, decoration |
 | Crust Gold | #D1A751 | Heritage only: the "Est. 1987" seal, award marks, thin rules | Text on cream (too low contrast) |
 | Cream | #F6F1E8 | Page background (matches the product photos) | — |
