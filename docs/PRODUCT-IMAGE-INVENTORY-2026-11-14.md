@@ -2,6 +2,9 @@
 
 **Inventory date:** 2026-11-14 · **Target repository:** `ikbenben1976/bluepoint-bakery-demo` · **Scope:** image inventory only. No product-page images, styles or layout changed by this report.
 
+
+**Updated source-download status:** [First-party source collection](https://github.com/ikbenben1976/bluepoint-bakery-demo/actions/runs/43623144183) completed successfully: 154 discovered URLs across eight browser-scanned pages and historical source ledger, 149 image binaries downloaded, 119 distinct binary hashes, five failed URL requests (four unavailable resized variants and one malformed ledger entry). The 149 originals plus CSV/JSON metadata are preserved as a [57 MB GitHub Actions artifact](https://github.com/ikbenben1976/bluepoint-bakery-demo/actions/runs/43623144183/artifacts/14124727708). For the detailed identification of each object within the 19 original category photos and screenshot reconciliation, see [the visual reconciliation](./PRODUCT-IMAGE-VISUAL-RECONCILIATION-2026-11-14.md). This is separate from the 35 original linked content positions recorded in this initial inventory.
+
 ## Method and caveats
 
 - Primary sources: the linked image URLs on Bluepoint's live Homepage, Breads, Pastries, About, Community and Map pages; its Contact and FAQ pages were also checked for content images. The 3 November 2026 source-provenance list in `docs/PHOTOS.md` is used to cross-reference asset identity and provide full-size CDN links. All links below are first-party Bluepoint website/CDN sources, not the user's external image-search results.
