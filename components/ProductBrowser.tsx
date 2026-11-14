@@ -6,6 +6,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FramedImage } from "@/components/FramedImage";
 import { visualForProduct } from "@/data/illustrative";
+import { bunCatalogPhotoFor } from "@/data/bunCatalogPhotos";
 import type { CatalogGroup, Product } from "@/data/products";
 import { findAssortment } from "@/data/homeAssortment";
 import { catalogViewAllLabel, findMaking, type MakingUse } from "@/data/making";
@@ -325,7 +326,8 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
             <p className="category-notice">{categoryNotice(group.lead)}</p>
             <ul className="product-grid">
               {items.map((product) => {
-                const visual = visualForProduct(product.id);
+                const bunPhoto = product.category === "buns" ? bunCatalogPhotoFor(product.id) : undefined;
+                const visual = bunPhoto ?? visualForProduct(product.id);
                 return (
                 <li key={product.id} id={product.id} className={`product-card${selected.has(product.id) ? " is-in-request" : ""}`}>
                   {visual ? <div className="product-photo">
@@ -336,7 +338,7 @@ function ProductBrowserInner({ groups, onAdd, selectedIds, assortmentParam = nul
                       width={visual.width}
                       height={visual.height}
                       sizes="(max-width: 699px) 92vw, (max-width: 1023px) 46vw, 300px"
-                      label="Illustrative image"
+                      label={bunPhoto ? bunPhoto.label : "Illustrative image"}
                     />
                   </div> : null}
                   <h3>{product.name}</h3>
