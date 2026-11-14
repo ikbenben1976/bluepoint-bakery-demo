@@ -14,6 +14,7 @@ test("plated use photos are burgers, sandwiches, and breakfast", () => {
   assert.equal(sandwiches?.src, "/images/use/cafe-180-sandwiches.jpg");
   assert.equal(breakfast?.src, "/images/use/stuffed-french-toast.webp");
   assert.equal(breakfast?.credit, "Customer plate.");
+  assert.equal(breakfast?.aiLabel, undefined);
   assert.equal(platedPhotoFor("dinner"), undefined);
   assert.equal(fs.existsSync("public/images/use/west-main-burger.jpg"), true);
   assert.equal(fs.existsSync("public/images/use/cafe-180-sandwiches.jpg"), true);
