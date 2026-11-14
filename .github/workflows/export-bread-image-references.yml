@@ -1,0 +1,22 @@
+name: Export current bread image references (review only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/export-bread-image-references.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: existing-bread-illustration-references
+          path: |
+            public/images/illustrative/product-*.webp
+            public/images/studio/*.webp
+          if-no-files-found: error
+          retention-days: 14
