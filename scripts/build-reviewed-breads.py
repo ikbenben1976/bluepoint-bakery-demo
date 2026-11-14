@@ -103,16 +103,8 @@ def photo_object(subject):
     base.alpha_composite(bread,(left,top))
     return base.convert("RGB")
 
-sheet=Image.open(ROOT/"scripts/assets/sandwich-reviewed-sheet.webp").convert("RGB")
-if sheet.width!=768 or sheet.height!=512:
-    raise RuntimeError("Unexpected sandwich review master dimensions")
-def sandwich_image(sku):
-    col,row=SANDWICH_CELL[sku]
-    part=sheet.crop((col*256,row*256,(col+1)*256,(row+1)*256))
-    part=part.resize((720,720),Image.Resampling.LANCZOS)
-    base=Image.new("RGB",(960,720),CREAM)
-    base.paste(part,(120,0))
-    return base
+# The seven separately approved Sandwich Roll concepts are not in this repository yet.
+# Do not silently substitute a different image for those 7 items.
 
 def legacy_image(sku):
     source=ROOT/"public/images/illustrative"/(legacy[sku]+".webp")
@@ -138,10 +130,7 @@ for sku in all_skus:
         src=official[POLYGONS[source_object][0]]
         verified=sku in ("french-breads-golden-parisien-24-in","deli-loaves-marble-rye","specialty-breads-16x4-vienna")
     elif sku in SANDWICH_CELL:
-        image=sandwich_image(sku);kind="ai-illustrative-concept"
-        src=official[code]
-        source_object="AI studio review sheet cell "+str(SANDWICH_CELL[sku])
-        verified=False
+        continue  # Skip all seven until their approved binary master is available
     else:
         image=legacy_image(sku);kind="legacy-illustration-reframed"
         src=official[code]
@@ -154,5 +143,6 @@ for sku in all_skus:
         "sourceUrl":src,"sourceObject":source_object,"kind":kind,
         "exactSkuVerified":verified,"category":group,"size":[960,720]})
 (OUT/"manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
+if len(manifest)!=40:raise RuntimeError("Expected exactly 40, got "+str(len(manifest)))
 print("Generated",len(manifest),"individual SKU paths,",
       {kind:sum(x["kind"]==kind for x in manifest) for kind in set(x["kind"] for x in manifest)})
