@@ -74,7 +74,7 @@ Two families, loaded locally from Fontsource via `next/font/local` in `app/fonts
 
 ### Source Serif 4 (`--font-serif`)
 
-**Role**: Body text, story copy, pull quotes, hero display headlines (the approved direction uses the serif for the hero `h1`, not the sans).
+**Role**: Body text, story copy, pull quotes, and plain display headings. A plain `h1` or `h2` is Source Serif 4 at weight 600. `.ticket-hero h1`, the FAQ, contact, and community titles, and catalog `.group-photo h2` / `.group-type h2` stay Libre Franklin because a more specific rule wins.
 
 **Weights loaded**: 400 (Regular), 600 (SemiBold)
 
@@ -86,9 +86,9 @@ Two families, loaded locally from Fontsource via `next/font/local` in `app/fonts
 
 | Element | Size | Weight | Line height | Family |
 | --- | --- | --- | --- | --- |
-| Hero h1 (approved) | `2.75rem` (mobile) | 700 | 1.05 | Serif |
-| Page h1 | `clamp(2.1rem, 4.5vw, 3.4rem)` | 700 | 1.15 | Franklin |
-| h2 | `clamp(1.6rem, 3vw, 2.1rem)` | 700 | 1.2 | Franklin |
+| Hero h1 | responsive clamp | 600 | about 1.05 | Serif |
+| Plain h1 | the element `h1` rule | 600 | 1.15 | Serif |
+| Plain h2 | the element `h2` rule | 600 | 1.2 | Serif |
 | h3 | `1.15rem` | 600 | implicit | Franklin |
 | Product card h3 | `1.2rem` | 600 | 1.25 | Franklin |
 | Body | `1.125rem` | 400 | 1.65 | Serif |
@@ -102,7 +102,7 @@ Two families, loaded locally from Fontsource via `next/font/local` in `app/fonts
 
 ### Rule: serif for sentences, sans for things you scan
 
-Anything a person reads as running prose (body paragraphs, pull quotes, story copy) is Source Serif 4. Anything a person scans to navigate or act (headings, nav links, buttons, labels, chips, metadata) is Libre Franklin. The approved hero is the one exception: a large serif headline reads as a warm, editorial statement rather than a navigation element.
+Anything a person reads as running prose (body paragraphs, pull quotes, story copy) is Source Serif 4. Plain `h1` and `h2` headings are Source Serif 4 at weight 600 as well. Anything a person scans to navigate or act (nav links, buttons, labels, chips, kickers, eyebrows, and `h3`) is Libre Franklin. Page titles that use `.ticket-hero h1` or a page-module heading rule stay Franklin.
 
 ## Spacing and Layout
 
@@ -251,7 +251,7 @@ Bottom line: copyright, fine print. `font-size: 0.82rem; color: #aaa`.
 
 `min-height: calc(100vh - 6.5rem)` — fills the viewport minus the header.
 
-Hero headline: `font-family: var(--font-serif); font-size: 2.75rem; font-weight: 600; line-height: 1.05; color: #0b2b51` (navy). This is the one place Source Serif 4 appears at display scale — everywhere else, headings use Franklin.
+Hero headline: `font-family: var(--font-serif); font-weight: 600; color: #0b2b51` (navy). Plain section `h2`s use the same serif at weight 600. Franklin remains on nav, buttons, labels, and on headings a more specific rule still claims.
 
 Hero body: Source Serif 4 at body size.
 
