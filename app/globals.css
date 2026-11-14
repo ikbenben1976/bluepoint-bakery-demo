@@ -3,9 +3,8 @@
 @theme {
   --font-sans: var(--font-franklin), "Libre Franklin", ui-sans-serif, sans-serif;
   --font-display: var(--font-franklin), "Franklin Gothic Medium", sans-serif;
-  --color-royal: #2035e8;
+  --color-royal: #0b2b51;
   --color-navy: #0d0d25;
-  --color-orange: #f66631;
   --color-tan: #d1a751;
   --color-tan-deep: #c09040;
   --color-paper: #f3efe6;
@@ -379,7 +378,6 @@ body.menu-open {
   top: 0;
   bottom: 0;
   width: 14px;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #fff 0% 50%) 0 0 / 7px 7px;
 }
 
 .kenburns {
@@ -401,7 +399,6 @@ body.menu-open {
   overflow: hidden;
   background: #0d0d25;
   color: #fff;
-  border-top: 8px solid #f66631;
 }
 
 .marquee-track {
@@ -418,7 +415,6 @@ body.menu-open {
 
 .marquee-track span::before {
   content: "✚";
-  color: #f66631;
   margin-right: 2rem;
 }
 
@@ -511,7 +507,6 @@ body.menu-open {
 }
 
 .type-card {
-  background: repeating-conic-gradient(#2035e8 0% 25%, #0d0d25 0% 50%) 0 0 / 18px 18px;
   padding: 0.9rem;
 }
 
@@ -542,7 +537,6 @@ body.menu-open {
 
 .serve-list li {
   background: #fff;
-  border-left: 4px solid #f66631;
   padding: 0.45rem 0.7rem;
   font-weight: 700;
 }
@@ -620,7 +614,6 @@ body.menu-open {
 
 .ticket-cloth {
   min-height: 14px;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #fff 0% 50%) 0 0 / 7px 7px;
 }
 
 @media (min-width: 860px) {
@@ -681,7 +674,6 @@ body.menu-open {
 
 .group-type {
   margin-top: 3rem;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #f3efe6 0% 50%) 0 0 / 16px 16px;
   padding: 1rem;
 }
 
@@ -733,7 +725,7 @@ body.menu-open {
   flex-direction: column;
   gap: 0.45rem;
   min-height: 100%;
-  border-top: 6px solid #2035e8;
+  border-top: 6px solid #e4d8c4;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -756,7 +748,7 @@ body.menu-open {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #2035e8;
+  color: #6f4b0e;
 }
 
 .badges {
@@ -800,19 +792,16 @@ body.menu-open {
 
 .stepper button[aria-current="step"] {
   color: #0d0d25;
-  box-shadow: inset 0 -3px 0 #f66631;
 }
 
 .progress {
   height: 6px;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #fff 0% 50%) 0 0 / 8px 8px;
   margin-top: 0.4rem;
 }
 
 .progress span {
   display: block;
   height: 100%;
-  background: #f66631;
   transition: width 0.35s ease;
 }
 
@@ -862,11 +851,6 @@ body.menu-open {
   cursor: pointer;
 }
 
-.gate-choice-solid {
-  background: #f66631;
-  border-color: #f66631;
-}
-
 .form-narrow {
   width: min(740px, 100%);
 }
@@ -875,13 +859,12 @@ body.menu-open {
   background: #fff;
   padding: 1rem;
   margin-top: 0.8rem;
-  border-left: 8px solid #2035e8;
 }
 
 #request-preview {
   background: #fff;
   padding: 1.2rem;
-  border-left: 8px solid #f66631;
+  border-left: 8px solid #e4d8c4;
   white-space: pre-wrap;
   font-family: var(--font-franklin), sans-serif;
 }
@@ -1064,7 +1047,6 @@ body.menu-open {
 .partner-card {
   background: #fff;
   padding: 1.2rem;
-  border-top: 8px solid #f66631;
 }
 
 .partner-card h2 {
@@ -1208,7 +1190,7 @@ textarea {
 input[type="checkbox"] {
   width: 1.2rem;
   height: 1.2rem;
-  accent-color: #2035e8;
+  accent-color: #0b2b51;
 }
 
 label,
@@ -1291,12 +1273,7 @@ legend {
   align-items: center;
 }
 
-.util-link:not(.util-pay) {
-  border-bottom: 2px solid #f66631;
-}
-
 .util-pay {
-  background: #2035e8;
   color: #fff;
   padding: 0 0.6rem;
 }
@@ -1391,7 +1368,6 @@ legend {
   left: max(1.1rem, calc((100% - 1160px) / 2));
   width: 72px;
   height: 72px;
-  background: repeating-conic-gradient(#2035e8 0% 25%, #fff 0% 50%) 0 0 / 12px 12px;
   border: 3px solid #0d0d25;
   pointer-events: none;
 }
@@ -1412,13 +1388,9 @@ legend {
 .notice-row p {
   margin: 0;
   font-weight: 700;
-  border-top: 4px solid #f66631;
   padding-top: 0.45rem;
 }
 
-.notice-row p:nth-child(2) {
-  border-color: #2035e8;
-}
 
 .notice-row p:nth-child(3) {
   border-color: #0d0d25;

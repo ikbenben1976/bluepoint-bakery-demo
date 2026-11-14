@@ -169,7 +169,7 @@ export function RouteMap() {
                   );
                 })}
                 <g>
-                  <circle cx={bakery.x} cy={bakery.y} r="18" fill="#2035E8" stroke="#0D0D25" strokeWidth="2" />
+                  <circle cx={bakery.x} cy={bakery.y} r="18" fill="#0b2b51" stroke="#0D0D25" strokeWidth="2" />
                   <text className="bakery-letters" x={bakery.x} y={bakery.y + 4} textAnchor="middle" fill="#FFFFFF">
                     BP
                   </text>

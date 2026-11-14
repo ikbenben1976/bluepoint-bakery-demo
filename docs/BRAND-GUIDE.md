@@ -8,7 +8,7 @@ Post-cleanup copy, Nov 14, 2026. The secondary button class is `.btn-secondary` 
 
 ## Color System
 
-The deployed palette has two layers. The original brand strategy defined Bluepoint Blue (`#2035e8`) and Oven Orange (`#f66631`). The later approved direction overrides primary buttons, links, and kickers to a navy/gold scheme. Both colors still occur in `brand.css`. Later rules win where they target the same element. The ordering band class is gone, and the base kicker color is no longer blue.
+The original strategy used Bluepoint Blue (`#2035e8`) and Oven Orange (`#f66631`). Visible interface colors now use the approved palette: navy `#0b2b51` for links, focus, and buttons, kicker gold `#6f4b0e` for kickers and labels, proof border `#e4d8c4` for borders, and light gold `#e4c27a` for accents on ink. Interstate 76 stays `#2035e8` so it does not blend into the near-black I-25 and I-70 lines. The logo file is unchanged.
 
 ### Core palette
 
@@ -17,11 +17,11 @@ The deployed palette has two layers. The original brand strategy defined Bluepoi
 | Ink | `#0d0d25` | `body { color }`, footer `background`, dark sections | Near-black with a blue undertone. The primary text color |
 | Navy | `#0b2b51` | `.btn-primary`, `.btn-secondary`, links `a { color }`, hero `h1`, focus outlines | The approved primary. Replaced Bluepoint Blue on interactive elements |
 | Navy hover | `#071a33` | `.btn-primary:hover`, `.btn-secondary:hover` | Darker navy for hover states |
-| Bluepoint Blue | `#2035e8` | Legacy selectors that a later navy or gold rule does not cover: `.atlas-card .kicker`, route and sector accents, some borders | Not the ordering band (that class is removed). Not the canonical `.kicker` / `.eyebrow` color |
-| Oven Orange | `#f66631` | Early `.btn-secondary` declaration (overridden to navy) and a handful of decorative borders. Not `.cloth-edge` | Largely replaced by navy and heritage gold. Not the painted secondary button |
+| Bluepoint Blue | `#2035e8` | `.hwy-76` stroke only | Kept so I-76 stays distinct from the ink I-25 and I-70 strokes. Not used for type, buttons, or borders |
+| Oven Orange | `#f66631` | None in the stylesheets | The logo SVG still contains it and is not recolored |
 | Gold | `#8a5a12` | The one `.cloth-edge` rule (`height: 6px`), `.nav-link[aria-current]` box-shadow, benefit icons | The approved accent replacing orange. Earlier checker and orange `.cloth-edge` rules are removed |
 | Warm gold | `#e4c27a` | Footer links on hover, footer sub-text, dark-surface focus outlines | Light gold for dark backgrounds |
-| Kicker gold | `#6f4b0e` | `.kicker`, `.eyebrow`, `.fact-label`, active tab borders | Canonical small-text accent. The early `color: #2035e8` on `.kicker, .eyebrow` is removed. Footer, mobile menu, and `.atlas-card .kicker` still use more specific colors |
+| Kicker gold | `#6f4b0e` | `.kicker`, `.eyebrow`, `.fact-label`, `.atlas-card .kicker`, the home hero kicker, active tab borders | Canonical small-text accent, including on white and cream |
 | Crust Gold | `#d1a751` | Footer `.lockup-bakery`, heritage seal | The original BRAND.md gold. Used sparingly |
 | Cream | `#f6f1e8` | `body { background }`, `.framed-photo` background, product photo background | The page background. Matches product photography |
 | Warm cream | `#f9f3eb` | `.illustrative-label` background (`rgba` at 0.94 opacity), `.making-permission` | Slightly warmer for overlays |
@@ -198,7 +198,7 @@ Note: `.btn-secondary` still has an early Oven Orange declaration. The approved 
 
 ### Kicker / eyebrow
 
-`.kicker, .eyebrow`: `font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; font-family: var(--font-franklin); color: #6f4b0e`. Kicker gold is canonical. The early blue color declaration is removed. Footer and mobile-menu kickers are cream; `.atlas-card .kicker` stays Bluepoint Blue. `.section-intro .eyebrow` uppercases and sets `letter-spacing: 0.08em`. The base rule itself is `text-transform: none`.
+`.kicker, .eyebrow`: `font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; font-family: var(--font-franklin); color: #6f4b0e`. Kicker gold is canonical, including `.atlas-card .kicker` and the home hero kicker. Footer and mobile-menu kickers are cream. The ordering-guide eyebrow is light gold `#e4c27a` on ink. `.section-intro .eyebrow` uppercases and sets `letter-spacing: 0.08em`. The base rule itself is `text-transform: none`.
 
 ### Surfaces
 
@@ -229,7 +229,7 @@ Mobile (`max-width: 1023px`): hamburger menu, overlay panel with `background: #0
 
 Active page indicator: `box-shadow: inset 0 -3px 0 #8a5a12` (warm gold underline).
 
-Hover: `color: #2035e8` (Bluepoint Blue).
+Hover: `color: #0b2b51` (navy).
 
 ### Cloth edge
 
@@ -356,7 +356,7 @@ Reveal animations should also respect this preference by removing the transform 
 | --- | --- | --- |
 | `.btn-primary` | `background: #071a33` | `outline: 3px solid #0b2b51; outline-offset: 3px` |
 | `.btn-ghost` | `background: #0d0d25; color: #fff` | same outline |
-| Nav links | `color: #2035e8` | same outline |
+| Nav links | `color: #0b2b51` | same outline |
 | Footer links | inherit | `outline-color: #e4c27a` (gold on dark) |
 | Text links | `color: #0b2b51` | same outline |
 
@@ -443,7 +443,7 @@ The site uses two dark surface contexts. Each inverts the color logic.
 | --- | --- |
 | Background | `#0d0d25` |
 | Headings | `#f6f1e8` (cream), Source Serif 4 where the later `h2` rule wins |
-| Eyebrow | The later gold rule sets `#e4c27a`, but the eyebrow is a `p` inside `.section-intro`, so `.ordering-guide .section-intro p` (`#e5e2ee`) wins |
+| Eyebrow | `#e4c27a`. The intro paragraph stays `#e5e2ee` because that rule is `.ordering-guide .section-intro p:not(.eyebrow)` |
 | Step numbers | `#e4c27a` |
 | Step body | `#edeaf4` |
 | Focus ring | `#e4c27a` |

@@ -13,7 +13,7 @@
 }
 
 .page a:focus-visible {
-  outline: 3px solid #2035e8;
+  outline: 3px solid #0b2b51;
   outline-offset: 4px;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .methodCard:hover {
-  border-color: #2035e8;
+  border-color: #0b2b51;
   background: #f8f9ff;
 }
 
@@ -101,7 +101,7 @@
   height: 2.75rem;
   border-radius: 999px;
   background: #eef1ff;
-  color: #2035e8;
+  color: #0b2b51;
 }
 
 .methodIcon svg {
@@ -109,7 +109,7 @@
 }
 
 .methodCard:hover .methodIcon {
-  background: #2035e8;
+  background: #0b2b51;
   color: #fff;
 }
 
@@ -230,9 +230,9 @@
   width: 100%;
   min-height: 44px;
   padding: 0.55rem 1rem;
-  border: 1px solid #2035e8;
+  border: 1px solid #0b2b51;
   border-radius: 4px;
-  background: #2035e8;
+  background: #0b2b51;
   color: #fff;
   font-family: var(--font-franklin), "Libre Franklin", sans-serif;
   font-size: 0.95rem;
@@ -243,8 +243,8 @@
 }
 
 .cardButton:hover {
-  border-color: #1526b0;
-  background: #1526b0;
+  border-color: #071a33;
+  background: #071a33;
   color: #fff;
 }
 

@@ -49,7 +49,7 @@ test("Community layout is balanced, readable, and fits desktop, tablet, and phon
     expect(new Set(metrics.wellHeights).size, `even logo wells at ${width}px`).toBe(1);
     expect(metrics.wellHeights[0], `logo well height at ${width}px`).toBeGreaterThanOrEqual(120);
     expect(metrics.linkDecoration, `button links at ${width}px`).toBe("none");
-    expect(metrics.linkBg, `button fill at ${width}px`).toBe("rgb(32, 53, 232)");
+    expect(metrics.linkBg, `button fill at ${width}px`).toBe("rgb(11, 43, 81)");
     expect(metrics.linkHeight, `button hit area at ${width}px`).toBeGreaterThanOrEqual(44);
     expect(metrics.naturalRatio, `pie photo loaded at ${width}px`).toBeGreaterThan(0);
     expect(

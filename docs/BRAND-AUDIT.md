@@ -1,6 +1,6 @@
 # Bluepoint Bakery brand audit
 
-Nov 14, 2026. The follow-up on this branch resolved three no-visual items: dead `#2035e8` / `#f66631` declarations that lose at every breakpoint, meaningful alt text on the request-sheet illustrative image and the sector thumbnails (the visible "Illustrative" note and product names stay), and the type table in `docs/BRAND-GUIDE.md` (plain `h1` and `h2` are Source Serif 4, weight 600).
+Nov 14, 2026. The approved-palette pass recolored the remaining visible Bluepoint Blue and Oven Orange. Links, focus, buttons, and the bakery map pin are navy `#0b2b51`. Button hovers that still painted the old bright blue now use navy hover `#071a33`. Kickers and labels, including the route-card kicker and the home hero kicker, are `#6f4b0e`. Borders are `#e4d8c4`. The ordering-guide eyebrow is `#e4c27a` on ink. Interstate 76 stays `#2035e8` so it does not match the near-black I-25 and I-70 strokes. The logo SVG was not edited. `docs/BRAND.md` and `docs/LIBERTIES.md` still quote the original strategy and were left as history.
 
 ## Sources
 
@@ -34,8 +34,8 @@ Rendered in Chrome at 1440 and 390, after fonts loaded.
 | Catalog `.group-photo h2` | Libre Franklin | 800 | 38.4px / 24.8px | `#102e50` | `#f7f0e6` |
 | `.section-intro .eyebrow` | Libre Franklin | 600 | 13.12px, `0.08em`, uppercase | `#6f4b0e` | see below |
 | Delivery `.kicker` | Libre Franklin | 600 | 12.8px, `0.04em`, not uppercase | `#6f4b0e` | `#f6f1e8` |
-| `.atlas-card .kicker` | Libre Franklin | 600 | 12.8px | `#2035e8` | `#ffffff` |
-| Home `.hero-kicker` | Libre Franklin | 800 | 12.96px / 11.04px, uppercase | `#73530c` | `#f9f3eb` |
+| `.atlas-card .kicker` | Libre Franklin | 600 | 12.8px | `#6f4b0e` | `#ffffff` |
+| Home `.hero-kicker` | Libre Franklin | 800 | 12.96px / 11.04px, uppercase | `#6f4b0e` | `#f9f3eb` |
 | Footer `.kicker` | Libre Franklin | 600 | 12px, `0.14em`, uppercase | `#f6f1e8` | `#0d0d25` |
 | `.cloth-edge` | — | — | height 6px | background `#8a5a12` | — |
 
@@ -54,7 +54,7 @@ Ordering guide on `#0d0d25`:
 
 | Element | Color | Size / weight | Ratio | AA |
 | --- | --- | --- | --- | --- |
-| Eyebrow | `#e5e2ee` (not `#e4c27a`) | 13.12px / 600 | 14.93:1 | Pass |
+| Eyebrow | `#e4c27a` | 13.12px / 600 | 11.16:1 | Pass |
 | Intro paragraph | `#e5e2ee` | 18px / 400 | 14.93:1 | Pass |
 | `h2` | `#f6f1e8` | 33.6px / 600 | 16.95:1 | Pass |
 | `h3` | `#f6f1e8` | 18.4px / 600 | 16.95:1 | Pass |
@@ -62,15 +62,15 @@ Ordering guide on `#0d0d25`:
 | Step number | `#e4c27a` | 32px / 700 | 11.16:1 | Pass |
 | Step link | `#f6f1e8` | 18px / 700 | 16.95:1 | Pass |
 
-The eyebrow is a `p` inside `.section-intro`. `.ordering-guide .section-intro p` (`app/brand.css` around the ordering-guide block) outranks `.ordering-guide .eyebrow { color: #e4c27a }`.
+The eyebrow is a `p` inside `.section-intro`. `.ordering-guide .section-intro p:not(.eyebrow)` keeps the intro paragraph at `#e5e2ee`. The eyebrow matches the later `.ordering-guide .eyebrow { color: #e4c27a }` rule.
 
-Other pairs: hero kicker `#73530c` on `#f9f3eb` is 6.41:1 (pass). Atlas kicker `#2035e8` on white is 7.68:1 (pass). Cream `#f6f1e8` on ink is 16.95:1. White on ink is 19.07:1.
+Other pairs: hero kicker `#6f4b0e` on `#f9f3eb` is 7.08:1 (pass). Atlas kicker `#6f4b0e` on white is 7.81:1 (pass). Community eyebrow `#6f4b0e` on cream is 6.94:1 at 0.76rem / 750 (pass). Badge `#6f4b0e` on white is 7.81:1 at 0.68rem / 700 (pass). Navy `#0b2b51` on white is 14.20:1, on cream 12.62:1, and on the icon well `#eef1ff` 12.62:1. White on navy is 14.20:1. White on navy hover `#071a33` is higher. Cream `#f6f1e8` on ink is 16.95:1. White on ink is 19.07:1. Proof-border `#e4d8c4` on white is about 1.41:1. It is a decorative edge, not text.
 
 ## app/brand.css
 
 ### 1 Color
 
-⚠️ Guide colors are used, and so are many hexes the guide does not name (`#f5f0e7`, `#eae8e3`, `#f7f0e6`, `#73530c`, `#e5e2ee`, `#edeaf4`, `#102e50`, and others). Treat the unnamed warm neutrals as later section colors, not as a new palette. `#2035e8` and `#f66631` remain. Classification is in the grep section of the PR notes. Live blue that the updated guide allows: `.atlas-card .kicker` (`app/brand.css` grouped with `.route-caveat`). Live orange borders: `.why-card` (`border-top: 8px solid #f66631`), `.proof-quote`, `.community-page .partner-card`, `.delivery-page .serve-list li`.
+⚠️ Guide colors are used, and so are many hexes the guide does not name (`#f5f0e7`, `#eae8e3`, `#f7f0e6`, `#73530c`, `#e5e2ee`, `#edeaf4`, `#102e50`, and others). Treat the unnamed warm neutrals as later section colors, not as a new palette. The only remaining `#2035e8` in this file is `.hwy-76 { stroke: #2035e8 }`, kept so I-76 stays distinct from the ink I-25 and I-70 strokes. Oven Orange is gone from this file. `.atlas-card .kicker` is `#6f4b0e`. `.why-card`, `.proof-quote`, and `.delivery-page .serve-list li` use `#e4d8c4` borders. The contact-button shadow on `.quick-toggle` is `rgba(11, 43, 81, 0.28)`.
 
 ### 2 Typography
 
@@ -82,11 +82,11 @@ Other pairs: hero kicker `#73530c` on `#f9f3eb` is 6.41:1 (pass). Atlas kicker `
 
 ### 4 Components
 
-✅ `.btn` radius is 4px. The approved `.btn-primary` / `.btn-secondary` pair is navy `#0b2b51`, white text, hover `#071a33`. `.bake-frame` is `aspect-ratio: 1`. `.framed-photo` background is `#f6f1e8`. Winning focus is `outline: 3px solid #0b2b51; outline-offset: 3px`, with `#e4c27a` on footer, mobile menu, and ordering guide. ⚠️ An earlier focus rule still says `#2035e8` and `outline-offset: 2px`. It loses to the later rule of equal specificity. Globals `.btn` supplies `min-height: 44px`. This file does not remove it.
+✅ `.btn` radius is 4px. The approved `.btn-primary` / `.btn-secondary` pair is navy `#0b2b51`, white text, hover `#071a33`. `.bake-frame` is `aspect-ratio: 1`. `.framed-photo` background is `#f6f1e8`. Winning focus on links and buttons is `outline: 3px solid #0b2b51; outline-offset: 3px`, with `#e4c27a` on footer, mobile menu, and ordering guide. ⚠️ An earlier input and summary focus rule is also `#0b2b51`, at `outline-offset: 2px`. The later rule wins for `a` and `.btn`. Globals `.btn` supplies `min-height: 44px`. This file does not remove it.
 
 ### 5 Nav and footer
 
-✅ Active link is `box-shadow: inset 0 -3px 0 #8a5a12`. Footer background is `#0d0d25`. Footer mark is 56×56. Mobile menu background is `#0d0d25` with `transition: opacity 180ms ease`. Dark focus is `#e4c27a`. ⚠️ The guide still says nav hover is `#2035e8`. The rule that wins is `.site-header .nav-link:hover { color: #0b2b51 }`. Header bakery color `#3c4ba6` is in the guide.
+✅ Active link is `box-shadow: inset 0 -3px 0 #8a5a12`. Footer background is `#0d0d25`. Footer mark is 56×56. Mobile menu background is `#0d0d25` with `transition: opacity 180ms ease`. Dark focus is `#e4c27a`. Nav hover is `.site-header .nav-link:hover { color: #0b2b51 }`. Header bakery color `#3c4ba6` is in the guide.
 
 ### 6 Photography
 
@@ -106,7 +106,7 @@ Other pairs: hero kicker `#73530c` on `#f9f3eb` is 6.41:1 (pass). Atlas kicker `
 
 ### 10 Dark surfaces
 
-✅ Footer, mobile menu, and ordering guide use cream or light gold on ink, not white body text on blue. ⚠️ Ordering-guide eyebrow paints `#e5e2ee`, which the guide does not name. Contrast passes.
+✅ Footer, mobile menu, and ordering guide use cream or light gold on ink, not white body text on blue. The ordering-guide eyebrow paints `#e4c27a` (11.16:1 on ink). The intro paragraph stays `#e5e2ee`.
 
 ## app/globals.css
 
@@ -114,7 +114,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 1 Color
 
-⚠️ Early `.btn-secondary` is still Oven Orange here, and `.kicker` is still `#2035e8`. `brand.css` wins for both. `.cloth-edge` here is still the blue/white checker. The single `brand.css` rule wins (`height: 6px; background: #8a5a12`). Dead for the rendered site.
+✅ This file no longer declares `#2035e8` or `#f66631`. `--color-royal` is `#0b2b51` and feeds `.text-royal`. Product-card top borders and the request-preview edge are `#e4d8c4`. `.badge` is `#6f4b0e`. Checkbox `accent-color` is `#0b2b51`. `.cloth-edge` still loses to the single `brand.css` rule (`height: 6px; background: #8a5a12`).
 
 ### 2–10
 
@@ -174,7 +174,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 1 Color
 
-❌ `community.module.css` `.eyebrow` is `#2035e8` (line 12). That is an eyebrow, and the guide's canonical eyebrow color is `#6f4b0e`. More `#2035e8` accents: lines 132, 136, 167, 192, 233, 301, 336. `#73530c` appears as a gold-like accent the guide does not name (warning).
+✅ `.eyebrow`, `.storyLabel`, and `.signature` are `#6f4b0e`. Story, stat, partner, and award borders are `#e4d8c4`. Partner buttons are navy `#0b2b51`, hover `#071a33`, white text. ⚠️ `#73530c` still appears as a gold-like accent the guide does not name. It was not part of the retired blue or orange set, so this pass left it.
 
 ### 2 Typography
 
@@ -190,13 +190,13 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 9 Accessibility
 
-⚠️ Focus and link colors in the module use `#2035e8` rather than the guide's navy focus ring.
+✅ External-link focus is `outline: 3px solid #0b2b51`. The button fill is navy with white text (14.20:1).
 
 ## app/contact/page.tsx and app/contact/contact.module.css
 
 ### 1 Color
 
-❌ Live `#2035e8` on focus (`contact.module.css` line 16), borders, and filled controls (lines 93, 104, 112, 233, 235). The guide's focus ring and primary buttons are navy `#0b2b51`.
+✅ Focus (`contact.module.css` line 16), the method-card hover border, the method icon, and the card button are navy `#0b2b51`. The card-button hover is `#071a33`. White on those fills passes AA.
 
 ### 2 Typography
 
@@ -208,17 +208,17 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 9 Accessibility
 
-❌ Focus outline is `#2035e8`, not `#0b2b51`.
+✅ Focus outline is `#0b2b51`.
 
 ## app/delivery/page.tsx
 
-✅ Kicker "Delivery area" is `#6f4b0e` on cream (6.94:1). Plain `h1` is Source Serif 4 weight 600. Truck photo is a real photograph with `DELIVERY_TRUCK_CAPTION`, not an illustrative label. ✅ noindex. ⚠️ `.atlas-card .kicker` "On the route" is `#2035e8` on white. The updated guide allows that accent. Serve-list cards use a live `#f66631` left border (`app/brand.css`).
+✅ Kicker "Delivery area" is `#6f4b0e` on cream (6.94:1). Plain `h1` is Source Serif 4 weight 600. Truck photo is a real photograph with `DELIVERY_TRUCK_CAPTION`, not an illustrative label. ✅ noindex. `.atlas-card .kicker` "On the route" is `#6f4b0e` on white (7.81:1). Serve-list cards use a `#e4d8c4` left border. I-76 stays `#2035e8`. The bakery pin is navy with white "BP". Day swatches in `data/routes.ts` are unchanged so the route days stay distinguishable.
 
 ## app/faq/page.tsx and app/faq/faq.module.css
 
 ### 1 Color
 
-❌ `.summary:focus-visible` is `outline: 3px solid #2035e8` (`faq.module.css` line 91). Marker color is `#2035e8` (line 112).
+✅ `.summary:focus-visible` is `outline: 3px solid #0b2b51` (`faq.module.css`). The marker is `#0b2b51` on white.
 
 ### 2 Typography
 
@@ -226,7 +226,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ### 9 Accessibility
 
-❌ Focus ring color. The 3px width and offset match the guide. The color does not. Summary min-height is 3.25rem (52px), so the hit target is at least 44px.
+✅ Focus ring color, width, and offset match the guide. Summary min-height is 3.25rem (52px), so the hit target is at least 44px.
 
 ## app/wholesale/page.tsx
 
@@ -238,7 +238,7 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ## app/sectors/[slug]/page.tsx
 
-✅ Category thumbnails use the photo registry alt (`app/sectors/[slug]/page.tsx`). The visible product name stays in the link. ⚠️ Related links use the live `#2035e8` chip in `app/brand.css` (`.sector-related li a`).
+✅ Category thumbnails use the photo registry alt (`app/sectors/[slug]/page.tsx`). The visible product name stays in the link. Related chips are navy `#0b2b51` on white, and the hover fill is navy with white text.
 
 ## app/robots.ts, app/sitemap.ts, app/template.tsx
 
@@ -278,11 +278,11 @@ Loaded before `brand.css`. Not in the original file list. Included because it st
 
 ## components/RouteMap.tsx and components/routeMap.module.css
 
-✅ Tooltip background is ink at 0.96 alpha, text white. ⚠️ Tooltip secondary text is `#f2e7d4` (`routeMap.module.css` line 36), which the guide does not name. It is light on ink, so contrast is in the same band as cream on ink. `RouteMap.tsx` still has one `#2035e8` (route stroke). The guide allows blue on map routes.
+✅ Tooltip background is ink at 0.96 alpha, text white. ⚠️ Tooltip secondary text is `#f2e7d4` (`routeMap.module.css` line 36), which the guide does not name. It is light on ink, so contrast is in the same band as cream on ink. The bakery circle is navy `#0b2b51` with white "BP". City dots still use `DAY_SWATCH`, including Tuesday `#5C7EBE`, so those day colors stay distinct from the pin and from each other. I-76 is the CSS stroke `.hwy-76`, not a swatch in this file.
 
 ## components/AssortmentCards.tsx, BuyerProof.tsx, FeaturedMention.tsx, FeaturedProductSpec.tsx, WhyBluepoint.tsx
 
-✅ Eyebrows render `#6f4b0e` at 13.12px / 600. `h2`s are serif 600. Featured spec facts are `dt`/`dd`, not `.fact-label`. Buyer-proof tabs that are selected resolve to `#6f4b0e` (the later rule beats the earlier `#2035e8`).
+✅ Eyebrows render `#6f4b0e` at 13.12px / 600. `h2`s are serif 600. Featured spec facts are `dt`/`dd`, not `.fact-label`. Buyer-proof tabs that are selected resolve to `#6f4b0e`. Proof-quote top borders are `#e4d8c4`.
 
 ## components/WholesaleRequest.tsx
 
@@ -306,16 +306,16 @@ Not in the original list. Reviewed because photography depends on it. ✅ Every 
 
 ## Checklist cross-check
 
-1. Color. Guide hexes are approved. ❌ live non-navy focus and the community eyebrow in the page modules. ⚠️ undocumented neutrals and live orange borders the guide still allows as heritage orange.
+1. Color. ✅ Guide hexes are in use for the retired blue and orange roles. Interstate 76 stays `#2035e8`. The logo SVG still contains `#f66631`. ⚠️ Undocumented neutrals remain, including `#73530c` on some community, contact, and FAQ labels.
 2. Typography. ✅ The guide type table now matches computed CSS: a plain `h1` or `h2` is Source Serif 4 weight 600. `.ticket-hero h1` and the page-module titles stay Franklin. `h3`, nav, buttons, kickers, and eyebrows are Franklin. Body is serif `1.125rem` / `1.65`. `font-display: swap`.
 3. Spacing. ⚠️ Shell, section padding, and bake-grid gap match the base rules. The rendered hero does not use `calc(100vh - 6.5rem)`.
-4. Components. ✅ Navy buttons, 4px radius, square bake frame, framed photos on cream, winning focus ring. ❌ module focus rings.
-5. Nav and footer. ✅ Lockup, Franklin nav, gold active indicator, ink footer, 56×56 mark, ink mobile menu, 180ms opacity, gold focus on dark. ⚠️ Guide hover color is stale.
+4. Components. ✅ Navy buttons, 4px radius, square bake frame, framed photos on cream, and navy focus rings, including the contact, FAQ, and community modules.
+5. Nav and footer. ✅ Lockup, Franklin nav, navy hover, gold active indicator, ink footer, 56×56 mark, ink mobile menu, 180ms opacity, gold focus on dark.
 6. Photography. ✅ Illustrative shots that render carry an "Illustrative" label. Real truck, portrait, and plated photos are not labeled illustrative. Plated photos carry the permission note. ⚠️ Not every image is AVIF+WebP in a `<picture>`. ⚠️ `.illustrative-note` duplicates `.illustrative-label`.
 7. Voice. ✅ No headline exclamation marks on the pages reviewed. Observations only. Copy was not changed.
 8. Motion. ✅ No parallax, scroll-triggered gallery, or carousel. Marquee animation is forced off. ⚠️ Reduced motion is a set of selectors, not every transition in one rule.
-9. Accessibility. Measured text pairs pass AA. ❌ contact and FAQ focus color. ⚠️ empty alts on decorative-in-a-named-link images. Heading order on the reviewed pages is `h1` then `h2` then `h3` without a skip. Buttons use the 44px `.btn` minimum.
-10. Dark surfaces. ✅ Footer, mobile menu, and ordering guide are cream or gold on ink. No white body text on blue. ⚠️ Ordering eyebrow is `#e5e2ee`, not `#e4c27a`.
+9. Accessibility. ✅ Measured text pairs pass AA, including the recolored kickers, badges, navy links, and white-on-navy buttons. Contact and FAQ focus are navy. ⚠️ Empty alts on decorative-in-a-named-link images were not part of this pass. Heading order on the reviewed pages is `h1` then `h2` then `h3` without a skip. Buttons use the 44px `.btn` minimum.
+10. Dark surfaces. ✅ Footer, mobile menu, and ordering guide are cream or gold on ink. The ordering eyebrow is `#e4c27a`. No white body text on blue.
 
 ## Summary counts
 
@@ -323,42 +323,37 @@ Counts are the marks in the file-by-file sections above. The legend and the cros
 
 | | Count |
 | --- | --- |
-| ✅ Pass | 42 |
-| ⚠️ Warning | 27 |
-| ❌ Violation | 5 |
+| ✅ Pass | 51 |
+| ⚠️ Warning | 21 |
+| ❌ Violation | 0 |
 
-The five violation marks are three problems: the community eyebrow (`community.module.css:12`), the contact module's blue focus and controls (marked under color and again under accessibility), and the FAQ summary focus ring (marked the same way). Community blue links are called out in that color section. They are not a fourth page.
+The retired-blue and retired-orange violations are resolved. The remaining warnings are undocumented neutrals, the input focus offset, photography format, motion coverage, and the tooltip's unnamed cream.
 
 ## Priority
 
-Accessibility first, then visual consistency, then dead code.
+The palette items below are done. What remains is outside this pass.
 
-1. Contact and FAQ focus rings paint `#2035e8` (`contact.module.css:16`, `faq.module.css:91`). Visual change to move them to `#0b2b51` / `#e4c27a`.
-2. Community eyebrow is `#2035e8` (`community.module.css:12`). Visual change to use `#6f4b0e`.
-3. Ordering-guide eyebrow paints `#e5e2ee` because a `p` rule beats `.eyebrow`. Contrast already passes. Changing it to `#e4c27a` is a visual change.
+1. Contact and FAQ focus rings are navy `#0b2b51`.
+2. Community eyebrows, story labels, and the closing signature are `#6f4b0e`. Partner buttons are navy, hover `#071a33`.
+3. The ordering-guide eyebrow is `#e4c27a`. The intro paragraph stays `#e5e2ee`.
 4. Request-sheet illustrative alt text is resolved. The visible "Illustrative" note was kept.
 5. Sector thumbnail alt text is resolved. The visible product name was kept.
-6. Live `#f66631` card borders (why cards, proof quotes, community partners, delivery list). Removing them is a visual change. The guide still allows Oven Orange as heritage.
-7. `.atlas-card .kicker` stays `#2035e8`. The updated guide allows it. Recoloring it is a design decision and a visual change.
-8. Home `.hero-kicker` is `#73530c`, not `#6f4b0e`. Visual change to recolor.
-9. Dead early `#2035e8` / `#f66631` declarations that lose at every breakpoint were removed from `app/brand.css` and `app/globals.css`, including the globals `.kicker` color, the globals `.cloth-edge` checker, and the early orange `.btn-secondary` rules. Declarations that still win were kept.
-10. The guide type table now says plain `h1` and `h2` are Source Serif 4 weight 600.
+6. Card and list borders that were `#f66631` or `#2035e8` are `#e4d8c4`.
+7. `.atlas-card .kicker` and the home hero kicker are `#6f4b0e`.
+8. Sector chips, catalog links, badges, the request checkbox, and the bakery pin use the approved navy or kicker gold.
+9. Dead `#2035e8` and `#f66631` declarations were removed, including unused checkers, the unused marquee accent, and hover rules that lost the cascade.
+10. The guide type table says plain `h1` and `h2` are Source Serif 4 weight 600.
 
 ## Next steps
 
-### Quick fixes (no visual change)
+### Done in this pass
 
-- The dead cascade colors listed here were removed. What remains of `#2035e8` and `#f66631` in `app/brand.css` and `app/globals.css` still wins for its selector, or is an unreferenced custom property.
-- Point the brand guide's type scale and nav-hover row at the computed CSS.
-- Give the request thumb a real `alt` and keep the visible "Illustrative" label.
-- Leave `.order-band` deleted. It has no markup.
+- Visible `#2035e8` and `#f66631` now follow the approved roles, except Interstate 76 and the logo SVG.
+- `docs/BRAND.md` and `docs/LIBERTIES.md` still quote the original strategy. They were not rewritten.
 
-### Needs a design decision (these change how the site looks)
+### Still a design decision
 
-- Recolor contact, FAQ, and community blue focus, links, and eyebrows to navy or kicker gold.
-- Decide whether `.atlas-card .kicker` and sector chips stay Bluepoint Blue.
-- Decide whether Oven Orange borders stay.
-- Decide whether the ordering-guide eyebrow should actually be `#e4c27a`.
 - Decide whether page titles in `.ticket-hero` should become Source Serif 4. That is a visual change. Do not do it as a cleanup.
 - Decide whether `.btn-secondary` should ever look different from `.btn-primary`. It is navy on purpose today.
+- `#73530c` remains on some community, contact, and FAQ labels, and on `.call-notice` focus. It is not the retired blue or orange.
 - The photography guide is still unavailable. Do not restyle photos from guesswork.
