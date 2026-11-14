@@ -71,9 +71,6 @@ export function MakingCards() {
           );
         })}
       </ul>
-      <p className="making-footnote">
-        Menu images illustrate serving ideas; they do not identify specific Bluepoint products.
-      </p>
     </section>
   );
 }
