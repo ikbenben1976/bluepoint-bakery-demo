@@ -52,7 +52,6 @@ export const usePhotos: readonly UsePhoto[] = [
     height: 864,
     alt: "Plated stuffed French toast with berries and custard",
     credit: "Customer plate.",
-    aiLabel: "Edges extended with AI",
   },
 ];
 
