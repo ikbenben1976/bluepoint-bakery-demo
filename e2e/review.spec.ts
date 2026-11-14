@@ -2009,27 +2009,14 @@ test("making pathways and sector links reach catalog choices", async ({ page }) 
 
 
 
-test("each bun SKU loads its own catalog path with honest disclosure", async ({ page }) => {
+test("rejected bun extractions are not visible in the live catalog", async ({ page }) => {
   await page.goto("/breads/");
   const buns = page.locator("#buns .product-card");
   await expect(buns).toHaveCount(15);
-  const seen = new Set<string>();
   for (const row of await buns.all()) {
-    const id = await row.getAttribute("id");
     const img = row.locator(".product-photo img");
     await expect(img).toHaveCount(1);
-    const raw = await img.getAttribute("src");
-    const resolved = decodeURIComponent(raw ?? "");
-    expect(resolved, id ?? "").toContain("/images/catalog/buns/" + id + ".webp");
-    seen.add(resolved);
+    await expect(img).toHaveAttribute("src", /\/images\/illustrative\/product-/);
+    await expect(row.locator(".illustrative-label")).toHaveText("Illustrative image");
   }
-  expect(seen.size).toBe(15);
-  await expect(page.locator("#buns-oat-bun-4-in .illustrative-label")).toHaveCount(0);
-  await expect(page.locator("#buns-sesame-kaiser-4-in .illustrative-label")).toHaveText("Representative photo");
-  await expect(page.locator("#buns-onion-topped-kaiser-5-in .illustrative-label")).toHaveText("Illustrative image");
-
-  await page.setViewportSize({width: 1440, height: 900});
-  await page.screenshot({path: "test-results/buns-desktop.png", fullPage: true});
-  await page.setViewportSize({width: 390, height: 844});
-  await page.screenshot({path: "test-results/buns-mobile.png", fullPage: true});
 });
