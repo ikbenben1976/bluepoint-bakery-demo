@@ -236,7 +236,17 @@ test("contact facts and portal URLs are the published ones", () => {
   assert.equal(ORDER_URL, "https://us.bakery.software/app/bluepoint/us/-1/Account/Login");
   assert.equal(PAY_URL, "https://app.paywholesail.com/portal/bluepointbakery");
   assert.equal(DISCLAIMER, "Demo prepared for review — not the official site");
-  assert.equal(faqs.length, 6);
+  assert.equal(faqs.length, 12);
+  assert.equal(faqs[6].q, "How much notice do you need?");
+  assert.equal(faqs[6].a, "24 hours for all breads; Sourdough Boule needs 3 days.");
+  assert.equal(faqs[7].a, "We bake and deliver six days a week.");
+  assert.equal(faqs[8].a, "Add products to a pricing request and we'll follow up. It's a request, not an order.");
+  assert.equal(
+    faqs[9].a,
+    "I'd like to ask about trying a product first. Ask Bluepoint's sales team about sample availability and any applicable conditions.",
+  );
+  assert.equal(faqs[10].a, "Yes, many of our sliced breads come in different sizes and slice thicknesses.");
+  assert.equal(faqs[11].a, "Monday to Friday, 7:00 AM to 3:00 PM.");
   assert.match(faqs[3].a, /sales team.*account setup process/);
   assert.match(faqs[2].a, /5105 Cook St\. Denver, CO 80216/);
 });

@@ -58,6 +58,36 @@ export const faqs = [
     q: "How do I order from Bluepoint Bakery?",
     a: "Existing customers can order by calling us at 303-298-1100, emailing sales@bluepointbakery.com, or by ordering through this website.",
   },
+  {
+    id: "notice",
+    q: "How much notice do you need?",
+    a: "24 hours for all breads; Sourdough Boule needs 3 days.",
+  },
+  {
+    id: "days",
+    q: "What days do you deliver?",
+    a: "We bake and deliver six days a week.",
+  },
+  {
+    id: "pricing",
+    q: "How do I get pricing?",
+    a: "Add products to a pricing request and we'll follow up. It's a request, not an order.",
+  },
+  {
+    id: "samples",
+    q: "Can I try your products first?",
+    a: "I'd like to ask about trying a product first. Ask Bluepoint's sales team about sample availability and any applicable conditions.",
+  },
+  {
+    id: "slice",
+    q: "Do you slice bread?",
+    a: "Yes, many of our sliced breads come in different sizes and slice thicknesses.",
+  },
+  {
+    id: "hours",
+    q: "When is your office open?",
+    a: "Monday to Friday, 7:00 AM to 3:00 PM.",
+  },
 ] as const;
 
 export const reviews = [
